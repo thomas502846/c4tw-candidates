@@ -1,20 +1,1092 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="utf-8">
-<title>CD2 · Claude Design 建立中</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>創照服務設計 Care For Taiwan — 把照顧重新還回人、家、與在地文化</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500;1,600&display=swap" rel="stylesheet">
 <style>
-body{font-family:"Noto Serif TC",system-ui;background:#F4EFE3;color:#1F2A26;margin:0;padding:96px 48px;text-align:center}
-h1{font-size:32px;line-height:1.3;font-weight:400}
-p{color:#4A5650;max-width:520px;margin:24px auto}
-a{color:#2F4A3E;text-decoration:underline}
-.bar{width:120px;height:2px;background:#B5743A;margin:24px auto}
+  :root{
+    --rice:#ECE3D0;
+    --rice-deep:#DBCFA9;
+    --white:#FFFFFF;
+    --indigo:#1F3C5C;
+    --indigo-deep:#102744;
+    --ochre:#D4A04A;
+    --ochre-deep:#B68132;
+    --highlight:#E8C766;
+    --ink:#1B2436;
+    --body:#4F5868;
+    --muted:#909AAD;
+    --hairline:#C9BB99;
+    --sage:#7A9B8A;
+
+    --f-serif:"Noto Serif TC","Songti TC",serif;
+    --f-sans:"Noto Sans TC","PingFang TC","Helvetica Neue",sans-serif;
+    --f-latin:"Outfit","Helvetica Neue",sans-serif;
+    --f-italic:"Cormorant Garamond",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--rice);color:var(--ink);font-family:var(--f-sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{
+    background:
+      radial-gradient(1200px 600px at 90% -10%, rgba(212,160,74,0.07), transparent 60%),
+      radial-gradient(900px 500px at -10% 30%, rgba(31,60,92,0.06), transparent 60%),
+      var(--rice);
+    background-attachment: fixed;
+    overflow-x:hidden;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--indigo);color:var(--rice)}
+
+  /* ─────── Texture overlay (subtle paper grain) ─────── */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+    background-image:
+      radial-gradient(rgba(27,36,54,0.035) 1px, transparent 1px),
+      radial-gradient(rgba(27,36,54,0.025) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1px 2px;
+    mix-blend-mode:multiply;
+    opacity:.7;
+  }
+
+  .wrap{max-width:1280px;margin:0 auto;padding:0 48px;position:relative;z-index:2}
+
+  /* ─────── Top utility strip ─────── */
+  .topstrip{
+    border-bottom:1px solid var(--hairline);
+    background:var(--rice);
+    font-family:var(--f-latin);
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--body);
+  }
+  .topstrip-inner{display:flex;justify-content:space-between;align-items:center;height:34px}
+  .topstrip-left{display:flex;gap:24px;align-items:center}
+  .topstrip-left .vol{color:var(--indigo);font-weight:500}
+  .topstrip-right{display:flex;gap:18px;align-items:center;color:var(--muted)}
+  .topstrip-right span+span::before{content:"·";margin-right:18px;color:var(--hairline)}
+
+  /* ─────── Nav ─────── */
+  .nav{
+    position:sticky;top:0;z-index:50;background:rgba(236,227,208,0.92);
+    backdrop-filter:saturate(120%) blur(6px);
+    border-bottom:1px solid var(--hairline);
+  }
+  .nav-inner{display:flex;justify-content:space-between;align-items:center;height:84px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-mark{height:46px;display:block}
+  .brand-wordmark{height:32px;display:block}
+  .brand-en{
+    font-family:var(--f-latin);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--body);margin-top:3px;display:block;
+  }
+  .brand-text{display:flex;flex-direction:column;line-height:1}
+
+  .nav-list{display:flex;align-items:center;gap:38px}
+  .nav-list a{
+    font-family:var(--f-serif);font-size:16px;font-weight:500;color:var(--ink);
+    position:relative;padding:6px 0;
+  }
+  .nav-list a:hover{color:var(--indigo)}
+  .nav-list a::after{
+    content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--indigo);
+    transition:width .25s ease;
+  }
+  .nav-list a:hover::after{width:100%}
+
+  .cta-new{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--highlight);color:var(--indigo-deep);
+    padding:11px 18px 11px 12px;
+    font-family:var(--f-serif);font-weight:600;font-size:15px;
+    border:1px solid var(--ochre-deep);
+    box-shadow: 0 1px 0 rgba(27,36,54,0.08);
+    transition:transform .2s ease;
+  }
+  .cta-new:hover{transform:translateY(-1px)}
+  .cta-new .badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--indigo);color:var(--highlight);
+    font-family:var(--f-latin);font-size:10px;letter-spacing:.16em;
+    padding:3px 7px;font-weight:600;text-transform:uppercase;
+  }
+  .cta-new svg{width:14px;height:14px;stroke:var(--indigo)}
+
+  /* ─────── Hero (magazine cover) ─────── */
+  .hero{padding:60px 0 24px;position:relative}
+  .hero-grid{
+    display:grid;grid-template-columns: 1.05fr 36px 1fr;gap:0;align-items:stretch;
+    min-height:640px;
+  }
+  .hero-left{padding:24px 0 8px 0;display:flex;flex-direction:column;justify-content:space-between}
+  .hero-spine{
+    border-left:1px solid var(--hairline);
+    border-right:1px solid var(--hairline);
+    position:relative;
+    background:
+      linear-gradient(to bottom, transparent 0, transparent calc(50% - 36px), var(--hairline) calc(50% - 36px), var(--hairline) calc(50% + 36px), transparent calc(50% + 36px));
+  }
+  .hero-spine .caption{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(180deg);
+    writing-mode:vertical-rl;
+    font-family:var(--f-italic);font-style:italic;font-size:13px;color:var(--body);
+    letter-spacing:.04em;white-space:nowrap;
+    background:var(--rice);padding:18px 4px;
+  }
+  .hero-right{position:relative}
+
+  .eyebrow{
+    display:flex;align-items:center;gap:14px;
+    font-family:var(--f-latin);font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--ochre-deep);font-weight:500;
+    margin-bottom:30px;
+  }
+  .eyebrow::before{content:"";display:block;width:36px;height:1px;background:var(--ochre-deep)}
+  .eyebrow .zh{font-family:var(--f-serif);letter-spacing:.18em;color:var(--ochre-deep);font-size:12px}
+
+  .hero h1{
+    font-family:var(--f-serif);font-weight:600;color:var(--ink);
+    font-size: clamp(40px, 5.6vw, 78px);
+    line-height:1.12;letter-spacing:-0.005em;
+    margin-bottom:32px;
+    text-wrap:balance;
+  }
+  .hero h1 .em{color:var(--indigo);position:relative;display:inline-block}
+  .hero h1 .em::after{
+    content:"";position:absolute;left:-2px;right:-2px;bottom:6px;height:14px;
+    background:var(--ochre);opacity:.22;z-index:-1;
+  }
+  .hero h1 .italic{font-family:var(--f-italic);font-style:italic;font-weight:500;color:var(--indigo);font-size:0.82em;letter-spacing:.005em}
+
+  .lede{
+    font-family:var(--f-serif);font-size:18px;line-height:1.85;color:var(--body);
+    max-width:520px;margin-bottom:36px;
+    border-left:2px solid var(--ochre);padding-left:18px;
+  }
+  .lede em{font-family:var(--f-italic);font-weight:500;color:var(--indigo);font-size:1.05em}
+
+  .hero-ctas{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .btn{
+    font-family:var(--f-serif);font-size:15px;font-weight:500;
+    padding:14px 26px;display:inline-flex;align-items:center;gap:10px;
+    border:1px solid transparent;transition:all .2s ease;
+    letter-spacing:.04em;
+  }
+  .btn svg{width:14px;height:14px}
+  .btn-solid{background:var(--indigo);color:var(--rice);border-color:var(--indigo)}
+  .btn-solid:hover{background:var(--indigo-deep)}
+  .btn-ghost{background:transparent;color:var(--indigo);border-color:var(--indigo)}
+  .btn-ghost:hover{background:var(--indigo);color:var(--rice)}
+  .btn-ochre{background:var(--ochre);color:var(--indigo-deep);border-color:var(--ochre-deep);font-weight:600}
+  .btn-ochre:hover{background:var(--ochre-deep);color:var(--rice)}
+
+  .hero-foot{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    padding-top:32px;border-top:1px solid var(--hairline);margin-top:48px;
+  }
+  .hero-meta{
+    font-family:var(--f-latin);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+    display:flex;gap:28px;
+  }
+  .hero-meta strong{color:var(--ink);font-weight:500}
+
+  .hero-photo{
+    position:relative;aspect-ratio: 4/5;overflow:hidden;
+    background:var(--indigo-deep);
+    box-shadow: 0 2px 0 var(--hairline);
+  }
+  .hero-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(1.02) contrast(1.02)}
+  .hero-photo::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, transparent 60%, rgba(16,39,68,0.35) 100%);
+    pointer-events:none;
+  }
+  .photo-caption{
+    position:absolute;left:18px;right:18px;bottom:18px;color:var(--rice);
+    font-family:var(--f-latin);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    display:flex;justify-content:space-between;align-items:end;gap:12px;
+  }
+  .photo-caption .label{
+    background:var(--ochre);color:var(--indigo-deep);
+    padding:4px 8px;font-weight:600;
+  }
+  .photo-caption .ref{opacity:.85;font-family:var(--f-italic);font-style:italic;font-size:14px;letter-spacing:.02em;text-transform:none}
+
+  /* ─────── Section general ─────── */
+  section{padding:96px 0;position:relative}
+  .section-mark{
+    display:grid;grid-template-columns: 90px 1fr;gap:36px;align-items:start;margin-bottom:48px;
+  }
+  .seal{
+    width:74px;height:74px;background:var(--indigo);color:var(--rice);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--f-serif);font-weight:600;font-size:34px;
+    position:relative;
+    box-shadow:
+      inset 0 0 0 2px var(--rice),
+      inset 0 0 0 3px var(--indigo);
+    transform:rotate(-3deg);
+    letter-spacing:0;
+  }
+  .seal::before, .seal::after{
+    content:"";position:absolute;background:var(--indigo);
+  }
+  .seal::before{width:6px;height:6px;left:-3px;top:-3px}
+  .seal::after{width:6px;height:6px;right:-3px;bottom:-3px}
+  .seal.ochre{background:var(--ochre-deep);box-shadow:inset 0 0 0 2px var(--rice),inset 0 0 0 3px var(--ochre-deep)}
+  .seal.ochre::before, .seal.ochre::after{background:var(--ochre-deep)}
+
+  .section-head h2{
+    font-family:var(--f-serif);font-weight:600;font-size:48px;line-height:1.18;color:var(--ink);
+    margin-bottom:14px;letter-spacing:-0.005em;
+  }
+  .section-head h2 .italic{font-family:var(--f-italic);font-style:italic;color:var(--indigo);font-weight:500}
+  .section-head .kicker{
+    font-family:var(--f-latin);font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--ochre-deep);margin-bottom:14px;
+  }
+  .section-head .deck{
+    font-family:var(--f-serif);font-size:18px;line-height:1.7;color:var(--body);max-width:640px;
+  }
+
+  /* ─────── Mission ─────── */
+  .mission{padding-top:60px}
+  .mission-spread{
+    display:grid;grid-template-columns: 90px 1fr 360px;gap:48px;align-items:start;
+  }
+  .mission-seal-col{display:flex;flex-direction:column;align-items:center;gap:20px;position:sticky;top:120px}
+  .vertical-seal{
+    background:var(--indigo);color:var(--rice);
+    padding:14px 10px;
+    writing-mode:vertical-rl;
+    font-family:var(--f-serif);font-weight:600;font-size:22px;letter-spacing:.5em;
+    line-height:1;
+    box-shadow: inset 0 0 0 2px var(--rice), inset 0 0 0 3px var(--indigo);
+  }
+  .seal-mini{
+    width:54px;height:54px;background:var(--ochre);color:var(--indigo-deep);
+    font-family:var(--f-serif);font-weight:700;font-size:26px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow: inset 0 0 0 2px var(--rice), inset 0 0 0 3px var(--ochre);
+    transform:rotate(4deg);
+  }
+  .mission-quote{
+    font-family:var(--f-serif);font-weight:400;
+    font-size: clamp(24px, 2.6vw, 34px);
+    line-height:1.7;color:var(--ink);letter-spacing:.01em;
+    text-wrap:pretty;
+  }
+  .mission-quote .pull{color:var(--indigo);font-weight:600;background:linear-gradient(180deg, transparent 60%, rgba(212,160,74,0.28) 60%)}
+  .mission-quote .it{font-family:var(--f-italic);font-style:italic;color:var(--indigo);font-weight:500}
+  .mission-quote::before{
+    content:"〝";font-family:var(--f-serif);color:var(--ochre);
+    font-size:80px;line-height:0;vertical-align:-28px;margin-right:8px;
+  }
+  .mission-attr{
+    margin-top:36px;padding-top:18px;border-top:1px solid var(--hairline);
+    font-family:var(--f-sans);font-size:13px;letter-spacing:.06em;color:var(--body);
+    display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  }
+  .mission-attr strong{color:var(--ink);font-weight:600}
+  .mission-attr .latin{font-family:var(--f-latin);letter-spacing:.2em;text-transform:uppercase;font-size:11px;color:var(--muted)}
+
+  .mission-aside{
+    background:var(--white);padding:28px 24px;border:1px solid var(--hairline);
+    box-shadow: 4px 4px 0 var(--rice-deep);
+  }
+  .mission-aside .label{
+    font-family:var(--f-latin);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ochre-deep);
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .mission-aside .label::before{content:"";width:18px;height:1px;background:var(--ochre-deep)}
+  .mission-aside h4{
+    font-family:var(--f-serif);font-size:20px;font-weight:600;color:var(--ink);margin-bottom:12px;line-height:1.3;
+  }
+  .mission-aside p{font-family:var(--f-serif);font-size:14px;line-height:1.8;color:var(--body);margin-bottom:10px}
+  .mission-aside .stat-row{display:flex;gap:24px;margin-top:16px;padding-top:16px;border-top:1px solid var(--hairline)}
+  .mission-aside .stat .n{font-family:var(--f-serif);font-size:30px;font-weight:600;color:var(--indigo);line-height:1}
+  .mission-aside .stat .l{font-family:var(--f-sans);font-size:11px;color:var(--muted);letter-spacing:.08em;margin-top:6px}
+
+  /* ─────── Movement / 共生之家 ─────── */
+  .movement{background:linear-gradient(180deg, var(--rice) 0%, #E4D9BD 100%);padding-bottom:120px}
+  .movement-grid{
+    display:grid;grid-template-columns:repeat(3, 1fr);gap:36px 32px;
+    margin-top:24px;
+  }
+  .venue-card{
+    background:transparent;
+    display:flex;flex-direction:column;
+  }
+  .venue-photo{
+    aspect-ratio: 4/5;background:var(--indigo-deep);position:relative;overflow:hidden;
+    margin-bottom:16px;
+    box-shadow: 2px 2px 0 var(--hairline);
+  }
+  .venue-photo img{width:100%;height:100%;object-fit:cover}
+  .venue-photo .corner{
+    position:absolute;top:12px;left:12px;
+    background:var(--rice);color:var(--indigo);
+    padding:4px 8px;font-family:var(--f-latin);font-size:10px;letter-spacing:.2em;font-weight:600;
+  }
+  .venue-photo .corner-r{
+    position:absolute;top:12px;right:12px;
+    color:var(--rice);font-family:var(--f-italic);font-style:italic;font-size:13px;
+    text-shadow:0 1px 2px rgba(0,0,0,0.4);
+  }
+  /* placeholder plates */
+  .venue-photo.plate{background:var(--rice-deep);display:flex;align-items:center;justify-content:center;padding:24px}
+  .venue-photo.plate .glyph{
+    width:90px;height:90px;border:1.5px solid var(--indigo);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--f-serif);font-size:42px;color:var(--indigo);font-weight:500;
+    background:var(--rice);
+    transform:rotate(-2deg);
+    position:relative;
+  }
+  .venue-photo.plate .glyph::after{
+    content:attr(data-sub);position:absolute;bottom:-26px;left:50%;transform:translateX(-50%) rotate(2deg);
+    font-family:var(--f-latin);font-size:9px;letter-spacing:.22em;color:var(--indigo);font-weight:500;
+    white-space:nowrap;
+  }
+  .venue-photo.plate.alt{background:var(--indigo);}
+  .venue-photo.plate.alt .glyph{color:var(--ochre);border-color:var(--ochre);background:var(--indigo-deep)}
+  .venue-photo.plate.alt .glyph::after{color:var(--ochre)}
+
+  .venue-card .meta{
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+    font-family:var(--f-latin);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+    margin-bottom:8px;
+  }
+  .venue-card .meta .n{color:var(--indigo);font-weight:600}
+  .venue-card h3{
+    font-family:var(--f-serif);font-size:22px;font-weight:600;color:var(--ink);
+    line-height:1.3;margin-bottom:8px;letter-spacing:.01em;
+  }
+  .venue-card h3 .it{font-family:var(--f-italic);font-style:italic;color:var(--indigo);font-weight:500}
+  .venue-card .place{
+    font-family:var(--f-sans);font-size:13px;color:var(--body);letter-spacing:.04em;
+    display:flex;align-items:center;gap:8px;margin-bottom:10px;
+  }
+  .venue-card .place::before{content:"";width:6px;height:6px;background:var(--ochre);display:inline-block}
+  .venue-card .desc{
+    font-family:var(--f-serif);font-size:14px;line-height:1.75;color:var(--body);
+  }
+
+  /* ─────── Program (Indigo dark band) ─────── */
+  .program{background:var(--indigo-deep);color:var(--rice);padding:120px 0;position:relative;overflow:hidden}
+  .program::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--ochre);
+  }
+  .program::after{
+    content:"急";position:absolute;
+    font-family:var(--f-serif);font-weight:700;
+    font-size:520px;color:rgba(212,160,74,0.05);
+    right:-60px;bottom:-160px;line-height:.7;pointer-events:none;
+  }
+  .program-grid{
+    display:grid;grid-template-columns: 1fr 1.2fr;gap:80px;align-items:start;position:relative;z-index:2;
+  }
+  .program .new-chip{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--highlight);color:var(--indigo-deep);
+    padding:6px 12px 6px 8px;font-family:var(--f-serif);font-weight:600;font-size:14px;
+    margin-bottom:24px;letter-spacing:.04em;
+  }
+  .program .new-chip .b{
+    background:var(--indigo);color:var(--highlight);
+    font-family:var(--f-latin);font-size:10px;letter-spacing:.16em;
+    padding:3px 7px;font-weight:600;text-transform:uppercase;
+  }
+  .program h2{
+    font-family:var(--f-serif);font-weight:600;
+    font-size: clamp(36px, 4.4vw, 56px);
+    line-height:1.18;color:var(--rice);margin-bottom:20px;letter-spacing:-0.005em;
+    text-wrap:balance;
+  }
+  .program h2 .em{color:var(--ochre)}
+  .program h2 .it{font-family:var(--f-italic);font-style:italic;font-weight:500;color:var(--highlight)}
+  .program .deck{
+    font-family:var(--f-serif);font-size:17px;line-height:1.85;color:rgba(236,227,208,0.78);
+    max-width:460px;margin-bottom:28px;
+  }
+  .program-meta{
+    font-family:var(--f-latin);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ochre);
+    display:flex;gap:24px;flex-wrap:wrap;
+    padding-top:24px;border-top:1px solid rgba(212,160,74,0.3);
+  }
+
+  .program-bullets{display:flex;flex-direction:column;gap:28px}
+  .bullet{
+    border-left:2px solid var(--ochre);padding:6px 0 6px 24px;
+  }
+  .bullet .num{
+    font-family:var(--f-latin);font-size:11px;letter-spacing:.24em;color:var(--ochre);font-weight:500;
+    margin-bottom:8px;display:block;
+  }
+  .bullet h4{
+    font-family:var(--f-serif);font-size:22px;font-weight:600;color:var(--rice);margin-bottom:10px;line-height:1.35;
+  }
+  .bullet p{
+    font-family:var(--f-serif);font-size:15px;line-height:1.8;color:rgba(236,227,208,0.7);
+  }
+  .program-cta{margin-top:36px}
+
+  /* ─────── Team ─────── */
+  .team{padding-top:120px}
+  .founder-spread{
+    display:grid;grid-template-columns: 0.85fr 1.15fr;gap:56px;align-items:start;
+    margin-bottom:96px;
+  }
+  .founder-photo{
+    aspect-ratio:4/5;overflow:hidden;background:var(--indigo-deep);position:relative;
+    box-shadow: 6px 6px 0 var(--rice-deep);
+  }
+  .founder-photo img{width:100%;height:100%;object-fit:cover;object-position: 50% 30%}
+  .founder-photo .stamp{
+    position:absolute;bottom:18px;left:18px;
+    background:var(--ochre);color:var(--indigo-deep);
+    font-family:var(--f-serif);font-weight:600;font-size:14px;
+    padding:8px 12px;letter-spacing:.1em;
+  }
+  .founder-text .role{
+    font-family:var(--f-latin);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--ochre-deep);
+    margin-bottom:16px;display:flex;align-items:center;gap:12px;
+  }
+  .founder-text .role::before{content:"";width:36px;height:1px;background:var(--ochre-deep)}
+  .founder-text h3{
+    font-family:var(--f-serif);font-weight:600;font-size:44px;color:var(--ink);line-height:1.2;
+    margin-bottom:6px;letter-spacing:-0.005em;
+  }
+  .founder-text .name-latin{
+    font-family:var(--f-italic);font-style:italic;font-size:22px;color:var(--indigo);font-weight:500;
+    margin-bottom:24px;
+  }
+  .founder-text .titles{
+    display:flex;flex-direction:column;gap:6px;
+    font-family:var(--f-serif);font-size:15px;color:var(--body);
+    padding-bottom:20px;border-bottom:1px solid var(--hairline);margin-bottom:24px;
+  }
+  .founder-text .titles span{display:flex;gap:12px;align-items:baseline}
+  .founder-text .titles span::before{
+    content:attr(data-i);
+    font-family:var(--f-latin);font-size:10px;color:var(--ochre-deep);letter-spacing:.2em;font-weight:600;
+    min-width:18px;
+  }
+  .founder-text .quote{
+    font-family:var(--f-serif);font-size:20px;line-height:1.85;color:var(--ink);
+    border-left:2px solid var(--indigo);padding-left:22px;margin-bottom:18px;
+  }
+  .founder-text .quote .em{color:var(--indigo);font-weight:600}
+  .founder-text .quote .it{font-family:var(--f-italic);font-style:italic;color:var(--indigo)}
+
+  .family-head{
+    display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:32px;
+    padding-bottom:18px;border-bottom:1px solid var(--hairline);
+  }
+  .family-head h3{
+    font-family:var(--f-serif);font-weight:600;font-size:32px;color:var(--ink);
+  }
+  .family-head h3 .it{font-family:var(--f-italic);font-style:italic;color:var(--indigo);font-weight:500}
+  .family-head .label{
+    font-family:var(--f-latin);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+  }
+
+  .family-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--hairline);
+    border:1px solid var(--hairline);
+  }
+  .family-card{
+    background:var(--rice);padding:28px 24px;display:flex;flex-direction:column;gap:14px;
+    position:relative;transition:background .2s ease;min-height:220px;
+  }
+  .family-card:hover{background:var(--white)}
+  .family-card .idx{
+    font-family:var(--f-latin);font-size:10px;letter-spacing:.24em;color:var(--ochre-deep);font-weight:600;
+  }
+  .family-card h4{
+    font-family:var(--f-serif);font-weight:600;font-size:22px;color:var(--ink);line-height:1.3;letter-spacing:.01em;
+  }
+  .family-card h4 .it{font-family:var(--f-italic);font-style:italic;color:var(--indigo);font-weight:500;font-size:18px;display:block;margin-top:2px}
+  .family-card p{
+    font-family:var(--f-serif);font-size:14px;line-height:1.7;color:var(--body);
+  }
+  .family-card .tag{
+    margin-top:auto;display:inline-flex;align-self:flex-start;
+    font-family:var(--f-latin);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--indigo);border-top:1px solid var(--hairline);padding-top:12px;width:100%;
+    justify-content:space-between;
+  }
+  .family-card .tag .arr{font-family:var(--f-serif);font-style:normal}
+
+  /* ─────── CTA band ─────── */
+  .cta-band{
+    background:var(--indigo);color:var(--rice);padding:96px 0;position:relative;overflow:hidden;
+  }
+  .cta-band::after{
+    content:"聯";position:absolute;font-family:var(--f-serif);font-weight:700;
+    font-size:440px;line-height:.7;color:rgba(212,160,74,0.06);right:-40px;top:-80px;pointer-events:none;
+  }
+  .cta-grid{
+    display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:center;position:relative;z-index:2;
+  }
+  .cta-grid .kicker{
+    font-family:var(--f-latin);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--ochre);
+    margin-bottom:18px;display:flex;align-items:center;gap:14px;
+  }
+  .cta-grid .kicker::before{content:"";width:36px;height:1px;background:var(--ochre)}
+  .cta-grid h2{
+    font-family:var(--f-serif);font-weight:600;
+    font-size: clamp(34px, 3.8vw, 48px);
+    line-height:1.25;color:var(--rice);letter-spacing:-0.005em;margin-bottom:16px;
+    text-wrap:balance;
+  }
+  .cta-grid h2 .it{font-family:var(--f-italic);font-style:italic;color:var(--ochre);font-weight:500}
+  .cta-grid .deck{font-family:var(--f-serif);font-size:17px;line-height:1.8;color:rgba(236,227,208,0.78);max-width:520px}
+  .cta-side{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(212,160,74,0.25);
+    padding:32px;
+  }
+  .cta-side .row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:14px 0;border-bottom:1px dashed rgba(212,160,74,0.2);
+  }
+  .cta-side .row:last-of-type{border-bottom:none}
+  .cta-side .row .l{
+    font-family:var(--f-latin);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ochre);
+  }
+  .cta-side .row .v{
+    font-family:var(--f-serif);font-size:15px;color:var(--rice);font-weight:500;
+  }
+  .cta-side .row .v.latin{font-family:var(--f-latin)}
+  .cta-side .btn{margin-top:20px;width:100%;justify-content:center}
+
+  /* ─────── Footer ─────── */
+  footer{
+    background:var(--rice);padding:64px 0 28px;border-top:1px solid var(--hairline);
+  }
+  .foot-grid{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;align-items:start;
+    padding-bottom:36px;border-bottom:1px solid var(--hairline);
+  }
+  .foot-brand .brand-wordmark{height:34px;margin-bottom:14px}
+  .foot-brand p{
+    font-family:var(--f-serif);font-size:14px;line-height:1.85;color:var(--body);max-width:380px;
+  }
+  .foot-brand p .it{font-family:var(--f-italic);font-style:italic;color:var(--indigo)}
+  .foot-col h5{
+    font-family:var(--f-latin);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ochre-deep);
+    margin-bottom:18px;font-weight:600;
+    padding-bottom:10px;border-bottom:1px solid var(--hairline);
+  }
+  .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .foot-col li{font-family:var(--f-serif);font-size:14px;color:var(--body);display:flex;justify-content:space-between;gap:10px}
+  .foot-col li .latin{font-family:var(--f-latin);font-size:11px;color:var(--muted);letter-spacing:.06em}
+  .foot-col li a:hover{color:var(--indigo)}
+
+  .foot-bottom{
+    display:flex;justify-content:space-between;align-items:center;gap:24px;
+    padding-top:24px;font-family:var(--f-latin);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  }
+  .foot-bottom .it{font-family:var(--f-italic);font-style:italic;text-transform:none;letter-spacing:.02em;font-size:13px;color:var(--body)}
+
+  /* ─────── Responsive ─────── */
+  @media (max-width: 900px){
+    .wrap{padding:0 24px}
+    .topstrip-right span:nth-child(n+3){display:none}
+    .nav-list{display:none}
+    .nav-inner{height:68px}
+    .hero{padding:32px 0}
+    .hero-grid{grid-template-columns:1fr;gap:32px;min-height:auto}
+    .hero-spine{display:none}
+    .hero h1{font-size:40px}
+    .lede{font-size:16px}
+    .hero-foot{flex-direction:column;align-items:flex-start;gap:18px}
+    .hero-meta{flex-wrap:wrap;gap:18px}
+    section{padding:64px 0}
+    .section-mark{grid-template-columns:64px 1fr;gap:20px;margin-bottom:32px}
+    .seal{width:56px;height:56px;font-size:26px}
+    .section-head h2{font-size:32px}
+    .mission-spread{grid-template-columns:1fr;gap:32px}
+    .mission-seal-col{flex-direction:row;position:static;justify-content:flex-start}
+    .vertical-seal{writing-mode:horizontal-tb;padding:10px 16px;font-size:18px;letter-spacing:.4em}
+    .mission-quote{font-size:22px}
+    .movement-grid{grid-template-columns:1fr;gap:36px}
+    .program-grid{grid-template-columns:1fr;gap:40px}
+    .program h2{font-size:32px}
+    .founder-spread{grid-template-columns:1fr;gap:32px}
+    .founder-text h3{font-size:32px}
+    .family-head{flex-direction:column;align-items:flex-start;gap:8px}
+    .family-grid{grid-template-columns:1fr}
+    .cta-grid{grid-template-columns:1fr;gap:32px}
+    .cta-band::after{font-size:260px;right:-30px}
+    .program::after{font-size:300px}
+    .foot-grid{grid-template-columns:1fr;gap:32px}
+    .foot-bottom{flex-direction:column;align-items:flex-start;gap:12px}
+  }
 </style>
 </head>
 <body>
-<div class="bar"></div>
-<h1>CD2 · Claude Design 自由發揮 v2<br>建立中⋯</h1>
-<p>由 Claude Design 在我們的設計系統 + 既有照片上自由詮釋的第二個視覺方向。<br>產出完成後此頁面會更新。</p>
-<p><a href="../">← 回候選方案首頁</a></p>
+
+  <!-- Top utility strip -->
+  <div class="topstrip">
+    <div class="wrap topstrip-inner">
+      <div class="topstrip-left">
+        <span class="vol">Vol. 02 · 2026 春</span>
+        <span>創照誌</span>
+      </div>
+      <div class="topstrip-right">
+        <span>台北 · 26° 晴</span>
+        <span>info@carefortaiwan.com.tw</span>
+        <span>EN / 繁中</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <header class="nav" data-screen-label="01 Nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="創照服務設計 首頁">
+        <img class="brand-mark" src="assets/logo-hand.png" alt="">
+        <div class="brand-text">
+          <img class="brand-wordmark" src="assets/logo-wordmark.png" alt="創照服務設計">
+          <span class="brand-en">Care For Taiwan Co., Ltd.</span>
+        </div>
+      </a>
+      <nav class="nav-list" aria-label="主選單">
+        <a href="#mission">使命願景</a>
+        <a href="#movement">實踐方式</a>
+        <a href="#team">認識團隊</a>
+        <a class="cta-new" href="#program">
+          <span class="badge">New</span>
+          急重症長者整合照顧計劃
+          <svg viewBox="0 0 16 16" fill="none" stroke-width="1.8" stroke-linecap="square"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top" data-screen-label="02 Hero">
+    <div class="wrap">
+      <div class="hero-grid">
+
+        <!-- LEFT -->
+        <div class="hero-left">
+          <div>
+            <div class="eyebrow">
+              <span class="zh">創照誌 · 創刊號</span>
+              <span>Care for Taiwan · 創照服務設計</span>
+            </div>
+
+            <h1>把照顧重新還回<br><span class="em">人、家</span>、<span class="italic">與在地</span>文化</h1>
+
+            <p class="lede">
+              我們相信，照顧不是一張被填滿的表格，而是一頓飯、一段對話、一片土地的牽繫。
+              <em>創照服務設計</em>以「共生之家」為現場，把伯拉罕（Plahan）的部落精神，
+              帶進台灣每一個願意重新開始的鄰里。
+            </p>
+
+            <div class="hero-ctas">
+              <a class="btn btn-solid" href="#movement">
+                走進共生之家
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </a>
+              <a class="btn btn-ghost" href="#mission">閱讀我們的信念</a>
+            </div>
+          </div>
+
+          <div class="hero-foot">
+            <div class="hero-meta">
+              <span>EST. <strong>2024</strong></span>
+              <span>共生之家 <strong>06</strong></span>
+              <span>家族陣列 <strong>06</strong></span>
+            </div>
+            <div class="hero-meta">
+              <span class="vol" style="color:var(--ochre-deep)">№ 01 / 04</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPINE -->
+        <div class="hero-spine" aria-hidden="true">
+          <div class="caption">— Folded by hand, mended by neighbours —</div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="hero-right">
+          <figure class="hero-photo">
+            <img src="assets/hero-wenshan.jpg" alt="文山共生之家鄰里聚會現場">
+            <figcaption class="photo-caption">
+              <span class="label">Plate 01</span>
+              <span class="ref">文山共生之家・午後</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="mission" id="mission" data-screen-label="03 Mission">
+    <div class="wrap">
+      <div class="section-mark">
+        <div class="seal" aria-hidden="true">使</div>
+        <div class="section-head">
+          <div class="kicker">Chapter I — Our Mission</div>
+          <h2>使命願景 <span class="italic">Our Belief</span></h2>
+          <p class="deck">把伯拉罕（Plahan）的部落智慧編織成台灣現代鄰里的照顧網絡。</p>
+        </div>
+      </div>
+
+      <div class="mission-spread">
+        <div class="mission-seal-col" aria-hidden="true">
+          <div class="vertical-seal">創照印</div>
+          <div class="seal-mini">心</div>
+        </div>
+
+        <div class="mission-body">
+          <p class="mission-quote">
+            照顧不是被動的承接，而是一種<span class="pull">主動的編織</span>——
+            把人、家屋、料理、語言、節氣，重新縫回彼此的生活。
+            我們希望讓每一位長輩在熟悉的鄰里裡，<span class="it">活得像個人，而不是像個個案。</span>
+            從泰雅部落到都市鄰里，<span class="pull">伯拉罕（Plahan）的火塘</span>不會熄滅，
+            它只是換了爐灶，繼續溫熱台灣的每一張餐桌。
+          </p>
+          <div class="mission-attr">
+            <span><strong>創照服務設計</strong> · 使命宣言</span>
+            <span class="latin">— Manifesto · 2024</span>
+          </div>
+        </div>
+
+        <aside class="mission-aside">
+          <div class="label">Sidebar · 編按</div>
+          <h4>關於「伯拉罕」</h4>
+          <p>「Plahan」是泰雅族語裡的「家屋」，也是部落共同生活的火塘。在創照，它是一種承諾——當長輩走進共生之家，他不是接受服務的人，而是回家的人。</p>
+          <div class="stat-row">
+            <div class="stat">
+              <div class="n">06</div>
+              <div class="l">共生之家</div>
+            </div>
+            <div class="stat">
+              <div class="n">06</div>
+              <div class="l">家族陣列</div>
+            </div>
+            <div class="stat">
+              <div class="n">∞</div>
+              <div class="l">未盡之事</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVEMENT -->
+  <section class="movement" id="movement" data-screen-label="04 Movement">
+    <div class="wrap">
+      <div class="section-mark">
+        <div class="seal ochre" aria-hidden="true">家</div>
+        <div class="section-head">
+          <div class="kicker">Chapter II — In Practice</div>
+          <h2>實踐方式 <span class="italic">— Houses of Co-living</span></h2>
+          <p class="deck">六處共生之家，從文山到知本，把照顧的火塘重新點亮在台灣的鄰里之間。</p>
+        </div>
+      </div>
+
+      <div class="movement-grid">
+
+        <!-- 01 文山 (real photo) -->
+        <article class="venue-card">
+          <div class="venue-photo">
+            <img src="assets/hero-wenshan.jpg" alt="台北文山共生之家">
+            <div class="corner">No. 01</div>
+            <div class="corner-r">Wenshan</div>
+          </div>
+          <div class="meta"><span class="n">№ 01</span><span>台北・木柵</span></div>
+          <h3>文山共生之家 <span class="it">Wenshan</span></h3>
+          <div class="place">台北・文山</div>
+          <p class="desc">首間共生之家。鄰里長輩在午後茶點裡，把幾十年的故事，輕輕地交給彼此。</p>
+        </article>
+
+        <!-- 02 東勢 placeholder -->
+        <article class="venue-card">
+          <div class="venue-photo plate">
+            <div class="glyph" data-sub="DONGSHI">勢</div>
+          </div>
+          <div class="meta"><span class="n">№ 02</span><span>台中・客家</span></div>
+          <h3>東勢共生之家 <span class="it">Dongshi</span></h3>
+          <div class="place">台中・東勢</div>
+          <p class="desc">客家庄裡的灶下，把客家菜的味道、與粄條的節奏，重新搬回長輩的飯桌。</p>
+        </article>
+
+        <!-- 03 清流 placeholder alt -->
+        <article class="venue-card">
+          <div class="venue-photo plate alt">
+            <div class="glyph" data-sub="QINGLIU">流</div>
+          </div>
+          <div class="meta"><span class="n">№ 03</span><span>南投・賽德克</span></div>
+          <h3>清流共生之家 <span class="it">Qingliu</span></h3>
+          <div class="place">南投・清流（川中島）</div>
+          <p class="desc">霧社事件後裔的部落，火塘從未熄滅；伯拉罕的精神在這裡，被慎重地接續。</p>
+        </article>
+
+        <!-- 04 南港 placeholder -->
+        <article class="venue-card">
+          <div class="venue-photo plate">
+            <div class="glyph" data-sub="NANGANG">港</div>
+          </div>
+          <div class="meta"><span class="n">№ 04</span><span>台北・南港</span></div>
+          <h3>南港共生之家 <span class="it">Nangang</span></h3>
+          <div class="place">台北・南港</div>
+          <p class="desc">舊鐵道與新社區之間，老鄰居有了新的廚房；下午三點，總有人在彈月琴。</p>
+        </article>
+
+        <!-- 05 知本 placeholder alt -->
+        <article class="venue-card">
+          <div class="venue-photo plate alt">
+            <div class="glyph" data-sub="ZHIBEN">本</div>
+          </div>
+          <div class="meta"><span class="n">№ 05</span><span>台東・卑南</span></div>
+          <h3>知本共生之家 <span class="it">Zhiben</span></h3>
+          <div class="place">台東・知本</div>
+          <p class="desc">海風與溫泉之間，卑南族的歌聲是飯前的祝禱；長輩的笑，是這個家最深的回聲。</p>
+        </article>
+
+        <!-- 06 其他 placeholder -->
+        <article class="venue-card">
+          <div class="venue-photo plate">
+            <div class="glyph" data-sub="& 4 MORE">餘</div>
+          </div>
+          <div class="meta"><span class="n">№ 06</span><span>正在發芽</span></div>
+          <h3>其他四處 <span class="it">— & forthcoming</span></h3>
+          <div class="place">台灣各地</div>
+          <p class="desc">在新竹、屏東、花蓮、雲林——四處新的火塘正等待被點亮，等待願意一起編織的鄰居。</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAM -->
+  <section class="program" id="program" data-screen-label="05 Program">
+    <div class="wrap">
+      <div class="program-grid">
+        <div class="program-left">
+          <span class="new-chip">
+            <span class="b">New</span>
+            2026 全新計劃
+          </span>
+          <h2>急重症長者<br><span class="em">整合照顧</span><span class="it"> 計劃</span></h2>
+          <p class="deck">
+            當疾病來得又急又重，照顧不應該被切成醫院、長照、家庭三段。
+            我們把醫療、社區、家屬縫回一張完整的網——讓長輩在最脆弱的時刻，依然能被熟悉的人接住。
+          </p>
+          <div class="program-meta">
+            <span>2026 啟動</span>
+            <span>跨域整合</span>
+            <span>家屬同行</span>
+          </div>
+        </div>
+
+        <div class="program-bullets">
+          <div class="bullet">
+            <span class="num">01 — 醫療端</span>
+            <h4>醫院 ✕ 社區的雙向接軌</h4>
+            <p>從出院前 72 小時開始，社區照顧員與醫療團隊共同參與會議，把醫囑變成日常裡可以做到的小事。</p>
+          </div>
+          <div class="bullet">
+            <span class="num">02 — 家屋端</span>
+            <h4>家屋為中心的照顧現場</h4>
+            <p>共生之家不是替代家，而是延伸的家。長輩在熟悉的鄰里裡，由認識的人，用熟悉的方言陪伴度過急重症期。</p>
+          </div>
+          <div class="bullet">
+            <span class="num">03 — 家屬端</span>
+            <h4>把家屬也接回照顧的圈裡</h4>
+            <p>家屬不再是疲憊的獨行者。我們提供陪伴、課程、與喘息空間，讓「照顧的人」也被好好照顧。</p>
+          </div>
+
+          <a class="btn btn-ochre program-cta" href="#contact">
+            了解整合照顧計劃
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team" id="team" data-screen-label="06 Team">
+    <div class="wrap">
+
+      <div class="section-mark">
+        <div class="seal" aria-hidden="true">人</div>
+        <div class="section-head">
+          <div class="kicker">Chapter III — The People</div>
+          <h2>認識團隊 <span class="italic">— The Hands Behind</span></h2>
+          <p class="deck">從一位副市長走進部落，到一群相信「家」的人——這是創照的人。</p>
+        </div>
+      </div>
+
+      <!-- Founder spread -->
+      <div class="founder-spread">
+        <figure class="founder-photo">
+          <img src="assets/founder-linyiying.jpg" alt="林依瑩 創辦人">
+          <div class="stamp">創辦人 · Founder</div>
+        </figure>
+
+        <div class="founder-text">
+          <div class="role">Profile · 創辦人專訪</div>
+          <h3>林依瑩</h3>
+          <div class="name-latin">Lin Yi-Ying</div>
+
+          <div class="titles">
+            <span data-i="01">創照服務設計 創辦人</span>
+            <span data-i="02">前台中市副市長</span>
+            <span data-i="03">不老騎士推手・伯拉罕共生照顧勞動合作社發起人</span>
+          </div>
+
+          <p class="quote">
+            <span class="em">「照顧不該是負擔，而是一份榮耀。」</span>
+            從不老騎士到伯拉罕，從副市長辦公室回到部落的廚房——
+            <span class="it">她相信，最好的照顧政策，永遠長在最深的鄰里裡。</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Family array -->
+      <div class="family-head">
+        <h3>家族陣列 <span class="it">— The Family of Six</span></h3>
+        <span class="label">Six entities · One family</span>
+      </div>
+
+      <div class="family-grid">
+
+        <article class="family-card">
+          <span class="idx">№ 01</span>
+          <h4>創照服務設計 <span class="it">Care For Taiwan</span></h4>
+          <p>家族的設計與品牌中樞，把每一個現場的學習，轉化成可以被複製的照顧服務模型。</p>
+          <span class="tag">Design Studio <span class="arr">→</span></span>
+        </article>
+
+        <article class="family-card">
+          <span class="idx">№ 02</span>
+          <h4>伯拉罕 <span class="it">Plahan</span></h4>
+          <p>從泰雅部落出發的共生照顧勞動合作社，是創照所有實踐的火塘與源頭。</p>
+          <span class="tag">Cooperative <span class="arr">→</span></span>
+        </article>
+
+        <article class="family-card">
+          <span class="idx">№ 03</span>
+          <h4>鄰里123 <span class="it">Neighborhood 123</span></h4>
+          <p>把鄰里串成照顧網的草根行動——從街口的小店、廟埕的長板凳開始。</p>
+          <span class="tag">Community <span class="arr">→</span></span>
+        </article>
+
+        <article class="family-card">
+          <span class="idx">№ 04</span>
+          <h4>CFT 顧問 <span class="it">Consulting</span></h4>
+          <p>把累積十年的部落智慧與長照經驗，提供給願意改變的縣市與機構。</p>
+          <span class="tag">Consulting <span class="arr">→</span></span>
+        </article>
+
+        <article class="family-card">
+          <span class="idx">№ 05</span>
+          <h4>杜格納 <span class="it">DUgna</span></h4>
+          <p>食農、共餐與在地物產的延伸——讓長輩的飯桌，重新與這片土地的節氣有關。</p>
+          <span class="tag">Food & Land <span class="arr">→</span></span>
+        </article>
+
+        <article class="family-card">
+          <span class="idx">№ 06</span>
+          <h4>Connect 10 <span class="it">— C10</span></h4>
+          <p>把十個世代、十個族群、十種語言連起來的下一個十年計劃。</p>
+          <span class="tag">Future <span class="arr">→</span></span>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Band -->
+  <section class="cta-band" id="contact" data-screen-label="07 Contact">
+    <div class="wrap">
+      <div class="cta-grid">
+        <div>
+          <div class="kicker">Chapter IV — Get in Touch</div>
+          <h2>如果你也相信，<br>照顧可以<span class="it">重新被設計</span>——<br>請寫信給我們。</h2>
+          <p class="deck">不論你是地方政府、企業夥伴、家屬，或只是想多了解一些的鄰居，創照都願意陪你坐下來，泡一壺茶，慢慢說。</p>
+        </div>
+
+        <aside class="cta-side">
+          <div class="row">
+            <span class="l">Email</span>
+            <span class="v latin">info@carefortaiwan.com.tw</span>
+          </div>
+          <div class="row">
+            <span class="l">合作洽詢</span>
+            <span class="v latin">partner@carefortaiwan.com.tw</span>
+          </div>
+          <div class="row">
+            <span class="l">媒體聯絡</span>
+            <span class="v latin">press@carefortaiwan.com.tw</span>
+          </div>
+          <div class="row">
+            <span class="l">Office</span>
+            <span class="v">台北・文山</span>
+          </div>
+          <a class="btn btn-ochre" href="mailto:info@carefortaiwan.com.tw">
+            聯繫創照
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer data-screen-label="08 Footer">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <img class="brand-wordmark" src="assets/logo-wordmark.png" alt="創照服務設計">
+          <p>Care For Taiwan Co., Ltd.<br><span class="it">把照顧重新還回人、家、與在地文化。</span></p>
+        </div>
+
+        <div class="foot-col">
+          <h5>家族陣列 · Family</h5>
+          <ul>
+            <li><a href="#">創照服務設計</a><span class="latin">CFT</span></li>
+            <li><a href="#">伯拉罕</a><span class="latin">Plahan</span></li>
+            <li><a href="#">鄰里 123</a><span class="latin">N123</span></li>
+            <li><a href="#">CFT 顧問</a><span class="latin">Consulting</span></li>
+            <li><a href="#">杜格納</a><span class="latin">DUgna</span></li>
+            <li><a href="#">Connect 10</a><span class="latin">C10</span></li>
+          </ul>
+        </div>
+
+        <div class="foot-col">
+          <h5>聯繫 · Contact</h5>
+          <ul>
+            <li><a href="mailto:info@carefortaiwan.com.tw">一般洽詢</a><span class="latin">info@</span></li>
+            <li><a href="mailto:partner@carefortaiwan.com.tw">合作夥伴</a><span class="latin">partner@</span></li>
+            <li><a href="mailto:press@carefortaiwan.com.tw">媒體聯絡</a><span class="latin">press@</span></li>
+            <li><a href="mailto:join@carefortaiwan.com.tw">加入我們</a><span class="latin">join@</span></li>
+            <li><span>台北・文山</span><span class="latin">HQ</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="foot-bottom">
+        <span>© 2026 Care For Taiwan Co., Ltd. · 創照服務設計</span>
+        <span class="it">— Folded by hand, mended by neighbours.</span>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>
