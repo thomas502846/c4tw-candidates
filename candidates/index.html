@@ -89,12 +89,9 @@
   .card__hero {
     aspect-ratio: 16 / 10;
     background-size: cover;
-    background-position: center;
+    background-position: top center;
+    background-color: var(--hairline);
     position: relative;
-  }
-  .card__overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.45) 100%);
   }
   .card__label {
     position: absolute; top: 16px; left: 16px;
@@ -117,9 +114,7 @@
     border: 2px solid #fff;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   }
-  .card__body {
-    padding: 24px 24px 28px;
-  }
+  .card__body { padding: 24px 24px 28px; }
   .card__name {
     font-family: var(--serif);
     font-size: 24px;
@@ -134,16 +129,8 @@
     color: var(--muted);
     margin-bottom: 16px;
   }
-  .card__desc {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--body);
-    margin-bottom: 20px;
-  }
-  .card__tags {
-    display: flex; flex-wrap: wrap; gap: 6px;
-    margin-bottom: 20px;
-  }
+  .card__desc { font-size: 14px; line-height: 1.6; color: var(--body); margin-bottom: 20px; }
+  .card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
   .tag {
     font-family: var(--latin);
     font-size: 10px;
@@ -153,6 +140,7 @@
     border: 1px solid var(--hairline);
     color: var(--body);
   }
+  .tag--featured { background: var(--ink); color: #fff; border-color: var(--ink); }
   .card__cta {
     font-family: var(--sans);
     font-size: 14px;
@@ -207,14 +195,14 @@
   <div class="eyebrow">Care For Taiwan · 創照官網 CI 提案</div>
   <h1>5 個方向，<br>看完一起選一個。</h1>
   <p class="lead">
-    每個候選都套同一份內容、同一支導覽列（使命願景／實踐方式／認識團隊／急重症長者整合照顧計劃），
-    差別在配色與視覺氣質。手刻 3 版（P3 苔銅／P1 藍染／P2 鋼朱），
-    另兩版由 Claude Design 在我們的設計系統上自由發揮。
+    每個候選都套同一份內容、同一支客戶 navbar（使命願景／實踐方式／認識團隊／New! 急重症長者整合照顧計劃），
+    差別在配色與視覺氣質。手刻 3 版（P3 苔銅／P1 藍染／P2 鋼朱）；
+    另兩版由 Claude Design 在我們的設計系統上自由詮釋。
   </p>
   <div class="meta">
     <div><strong>客戶：</strong>創照服務設計｜鄰里123 共生協會</div>
-    <div><strong>準備者：</strong>Thomas</div>
-    <div><strong>產出時間：</strong>2026-05-18</div>
+    <div><strong>準備：</strong>Thomas</div>
+    <div><strong>產出：</strong>2026-05-18</div>
     <div><strong>方法：</strong>手刻 + Claude Design</div>
   </div>
 </header>
@@ -223,8 +211,7 @@
   <div class="grid">
 
     <a class="card" href="p3/">
-      <div class="card__hero" style="background-image: url('../assets/photos/fb-wenshan/1200x540_16e68f8d04.jpg');">
-        <div class="card__overlay"></div>
+      <div class="card__hero" style="background-image: url('p3/preview.png');">
         <span class="card__label">P3 · Moss + Copper</span>
         <div class="card__palette">
           <span class="swatch" style="background:#2F4A3E"></span>
@@ -235,10 +222,10 @@
       </div>
       <div class="card__body">
         <div class="card__name">苔銅 — 森林靜定</div>
-        <div class="card__sub">Forest Moss + Aged Copper</div>
+        <div class="card__sub">Forest Moss + Aged Copper · 手刻</div>
         <p class="card__desc">最近醫療專業氣質的選項。深苔綠當主色、銅色 accent、奶油底。穩重、可信、有重量。</p>
         <div class="card__tags">
-          <span class="tag">推薦首選</span>
+          <span class="tag tag--featured">推薦首選</span>
           <span class="tag">醫療專業</span>
           <span class="tag">編輯感</span>
         </div>
@@ -246,9 +233,30 @@
       </div>
     </a>
 
+    <a class="card" href="cd1/">
+      <div class="card__hero" style="background-image: url('cd1/preview.png');">
+        <span class="card__label">CD1 · Claude Design</span>
+        <div class="card__palette">
+          <span class="swatch" style="background:#2F4A3E"></span>
+          <span class="swatch" style="background:#B5743A"></span>
+          <span class="swatch" style="background:#D4DF60"></span>
+          <span class="swatch" style="background:#F8F2E4"></span>
+        </div>
+      </div>
+      <div class="card__body">
+        <div class="card__name">Claude Design · 苔銅版</div>
+        <div class="card__sub">AI Free Interpretation #1 · P3 palette</div>
+        <p class="card__desc">同一份 brief + 同樣的客戶 navbar，由 Claude Design 詮釋的版本。比較看看 AI 對「documentary respect for elders」這個 voice 怎麼讀。</p>
+        <div class="card__tags">
+          <span class="tag">AI 詮釋</span>
+          <span class="tag">同 P3 配色</span>
+        </div>
+        <span class="card__cta">打開 CD1 →</span>
+      </div>
+    </a>
+
     <a class="card" href="p1/">
-      <div class="card__hero" style="background-image: url('../assets/photos/fb-plahan/1707x960_9c561787a9.jpg');">
-        <div class="card__overlay"></div>
+      <div class="card__hero" style="background-image: url('p1/preview.png');">
         <span class="card__label">P1 · Indigo + Ochre</span>
         <div class="card__palette">
           <span class="swatch" style="background:#1F3C5C"></span>
@@ -259,20 +267,34 @@
       </div>
       <div class="card__body">
         <div class="card__name">藍染 — 台灣文化深度</div>
-        <div class="card__sub">Taiwan Indigo + Mountain Ochre</div>
+        <div class="card__sub">Taiwan Indigo + Mountain Ochre · 手刻</div>
         <p class="card__desc">最接近台灣傳統染藝氣質。深藍當主色、土黃 accent、宣紙底。文化感重、適合說故事。</p>
         <div class="card__tags">
           <span class="tag">文化氣質</span>
           <span class="tag">敘事優先</span>
-          <span class="tag">第二推薦</span>
         </div>
         <span class="card__cta">打開 P1 →</span>
       </div>
     </a>
 
+    <a class="card card--placeholder" id="cd2-card" href="cd2/">
+      <div class="card__hero">
+        <span class="card__label">CD2 · Claude Design</span>
+      </div>
+      <div class="card__body">
+        <div class="card__name">Claude Design · 藍染版</div>
+        <div class="card__sub">AI Free Interpretation #2 · P1 palette + magazine register</div>
+        <p class="card__desc">Claude Design 詮釋的第二版本，改換 P1 藍染配色 + magazine-spread 編輯氣質。目前還在建立中。</p>
+        <div class="card__tags">
+          <span class="tag">AI 詮釋</span>
+          <span class="tag">藍染配色</span>
+        </div>
+        <span class="card__cta card__cta--coming">建立中⋯</span>
+      </div>
+    </a>
+
     <a class="card" href="p2/">
-      <div class="card__hero" style="background-image: url('../assets/photos/fb-together/417x590_3ab5bb4e06.jpg');">
-        <div class="card__overlay"></div>
+      <div class="card__hero" style="background-image: url('p2/preview.png');">
         <span class="card__label">P2 · Steel + Vermilion</span>
         <div class="card__palette">
           <span class="swatch" style="background:#2B4D5F"></span>
@@ -283,8 +305,8 @@
       </div>
       <div class="card__body">
         <div class="card__name">鋼朱 — NGO 行動感</div>
-        <div class="card__sub">Steel Blue + Vermilion</div>
-        <p class="card__desc">最有 communicative 行動感。鋼青當主色、朱紅 accent、灰白底。NGO 氣質強，緊迫感重。</p>
+        <div class="card__sub">Steel Blue + Vermilion · 手刻 · 對照組</div>
+        <p class="card__desc">最有 communicative 行動感。鋼青當主色、朱紅 accent、灰白底。NGO 氣質強，緊迫感重。給客戶當對照組。</p>
         <div class="card__tags">
           <span class="tag">行動主義</span>
           <span class="tag">緊迫感</span>
@@ -294,44 +316,12 @@
       </div>
     </a>
 
-    <a class="card card--placeholder" id="cd1-card" href="cd1/">
-      <div class="card__hero">
-        <span class="card__label">CD1 · Claude Design</span>
-      </div>
-      <div class="card__body">
-        <div class="card__name">Claude Design A</div>
-        <div class="card__sub">AI Free Interpretation #1</div>
-        <p class="card__desc">餵 v16 設計系統 + 既有照片給 claude.ai/design，看它怎麼詮釋我們的 brief。</p>
-        <div class="card__tags">
-          <span class="tag">AI 詮釋</span>
-          <span class="tag">對照組</span>
-        </div>
-        <span class="card__cta card__cta--coming">建立中⋯</span>
-      </div>
-    </a>
-
-    <a class="card card--placeholder" id="cd2-card" href="cd2/">
-      <div class="card__hero">
-        <span class="card__label">CD2 · Claude Design</span>
-      </div>
-      <div class="card__body">
-        <div class="card__name">Claude Design B</div>
-        <div class="card__sub">AI Free Interpretation #2</div>
-        <p class="card__desc">第二個 AI 自由發揮版本，另一個視覺氣質方向。</p>
-        <div class="card__tags">
-          <span class="tag">AI 詮釋</span>
-          <span class="tag">對照組</span>
-        </div>
-        <span class="card__cta card__cta--coming">建立中⋯</span>
-      </div>
-    </a>
-
   </div>
 </main>
 
 <footer>
   <div>© 2026 創照服務設計｜CI 候選方案比較</div>
-  <div>準備：Thomas · 2026-05-18</div>
+  <div>準備：Thomas · 2026-05-18 · <a href="https://github.com/thomas502846/c4tw-candidates">GitHub</a></div>
 </footer>
 
 </body>
