@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>創照服務設計 · 5 候選方案比較</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4EFE3;
+    --ink: #1F2A26;
+    --body: #4A5650;
+    --muted: #8B948E;
+    --hairline: #D9CFB5;
+    --serif: "Noto Serif TC", "Source Han Serif TC", serif;
+    --sans:  "Noto Sans TC", "Source Han Sans TC", system-ui, sans-serif;
+    --latin: "Outfit", system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; margin: 0; }
+
+  header.page {
+    padding: 96px 80px 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    font-family: var(--latin);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: clamp(36px, 4.4vw, 56px);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .lead {
+    font-size: 19px;
+    line-height: 1.7;
+    color: var(--body);
+    max-width: 720px;
+    margin-bottom: 32px;
+  }
+  .meta {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    font-size: 13px; color: var(--muted);
+    letter-spacing: 0.04em;
+    padding-top: 16px;
+    border-top: 1px solid var(--hairline);
+  }
+  .meta strong { color: var(--ink); font-weight: 500; }
+
+  main {
+    padding: 48px 80px 96px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 32px;
+  }
+  .card {
+    background: #fff;
+    display: flex; flex-direction: column;
+    border: 1px solid var(--hairline);
+    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), border-color 250ms;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--ink);
+  }
+  .card__hero {
+    aspect-ratio: 16 / 10;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .card__overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.45) 100%);
+  }
+  .card__label {
+    position: absolute; top: 16px; left: 16px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    padding: 6px 12px;
+    font-family: var(--latin);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .card__palette {
+    position: absolute; bottom: 16px; left: 16px;
+    display: flex; gap: 6px;
+  }
+  .swatch {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .card__body {
+    padding: 24px 24px 28px;
+  }
+  .card__name {
+    font-family: var(--serif);
+    font-size: 24px;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+  .card__sub {
+    font-family: var(--latin);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .card__desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--body);
+    margin-bottom: 20px;
+  }
+  .card__tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 20px;
+  }
+  .tag {
+    font-family: var(--latin);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border: 1px solid var(--hairline);
+    color: var(--body);
+  }
+  .card__cta {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 20px;
+    background: var(--ink);
+    color: var(--bg);
+    align-self: flex-start;
+    border-radius: 2px;
+    transition: background 250ms;
+  }
+  .card__cta:hover { background: #000; }
+  .card__cta--coming {
+    background: transparent;
+    color: var(--muted);
+    border: 1px dashed var(--hairline);
+  }
+  .card__cta--coming:hover { background: transparent; color: var(--muted); }
+
+  .card--placeholder .card__hero {
+    background: linear-gradient(135deg, #E8E2D0, #F4EFE3);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card--placeholder .card__hero::after {
+    content: "Claude Design — building…";
+    font-family: var(--latin);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  footer {
+    border-top: 1px solid var(--hairline);
+    margin-top: 80px;
+    padding: 32px 80px;
+    max-width: 1280px;
+    margin-left: auto; margin-right: auto;
+    color: var(--muted);
+    font-size: 13px;
+    display: flex; justify-content: space-between; flex-wrap: wrap;
+    gap: 12px;
+  }
+  @media (max-width: 700px) {
+    header.page, main, footer { padding-left: 24px; padding-right: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page">
+  <div class="eyebrow">Care For Taiwan · 創照官網 CI 提案</div>
+  <h1>5 個方向，<br>看完一起選一個。</h1>
+  <p class="lead">
+    每個候選都套同一份內容、同一支導覽列（使命願景／實踐方式／認識團隊／急重症長者整合照顧計劃），
+    差別在配色與視覺氣質。手刻 3 版（P3 苔銅／P1 藍染／P2 鋼朱），
+    另兩版由 Claude Design 在我們的設計系統上自由發揮。
+  </p>
+  <div class="meta">
+    <div><strong>客戶：</strong>創照服務設計｜鄰里123 共生協會</div>
+    <div><strong>準備者：</strong>Thomas</div>
+    <div><strong>產出時間：</strong>2026-05-18</div>
+    <div><strong>方法：</strong>手刻 + Claude Design</div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <a class="card" href="p3/">
+      <div class="card__hero" style="background-image: url('../assets/photos/fb-wenshan/1200x540_16e68f8d04.jpg');">
+        <div class="card__overlay"></div>
+        <span class="card__label">P3 · Moss + Copper</span>
+        <div class="card__palette">
+          <span class="swatch" style="background:#2F4A3E"></span>
+          <span class="swatch" style="background:#B5743A"></span>
+          <span class="swatch" style="background:#D4DF60"></span>
+          <span class="swatch" style="background:#F8F2E4"></span>
+        </div>
+      </div>
+      <div class="card__body">
+        <div class="card__name">苔銅 — 森林靜定</div>
+        <div class="card__sub">Forest Moss + Aged Copper</div>
+        <p class="card__desc">最近醫療專業氣質的選項。深苔綠當主色、銅色 accent、奶油底。穩重、可信、有重量。</p>
+        <div class="card__tags">
+          <span class="tag">推薦首選</span>
+          <span class="tag">醫療專業</span>
+          <span class="tag">編輯感</span>
+        </div>
+        <span class="card__cta">打開 P3 →</span>
+      </div>
+    </a>
+
+    <a class="card" href="p1/">
+      <div class="card__hero" style="background-image: url('../assets/photos/fb-plahan/1707x960_9c561787a9.jpg');">
+        <div class="card__overlay"></div>
+        <span class="card__label">P1 · Indigo + Ochre</span>
+        <div class="card__palette">
+          <span class="swatch" style="background:#1F3C5C"></span>
+          <span class="swatch" style="background:#D4A04A"></span>
+          <span class="swatch" style="background:#E8C766"></span>
+          <span class="swatch" style="background:#ECE3D0"></span>
+        </div>
+      </div>
+      <div class="card__body">
+        <div class="card__name">藍染 — 台灣文化深度</div>
+        <div class="card__sub">Taiwan Indigo + Mountain Ochre</div>
+        <p class="card__desc">最接近台灣傳統染藝氣質。深藍當主色、土黃 accent、宣紙底。文化感重、適合說故事。</p>
+        <div class="card__tags">
+          <span class="tag">文化氣質</span>
+          <span class="tag">敘事優先</span>
+          <span class="tag">第二推薦</span>
+        </div>
+        <span class="card__cta">打開 P1 →</span>
+      </div>
+    </a>
+
+    <a class="card" href="p2/">
+      <div class="card__hero" style="background-image: url('../assets/photos/fb-together/417x590_3ab5bb4e06.jpg');">
+        <div class="card__overlay"></div>
+        <span class="card__label">P2 · Steel + Vermilion</span>
+        <div class="card__palette">
+          <span class="swatch" style="background:#2B4D5F"></span>
+          <span class="swatch" style="background:#C8412D"></span>
+          <span class="swatch" style="background:#E8C84A"></span>
+          <span class="swatch" style="background:#EFEDE6"></span>
+        </div>
+      </div>
+      <div class="card__body">
+        <div class="card__name">鋼朱 — NGO 行動感</div>
+        <div class="card__sub">Steel Blue + Vermilion</div>
+        <p class="card__desc">最有 communicative 行動感。鋼青當主色、朱紅 accent、灰白底。NGO 氣質強，緊迫感重。</p>
+        <div class="card__tags">
+          <span class="tag">行動主義</span>
+          <span class="tag">緊迫感</span>
+          <span class="tag">對照組</span>
+        </div>
+        <span class="card__cta">打開 P2 →</span>
+      </div>
+    </a>
+
+    <a class="card card--placeholder" id="cd1-card" href="cd1/">
+      <div class="card__hero">
+        <span class="card__label">CD1 · Claude Design</span>
+      </div>
+      <div class="card__body">
+        <div class="card__name">Claude Design A</div>
+        <div class="card__sub">AI Free Interpretation #1</div>
+        <p class="card__desc">餵 v16 設計系統 + 既有照片給 claude.ai/design，看它怎麼詮釋我們的 brief。</p>
+        <div class="card__tags">
+          <span class="tag">AI 詮釋</span>
+          <span class="tag">對照組</span>
+        </div>
+        <span class="card__cta card__cta--coming">建立中⋯</span>
+      </div>
+    </a>
+
+    <a class="card card--placeholder" id="cd2-card" href="cd2/">
+      <div class="card__hero">
+        <span class="card__label">CD2 · Claude Design</span>
+      </div>
+      <div class="card__body">
+        <div class="card__name">Claude Design B</div>
+        <div class="card__sub">AI Free Interpretation #2</div>
+        <p class="card__desc">第二個 AI 自由發揮版本，另一個視覺氣質方向。</p>
+        <div class="card__tags">
+          <span class="tag">AI 詮釋</span>
+          <span class="tag">對照組</span>
+        </div>
+        <span class="card__cta card__cta--coming">建立中⋯</span>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  <div>© 2026 創照服務設計｜CI 候選方案比較</div>
+  <div>準備：Thomas · 2026-05-18</div>
+</footer>
+
+</body>
+</html>

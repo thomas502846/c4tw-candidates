@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>創照服務設計 · P1 藍染</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:          #ECE3D0;
+    --bg-pure:     #FFFFFF;
+    --bg-deep:     #DBCFA9;
+    --bg-ink:      #0E1A2E;
+
+    --moss:        #1F3C5C;
+    --moss-deep:   #102744;
+    --moss-light:  #6B8AAE;
+    --sage-logo:   #7A9B8A;
+
+    --copper:      #D4A04A;
+    --copper-deep: #B68132;
+
+    --highlight:   #E8C766;
+    --highlight-ink:#102744;
+
+    --text:        #1B2436;
+    --text-body:   #4F5868;
+    --text-muted:  #909AAD;
+    --text-on-dark:#ECE3D0;
+
+    --hairline:    #C9BB99;
+
+    --font-display:      "Noto Serif TC", "Source Han Serif TC", "PingFang TC", serif;
+    --font-body:         "Noto Sans TC", "Source Han Sans TC", "PingFang TC", system-ui, sans-serif;
+    --font-latin-display:"Cormorant Garamond", "Noto Serif TC", serif;
+    --font-brand-latin:  "Outfit", "HGPGothicE", "Noto Sans TC", sans-serif;
+
+    --max-page:    1280px;
+    --max-reading:  720px;
+    --gutter-d:     80px;
+    --gutter-m:     24px;
+
+    --space-2: 16px; --space-3: 24px; --space-4: 32px;
+    --space-5: 48px; --space-6: 64px; --space-7: 96px;
+    --space-8: 128px;
+
+    --d-state: 250ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; text-wrap: pretty; margin: 0; color: var(--text); }
+  p { margin: 0; text-wrap: pretty; }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; height: auto; }
+
+  /* ─── NAV ─── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    height: 76px;
+    background: rgba(236, 227, 208, 0.92);
+    backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid transparent;
+    display: flex; align-items: center;
+    padding: 0 var(--gutter-d);
+    transition: border-color var(--d-state) var(--ease-out);
+  }
+  .nav.is-scrolled { border-bottom-color: var(--hairline); }
+  .nav__logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav__logo img { height: 36px; width: auto; display: block; }
+  .nav__logo__en {
+    display: block;
+    font-family: var(--font-brand-latin);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sage-logo);
+    font-weight: 500;
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+  .nav__spacer { flex: 1; }
+  .nav__links {
+    display: flex; gap: var(--space-4); align-items: center;
+    font-family: var(--font-display);
+    font-size: 15px;
+  }
+  .nav__link {
+    color: var(--text);
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+    transition: color var(--d-state), border-color var(--d-state);
+  }
+  .nav__link:hover { color: var(--moss); border-bottom-color: var(--moss); }
+  .nav__link.active { border-bottom-color: var(--moss); color: var(--moss); }
+  .nav__cta {
+    background: var(--highlight);
+    color: var(--highlight-ink);
+    padding: 10px 16px;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--highlight);
+    transition: background var(--d-state), border-color var(--d-state);
+  }
+  .nav__cta:hover { background: var(--moss); color: var(--highlight); border-color: var(--moss); }
+  .nav__cta__badge {
+    display: inline-block;
+    background: var(--moss);
+    color: var(--highlight);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    padding: 2px 6px;
+    border-radius: 1px;
+    margin-right: 6px;
+    vertical-align: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    height: 80vh;
+    min-height: 600px;
+    max-height: 820px;
+    overflow: hidden;
+  }
+  .hero__photo {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+  }
+  .hero__veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(14, 26, 46, 0.35) 0%, rgba(14, 26, 46, 0.10) 35%, rgba(14, 26, 46, 0.55) 100%);
+  }
+  .hero__inner {
+    position: relative; height: 100%;
+    max-width: var(--max-page);
+    margin: 0 auto;
+    padding: 0 var(--gutter-d) var(--space-8);
+    display: flex; align-items: flex-end;
+  }
+  .hero__block { max-width: 720px; }
+  .hero__eyebrow {
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--copper);
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+  }
+  .hero__title {
+    font-size: clamp(36px, 5.6vw, 72px);
+    line-height: 1.12;
+    color: var(--text-on-dark);
+    font-weight: 400;
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.01em;
+  }
+  .hero__title em { font-style: normal; color: var(--copper); font-family: var(--font-latin-display); }
+  .hero__lead {
+    font-size: 19px;
+    line-height: 1.65;
+    color: rgba(236, 227, 208, 0.92);
+    max-width: 560px;
+    margin-bottom: var(--space-4);
+  }
+  .hero__actions { display: flex; gap: 16px; align-items: center; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background var(--d-state), color var(--d-state), border-color var(--d-state);
+    border: 1px solid transparent;
+  }
+  .btn--primary { background: var(--copper); color: var(--bg); border-color: var(--copper); }
+  .btn--primary:hover { background: var(--copper-deep); border-color: var(--copper-deep); }
+  .btn--ghost { background: transparent; color: var(--text-on-dark); border-color: rgba(236, 227, 208, 0.7); }
+  .btn--ghost:hover { background: var(--text-on-dark); color: var(--moss-deep); border-color: var(--text-on-dark); }
+  .btn--ghost-dark { background: transparent; color: var(--text); border-color: var(--text); }
+  .btn--ghost-dark:hover { background: var(--text); color: var(--bg); }
+  .btn--copper-on-dark { background: var(--copper); color: var(--bg); border-color: var(--copper); }
+  .btn--copper-on-dark:hover { background: var(--copper-deep); border-color: var(--copper-deep); }
+  .btn__arrow { font-family: var(--font-latin-display); }
+
+  .hero__caption {
+    position: absolute; right: var(--gutter-d); bottom: var(--space-5);
+    font-size: 12px; color: rgba(236, 227, 208, 0.65);
+    font-style: italic; letter-spacing: 0.04em;
+  }
+
+  /* ─── SECTION SCAFFOLD ─── */
+  section { padding: var(--space-8) var(--gutter-d); }
+  .container { max-width: var(--max-page); margin: 0 auto; }
+  .container--narrow { max-width: var(--max-reading); margin: 0 auto; }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--moss);
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+  }
+  .h-section {
+    font-size: clamp(28px, 3.4vw, 40px);
+    line-height: 1.2;
+    margin-bottom: var(--space-4);
+  }
+
+  /* ─── 使命願景 (mission) ─── */
+  .mission {
+    background: var(--bg-deep);
+    padding-block: var(--space-8);
+    position: relative;
+  }
+  .mission::before {
+    content: "";
+    position: absolute; left: 50%; top: 0;
+    transform: translateX(-50%);
+    width: 64px; height: 1px;
+    background: var(--copper);
+  }
+  .mission__inner { text-align: left; max-width: 880px; margin: 0 auto; }
+  .mission__quote {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.7;
+    color: var(--text);
+    font-weight: 400;
+    text-wrap: pretty;
+  }
+  .mission__quote .pull { color: var(--moss); font-weight: 500; }
+  .mission__attr {
+    margin-top: var(--space-4);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ─── 實踐方式 (movement / 共生之家) ─── */
+  .movement { background: var(--bg); }
+  .movement__head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    align-items: end;
+    margin-bottom: var(--space-6);
+  }
+  .movement__lead {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--text-body);
+    max-width: 440px;
+  }
+  .movement__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+  .home-card {
+    background: var(--bg-pure);
+    display: flex; flex-direction: column;
+  }
+  .home-card__photo {
+    aspect-ratio: 4 / 3;
+    background: var(--bg-deep) center/cover no-repeat;
+    margin-bottom: var(--space-3);
+  }
+  .home-card__body { padding: 0 var(--space-3) var(--space-4); }
+  .home-card__loc {
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin-bottom: 8px;
+  }
+  .home-card__title { font-size: 22px; line-height: 1.3; margin-bottom: 8px; }
+  .home-card__op { font-size: 13px; color: var(--text-muted); margin-bottom: var(--space-3); }
+  .home-card__detail { font-size: 15px; line-height: 1.65; color: var(--text-body); }
+
+  /* ─── 急重症長者整合照顧計劃 (program) ─── */
+  .program {
+    background: var(--moss-deep);
+    color: var(--text-on-dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .program__inner {
+    max-width: var(--max-page);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+    align-items: center;
+  }
+  .program__badge {
+    display: inline-block;
+    background: var(--highlight);
+    color: var(--highlight-ink);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 1px;
+    margin-bottom: var(--space-3);
+    font-weight: 500;
+  }
+  .program__title {
+    color: var(--text-on-dark);
+    font-size: clamp(32px, 3.6vw, 46px);
+    line-height: 1.18;
+    margin-bottom: var(--space-3);
+  }
+  .program__lead {
+    font-size: 18px;
+    line-height: 1.7;
+    color: rgba(236, 227, 208, 0.85);
+    margin-bottom: var(--space-4);
+  }
+  .program__list { list-style: none; padding: 0; margin: 0 0 var(--space-5); }
+  .program__list li {
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(236, 227, 208, 0.92);
+    padding-left: var(--space-3);
+    border-left: 2px solid var(--highlight);
+    margin-bottom: 12px;
+  }
+  .program__list li strong { color: var(--highlight); font-weight: 500; letter-spacing: 0.02em; }
+  .program__visual {
+    aspect-ratio: 4 / 5;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(232, 199, 102, 0.2);
+  }
+
+  /* ─── 認識團隊 (team / 創辦人 + 家族) ─── */
+  .team {
+    background: var(--bg-deep);
+    padding-block: var(--space-8);
+  }
+  .team__head {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto var(--space-7);
+  }
+  .team__head .eyebrow { display: block; }
+
+  .founder__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-7);
+    align-items: center;
+    max-width: var(--max-page);
+    margin: 0 auto var(--space-8);
+  }
+  .founder__photo {
+    aspect-ratio: 4 / 5;
+    background-size: cover;
+    background-position: center;
+  }
+  .founder__quote {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.2vw, 28px);
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: var(--space-4);
+  }
+  .founder__attr {
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+  .founder__attr strong { color: var(--text); font-weight: 500; letter-spacing: 0.1em; }
+
+  .family__row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+  .family-card {
+    background: var(--bg);
+    border-top: 2px solid var(--moss);
+    padding: var(--space-5) var(--space-4) var(--space-4);
+  }
+  .family-card__no {
+    font-family: var(--font-latin-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--copper);
+    margin-bottom: 12px;
+  }
+  .family-card__name { font-size: 24px; line-height: 1.3; margin-bottom: 4px; }
+  .family-card__role {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-3);
+  }
+  .family-card__copy { font-size: 15px; line-height: 1.7; color: var(--text-body); }
+
+  /* ─── CTA strip ─── */
+  .cta {
+    background: var(--moss);
+    color: var(--text-on-dark);
+    padding-block: var(--space-7);
+  }
+  .cta__grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-5);
+    align-items: center;
+    max-width: var(--max-page);
+    margin: 0 auto;
+  }
+  .cta__title { font-size: clamp(24px, 2.6vw, 32px); line-height: 1.35; color: var(--text-on-dark); }
+  .cta__sub { margin-top: 12px; font-size: 15px; color: rgba(236, 227, 208, 0.7); }
+
+  /* ─── Footer ─── */
+  .footer {
+    background: var(--bg-deep);
+    padding: var(--space-7) var(--gutter-d) var(--space-5);
+    color: var(--text-body);
+    font-size: 14px;
+  }
+  .footer__inner {
+    max-width: var(--max-page);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: var(--space-5);
+  }
+  .footer__brand img { height: 48px; width: auto; margin-bottom: 10px; display: block; }
+  .footer__brand .en {
+    font-family: var(--font-brand-latin);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sage-logo);
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+  }
+  .footer__brand .tag { margin-top: 6px; font-size: 13px; color: var(--text-muted); line-height: 1.6; max-width: 320px; }
+  .footer__col h4 {
+    font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--moss); margin-bottom: var(--space-3); font-family: var(--font-body); font-weight: 500;
+  }
+  .footer__col ul { list-style: none; padding: 0; margin: 0; }
+  .footer__col li { margin-bottom: 10px; }
+  .footer__col a:hover { color: var(--copper); }
+  .footer__base {
+    max-width: var(--max-page); margin: var(--space-5) auto 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--hairline);
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── PALETTE BADGE ─── */
+  .palette-badge {
+    position: fixed; right: 24px; bottom: 24px;
+    z-index: 100;
+    background: var(--bg-ink);
+    color: var(--text-on-dark);
+    padding: 10px 14px;
+    border-radius: 2px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 16px rgba(16, 39, 68, 0.25);
+  }
+  .palette-badge .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin-right: 6px; }
+
+  @media (max-width: 900px) {
+    section { padding: var(--space-7) var(--gutter-m); }
+    .nav { padding: 0 var(--gutter-m); }
+    .nav__links { display: none; }
+    .hero__inner { padding: 0 var(--gutter-m) var(--space-7); }
+    .movement__head { grid-template-columns: 1fr; gap: var(--space-3); }
+    .movement__grid { grid-template-columns: 1fr; }
+    .program__inner { grid-template-columns: 1fr; }
+    .founder__grid { grid-template-columns: 1fr; gap: var(--space-5); }
+    .family__row { grid-template-columns: 1fr; }
+    .cta__grid { grid-template-columns: 1fr; }
+    .footer__inner { grid-template-columns: 1fr; gap: var(--space-4); }
+    .footer__base { flex-direction: column; gap: 6px; }
+    .footer { padding: var(--space-6) var(--gutter-m) var(--space-4); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a class="nav__logo" href="./">
+    <img src="../../assets/photos/logo/c4tw-zhtw-transparent.png" alt="創照服務設計">
+    <span class="nav__logo__en">Care For Taiwan Co., Ltd.</span>
+  </a>
+  <span class="nav__spacer"></span>
+  <div class="nav__links">
+    <a class="nav__link active" href="#mission">使命願景</a>
+    <a class="nav__link" href="#movement">實踐方式</a>
+    <a class="nav__link" href="#team">認識團隊</a>
+    <a class="nav__cta" href="#program"><span class="nav__cta__badge">New</span>急重症長者整合照顧計劃</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <img class="hero__photo" src="../../assets/photos/fb-wenshan/1200x540_16e68f8d04.jpg" alt="文山共生之家社區客廳">
+  <div class="hero__veil"></div>
+  <div class="hero__inner">
+    <div class="hero__block">
+      <div class="hero__eyebrow">Care for Taiwan · 創照服務設計</div>
+      <h1 class="hero__title">把照顧重新還回<br>人、家、與在地文化</h1>
+      <p class="hero__lead">
+        一支跨專業團隊、一套 AI 支援系統、一個與在宅醫療接軌的「共生之家」全台運動 ──
+        讓中重症的最後一哩，以及許多被機構難以接住的生命，能在自己的部落與社區，被尊嚴地走完。
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#movement">看見共生之家 <span class="btn__arrow">→</span></a>
+        <a class="btn btn--ghost" href="#team">認識團隊</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero__caption">文山共生之家｜社區大客廳，2024</div>
+</header>
+
+<section class="mission" id="mission">
+  <div class="container container--narrow mission__inner">
+    <div class="eyebrow">使命願景 · Mission</div>
+    <h2 class="h-section">機構之外，還有家</h2>
+    <p class="mission__quote">
+      創照服務設計把照顧重新還回<span class="pull">「人」</span>、還回<span class="pull">「家」</span>、還回<span class="pull">「在地文化」</span>。
+      用一支跨專業團隊、一套 AI 支援系統，與在宅醫療、日本 Home Hospice 國際接軌、
+      跨組織協作的「共生之家」全台運動 ──
+      讓中重症的最後一哩路，以及許多被機構難以接住的生命，
+      也能在自己的部落與社區，被尊嚴地走完。
+    </p>
+    <div class="mission__attr">2026 · 創照家族共同信念</div>
+  </div>
+</section>
+
+<section class="movement" id="movement">
+  <div class="container">
+    <div class="movement__head">
+      <div>
+        <div class="eyebrow">實踐方式 · 共生之家全台 10 處</div>
+        <h2 class="h-section">當鄰里變成<br>一家親</h2>
+      </div>
+      <p class="movement__lead">
+        共生之家不是「一種長照機構」，是各地夥伴用自己的資源、文化與條件，
+        為機構之外的生命打開的家。已知 5 處進入運作：
+      </p>
+    </div>
+
+    <div class="movement__grid">
+
+      <article class="home-card">
+        <div class="home-card__photo" style="background-image: url('../../assets/photos/fb-wenshan/720x540_05a4ced9b4.jpg');"></div>
+        <div class="home-card__body">
+          <div class="home-card__loc">台北 · 文山</div>
+          <h3 class="home-card__title">文山共生之家</h3>
+          <p class="home-card__op">鄰里123共生協會 ╳ 福智慈善基金會</p>
+          <p class="home-card__detail">「社區大客廳」概念 ── 把失能、原住民長者、重度身障接回鄰里。2024 下半年重整屋舍，三個多月後開幕。</p>
+        </div>
+      </article>
+
+      <article class="home-card">
+        <div class="home-card__photo" style="background-image: url('../../assets/photos/fb-plahan/1707x960_9c561787a9.jpg');"></div>
+        <div class="home-card__body">
+          <div class="home-card__loc">台中 · 東勢</div>
+          <h3 class="home-card__title">東勢共生之家</h3>
+          <p class="home-card__op">伯拉罕共生照顧勞動合作社</p>
+          <p class="home-card__detail">已 11 人入住、每週兩天半返家 ── 「集智慧與體恤的新旅居生活型態」，縮短偏鄉部落需就醫長者的長途接送折騰。</p>
+        </div>
+      </article>
+
+      <article class="home-card">
+        <div class="home-card__photo" style="background-image: url('../../assets/photos/fb-together/417x590_3ab5bb4e06.jpg');"></div>
+        <div class="home-card__body">
+          <div class="home-card__loc">南投 · 清流部落</div>
+          <h3 class="home-card__title">清流部落共生之家</h3>
+          <p class="home-card__op">思德磊岸合作社（李玉琴）</p>
+          <p class="home-card__detail">賽德克族德克達雅群、霧社事件遺族部落。把自家開放，欄杆、座椅、毛巾就地取材，化為生活復能的工具。</p>
+        </div>
+      </article>
+
+      <article class="home-card">
+        <div class="home-card__photo" style="background-image: url('../../assets/photos/fb-together/332x590_22686d227e.jpg');"></div>
+        <div class="home-card__body">
+          <div class="home-card__loc">台北 · 南港</div>
+          <h3 class="home-card__title">南港共生之家</h3>
+          <p class="home-card__op">露德協會</p>
+          <p class="home-card__detail">中途之家轉型共生之家。服務藥癮、愛滋病患 ── 機構不適合接住的生命，在社區重新被接住。</p>
+        </div>
+      </article>
+
+      <article class="home-card">
+        <div class="home-card__photo" style="background-image: url('../../assets/photos/fb-cft/443x590_03cb6bded0.jpg');"></div>
+        <div class="home-card__body">
+          <div class="home-card__loc">台東 · 知本</div>
+          <h3 class="home-card__title">知本共生之家</h3>
+          <p class="home-card__op">孩子的書屋文教基金會</p>
+          <p class="home-card__detail">原服務青少年，現延伸至長者。與地區診所合作 ── 就醫接送、長照資源、家屬衛教一條龍。</p>
+        </div>
+      </article>
+
+      <article class="home-card" style="display:flex; align-items:center; justify-content:center; background: transparent; border-top: 1px solid var(--hairline);">
+        <div style="padding: var(--space-4); text-align:center;">
+          <div class="home-card__loc">其他 4 處</div>
+          <h3 class="home-card__title" style="color: var(--text-muted); font-style: italic;">陸續展開中</h3>
+          <p class="home-card__detail" style="margin-top: var(--space-3);">雙崎日照、林口共生社會住宅、以及尚在串連中的據點，等夥伴一起寫下。</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="program" id="program">
+  <div class="program__inner">
+    <div>
+      <span class="program__badge">New · 急重症長者整合照顧計劃</span>
+      <h2 class="program__title">機構接不住的，<br>我們在家接住</h2>
+      <p class="program__lead">
+        中重症、急重症長者不該是「最後送進機構」的選項。
+        創照家族與在宅醫療團隊串連 ── 24 小時居家醫療、跨專業評估、共生之家入住，
+        三層機制接力，把「最後一哩」變成「最熟悉的一哩」。
+      </p>
+      <ul class="program__list">
+        <li><strong>24h 居家醫療接軌</strong> ── 與在宅醫療學會、雲林好所宅、台東都蘭 Home Hospice 整合，醫師到家</li>
+        <li><strong>跨專業共同評估</strong> ── 物理、職能、護理、聽力一次到位，就地取材化為復能工具</li>
+        <li><strong>共生之家承接</strong> ── 文山、東勢、清流、南港 5 處據點，因地制宜接住不同生命狀態</li>
+      </ul>
+      <a class="btn btn--copper-on-dark" href="#contact">了解計劃合作 <span class="btn__arrow">→</span></a>
+    </div>
+    <div class="program__visual" style="background-image: url('../../assets/photos/fb-plahan/443x590_1509160b77.jpg');"></div>
+  </div>
+</section>
+
+<section class="team" id="team">
+  <div class="team__head">
+    <div class="eyebrow">認識團隊 · The Team</div>
+    <h2 class="h-section">不是一個組織，<br>是一支跨專業團隊</h2>
+    <p class="movement__lead" style="margin: 0 auto; max-width: 640px;">
+      創照不是單兵作戰。AIO（All-In-One）家族是 7 個專長互補的成員組織，
+      每一個都在自己的位置上專業頂尖，合在一起才能把照顧做完整。
+    </p>
+  </div>
+
+  <div class="founder__grid">
+    <div class="founder__photo" style="background-image: url('../../assets/photos/portraits/lin-yiying/lin-yiying-warm.jpg');"></div>
+    <div>
+      <div class="eyebrow">創辦人語</div>
+      <h3 class="h-section" style="font-size: clamp(24px, 2.6vw, 32px);">照顧不是一個人<br>單向的付出</h3>
+      <p class="founder__quote">
+        共生之家不是要取代機構，是要把機構接不住、不適合的生命，
+        在社區重新接回來。當鄰里變成一家親，照顧才從責任變成日常。
+      </p>
+      <div class="founder__attr">
+        <strong>林依瑩</strong> · 創照服務設計 創辦人 · 前台中市副市長 · 不老騎士推手
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="family__row">
+
+      <article class="family-card">
+        <div class="family-card__no">01 · Service Hub</div>
+        <h3 class="family-card__name">創照服務設計</h3>
+        <p class="family-card__role">統籌 / 國際接軌 / AI 系統</p>
+        <p class="family-card__copy">家族 hub，連結國際 Home Hospice 經驗、設計 AI 支援系統，把分散的照顧能量整合為跨組織協作。</p>
+      </article>
+
+      <article class="family-card">
+        <div class="family-card__no">02 · Tribal Care</div>
+        <h3 class="family-card__name">伯拉罕</h3>
+        <p class="family-card__role">部落共生照顧合作社</p>
+        <p class="family-card__copy">台中和平區雙崎、東勢據點。「集智慧與體恤的新旅居生活型態」，把長者照顧帶回部落。</p>
+      </article>
+
+      <article class="family-card">
+        <div class="family-card__no">03 · Neighborhood</div>
+        <h3 class="family-card__name">鄰里123</h3>
+        <p class="family-card__role">共生協會</p>
+        <p class="family-card__copy">文山共生之家直接運營者，與福智慈善基金會志工協力 ──「讓鄰里變成一家親」的最前線。</p>
+      </article>
+
+      <article class="family-card">
+        <div class="family-card__no">04 · Caregiver School</div>
+        <h3 class="family-card__name">照顧學校 / CFT</h3>
+        <p class="family-card__role">人才培育</p>
+        <p class="family-card__copy">把照顧從「工作」改寫為「專業」。培訓現場照顧者，從技術到視野、從零抬舉到文化視角。</p>
+      </article>
+
+      <article class="family-card">
+        <div class="family-card__no">05 · Bakery</div>
+        <h3 class="family-card__name">杜格納烘焙</h3>
+        <p class="family-card__role">部落幸福經濟</p>
+        <p class="family-card__copy">部落自主的經濟基地。把照顧的支撐回到社區本身，揉麵團也揉出在地韌性。</p>
+      </article>
+
+      <article class="family-card">
+        <div class="family-card__no">06 · Connect 10</div>
+        <h3 class="family-card__name">Connect 10</h3>
+        <p class="family-card__role">照顧現場的 AI 共同工作者</p>
+        <p class="family-card__copy">為照顧現場設計的 AI Agent，讓照顧者把更多時間留給人 ── 紀錄、排程、跨團隊溝通由系統承擔。</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="cta__grid">
+    <div>
+      <h2 class="cta__title">一起把照顧還回家、還回社區</h2>
+      <p class="cta__sub">合作邀約、媒體聯繫、志工加入 ── 我們歡迎所有同行的人。</p>
+    </div>
+    <a class="btn btn--copper-on-dark" href="mailto:info@carefortaiwan.com.tw">聯繫創照 <span class="btn__arrow">→</span></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <img src="../../assets/photos/logo/c4tw-zhtw-transparent.png" alt="創照服務設計">
+      <div class="en">Care For Taiwan Co., Ltd.</div>
+      <div class="tag">把照顧重新還回人、家、與在地文化</div>
+    </div>
+    <div class="footer__col">
+      <h4>家族陣列</h4>
+      <ul>
+        <li><a href="#">創照服務設計</a></li>
+        <li><a href="#">照顧學校 / CFT</a></li>
+        <li><a href="#">伯拉罕共生</a></li>
+        <li><a href="#">鄰里123 共生協會</a></li>
+        <li><a href="#">Connect 10</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>聯繫</h4>
+      <ul>
+        <li>合作邀約 → info@carefortaiwan.com.tw</li>
+        <li>媒體聯繫 → press@carefortaiwan.com.tw</li>
+        <li>志工加入 → volunteer@carefortaiwan.com.tw</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__base">
+    <div>© 2026 創照服務設計有限公司</div>
+    <div>candidate P1 · indigo + ochre · 藍染</div>
+  </div>
+</footer>
+
+<div class="palette-badge">
+  <span class="swatch" style="background:#1F3C5C"></span>indigo
+  <span class="swatch" style="background:#D4A04A; margin-left:10px;"></span>ochre
+  <span class="swatch" style="background:#E8C766; margin-left:10px;"></span>highlight
+  <span class="swatch" style="background:#ECE3D0; margin-left:10px; border:1px solid #C9BB99;"></span>ricepaper
+</div>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('is-scrolled', window.scrollY > 16);
+  }, { passive: true });
+</script>
+
+</body>
+</html>

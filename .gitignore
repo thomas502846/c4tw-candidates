@@ -1,0 +1,16 @@
+.claude-design-port
+.chrome-port
+.chrome-fb-port
+.DS_Store
+*.log
+node_modules/
+.claude/
+
+# exclude large carefortaiwan photo dump (not referenced)
+assets/photos/carefortaiwan/
+
+# exclude design-system extraction folders (large, can be regenerated)
+assets/design-systems/
+
+# exclude raw references (large)
+assets/references/
