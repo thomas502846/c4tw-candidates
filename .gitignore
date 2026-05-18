@@ -14,3 +14,6 @@ assets/design-systems/
 
 # exclude raw references (large)
 assets/references/
+
+# customer brief docs — not for public repo
+customer-briefs/
