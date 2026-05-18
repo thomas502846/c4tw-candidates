@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>照顧學校 CFT 學習平台 · 創照家族</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:          #F8F2E4;
+    --bg-pure:     #FFFFFF;
+    --bg-deep:     #EBE2CC;
+    --bg-ink:      #1A2620;
+
+    --moss:        #2F4A3E;
+    --moss-deep:   #1F3A2E;
+    --moss-light:  #6B8278;
+    --sage-logo:   #7A9B8A;
+
+    --copper:      #B5743A;
+    --copper-deep: #8C5A2D;
+
+    --highlight:   #D4DF60;
+    --highlight-ink:#1F2A26;
+
+    --text:        #1F2A26;
+    --text-body:   #4A5650;
+    --text-muted:  #8B948E;
+    --text-on-dark:#F8F2E4;
+
+    --hairline:    #D9CFB5;
+
+    --font-display:      "Noto Serif TC", "Source Han Serif TC", "PingFang TC", serif;
+    --font-body:         "Noto Sans TC", "Source Han Sans TC", "PingFang TC", system-ui, sans-serif;
+    --font-latin-display:"Cormorant Garamond", "Noto Serif TC", serif;
+    --font-brand-latin:  "Outfit", "HGPGothicE", "Noto Sans TC", sans-serif;
+
+    --max-page:    1280px;
+    --max-reading:  720px;
+    --gutter-d:     80px;
+    --gutter-m:     24px;
+
+    --space-2: 16px; --space-3: 24px; --space-4: 32px;
+    --space-5: 48px; --space-6: 64px; --space-7: 96px;
+    --space-8: 128px;
+
+    --d-state: 250ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; text-wrap: pretty; margin: 0; color: var(--text); }
+  p { margin: 0; text-wrap: pretty; }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; height: auto; }
+
+  /* ─── NAV ─── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    height: 76px;
+    background: rgba(248, 242, 228, 0.92);
+    backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid transparent;
+    display: flex; align-items: center;
+    padding: 0 var(--gutter-d);
+    transition: border-color var(--d-state) var(--ease-out);
+  }
+  .nav.is-scrolled { border-bottom-color: var(--hairline); }
+  .nav__logo { display: flex; align-items: center; gap: 10px; }
+  .nav__logo img { height: 36px; width: auto; display: block; }
+  .nav__logo__en {
+    display: block;
+    font-family: var(--font-brand-latin);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sage-logo);
+    font-weight: 500;
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+  .nav__spacer { flex: 1; }
+  .nav__links {
+    display: flex; gap: var(--space-4); align-items: center;
+    font-family: var(--font-display);
+    font-size: 15px;
+  }
+  .nav__link {
+    color: var(--text);
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+    transition: color var(--d-state), border-color var(--d-state);
+  }
+  .nav__link:hover { color: var(--moss); border-bottom-color: var(--moss); }
+  .nav__link.active { border-bottom-color: var(--moss); color: var(--moss); }
+  .nav__cta {
+    background: var(--highlight);
+    color: var(--highlight-ink);
+    padding: 10px 16px;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--highlight);
+    transition: background var(--d-state), border-color var(--d-state);
+  }
+  .nav__cta:hover { background: var(--moss); color: var(--highlight); border-color: var(--moss); }
+  .nav__cta__badge {
+    display: inline-block;
+    background: var(--moss);
+    color: var(--highlight);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    padding: 2px 6px;
+    border-radius: 1px;
+    margin-right: 6px;
+    vertical-align: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding: var(--space-8) var(--gutter-d) var(--space-7);
+    text-align: center;
+    background: var(--bg-deep);
+    position: relative;
+  }
+  .hero__inner { max-width: 880px; margin: 0 auto; }
+  .hero__chip {
+    display: inline-block;
+    background: var(--moss);
+    color: var(--highlight);
+    padding: 6px 14px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-radius: 2px;
+    margin-bottom: var(--space-4);
+  }
+  .hero__title {
+    font-size: clamp(36px, 4.6vw, 60px);
+    line-height: 1.15;
+    color: var(--text);
+    font-weight: 400;
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.01em;
+  }
+  .hero__map {
+    font-family: var(--font-display);
+    font-size: clamp(16px, 1.6vw, 19px);
+    color: var(--moss);
+    margin-bottom: var(--space-3);
+    letter-spacing: 0.04em;
+  }
+  .hero__map .dot { color: var(--copper); margin: 0 12px; }
+  .hero__lede {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-body);
+    margin-bottom: var(--space-5);
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero__actions { display: inline-flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background var(--d-state), color var(--d-state), border-color var(--d-state);
+    border: 1px solid transparent;
+  }
+  .btn--primary { background: var(--copper); color: var(--bg); border-color: var(--copper); }
+  .btn--primary:hover { background: var(--copper-deep); border-color: var(--copper-deep); }
+  .btn--ghost-dark { background: transparent; color: var(--text); border-color: var(--text); }
+  .btn--ghost-dark:hover { background: var(--text); color: var(--bg); }
+  .btn--moss { background: var(--moss); color: var(--bg); border-color: var(--moss); }
+  .btn--moss:hover { background: var(--moss-deep); border-color: var(--moss-deep); }
+  .btn__arrow { font-family: var(--font-latin-display); }
+
+  /* ─── 公告 banner ─── */
+  .notice {
+    background: var(--highlight);
+    color: var(--highlight-ink);
+    padding: 14px var(--gutter-d);
+    font-family: var(--font-body);
+    font-size: 15px;
+    border-bottom: 1px solid rgba(31, 42, 38, 0.1);
+  }
+  .notice__inner {
+    max-width: var(--max-page);
+    margin: 0 auto;
+    display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+  }
+  .notice__label {
+    background: var(--moss);
+    color: var(--highlight);
+    padding: 3px 10px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .notice__text { flex: 1; min-width: 240px; }
+  .notice__text strong { font-weight: 500; }
+  .notice__link { color: var(--moss); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  .notice__link:hover { color: var(--moss-deep); }
+
+  /* ─── SECTION SCAFFOLD ─── */
+  section { padding: var(--space-7) var(--gutter-d); }
+  .container { max-width: var(--max-page); margin: 0 auto; }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--moss);
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+  }
+  .h-section {
+    font-size: clamp(28px, 3.4vw, 40px);
+    line-height: 1.2;
+    margin-bottom: var(--space-3);
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--space-5);
+    margin-bottom: var(--space-5);
+    flex-wrap: wrap;
+  }
+  .section-head__link {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--moss);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color var(--d-state);
+  }
+  .section-head__link:hover { color: var(--copper); }
+
+  /* ─── 近期課程 grid ─── */
+  .courses {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+  .course {
+    background: var(--bg-pure);
+    display: flex; flex-direction: column;
+    transition: transform var(--d-state), box-shadow var(--d-state);
+    border: 1px solid var(--hairline);
+  }
+  .course:hover { transform: translateY(-2px); border-color: var(--moss); }
+  .course__photo {
+    aspect-ratio: 4 / 3;
+    background: var(--bg-deep) center/cover no-repeat;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .course__placeholder {
+    text-align: center;
+    color: var(--moss);
+    font-family: var(--font-display);
+    padding: var(--space-3);
+  }
+  .course__placeholder .num {
+    font-family: var(--font-latin-display);
+    font-style: italic;
+    font-size: 32px;
+    color: var(--copper);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .course__placeholder .module {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+  .course__tag {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: var(--moss);
+    color: var(--highlight);
+    padding: 4px 10px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .course__body { padding: var(--space-3) var(--space-3) var(--space-4); flex: 1; display: flex; flex-direction: column; }
+  .course__title { font-size: 17px; line-height: 1.35; margin-bottom: 10px; min-height: 46px; }
+  .course__instructor { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+  .course__meta {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-body);
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--hairline);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .course__meta-row { display: flex; gap: 6px; align-items: baseline; }
+  .course__meta-label { color: var(--text-muted); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; min-width: 36px; }
+
+  /* ─── 課程行事曆 strip ─── */
+  .calendar {
+    background: var(--moss);
+    padding-block: var(--space-6);
+    color: var(--text-on-dark);
+  }
+  .calendar__inner {
+    max-width: var(--max-page);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-5);
+  }
+  .calendar__title { color: var(--text-on-dark); font-size: clamp(22px, 2.4vw, 28px); }
+  .calendar__sub { margin-top: 6px; font-size: 14px; color: rgba(248, 242, 228, 0.7); }
+
+  /* ─── AIO 八大模組 ─── */
+  .modules {
+    background: var(--bg-deep);
+    padding-block: var(--space-8);
+  }
+  .modules__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .module {
+    background: var(--bg);
+    border-top: 2px solid var(--moss);
+    padding: var(--space-4);
+    transition: background var(--d-state);
+  }
+  .module:hover { background: var(--bg-pure); }
+  .module__no {
+    font-family: var(--font-latin-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--copper);
+    margin-bottom: 6px;
+  }
+  .module__title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.35;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .module__sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── CTA strip ─── */
+  .cta {
+    background: var(--bg-ink);
+    color: var(--text-on-dark);
+    padding-block: var(--space-7);
+  }
+  .cta__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-5);
+    align-items: center;
+    max-width: var(--max-page);
+    margin: 0 auto;
+  }
+  .cta__title { color: var(--text-on-dark); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.35; }
+  .cta__sub { margin-top: 12px; font-size: 15px; color: rgba(248, 242, 228, 0.7); }
+  .cta__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn--copper-on-dark { background: var(--copper); color: var(--bg); border-color: var(--copper); }
+  .btn--copper-on-dark:hover { background: var(--copper-deep); border-color: var(--copper-deep); }
+  .btn--ghost-on-dark { background: transparent; color: var(--text-on-dark); border-color: rgba(248, 242, 228, 0.7); }
+  .btn--ghost-on-dark:hover { background: var(--text-on-dark); color: var(--moss-deep); border-color: var(--text-on-dark); }
+
+  /* ─── Footer ─── */
+  .footer {
+    background: var(--bg-deep);
+    padding: var(--space-7) var(--gutter-d) var(--space-5);
+    color: var(--text-body);
+    font-size: 14px;
+  }
+  .footer__inner {
+    max-width: var(--max-page);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: var(--space-5);
+  }
+  .footer__brand img { height: 48px; width: auto; margin-bottom: 10px; display: block; }
+  .footer__brand .en {
+    font-family: var(--font-brand-latin);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sage-logo);
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+  }
+  .footer__brand .tag { margin-top: 6px; font-size: 13px; color: var(--text-muted); line-height: 1.6; max-width: 280px; }
+  .footer__col h4 {
+    font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--moss); margin-bottom: var(--space-3); font-family: var(--font-body); font-weight: 500;
+  }
+  .footer__col ul { list-style: none; padding: 0; margin: 0; }
+  .footer__col li { margin-bottom: 10px; line-height: 1.55; }
+  .footer__col a:hover { color: var(--copper); }
+  .footer__base {
+    max-width: var(--max-page); margin: var(--space-5) auto 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--hairline);
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── Sibling banner ─── */
+  .sibling {
+    background: var(--moss-deep);
+    color: var(--text-on-dark);
+    padding: var(--space-4) var(--gutter-d);
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .sibling a { color: var(--highlight); text-decoration: underline; text-underline-offset: 3px; margin-left: 8px; }
+  .sibling a:hover { color: var(--bg); }
+
+  @media (max-width: 1100px) {
+    .courses { grid-template-columns: repeat(2, 1fr); }
+    .modules__grid { grid-template-columns: repeat(2, 1fr); }
+    .footer__inner { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px) {
+    section { padding: var(--space-6) var(--gutter-m); }
+    .hero { padding: var(--space-6) var(--gutter-m); }
+    .nav { padding: 0 var(--gutter-m); }
+    .nav__links { display: none; }
+    .notice { padding: 12px var(--gutter-m); }
+    .courses { grid-template-columns: 1fr; }
+    .modules__grid { grid-template-columns: 1fr; }
+    .calendar__inner { grid-template-columns: 1fr; }
+    .cta__grid { grid-template-columns: 1fr; }
+    .footer__inner { grid-template-columns: 1fr; gap: var(--space-4); }
+    .footer { padding: var(--space-5) var(--gutter-m) var(--space-4); }
+    .footer__base { flex-direction: column; gap: 6px; }
+    .sibling { padding: var(--space-3) var(--gutter-m); }
+  }
+</style>
+</head>
+<body>
+
+<div class="sibling">
+  你正在瀏覽 <strong>照顧學校 CFT</strong> ── 創照家族成員 · <a href="../p3/">回到創照官網 →</a>
+</div>
+
+<nav class="nav" id="nav">
+  <a class="nav__logo" href="../p3/">
+    <img src="../../assets/photos/logo/c4tw-zhtw-transparent.png" alt="創照服務設計">
+    <span class="nav__logo__en">Care For Taiwan Co., Ltd.</span>
+  </a>
+  <span class="nav__spacer"></span>
+  <div class="nav__links">
+    <a class="nav__link" href="../p3/#about">認識創照</a>
+    <a class="nav__link active" href="./">照顧學校</a>
+    <a class="nav__link" href="../p3/#solutions">AIO 解決方案</a>
+    <a class="nav__link" href="../p3/#contact">聯絡我們</a>
+    <a class="nav__cta" href="../p3/#program"><span class="nav__cta__badge">New</span>急重症長者整合照顧計劃</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero__inner">
+    <div class="hero__chip">ALL IN ONE · 跨專業長照人才學習平台</div>
+    <h1 class="hero__title">照顧學校 CFT 學習平台</h1>
+    <p class="hero__map">
+      課程地圖 <span class="dot">×</span> 實作地圖 <span class="dot">×</span> 證照地圖 <span class="dot">×</span> 職涯地圖
+    </p>
+    <p class="hero__lede">一所為台灣長照培育關鍵人才的學校。我們相信「專業有價」，所以為每一位走進來的人，鋪一條從課堂到現場的路。</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="#courses">查看課程 <span class="btn__arrow">→</span></a>
+      <a class="btn btn--ghost-dark" href="#about">關於 CFT</a>
+    </div>
+  </div>
+</header>
+
+<div class="notice">
+  <div class="notice__inner">
+    <span class="notice__label">最新公告</span>
+    <span class="notice__text"><strong>開學日 2026/03/07（六）09:00–16:30</strong>　·　CFT 照顧學校（414 臺中市烏日區溪岸路 8-3 號）</span>
+    <a class="notice__link" href="#">查看詳情 →</a>
+  </div>
+</div>
+
+<section id="courses">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">近期課程 · Upcoming</div>
+        <h2 class="h-section">17 門課程，等你進來</h2>
+      </div>
+      <a class="section-head__link" href="#">查看全部 →</a>
+    </div>
+
+    <div class="courses">
+
+      <article class="course">
+        <div class="course__photo">
+          <span class="course__tag">#2 舒適照顧</span>
+          <div class="course__placeholder">
+            <div class="num">02</div>
+            <div class="module">舒適照顧真功夫</div>
+          </div>
+        </div>
+        <div class="course__body">
+          <h3 class="course__title">舒適真功夫：打造有溫度的照顧力</h3>
+          <p class="course__instructor">江青純　·　CFT 照顧學校</p>
+          <div class="course__meta">
+            <div class="course__meta-row"><span class="course__meta-label">日期</span><span>05/23（五）09:00</span></div>
+            <div class="course__meta-row"><span class="course__meta-label">地點</span><span>臺中烏日</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="course">
+        <div class="course__photo">
+          <span class="course__tag">#4 高齡全人</span>
+          <div class="course__placeholder">
+            <div class="num">04</div>
+            <div class="module">高齡全人照顧</div>
+          </div>
+        </div>
+        <div class="course__body">
+          <h3 class="course__title">肌少防跌助人者實務課程</h3>
+          <p class="course__instructor">郭健中　·　CFT 照顧學校</p>
+          <div class="course__meta">
+            <div class="course__meta-row"><span class="course__meta-label">日期</span><span>05/24（六）09:30</span></div>
+            <div class="course__meta-row"><span class="course__meta-label">地點</span><span>臺中烏日</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="course">
+        <div class="course__photo">
+          <span class="course__tag">真功夫加強班</span>
+          <div class="course__placeholder">
+            <div class="num">02+</div>
+            <div class="module">舒適照顧真功夫</div>
+          </div>
+        </div>
+        <div class="course__body">
+          <h3 class="course__title">真功夫加強班</h3>
+          <p class="course__instructor">嘉義雙福寶佛門老人長照中心</p>
+          <div class="course__meta">
+            <div class="course__meta-row"><span class="course__meta-label">日期</span><span>05/30（五）13:00</span></div>
+            <div class="course__meta-row"><span class="course__meta-label">地點</span><span>嘉義民雄</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="course">
+        <div class="course__photo">
+          <span class="course__tag">#7 共生創新</span>
+          <div class="course__placeholder">
+            <div class="num">07</div>
+            <div class="module">社區共生創新照顧</div>
+          </div>
+        </div>
+        <div class="course__body">
+          <h3 class="course__title">如何帶動社區共生意識、共生連結及共生動能 ── 戲劇工作坊</h3>
+          <p class="course__instructor">林依瑩　·　CFT 照顧學校</p>
+          <div class="course__meta">
+            <div class="course__meta-row"><span class="course__meta-label">日期</span><span>05/31（六）09:30</span></div>
+            <div class="course__meta-row"><span class="course__meta-label">地點</span><span>臺中烏日</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="calendar">
+  <div class="calendar__inner">
+    <div>
+      <h2 class="calendar__title">2026 年度課程行事曆</h2>
+      <p class="calendar__sub">完整一年的學習地圖，從入門到進階一次看完</p>
+    </div>
+    <a class="btn btn--primary" href="#">下載行事曆 <span class="btn__arrow">↓</span></a>
+  </div>
+</section>
+
+<section class="modules" id="about">
+  <div class="container">
+    <div class="eyebrow">AIO 八大模組 · The Curriculum</div>
+    <h2 class="h-section">All in One ──<br>一張地圖，八個方向</h2>
+    <p style="font-size: 17px; line-height: 1.75; color: var(--text-body); max-width: 720px;">
+      CFT 為照顧人才設計的不是片段技能，是一整套可長期走的路徑。八大模組從「人本照顧」起手，向上長成設計師、教練、在宅醫師。
+    </p>
+
+    <div class="modules__grid">
+      <article class="module"><div class="module__no">01</div><h3 class="module__title">人本照顧導論</h3><div class="module__sub">Person-Centered Care</div></article>
+      <article class="module"><div class="module__no">02</div><h3 class="module__title">舒適照顧真功夫</h3><div class="module__sub">Comfort Care Practice</div></article>
+      <article class="module"><div class="module__no">03</div><h3 class="module__title">全方位療癒</h3><div class="module__sub">Holistic Healing</div></article>
+      <article class="module"><div class="module__no">04</div><h3 class="module__title">高齡全人照顧</h3><div class="module__sub">Whole-Person Elder Care</div></article>
+      <article class="module"><div class="module__no">05</div><h3 class="module__title">失智症全人照顧</h3><div class="module__sub">Dementia Whole-Person</div></article>
+      <article class="module"><div class="module__no">06</div><h3 class="module__title">身心障礙全人照顧</h3><div class="module__sub">Disability Whole-Person</div></article>
+      <article class="module"><div class="module__no">07</div><h3 class="module__title">社區共生創新照顧</h3><div class="module__sub">Community Co-living Care</div></article>
+      <article class="module"><div class="module__no">08</div><h3 class="module__title">共學圈</h3><div class="module__sub">Peer Learning Circle</div></article>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="cta__grid">
+    <div>
+      <h2 class="cta__title">成為 AIO 照顧人才<br>從一堂課開始</h2>
+      <p class="cta__sub">註冊 CFT 照顧學校會員，跟著 17 門課程一起把照顧做完整。</p>
+    </div>
+    <div class="cta__actions">
+      <a class="btn btn--copper-on-dark" href="#">註冊會員 <span class="btn__arrow">→</span></a>
+      <a class="btn btn--ghost-on-dark" href="#">登入</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <img src="../../assets/photos/logo/c4tw-zhtw-transparent.png" alt="創照服務設計">
+      <div class="en">Care For Taiwan Co., Ltd.</div>
+      <div class="tag">照顧學校 CFT 是創照服務設計家族的人才培育基地</div>
+    </div>
+    <div class="footer__col">
+      <h4>快速連結</h4>
+      <ul>
+        <li><a href="../p3/">創照服務設計</a></li>
+        <li><a href="#about">關於 CFT</a></li>
+        <li><a href="#courses">課程資訊</a></li>
+        <li><a href="#">師資群</a></li>
+        <li><a href="#">常見問題</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>聯絡我們</h4>
+      <ul>
+        <li>客服信箱<br>cft20220401@gmail.com</li>
+        <li>客服電話<br>04-9252-6611</li>
+        <li>地址<br>414 臺中市烏日區溪岸路 8-3 號</li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>追蹤我們</h4>
+      <ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">LINE @</a></li>
+        <li><a href="#">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__base">
+    <div>© 2026 CFT 照顧學校　·　創照服務設計家族</div>
+    <div>candidate · school sub-site CI alignment preview</div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('is-scrolled', window.scrollY > 16);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
