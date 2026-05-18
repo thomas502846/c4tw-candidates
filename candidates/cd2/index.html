@@ -628,6 +628,19 @@
     .foot-grid{grid-template-columns:1fr;gap:32px}
     .foot-bottom{flex-direction:column;align-items:flex-start;gap:12px}
   }
+
+  .nav__lang {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-left: 16px; padding-left: 16px;
+    border-left: 1px solid var(--hairline);
+    font-family: var(--f-latin); font-size: 12px; letter-spacing: 0.14em;
+  }
+  .nav__lang a { color: var(--muted); transition: color .25s; }
+  .nav__lang a:hover { color: var(--indigo); }
+  .nav__lang .is-active { color: var(--indigo); font-weight: 500; }
+  .nav__lang .dot { color: var(--hairline); }
+  @media (max-width: 700px) { .nav__lang { display: none; } }
+
 </style>
 </head>
 <body>
@@ -667,6 +680,11 @@
           急重症長者整合照顧計劃
           <svg viewBox="0 0 16 16" fill="none" stroke-width="1.8" stroke-linecap="square"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
+      <span class="nav__lang">
+        <a class="is-active" aria-current="true">中</a>
+        <span class="dot">·</span>
+        <a href="en/">EN</a>
+      </span>
       </nav>
     </div>
   </header>

@@ -595,6 +595,32 @@
     .footer__base { flex-direction: column; gap: 6px; }
     .sibling { padding: 10px var(--gutter-m); }
   }
+
+  .nav__lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: var(--space-3);
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--hairline);
+    font-family: var(--font-brand-latin, "Outfit", sans-serif);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+  }
+  .nav__lang a {
+    color: var(--text-muted);
+    transition: color var(--d-state);
+  }
+  .nav__lang a:hover { color: var(--moss); }
+  .nav__lang .is-active {
+    color: var(--moss);
+    font-weight: 500;
+  }
+  .nav__lang .dot { color: var(--hairline); }
+  @media (max-width: 700px) {
+    .nav__lang { display: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -615,6 +641,11 @@
     <a class="nav__link" href="../p3/#solutions">AIO 解決方案</a>
     <a class="nav__link" href="../p3/#contact">聯絡我們</a>
     <a class="nav__cta" href="../p3/#program"><span class="nav__cta__badge">New</span>急重症長者整合照顧計劃</a>
+    <span class="nav__lang">
+      <a class="is-active" aria-current="true">中</a>
+      <span class="dot">·</span>
+      <a href="en/">EN</a>
+    </span>
   </div>
 </nav>
 
