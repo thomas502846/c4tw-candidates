@@ -17,3 +17,7 @@ assets/references/
 
 # customer brief docs — not for public repo
 customer-briefs/
+docs/
+
+# personal knowledge base — internal documentation
+pkb/
