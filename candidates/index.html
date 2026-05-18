@@ -72,8 +72,18 @@
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: 32px;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .card { flex-direction: row; }
+  .card__hero { flex: 0 0 50%; aspect-ratio: 16 / 10; }
+  .card__body { flex: 1; padding: 32px 32px 36px; display: flex; flex-direction: column; justify-content: center; }
+  .card__body .card__cta { margin-top: auto; }
+  @media (max-width: 700px) {
+    .card { flex-direction: column; }
+    .card__hero { flex: none; }
   }
   .card {
     background: #fff;
