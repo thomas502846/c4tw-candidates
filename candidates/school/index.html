@@ -66,6 +66,18 @@
   a { color: inherit; text-decoration: none; }
   img { display: block; max-width: 100%; height: auto; }
 
+  /* ─── Sibling banner ─── */
+  .sibling {
+    background: var(--moss-deep);
+    color: var(--text-on-dark);
+    padding: 12px var(--gutter-d);
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .sibling a { color: var(--highlight); text-decoration: underline; text-underline-offset: 3px; margin-left: 8px; }
+  .sibling a:hover { color: var(--bg); }
+
   /* ─── NAV ─── */
   .nav {
     position: sticky; top: 0; z-index: 50;
@@ -132,53 +144,78 @@
     font-weight: 500;
   }
 
-  /* ─── HERO ─── */
+  /* ─── HERO (full-bleed photo, matching P3 pattern) ─── */
   .hero {
-    padding: var(--space-8) var(--gutter-d) var(--space-7);
-    text-align: center;
-    background: var(--bg-deep);
     position: relative;
+    height: 80vh;
+    min-height: 600px;
+    max-height: 820px;
+    overflow: hidden;
   }
-  .hero__inner { max-width: 880px; margin: 0 auto; }
+  .hero__photo {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+  }
+  .hero__veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(26, 38, 32, 0.35) 0%, rgba(26, 38, 32, 0.10) 35%, rgba(26, 38, 32, 0.65) 100%);
+  }
+  .hero__inner {
+    position: relative; height: 100%;
+    max-width: var(--max-page);
+    margin: 0 auto;
+    padding: 0 var(--gutter-d) var(--space-8);
+    display: flex; align-items: flex-end;
+  }
+  .hero__block { max-width: 760px; }
   .hero__chip {
     display: inline-block;
-    background: var(--moss);
-    color: var(--highlight);
+    background: var(--highlight);
+    color: var(--highlight-ink);
     padding: 6px 14px;
     font-family: var(--font-body);
     font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     font-weight: 500;
-    border-radius: 2px;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
   }
   .hero__title {
-    font-size: clamp(36px, 4.6vw, 60px);
-    line-height: 1.15;
-    color: var(--text);
+    font-size: clamp(40px, 5.4vw, 68px);
+    line-height: 1.12;
+    color: var(--text-on-dark);
     font-weight: 400;
     margin-bottom: var(--space-3);
     letter-spacing: -0.01em;
   }
+  .hero__title em { font-style: normal; color: var(--copper); font-family: var(--font-latin-display); }
   .hero__map {
     font-family: var(--font-display);
-    font-size: clamp(16px, 1.6vw, 19px);
-    color: var(--moss);
-    margin-bottom: var(--space-3);
+    font-size: clamp(15px, 1.5vw, 18px);
+    color: rgba(248, 242, 228, 0.92);
+    margin-bottom: var(--space-4);
     letter-spacing: 0.04em;
   }
   .hero__map .dot { color: var(--copper); margin: 0 12px; }
   .hero__lede {
-    font-size: 17px;
-    line-height: 1.75;
-    color: var(--text-body);
-    margin-bottom: var(--space-5);
-    max-width: 560px;
-    margin-left: auto;
-    margin-right: auto;
+    font-size: 19px;
+    line-height: 1.65;
+    color: rgba(248, 242, 228, 0.92);
+    max-width: 580px;
+    margin-bottom: var(--space-4);
   }
-  .hero__actions { display: inline-flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  .hero__actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .hero__caption {
+    position: absolute;
+    right: var(--gutter-d);
+    bottom: var(--space-5);
+    font-size: 12px;
+    color: rgba(248, 242, 228, 0.65);
+    font-style: italic;
+    letter-spacing: 0.04em;
+  }
 
   .btn {
     display: inline-flex; align-items: center; gap: 8px;
@@ -193,10 +230,10 @@
   }
   .btn--primary { background: var(--copper); color: var(--bg); border-color: var(--copper); }
   .btn--primary:hover { background: var(--copper-deep); border-color: var(--copper-deep); }
+  .btn--ghost { background: transparent; color: var(--text-on-dark); border-color: rgba(248, 242, 228, 0.7); }
+  .btn--ghost:hover { background: var(--text-on-dark); color: var(--moss-deep); border-color: var(--text-on-dark); }
   .btn--ghost-dark { background: transparent; color: var(--text); border-color: var(--text); }
   .btn--ghost-dark:hover { background: var(--text); color: var(--bg); }
-  .btn--moss { background: var(--moss); color: var(--bg); border-color: var(--moss); }
-  .btn--moss:hover { background: var(--moss-deep); border-color: var(--moss-deep); }
   .btn__arrow { font-family: var(--font-latin-display); }
 
   /* ─── 公告 banner ─── */
@@ -228,8 +265,9 @@
   .notice__link:hover { color: var(--moss-deep); }
 
   /* ─── SECTION SCAFFOLD ─── */
-  section { padding: var(--space-7) var(--gutter-d); }
+  section { padding: var(--space-8) var(--gutter-d); }
   .container { max-width: var(--max-page); margin: 0 auto; }
+  .container--narrow { max-width: var(--max-reading); margin: 0 auto; }
 
   .eyebrow {
     font-family: var(--font-body);
@@ -246,12 +284,17 @@
     margin-bottom: var(--space-3);
   }
   .section-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: var(--space-5);
-    margin-bottom: var(--space-5);
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    align-items: end;
+    margin-bottom: var(--space-6);
+  }
+  .section-head__lead {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--text-body);
+    max-width: 460px;
   }
   .section-head__link {
     font-family: var(--font-body);
@@ -272,39 +315,22 @@
   .course {
     background: var(--bg-pure);
     display: flex; flex-direction: column;
-    transition: transform var(--d-state), box-shadow var(--d-state);
+    transition: transform var(--d-state), border-color var(--d-state);
     border: 1px solid var(--hairline);
   }
   .course:hover { transform: translateY(-2px); border-color: var(--moss); }
   .course__photo {
     aspect-ratio: 4 / 3;
-    background: var(--bg-deep) center/cover no-repeat;
+    background-color: var(--bg-deep);
+    background-size: cover;
+    background-position: center;
     position: relative;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .course__placeholder {
-    text-align: center;
-    color: var(--moss);
-    font-family: var(--font-display);
-    padding: var(--space-3);
-  }
-  .course__placeholder .num {
-    font-family: var(--font-latin-display);
-    font-style: italic;
-    font-size: 32px;
-    color: var(--copper);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .course__placeholder .module {
-    font-size: 13px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
   }
   .course__tag {
     position: absolute;
     top: 12px; left: 12px;
-    background: var(--moss);
+    background: rgba(31, 58, 46, 0.92);
+    backdrop-filter: blur(4px);
     color: var(--highlight);
     padding: 4px 10px;
     font-size: 11px;
@@ -313,8 +339,15 @@
     font-weight: 500;
   }
   .course__body { padding: var(--space-3) var(--space-3) var(--space-4); flex: 1; display: flex; flex-direction: column; }
-  .course__title { font-size: 17px; line-height: 1.35; margin-bottom: 10px; min-height: 46px; }
-  .course__instructor { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+  .course__title { font-size: 17px; line-height: 1.4; margin-bottom: 10px; min-height: 48px; }
+  .course__instructor {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-style: italic;
+    font-family: var(--font-latin-display);
+  }
+  .course__instructor strong { font-family: var(--font-body); color: var(--text-body); font-style: normal; font-weight: 400; }
   .course__meta {
     font-family: var(--font-body);
     font-size: 13px;
@@ -327,10 +360,50 @@
   .course__meta-row { display: flex; gap: 6px; align-items: baseline; }
   .course__meta-label { color: var(--text-muted); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; min-width: 36px; }
 
+  /* ─── 講師群 section ─── */
+  .instructors {
+    background: var(--bg-deep);
+    padding-block: var(--space-8);
+  }
+  .instructors__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    margin-top: var(--space-6);
+  }
+  .instructor {
+    display: flex; flex-direction: column;
+  }
+  .instructor__photo {
+    aspect-ratio: 4 / 5;
+    background-color: var(--bg);
+    background-size: cover;
+    background-position: center;
+    margin-bottom: var(--space-3);
+  }
+  .instructor__name {
+    font-size: 22px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .instructor__role {
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin-bottom: var(--space-3);
+  }
+  .instructor__bio {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-body);
+  }
+
   /* ─── 課程行事曆 strip ─── */
   .calendar {
     background: var(--moss);
-    padding-block: var(--space-6);
+    padding-block: var(--space-7);
     color: var(--text-on-dark);
   }
   .calendar__inner {
@@ -341,50 +414,104 @@
     align-items: center;
     gap: var(--space-5);
   }
-  .calendar__title { color: var(--text-on-dark); font-size: clamp(22px, 2.4vw, 28px); }
-  .calendar__sub { margin-top: 6px; font-size: 14px; color: rgba(248, 242, 228, 0.7); }
+  .calendar__title { color: var(--text-on-dark); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.3; }
+  .calendar__sub { margin-top: 8px; font-size: 15px; color: rgba(248, 242, 228, 0.7); max-width: 520px; }
 
   /* ─── AIO 八大模組 ─── */
   .modules {
-    background: var(--bg-deep);
-    padding-block: var(--space-8);
+    background: var(--bg);
+  }
+  .modules__intro {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-7);
+    align-items: end;
+    margin-bottom: var(--space-6);
+  }
+  .modules__lede {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--text-body);
+    max-width: 520px;
   }
   .modules__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-3);
-    margin-top: var(--space-5);
   }
   .module {
-    background: var(--bg);
+    background: var(--bg-pure);
     border-top: 2px solid var(--moss);
-    padding: var(--space-4);
-    transition: background var(--d-state);
+    padding: var(--space-4) var(--space-3) var(--space-3);
+    transition: transform var(--d-state), border-color var(--d-state);
+    min-height: 168px;
+    display: flex;
+    flex-direction: column;
   }
-  .module:hover { background: var(--bg-pure); }
+  .module:hover { transform: translateY(-2px); border-top-color: var(--copper); }
+  .module:nth-child(2n) { border-top-color: var(--copper); }
+  .module:nth-child(2n):hover { border-top-color: var(--moss); }
   .module__no {
     font-family: var(--font-latin-display);
     font-style: italic;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--copper);
-    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
   }
   .module__title {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 19px;
     line-height: 1.35;
     color: var(--text);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+    flex: 1;
   }
   .module__sub {
-    font-size: 12px;
+    font-family: var(--font-body);
+    font-size: 11px;
     color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ─── 學員見證 quote ─── */
+  .quote-section {
+    background: var(--bg-ink);
+    color: var(--text-on-dark);
+    padding-block: var(--space-8);
+    position: relative;
+  }
+  .quote-section::before {
+    content: "";
+    position: absolute; left: 50%; top: 0;
+    transform: translateX(-50%);
+    width: 64px; height: 1px;
+    background: var(--copper);
+  }
+  .quote-section__inner {
+    max-width: 880px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .quote-section .eyebrow { color: var(--highlight); }
+  .quote-section__quote {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.7;
+    color: var(--text-on-dark);
+    margin-bottom: var(--space-4);
+  }
+  .quote-section__attr {
+    font-size: 13px;
+    color: rgba(248, 242, 228, 0.65);
     letter-spacing: 0.06em;
   }
+  .quote-section__attr strong { color: var(--text-on-dark); font-weight: 500; }
 
   /* ─── CTA strip ─── */
   .cta {
-    background: var(--bg-ink);
+    background: var(--moss);
     color: var(--text-on-dark);
     padding-block: var(--space-7);
   }
@@ -397,7 +524,7 @@
     margin: 0 auto;
   }
   .cta__title { color: var(--text-on-dark); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.35; }
-  .cta__sub { margin-top: 12px; font-size: 15px; color: rgba(248, 242, 228, 0.7); }
+  .cta__sub { margin-top: 12px; font-size: 15px; color: rgba(248, 242, 228, 0.75); }
   .cta__actions { display: flex; gap: 12px; flex-wrap: wrap; }
   .btn--copper-on-dark { background: var(--copper); color: var(--bg); border-color: var(--copper); }
   .btn--copper-on-dark:hover { background: var(--copper-deep); border-color: var(--copper-deep); }
@@ -445,26 +572,17 @@
     letter-spacing: 0.04em;
   }
 
-  /* ─── Sibling banner ─── */
-  .sibling {
-    background: var(--moss-deep);
-    color: var(--text-on-dark);
-    padding: var(--space-4) var(--gutter-d);
-    text-align: center;
-    font-size: 13px;
-    letter-spacing: 0.04em;
-  }
-  .sibling a { color: var(--highlight); text-decoration: underline; text-underline-offset: 3px; margin-left: 8px; }
-  .sibling a:hover { color: var(--bg); }
-
   @media (max-width: 1100px) {
     .courses { grid-template-columns: repeat(2, 1fr); }
+    .instructors__grid { grid-template-columns: 1fr; gap: var(--space-4); }
     .modules__grid { grid-template-columns: repeat(2, 1fr); }
+    .modules__intro { grid-template-columns: 1fr; gap: var(--space-3); }
+    .section-head { grid-template-columns: 1fr; gap: var(--space-3); }
     .footer__inner { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 700px) {
     section { padding: var(--space-6) var(--gutter-m); }
-    .hero { padding: var(--space-6) var(--gutter-m); }
+    .hero__inner { padding: 0 var(--gutter-m) var(--space-7); }
     .nav { padding: 0 var(--gutter-m); }
     .nav__links { display: none; }
     .notice { padding: 12px var(--gutter-m); }
@@ -475,7 +593,7 @@
     .footer__inner { grid-template-columns: 1fr; gap: var(--space-4); }
     .footer { padding: var(--space-5) var(--gutter-m) var(--space-4); }
     .footer__base { flex-direction: column; gap: 6px; }
-    .sibling { padding: var(--space-3) var(--gutter-m); }
+    .sibling { padding: 10px var(--gutter-m); }
   }
 </style>
 </head>
@@ -501,18 +619,25 @@
 </nav>
 
 <header class="hero">
+  <img class="hero__photo" src="../../assets/photos/fb-cft/590x443_d517c23c67.jpg" alt="CFT 學員結業集體合影">
+  <div class="hero__veil"></div>
   <div class="hero__inner">
-    <div class="hero__chip">ALL IN ONE · 跨專業長照人才學習平台</div>
-    <h1 class="hero__title">照顧學校 CFT 學習平台</h1>
-    <p class="hero__map">
-      課程地圖 <span class="dot">×</span> 實作地圖 <span class="dot">×</span> 證照地圖 <span class="dot">×</span> 職涯地圖
-    </p>
-    <p class="hero__lede">一所為台灣長照培育關鍵人才的學校。我們相信「專業有價」，所以為每一位走進來的人，鋪一條從課堂到現場的路。</p>
-    <div class="hero__actions">
-      <a class="btn btn--primary" href="#courses">查看課程 <span class="btn__arrow">→</span></a>
-      <a class="btn btn--ghost-dark" href="#about">關於 CFT</a>
+    <div class="hero__block">
+      <div class="hero__chip">ALL IN ONE · 跨專業長照人才學習平台</div>
+      <h1 class="hero__title">把照顧改寫為<br>一份可長期走的<em>專業</em></h1>
+      <p class="hero__map">
+        課程地圖 <span class="dot">×</span> 實作地圖 <span class="dot">×</span> 證照地圖 <span class="dot">×</span> 職涯地圖
+      </p>
+      <p class="hero__lede">
+        CFT 為照顧人才設計的不是片段技能，是一整套可長期走的路徑 ── 從第一堂「人本照顧導論」，到 AIO 照顧服務員、教練、設計師、在宅醫師的職涯地圖。
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#courses">查看近期課程 <span class="btn__arrow">→</span></a>
+        <a class="btn btn--ghost" href="#modules">AIO 八大模組</a>
+      </div>
     </div>
   </div>
+  <div class="hero__caption">CFT 照顧學校｜結業合影，2024</div>
 </header>
 
 <div class="notice">
@@ -528,24 +653,25 @@
     <div class="section-head">
       <div>
         <div class="eyebrow">近期課程 · Upcoming</div>
-        <h2 class="h-section">17 門課程，等你進來</h2>
+        <h2 class="h-section">17 門課程，<br>等你進來</h2>
       </div>
-      <a class="section-head__link" href="#">查看全部 →</a>
+      <div>
+        <p class="section-head__lead">
+          每一堂都是「現場走得通」的內容 ── 講師多為一線照顧資深工作者，課堂從理論進入實作，再走進共生之家現場。
+        </p>
+        <a class="section-head__link" href="#" style="display: inline-block; margin-top: var(--space-3);">查看全部 17 門 →</a>
+      </div>
     </div>
 
     <div class="courses">
 
       <article class="course">
-        <div class="course__photo">
+        <div class="course__photo" style="background-image: url('../../assets/photos/fb-cft/590x443_ff6d46f5a7.jpg');">
           <span class="course__tag">#2 舒適照顧</span>
-          <div class="course__placeholder">
-            <div class="num">02</div>
-            <div class="module">舒適照顧真功夫</div>
-          </div>
         </div>
         <div class="course__body">
           <h3 class="course__title">舒適真功夫：打造有溫度的照顧力</h3>
-          <p class="course__instructor">江青純　·　CFT 照顧學校</p>
+          <p class="course__instructor"><strong>江青純</strong> · 講師</p>
           <div class="course__meta">
             <div class="course__meta-row"><span class="course__meta-label">日期</span><span>05/23（五）09:00</span></div>
             <div class="course__meta-row"><span class="course__meta-label">地點</span><span>臺中烏日</span></div>
@@ -554,16 +680,12 @@
       </article>
 
       <article class="course">
-        <div class="course__photo">
+        <div class="course__photo" style="background-image: url('../../assets/photos/fb-cft/590x443_dbffc60688.jpg');">
           <span class="course__tag">#4 高齡全人</span>
-          <div class="course__placeholder">
-            <div class="num">04</div>
-            <div class="module">高齡全人照顧</div>
-          </div>
         </div>
         <div class="course__body">
           <h3 class="course__title">肌少防跌助人者實務課程</h3>
-          <p class="course__instructor">郭健中　·　CFT 照顧學校</p>
+          <p class="course__instructor"><strong>郭健中</strong> · 講師</p>
           <div class="course__meta">
             <div class="course__meta-row"><span class="course__meta-label">日期</span><span>05/24（六）09:30</span></div>
             <div class="course__meta-row"><span class="course__meta-label">地點</span><span>臺中烏日</span></div>
@@ -572,16 +694,12 @@
       </article>
 
       <article class="course">
-        <div class="course__photo">
+        <div class="course__photo" style="background-image: url('../../assets/photos/fb-cft/590x443_e789aa0d96.jpg');">
           <span class="course__tag">真功夫加強班</span>
-          <div class="course__placeholder">
-            <div class="num">02+</div>
-            <div class="module">舒適照顧真功夫</div>
-          </div>
         </div>
         <div class="course__body">
-          <h3 class="course__title">真功夫加強班</h3>
-          <p class="course__instructor">嘉義雙福寶佛門老人長照中心</p>
+          <h3 class="course__title">舒適照顧真功夫 ── 加強班</h3>
+          <p class="course__instructor"><strong>江青純</strong> · 講師</p>
           <div class="course__meta">
             <div class="course__meta-row"><span class="course__meta-label">日期</span><span>05/30（五）13:00</span></div>
             <div class="course__meta-row"><span class="course__meta-label">地點</span><span>嘉義民雄</span></div>
@@ -590,16 +708,12 @@
       </article>
 
       <article class="course">
-        <div class="course__photo">
+        <div class="course__photo" style="background-image: url('../../assets/photos/fb-cft/443x590_03cb6bded0.jpg'); background-position: top center;">
           <span class="course__tag">#7 共生創新</span>
-          <div class="course__placeholder">
-            <div class="num">07</div>
-            <div class="module">社區共生創新照顧</div>
-          </div>
         </div>
         <div class="course__body">
-          <h3 class="course__title">如何帶動社區共生意識、共生連結及共生動能 ── 戲劇工作坊</h3>
-          <p class="course__instructor">林依瑩　·　CFT 照顧學校</p>
+          <h3 class="course__title">如何帶動社區共生意識 ── 戲劇工作坊</h3>
+          <p class="course__instructor"><strong>林依瑩</strong> · 創辦人 · 講師</p>
           <div class="course__meta">
             <div class="course__meta-row"><span class="course__meta-label">日期</span><span>05/31（六）09:30</span></div>
             <div class="course__meta-row"><span class="course__meta-label">地點</span><span>臺中烏日</span></div>
@@ -611,38 +725,98 @@
   </div>
 </section>
 
+<section class="instructors">
+  <div class="container">
+    <div class="eyebrow">講師群 · The Faculty</div>
+    <h2 class="h-section">講台上的人，<br>也是現場的人</h2>
+    <p class="section-head__lead" style="max-width: 640px;">
+      CFT 講師大多來自照顧現場 ── 不老騎士推手、共生之家管家、在宅醫師、跨專業設計師。他們不是「教過」，是「正在做」。
+    </p>
+
+    <div class="instructors__grid">
+
+      <article class="instructor">
+        <div class="instructor__photo" style="background-image: url('../../assets/photos/portraits/lin-yiying/lin-yiying-warm.jpg');"></div>
+        <h3 class="instructor__name">林依瑩</h3>
+        <div class="instructor__role">創辦人 · 社區共生 · 不老騎士推手</div>
+        <p class="instructor__bio">
+          創照服務設計創辦人、前台中市副市長。從伯拉罕到鄰里123，把共生之家從一個概念，做成全台 5 處正在運作的家。
+        </p>
+      </article>
+
+      <article class="instructor">
+        <div class="instructor__photo" style="background-image: url('../../assets/photos/fb-cft/590x443_d517c23c67.jpg'); background-position: 20% center; background-size: 200%;"></div>
+        <h3 class="instructor__name">江青純</h3>
+        <div class="instructor__role">舒適照顧真功夫 · 講師</div>
+        <p class="instructor__bio">
+          30 年一線照顧資歷。把「零抬舉」「身體力學」「有溫度的觸覺」這些抽象詞，拆解成可重複練習的肌肉記憶。
+        </p>
+      </article>
+
+      <article class="instructor">
+        <div class="instructor__photo" style="background-image: url('../../assets/photos/fb-cft/590x443_ff6d46f5a7.jpg'); background-position: 70% center; background-size: 220%;"></div>
+        <h3 class="instructor__name">郭健中</h3>
+        <div class="instructor__role">高齡全人照顧 · 講師</div>
+        <p class="instructor__bio">
+          肌少症與防跌實務專家。「跌倒」不是運氣，是可預防的鏈條 ── 在課堂上把每一個環節拆開來看。
+        </p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
 <section class="calendar">
   <div class="calendar__inner">
     <div>
       <h2 class="calendar__title">2026 年度課程行事曆</h2>
-      <p class="calendar__sub">完整一年的學習地圖，從入門到進階一次看完</p>
+      <p class="calendar__sub">完整一年的學習地圖 ── 從入門到進階、從台中到嘉義、從教室到現場，一次看完。</p>
     </div>
-    <a class="btn btn--primary" href="#">下載行事曆 <span class="btn__arrow">↓</span></a>
+    <a class="btn btn--primary" href="#">下載行事曆 PDF <span class="btn__arrow">↓</span></a>
   </div>
 </section>
 
-<section class="modules" id="about">
+<section class="modules" id="modules">
   <div class="container">
-    <div class="eyebrow">AIO 八大模組 · The Curriculum</div>
-    <h2 class="h-section">All in One ──<br>一張地圖，八個方向</h2>
-    <p style="font-size: 17px; line-height: 1.75; color: var(--text-body); max-width: 720px;">
-      CFT 為照顧人才設計的不是片段技能，是一整套可長期走的路徑。八大模組從「人本照顧」起手，向上長成設計師、教練、在宅醫師。
-    </p>
+    <div class="modules__intro">
+      <div>
+        <div class="eyebrow">AIO 八大模組 · The Curriculum</div>
+        <h2 class="h-section">All in One ──<br>一張地圖，<br>八個方向</h2>
+      </div>
+      <p class="modules__lede">
+        CFT 為照顧人才設計的不是片段技能，是一整套可長期走的路徑。八大模組從「人本照顧」起手，向上長成設計師、教練、在宅醫師。
+      </p>
+    </div>
 
     <div class="modules__grid">
-      <article class="module"><div class="module__no">01</div><h3 class="module__title">人本照顧導論</h3><div class="module__sub">Person-Centered Care</div></article>
-      <article class="module"><div class="module__no">02</div><h3 class="module__title">舒適照顧真功夫</h3><div class="module__sub">Comfort Care Practice</div></article>
-      <article class="module"><div class="module__no">03</div><h3 class="module__title">全方位療癒</h3><div class="module__sub">Holistic Healing</div></article>
-      <article class="module"><div class="module__no">04</div><h3 class="module__title">高齡全人照顧</h3><div class="module__sub">Whole-Person Elder Care</div></article>
-      <article class="module"><div class="module__no">05</div><h3 class="module__title">失智症全人照顧</h3><div class="module__sub">Dementia Whole-Person</div></article>
-      <article class="module"><div class="module__no">06</div><h3 class="module__title">身心障礙全人照顧</h3><div class="module__sub">Disability Whole-Person</div></article>
-      <article class="module"><div class="module__no">07</div><h3 class="module__title">社區共生創新照顧</h3><div class="module__sub">Community Co-living Care</div></article>
-      <article class="module"><div class="module__no">08</div><h3 class="module__title">共學圈</h3><div class="module__sub">Peer Learning Circle</div></article>
+      <article class="module"><div class="module__no">Module 01</div><h3 class="module__title">人本照顧導論</h3><div class="module__sub">Person-Centered Care</div></article>
+      <article class="module"><div class="module__no">Module 02</div><h3 class="module__title">舒適照顧真功夫</h3><div class="module__sub">Comfort Care Practice</div></article>
+      <article class="module"><div class="module__no">Module 03</div><h3 class="module__title">全方位療癒</h3><div class="module__sub">Holistic Healing</div></article>
+      <article class="module"><div class="module__no">Module 04</div><h3 class="module__title">高齡全人照顧</h3><div class="module__sub">Whole-Person Elder Care</div></article>
+      <article class="module"><div class="module__no">Module 05</div><h3 class="module__title">失智症全人照顧</h3><div class="module__sub">Dementia Care</div></article>
+      <article class="module"><div class="module__no">Module 06</div><h3 class="module__title">身心障礙全人照顧</h3><div class="module__sub">Disability Care</div></article>
+      <article class="module"><div class="module__no">Module 07</div><h3 class="module__title">社區共生創新照顧</h3><div class="module__sub">Community Co-living</div></article>
+      <article class="module"><div class="module__no">Module 08</div><h3 class="module__title">共學圈</h3><div class="module__sub">Peer Learning Circle</div></article>
     </div>
   </div>
 </section>
 
-<section class="cta">
+<section class="quote-section">
+  <div class="quote-section__inner">
+    <div class="eyebrow">學員見證 · From the Classroom</div>
+    <h2 class="h-section" style="color: var(--text-on-dark);">最動人的不是新技術，<br>是「我做的事原來這麼重要」</h2>
+    <p class="quote-section__quote">
+      「以前覺得自己只是『照服員』，做這 30 年好像沒什麼了不起。
+      上 CFT 的人本照顧導論第一堂，我突然懂了 ── 我每天碰到的，是別人最脆弱的時刻。
+      這份工作不只是工作，是專業。」
+    </p>
+    <p class="quote-section__attr">
+      <strong>陳秀珍</strong> · AIO 照顧服務員 · 2024 第三屆結業
+    </p>
+  </div>
+</section>
+
+<section class="cta" id="contact">
   <div class="cta__grid">
     <div>
       <h2 class="cta__title">成為 AIO 照顧人才<br>從一堂課開始</h2>
@@ -666,7 +840,7 @@
       <h4>快速連結</h4>
       <ul>
         <li><a href="../p3/">創照服務設計</a></li>
-        <li><a href="#about">關於 CFT</a></li>
+        <li><a href="#modules">關於 CFT</a></li>
         <li><a href="#courses">課程資訊</a></li>
         <li><a href="#">師資群</a></li>
         <li><a href="#">常見問題</a></li>
