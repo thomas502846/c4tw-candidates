@@ -215,6 +215,7 @@ export interface Page {
   };
   layout: (
     | HeroBlock
+    | PageHeaderBlock
     | NewsTickerBlock
     | ContentBlock
     | TimelineBlock
@@ -224,6 +225,16 @@ export interface Page {
     | LogoWallBlock
     | QuoteBlock
     | TwoColumnBlock
+    | NumberedFeaturesBlock
+    | TaCtaBlock
+    | VideoBlockBlock
+    | MissionCirclesBlock
+    | IconFeaturesBlock
+    | StepsBlockBlock
+    | InfographicBlock
+    | TabsBlockBlock
+    | PillarCardsBlock
+    | MapLocationsBlock
     | CtaBannerBlock
     | CallToActionBlock
     | MediaBlock
@@ -461,6 +472,18 @@ export interface HeroBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageHeaderBlock".
+ */
+export interface PageHeaderBlock {
+  title: string;
+  eyebrow?: string | null;
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pageHeader';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "NewsTickerBlock".
  */
 export interface NewsTickerBlock {
@@ -666,7 +689,8 @@ export interface QuoteBlock {
  */
 export interface TwoColumnBlock {
   direction: 'imageLeft' | 'imageRight';
-  variant?: ('standard' | 'hero') | null;
+  variant?: ('standard' | 'hero' | 'quotes' | 'centered') | null;
+  lead?: string | null;
   background?: ('none' | 'surface') | null;
   eyebrow?: string | null;
   image: number | Media;
@@ -702,6 +726,235 @@ export interface TwoColumnBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'twoColumn';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NumberedFeaturesBlock".
+ */
+export interface NumberedFeaturesBlock {
+  eyebrow?: string | null;
+  items?:
+    | {
+        number: string;
+        title: string;
+        text: string;
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'numberedFeatures';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaCtaBlock".
+ */
+export interface TaCtaBlock {
+  variant: 'tiles' | 'photoCards' | 'photoBand';
+  intro?: string | null;
+  cards?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        buttonLabel?: string | null;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'taCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoBlockBlock".
+ */
+export interface VideoBlockBlock {
+  videoUrl?: string | null;
+  poster?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionCirclesBlock".
+ */
+export interface MissionCirclesBlock {
+  variant: 'band' | 'plain';
+  title?: string | null;
+  slogan?: string | null;
+  backgroundImage?: (number | null) | Media;
+  circles?:
+    | {
+        label: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'missionCircles';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IconFeaturesBlock".
+ */
+export interface IconFeaturesBlock {
+  variant: 'cards' | 'pillars';
+  items?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'iconFeatures';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsBlockBlock".
+ */
+export interface StepsBlockBlock {
+  variant: 'cardRow' | 'inline' | 'outline';
+  title?: string | null;
+  items?:
+    | {
+        icon?: (number | null) | Media;
+        title?: string | null;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stepsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InfographicBlock".
+ */
+export interface InfographicBlock {
+  variant: 'venn' | 'ring' | 'radial';
+  eyebrow?: string | null;
+  title?: string | null;
+  body?: string | null;
+  leftLabel?: string | null;
+  rightLabel?: string | null;
+  leftStats?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  rightStats?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  photos?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  nodes?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'infographic';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TabsBlockBlock".
+ */
+export interface TabsBlockBlock {
+  title?: string | null;
+  intro?: string | null;
+  tabs?:
+    | {
+        label: string;
+        image?: (number | null) | Media;
+        pills?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        heading?: string | null;
+        subheading?: string | null;
+        body?: string | null;
+        featuresLabel?: string | null;
+        features?:
+          | {
+              title: string;
+              text?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tabsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PillarCardsBlock".
+ */
+export interface PillarCardsBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  subtitle?: string | null;
+  intro?: string | null;
+  cards?:
+    | {
+        tag?: string | null;
+        icon?: (number | null) | Media;
+        titleMain: string;
+        titleSub?: string | null;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pillarCards';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MapLocationsBlock".
+ */
+export interface MapLocationsBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  subtitle?: string | null;
+  body?: string | null;
+  image?: (number | null) | Media;
+  locations?:
+    | {
+        name: string;
+        nameEn?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mapLocations';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1172,6 +1425,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         hero?: T | HeroBlockSelect<T>;
+        pageHeader?: T | PageHeaderBlockSelect<T>;
         newsTicker?: T | NewsTickerBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
@@ -1181,6 +1435,16 @@ export interface PagesSelect<T extends boolean = true> {
         logoWall?: T | LogoWallBlockSelect<T>;
         quote?: T | QuoteBlockSelect<T>;
         twoColumn?: T | TwoColumnBlockSelect<T>;
+        numberedFeatures?: T | NumberedFeaturesBlockSelect<T>;
+        taCta?: T | TaCtaBlockSelect<T>;
+        videoBlock?: T | VideoBlockBlockSelect<T>;
+        missionCircles?: T | MissionCirclesBlockSelect<T>;
+        iconFeatures?: T | IconFeaturesBlockSelect<T>;
+        stepsBlock?: T | StepsBlockBlockSelect<T>;
+        infographic?: T | InfographicBlockSelect<T>;
+        tabsBlock?: T | TabsBlockBlockSelect<T>;
+        pillarCards?: T | PillarCardsBlockSelect<T>;
+        mapLocations?: T | MapLocationsBlockSelect<T>;
         ctaBanner?: T | CtaBannerBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1219,6 +1483,17 @@ export interface HeroBlockSelect<T extends boolean = true> {
         label?: T;
         url?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageHeaderBlock_select".
+ */
+export interface PageHeaderBlockSelect<T extends boolean = true> {
+  title?: T;
+  eyebrow?: T;
+  image?: T;
   id?: T;
   blockName?: T;
 }
@@ -1360,6 +1635,7 @@ export interface QuoteBlockSelect<T extends boolean = true> {
 export interface TwoColumnBlockSelect<T extends boolean = true> {
   direction?: T;
   variant?: T;
+  lead?: T;
   background?: T;
   eyebrow?: T;
   image?: T;
@@ -1380,6 +1656,225 @@ export interface TwoColumnBlockSelect<T extends boolean = true> {
         id?: T;
       };
   itemsStyle?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NumberedFeaturesBlock_select".
+ */
+export interface NumberedFeaturesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  items?:
+    | T
+    | {
+        number?: T;
+        title?: T;
+        text?: T;
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaCtaBlock_select".
+ */
+export interface TaCtaBlockSelect<T extends boolean = true> {
+  variant?: T;
+  intro?: T;
+  cards?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        buttonLabel?: T;
+        url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoBlockBlock_select".
+ */
+export interface VideoBlockBlockSelect<T extends boolean = true> {
+  videoUrl?: T;
+  poster?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionCirclesBlock_select".
+ */
+export interface MissionCirclesBlockSelect<T extends boolean = true> {
+  variant?: T;
+  title?: T;
+  slogan?: T;
+  backgroundImage?: T;
+  circles?:
+    | T
+    | {
+        label?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IconFeaturesBlock_select".
+ */
+export interface IconFeaturesBlockSelect<T extends boolean = true> {
+  variant?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsBlockBlock_select".
+ */
+export interface StepsBlockBlockSelect<T extends boolean = true> {
+  variant?: T;
+  title?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InfographicBlock_select".
+ */
+export interface InfographicBlockSelect<T extends boolean = true> {
+  variant?: T;
+  eyebrow?: T;
+  title?: T;
+  body?: T;
+  leftLabel?: T;
+  rightLabel?: T;
+  leftStats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  rightStats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  photos?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  nodes?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TabsBlockBlock_select".
+ */
+export interface TabsBlockBlockSelect<T extends boolean = true> {
+  title?: T;
+  intro?: T;
+  tabs?:
+    | T
+    | {
+        label?: T;
+        image?: T;
+        pills?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        heading?: T;
+        subheading?: T;
+        body?: T;
+        featuresLabel?: T;
+        features?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PillarCardsBlock_select".
+ */
+export interface PillarCardsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  subtitle?: T;
+  intro?: T;
+  cards?:
+    | T
+    | {
+        tag?: T;
+        icon?: T;
+        titleMain?: T;
+        titleSub?: T;
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MapLocationsBlock_select".
+ */
+export interface MapLocationsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  subtitle?: T;
+  body?: T;
+  image?: T;
+  locations?:
+    | T
+    | {
+        name?: T;
+        nameEn?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

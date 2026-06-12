@@ -9,15 +9,37 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { CtaBannerBlock } from '@/blocks/CtaBanner/Component'
 import { HeroBlock } from '@/blocks/Hero/Component'
+import { IconFeaturesBlock } from '@/blocks/IconFeatures/Component'
+import { InfographicBlock } from '@/blocks/Infographic/Component'
 import { LogoWallBlock } from '@/blocks/LogoWall/Component'
+import { MapLocationsBlock } from '@/blocks/MapLocations/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { MissionCirclesBlock } from '@/blocks/MissionCircles/Component'
 import { NewsTickerBlock } from '@/blocks/NewsTicker/Component'
+import { NumberedFeaturesBlock } from '@/blocks/NumberedFeatures/Component'
+import { PageHeaderBlock } from '@/blocks/PageHeader/Component'
+import { PillarCardsBlock } from '@/blocks/PillarCards/Component'
 import { QuoteBlock } from '@/blocks/Quote/Component'
 import { StatsCardsBlock } from '@/blocks/StatsCards/Component'
+import { StepsBlockBlock } from '@/blocks/StepsBlock/Component'
+import { TabsBlockBlock } from '@/blocks/TabsBlock/Component'
+import { TaCtaBlock } from '@/blocks/TaCta/Component'
 import { TimelineBlock } from '@/blocks/Timeline/Component'
 import { TwoColumnBlock } from '@/blocks/TwoColumn/Component'
+import { VideoBlockBlock } from '@/blocks/VideoBlock/Component'
 
 export type Locale = 'zh-TW' | 'en'
+
+// 滿版帶狀區塊（Figma 各 band 上下相接、留白由區塊內部 padding 控制）→ 不加 my-16 外距
+const fullBleedBlocks = new Set([
+  'hero',
+  'newsTicker',
+  'pageHeader',
+  'numberedFeatures',
+  'taCta',
+  'videoBlock',
+  'missionCircles',
+])
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const blockComponents: Record<string, React.ComponentType<any>> = {
@@ -28,13 +50,24 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   cta: CallToActionBlock,
   ctaBanner: CtaBannerBlock,
   hero: HeroBlock,
+  iconFeatures: IconFeaturesBlock,
+  infographic: InfographicBlock,
   logoWall: LogoWallBlock,
+  mapLocations: MapLocationsBlock,
   mediaBlock: MediaBlock,
+  missionCircles: MissionCirclesBlock,
   newsTicker: NewsTickerBlock,
+  numberedFeatures: NumberedFeaturesBlock,
+  pageHeader: PageHeaderBlock,
+  pillarCards: PillarCardsBlock,
   quote: QuoteBlock,
   statsCards: StatsCardsBlock,
+  stepsBlock: StepsBlockBlock,
+  tabsBlock: TabsBlockBlock,
+  taCta: TaCtaBlock,
   timeline: TimelineBlock,
   twoColumn: TwoColumnBlock,
+  videoBlock: VideoBlockBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -56,7 +89,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div className={fullBleedBlocks.has(blockType) ? undefined : 'my-16'} key={index}>
                   <Block {...block} locale={locale} disableInnerContainer />
                 </div>
               )

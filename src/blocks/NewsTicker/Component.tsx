@@ -28,11 +28,11 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
   return (
     <aside
       aria-label={locale === 'en' ? 'Latest news' : '最新消息'}
-      className="-mt-16 flex h-[64px] w-full items-center gap-5 overflow-hidden bg-brand-surface md:h-[80px]"
+      className="flex h-[64px] w-full items-center gap-5 overflow-hidden bg-brand-surface md:h-[80px]"
       data-block="newsTicker"
     >
-      {/* 左側固定 label（Figma：#DCD020 pill） */}
-      <span className="ml-4 shrink-0 rounded-[30px] bg-brand-highlight px-5 py-1.5 text-[14px] font-medium tracking-[0.1em] whitespace-nowrap text-brand-ink md:ml-12">
+      {/* 左側固定 label（Figma 110:346：#ADCB59 pill 白字） */}
+      <span className="ml-4 shrink-0 rounded-[30px] bg-brand-lime px-5 py-1.5 text-[14px] font-medium tracking-[0.1em] whitespace-nowrap text-white md:ml-12 md:text-[16px]">
         {locale === 'en' ? 'NEWS' : '最新消息'}
       </span>
 

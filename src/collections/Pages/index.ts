@@ -16,6 +16,17 @@ import { LogoWall } from '../../blocks/LogoWall/config'
 import { Quote } from '../../blocks/Quote/config'
 import { TwoColumn } from '../../blocks/TwoColumn/config'
 import { CtaBanner } from '../../blocks/CtaBanner/config'
+import { PageHeader } from '../../blocks/PageHeader/config'
+import { NumberedFeatures } from '../../blocks/NumberedFeatures/config'
+import { TaCta } from '../../blocks/TaCta/config'
+import { VideoBlock } from '../../blocks/VideoBlock/config'
+import { MissionCircles } from '../../blocks/MissionCircles/config'
+import { IconFeatures } from '../../blocks/IconFeatures/config'
+import { StepsBlock } from '../../blocks/StepsBlock/config'
+import { Infographic } from '../../blocks/Infographic/config'
+import { TabsBlock } from '../../blocks/TabsBlock/config'
+import { PillarCards } from '../../blocks/PillarCards/config'
+import { MapLocations } from '../../blocks/MapLocations/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -84,6 +95,7 @@ export const Pages: CollectionConfig<'pages'> = {
               type: 'blocks',
               blocks: [
                 HeroBlock,
+                PageHeader,
                 NewsTicker,
                 Content,
                 Timeline,
@@ -93,6 +105,16 @@ export const Pages: CollectionConfig<'pages'> = {
                 LogoWall,
                 Quote,
                 TwoColumn,
+                NumberedFeatures,
+                TaCta,
+                VideoBlock,
+                MissionCircles,
+                IconFeatures,
+                StepsBlock,
+                Infographic,
+                TabsBlock,
+                PillarCards,
+                MapLocations,
                 CtaBanner,
                 CallToAction,
                 MediaBlock,

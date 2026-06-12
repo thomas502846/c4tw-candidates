@@ -34,7 +34,15 @@ export const TwoColumn: Block = {
       options: [
         { label: '標準圖文二欄', value: 'standard' },
         { label: '大圖引言（hero：大圖+疊文字卡）', value: 'hero' },
+        { label: '引言卡二欄（quotes：左文＋右標題與綠引言卡，care 個人AIO）', value: 'quotes' },
+        { label: '置中標題＋項目卡（centered：不顯示大圖，training 六大模組）', value: 'centered' },
       ],
+    },
+    {
+      name: 'lead',
+      type: 'text',
+      label:
+        '前導粗體標題（可選；standard＝跨欄置頂兩行 Bold、quotes＝右欄標題、centered＝置中副句；「\\n」換行）',
     },
     {
       name: 'background',

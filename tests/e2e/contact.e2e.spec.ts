@@ -9,9 +9,11 @@ test.describe('聯絡表單', () => {
     await page.goto('/contact')
 
     await page.fill('#contact-name', 'E2E 測試')
+    await page.fill('#contact-organization', 'E2E 測試單位')
+    await page.fill('#contact-phone', '0912345678')
     await page.fill('#contact-email', 'e2e@example.com')
     await page.fill('#contact-message', '這是一則 E2E 自動化測試訊息（dry-run，不會真的寄信）。')
-    // 詢問類別 radio 預設已選 family，不需額外操作
+    // 想諮詢的服務 radio 預設已選 family（家庭照顧服務），不需額外操作
 
     await page.getByRole('button', { name: '送出' }).click()
 
@@ -23,6 +25,7 @@ test.describe('聯絡表單', () => {
     await page.goto('/en/contact')
 
     await page.fill('#contact-name', 'E2E Tester')
+    await page.fill('#contact-organization', 'E2E Test Org')
     await page.fill('#contact-email', 'e2e-en@example.com')
     await page.fill('#contact-message', 'This is an automated E2E test message (dry-run).')
 

@@ -1,0 +1,102 @@
+import React from 'react'
+
+import { Media } from '@/components/Media'
+import { cn } from '@/utilities/ui'
+import type { Media as MediaDoc } from '@/payload-types'
+
+// 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
+export type IconFeatureItem = {
+  icon?: MediaDoc | string | number | null
+  title: string
+  text?: string | null
+  id?: string | null
+}
+
+export type IconFeaturesBlockProps = {
+  blockType: 'iconFeatures'
+  variant?: 'cards' | 'pillars' | null
+  items?: IconFeatureItem[] | null
+}
+
+const ItemIcon: React.FC<{ item: IconFeatureItem; className?: string }> = ({ item, className }) => {
+  if (item.icon && typeof item.icon === 'object') {
+    return (
+      <span className={cn('block shrink-0 overflow-hidden', className)}>
+        <Media resource={item.icon} imgClassName="h-full w-full object-contain" />
+      </span>
+    )
+  }
+  return (
+    <span
+      aria-hidden
+      className={cn('flex shrink-0 items-center justify-center rounded-full bg-brand-lime/30', className)}
+    >
+      <span className="h-1/2 w-1/2 rounded-full border-[3px] border-brand-lime" />
+    </span>
+  )
+}
+
+/**
+ * variant cards：Care 運作步驟列（care-icon 258:640）——4 張米色 #F7F7EB 橫卡
+ * （左 icon ~64 + 右 title Bold 19 / caption 14）
+ */
+const Cards: React.FC<{ items: IconFeatureItem[] }> = ({ items }) => (
+  <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-[30px]">
+    {items.map((item, i) => (
+      <div
+        key={item.id ?? i}
+        className="flex items-center gap-4 rounded-[30px] bg-brand-surface px-6 py-6 lg:min-h-[120px]"
+      >
+        <ItemIcon className="h-14 w-14 lg:h-16 lg:w-16" item={item} />
+        <div>
+          <h3 className="text-[17px] font-bold tracking-[0.05em] text-brand-ink lg:text-[19px]">
+            {item.title}
+          </h3>
+          {item.text && (
+            <p className="mt-1 text-sm leading-[1.5] tracking-[0.05em] text-brand-ink/80">{item.text}</p>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+)
+
+// Care 個人 AIO 五直卡：深淺綠輪替 #8BA98B / #ADCB59
+const pillarBgs = ['bg-brand-green', 'bg-brand-lime']
+
+/**
+ * variant pillars：Care 個人 AIO 五直卡（personal-icon 269:648，卡 185×290）
+ * 白色圓 icon → 白字 Bold 19 → 白字 Caption 14
+ */
+const Pillars: React.FC<{ items: IconFeatureItem[] }> = ({ items }) => (
+  <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:flex md:justify-center md:gap-[54px]">
+    {items.map((item, i) => (
+      <div
+        key={item.id ?? i}
+        className={cn(
+          'flex flex-col items-center gap-4 rounded-[30px] px-6 py-10 text-center md:w-[185px] md:min-h-[290px]',
+          pillarBgs[i % pillarBgs.length],
+        )}
+      >
+        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white">
+          <ItemIcon className="h-9 w-9" item={item} />
+        </span>
+        <h3 className="text-[17px] font-bold leading-[1.5] tracking-[0.05em] text-white md:text-[19px]">
+          {item.title}
+        </h3>
+        {item.text && (
+          <p className="text-sm leading-[1.6] tracking-[0.03em] text-white/95">{item.text}</p>
+        )}
+      </div>
+    ))}
+  </div>
+)
+
+export const IconFeaturesBlock: React.FC<IconFeaturesBlockProps> = ({ variant, items }) => {
+  if (!items || items.length === 0) return null
+  return (
+    <section className="container max-w-[1240px]" data-block="iconFeatures">
+      {variant === 'pillars' ? <Pillars items={items} /> : <Cards items={items} />}
+    </section>
+  )
+}

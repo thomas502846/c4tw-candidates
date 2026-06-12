@@ -9,7 +9,6 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
-import { InnerPageBanner, innerPageBanners } from '@/components/InnerPageBanner'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -71,19 +70,16 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page
 
-  // Care / Training / School 三頁專屬：內頁 banner + 重點色（--page-accent）
-  const banner = innerPageBanners[decodedSlug]
+  // 頁首由 CMS 的 pageHeader block 提供（原 hardcode InnerPageBanner 已移除，避免與 seed 的 pageHeader 疊雙頁首）
+  const hasPageHeader = (layout ?? []).some((block) => block.blockType === 'pageHeader')
 
-  // a11y/SEO：banner 與 hero block 都會渲染 h1；兩者皆無的頁（如 about）補一個 sr-only h1
-  const hasH1 = Boolean(banner) || (layout ?? []).some((block) => block.blockType === 'hero')
+  // a11y/SEO：pageHeader 與 hero block 都會渲染 h1；兩者皆無的頁補一個 sr-only h1
+  const hasH1 = hasPageHeader || (layout ?? []).some((block) => block.blockType === 'hero')
 
   return (
     <article
-      className={banner ? 'pb-24' : 'pt-16 pb-24'}
+      className={hasPageHeader ? 'pb-24' : 'pt-16 pb-24'}
       data-page={decodedSlug}
-      style={
-        banner?.accent ? ({ '--page-accent': banner.accent } as React.CSSProperties) : undefined
-      }
     >
       <PageClient />
       {/* Allows redirects for valid pages too */}
@@ -92,7 +88,6 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
 
       {!hasH1 && <h1 className="sr-only">{page.title}</h1>}
-      {banner && <InnerPageBanner locale={locale} slug={decodedSlug} />}
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} locale={locale} />
     </article>

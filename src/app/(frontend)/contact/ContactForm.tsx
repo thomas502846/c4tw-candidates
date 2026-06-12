@@ -9,15 +9,16 @@ import { CONTACT_CATEGORIES, type ContactCategory } from './categories'
 
 type Locale = 'zh-TW' | 'en'
 
+// 欄位與文案依 Sheet contact 02：您的姓名／單位或稱呼／聯繫電話／電子信箱／想諮詢的服務＋訊息欄
 const COPY = {
   'zh-TW': {
-    taHeading: '想詢問的服務',
-    taHint: '選一個最接近的類別，我們會請對的夥伴回覆您',
+    taHeading: '想諮詢的服務',
     name: '您的姓名',
+    organization: '單位或稱呼',
+    phone: '聯繫電話',
     email: '電子信箱',
-    phone: '聯絡電話（選填）',
     message: '訊息內容',
-    messagePlaceholder: '歡迎留下您的需求或想了解的事，越具體我們越能幫上忙',
+    messagePlaceholder: '歡迎留下您的訊息，我們會協助您找到適合的資源與方向...',
     submit: '送出',
     submitting: '送出中…',
     afterSubmitHint: '送出後我們會在 3 個工作天內回覆您',
@@ -26,12 +27,13 @@ const COPY = {
   },
   en: {
     taHeading: 'What would you like to ask about?',
-    taHint: 'Pick the closest category so the right person can reply',
     name: 'Your name',
+    organization: 'Organization or how to address you',
+    phone: 'Phone',
     email: 'Email',
-    phone: 'Phone (optional)',
     message: 'Message',
-    messagePlaceholder: 'Tell us about your situation or what you would like to know',
+    messagePlaceholder:
+      'Leave us a message — we will help you find the right resources and direction...',
     submit: 'Send',
     submitting: 'Sending…',
     afterSubmitHint: 'We will get back to you within 3 business days',
@@ -42,9 +44,10 @@ const COPY = {
 
 const initialState: ContactFormState = { status: 'idle' }
 
-// Figma contact（41:156）：淺綠底 pill 輸入框、radio 一列選服務、綠底白字 pill 送出鈕
+// Figma contact（41:156 補充版）：白底＋#8BA98B 細邊 pill 輸入框（placeholder 置中）、
+// 方形圓角勾選框一列選服務、#ADCB59 整欄寬 pill 送出鈕
 const pillInputClass =
-  'h-12 w-full rounded-full border border-transparent bg-brand-surface px-5 text-base text-brand-ink placeholder:text-brand-muted transition-colors focus-visible:border-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/30 md:text-sm'
+  'h-[54px] w-full rounded-full border-[1.5px] border-brand-green bg-white px-5 text-center text-base text-brand-ink placeholder:text-brand-ink/60 transition-colors focus-visible:border-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/30 md:h-[62px]'
 
 export const ContactForm: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW' }) => {
   // 送出成功後「再寫一則訊息」用 key 重掛整個表單，連 useActionState 一起歸零
@@ -68,12 +71,6 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
 
   const categoryLabel = (c: (typeof CONTACT_CATEGORIES)[number]) =>
     locale === 'en' ? c.en : c.zh
-  const selected = CONTACT_CATEGORIES.find((c) => c.value === category)
-  const selectedDescription = selected
-    ? locale === 'en'
-      ? selected.enDescription
-      : selected.zhDescription
-    : ''
 
   if (state.status === 'success') {
     return (
@@ -111,7 +108,7 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
         />
       </div>
 
-      {/* 基本欄位：Figma 樣式 = 淺綠底 pill 輸入框，placeholder 即欄位名 */}
+      {/* 基本欄位（Sheet 順序：姓名→單位或稱呼→聯繫電話→電子信箱）；placeholder 即欄位名 */}
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="contact-name" className="sr-only">
@@ -124,6 +121,33 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
             maxLength={100}
             placeholder={t.name}
             autoComplete="name"
+            className={pillInputClass}
+          />
+        </div>
+        <div>
+          <label htmlFor="contact-organization" className="sr-only">
+            {t.organization}
+          </label>
+          <input
+            id="contact-organization"
+            name="organization"
+            maxLength={100}
+            placeholder={t.organization}
+            autoComplete="organization"
+            className={pillInputClass}
+          />
+        </div>
+        <div>
+          <label htmlFor="contact-phone" className="sr-only">
+            {t.phone}
+          </label>
+          <input
+            id="contact-phone"
+            name="phone"
+            type="tel"
+            maxLength={30}
+            placeholder={t.phone}
+            autoComplete="tel"
             className={pillInputClass}
           />
         </div>
@@ -142,33 +166,21 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
             className={pillInputClass}
           />
         </div>
-        <div>
-          <label htmlFor="contact-phone" className="sr-only">
-            {t.phone}
-          </label>
-          <input
-            id="contact-phone"
-            name="phone"
-            type="tel"
-            maxLength={30}
-            placeholder={t.phone}
-            autoComplete="tel"
-            className={pillInputClass}
-          />
-        </div>
       </div>
 
-      {/* 多 TA 入口：Figma = 「想詢問的服務」radio 一列 */}
+      {/* 想諮詢的服務（Sheet：家庭照顧服務｜組織培力｜組織合作｜媒體採訪）
+          Figma 視覺＝方形圓角勾選框一列；行為維持單選（radio，送信邏輯不動） */}
       <fieldset>
-        <legend className="text-brand-ink mb-1 font-medium">{t.taHeading}</legend>
-        <p className="text-brand-muted mb-3 text-sm">{t.taHint}</p>
-        <div className="flex flex-wrap gap-x-6 gap-y-3">
+        <legend className="text-brand-muted mb-3 text-[17px] font-medium tracking-[0.05em] md:text-[19px]">
+          {t.taHeading}
+        </legend>
+        <div className="flex flex-wrap gap-x-5 gap-y-3">
           {CONTACT_CATEGORIES.map((c) => (
             <label
               key={c.value}
               className={cn(
-                'flex cursor-pointer items-center gap-2 text-base transition-colors md:text-sm',
-                category === c.value ? 'text-brand-primary font-medium' : 'text-brand-ink',
+                'flex cursor-pointer items-center gap-2 text-base transition-colors',
+                category === c.value ? 'text-brand-ink font-medium' : 'text-brand-ink',
               )}
             >
               <input
@@ -177,21 +189,16 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
                 value={c.value}
                 checked={category === c.value}
                 onChange={() => setCategory(c.value)}
-                className="accent-brand-primary size-4"
+                className="border-brand-green checked:bg-brand-green size-[18px] shrink-0 appearance-none rounded-[4px] border-[1.5px] bg-white transition-colors focus-visible:ring-brand-primary/40 focus-visible:outline-none focus-visible:ring-2"
                 required
               />
               {categoryLabel(c)}
             </label>
           ))}
         </div>
-        {selectedDescription && (
-          <p className="text-brand-muted mt-2 text-sm" aria-live="polite">
-            {selectedDescription}
-          </p>
-        )}
       </fieldset>
 
-      {/* 訊息內容：Figma = 圓角淺綠框 textarea */}
+      {/* 訊息內容：placeholder 照 Sheet */}
       <div>
         <label htmlFor="contact-message" className="sr-only">
           {t.message}
@@ -203,7 +210,7 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
           rows={6}
           maxLength={3000}
           placeholder={t.messagePlaceholder}
-          className="border-brand-lime/70 text-brand-ink placeholder:text-brand-muted focus-visible:border-brand-primary focus-visible:ring-brand-primary/30 w-full rounded-[20px] border bg-white px-5 py-4 text-base transition-colors focus-visible:outline-none focus-visible:ring-2 md:text-sm"
+          className="border-brand-green text-brand-ink placeholder:text-brand-ink/60 focus-visible:border-brand-primary focus-visible:ring-brand-primary/30 min-h-[200px] w-full rounded-[30px] border-[1.5px] bg-white px-7 py-6 text-base transition-colors focus-visible:outline-none focus-visible:ring-2"
         />
       </div>
 
@@ -220,7 +227,7 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
         <button
           type="submit"
           disabled={isPending}
-          className="bg-brand-primary hover:bg-brand-green inline-flex h-12 w-full max-w-xs items-center justify-center rounded-full font-medium text-white transition-colors disabled:pointer-events-none disabled:opacity-60"
+          className="bg-brand-lime hover:bg-brand-primary inline-flex h-[62px] w-full items-center justify-center rounded-full text-[17px] font-medium tracking-[0.1em] text-white transition-colors disabled:pointer-events-none disabled:opacity-60 md:h-[70px] md:text-[19px]"
         >
           {isPending ? t.submitting : t.submit}
         </button>

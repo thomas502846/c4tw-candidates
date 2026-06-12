@@ -7,7 +7,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { generateMeta } from '@/utilities/generateMeta'
 
-import { ContactForm } from '../../contact/ContactForm'
+import { ContactSection } from '../../contact/ContactSection'
 import { queryContactPage } from '../../contact/queryContactPage'
 
 const FALLBACK_METADATA: Metadata = {
@@ -38,27 +38,28 @@ export default async function ContactPageEn() {
     <article className="pt-16 pb-24">
       {draft && <LivePreviewListener />}
 
-      {/* Top: CMS-managed intro / contact info blocks for the contact page doc */}
-      {page && (
+      {/* Top: CMS-managed page banner (pageHeader block) */}
+      {page ? (
         <>
           <RenderHero {...page.hero} />
           <RenderBlocks blocks={page.layout} locale="en" />
         </>
+      ) : (
+        /* Fallback green banner when no CMS doc exists (mirrors pageHeader no-image state) */
+        <section className="relative -mt-16 flex h-[260px] flex-col justify-center bg-brand-green md:h-[400px]">
+          <div className="container flex max-w-[1240px] flex-col gap-3.5 pt-2">
+            <h1 className="text-[32px] font-bold tracking-[0.1em] text-white md:text-[40px]">
+              Contact Us
+            </h1>
+            <p className="text-[17px] font-medium uppercase tracking-[0.1em] text-white md:text-[19px]">
+              CONTACT
+            </p>
+          </div>
+        </section>
       )}
 
-      {/* Bottom: fixed contact form (not CMS-managed, per client decision) */}
-      <div className="container mt-12 max-w-3xl">
-        <header className="mb-10">
-          <h1 className="text-brand-green mb-4 text-4xl font-semibold">
-            {page ? 'Write to Us' : 'Contact Us'}
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Whatever your question along the caregiving journey, we are happy to hear from you.
-            Leave a message and we will get back to you within 3 business days.
-          </p>
-        </header>
-        <ContactForm locale="en" />
-      </div>
+      {/* Bottom: form + contact info side by side (form not CMS-managed, per client decision) */}
+      <ContactSection locale="en" />
     </article>
   )
 }

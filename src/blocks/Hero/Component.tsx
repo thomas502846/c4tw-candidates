@@ -47,7 +47,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ images, title, subtitle, c
 
   return (
     <section
-      className="relative -mt-32 h-[420px] w-full overflow-hidden md:h-[640px]"
+      className="relative -mt-16 h-[420px] w-full overflow-hidden md:h-[700px]"
       data-block="hero"
     >
       {/* 輪播底圖 */}
@@ -66,17 +66,18 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ images, title, subtitle, c
       {/* 全幅遮罩（Figma rgba(50,50,50,0.7)，取較透值保照片可辨） */}
       <div aria-hidden className="absolute inset-0 bg-[rgba(50,50,50,0.5)]" />
 
-      {/* 中央標語 */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-5 px-6 text-center text-white md:gap-6">
+      {/* 中央標語：兩行同級 H2 樣式（Figma Bold 36 / lh 60 / tracking 5.4px，兩行置中壓圖） */}
+      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-1 px-6 text-center text-white">
         {title && (
-          <h1 className="text-[24px] font-bold leading-[1.7] tracking-[0.15em] md:text-[36px] md:leading-[60px]">
+          <h1 className="text-[22px] font-bold leading-[1.9] tracking-[0.15em] md:text-[36px] md:leading-[60px]">
             {title}
+            {subtitle && (
+              <>
+                <br />
+                <span>{subtitle}</span>
+              </>
+            )}
           </h1>
-        )}
-        {subtitle && (
-          <p className="max-w-[36rem] text-[15px] leading-[1.9] tracking-[0.1em] md:text-[17px]">
-            {subtitle}
-          </p>
         )}
         {cta?.label && cta?.url && (
           <a

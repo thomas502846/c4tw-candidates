@@ -7,7 +7,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { generateMeta } from '@/utilities/generateMeta'
 
-import { ContactForm } from './ContactForm'
+import { ContactSection } from './ContactSection'
 import { queryContactPage } from './queryContactPage'
 
 const FALLBACK_METADATA: Metadata = {
@@ -38,27 +38,28 @@ export default async function ContactPage() {
     <article className="pt-16 pb-24">
       {draft && <LivePreviewListener />}
 
-      {/* 上方：CMS contact doc 的介紹／聯絡資訊區塊（客戶可在後台維護） */}
-      {page && (
+      {/* 上方：CMS contact doc 的頁首 Banner（pageHeader block，客戶可在後台換圖） */}
+      {page ? (
         <>
           <RenderHero {...page.hero} />
           <RenderBlocks blocks={page.layout} locale="zh-TW" />
         </>
+      ) : (
+        /* CMS 無資料時的 fallback 綠帶（樣式同 pageHeader 無圖狀態） */
+        <section className="relative -mt-16 flex h-[260px] flex-col justify-center bg-brand-green md:h-[400px]">
+          <div className="container flex max-w-[1240px] flex-col gap-3.5 pt-2">
+            <h1 className="text-[32px] font-bold tracking-[0.1em] text-white md:text-[40px]">
+              聯絡我們
+            </h1>
+            <p className="text-[17px] font-medium uppercase tracking-[0.1em] text-white md:text-[19px]">
+              CONTACT
+            </p>
+          </div>
+        </section>
       )}
 
-      {/* 下方：固定的聯絡表單（不入 CMS，客戶定案） */}
-      <div className="container mt-12 max-w-3xl">
-        <header className="mb-10">
-          <h1 className="text-brand-green mb-4 text-4xl font-semibold">
-            {page ? '寫信給我們' : '聯絡我們'}
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            照顧的路上有任何想問的，都歡迎寫信給我們。留下訊息後，我們會在 3
-            個工作天內回覆您。
-          </p>
-        </header>
-        <ContactForm locale="zh-TW" />
-      </div>
+      {/* 下方：表單＋聯絡資訊左右並排（Figma Frame 120；表單不入 CMS，客戶定案） */}
+      <ContactSection locale="zh-TW" />
     </article>
   )
 }

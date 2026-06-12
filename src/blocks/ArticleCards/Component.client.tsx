@@ -53,12 +53,12 @@ const Card: React.FC<{ card: ArticleCardData }> = ({ card }) => {
         // eslint-disable-next-line @next/next/no-img-element
         <img
           alt={card.imageAlt || card.title}
-          className="h-[140px] w-full rounded-[16px] object-cover"
+          className="h-[130px] w-full object-cover"
           loading="lazy"
           src={card.imageUrl}
         />
       ) : (
-        <div aria-hidden className="h-[140px] w-full rounded-[16px] bg-brand-surface" />
+        <div aria-hidden className="h-[130px] w-full bg-brand-surface" />
       )}
       <h3 className="line-clamp-2 text-justify text-[17px] font-medium leading-[28px] tracking-[0.1em] text-brand-ink md:text-[19px]">
         {card.title}
@@ -71,13 +71,14 @@ const Card: React.FC<{ card: ArticleCardData }> = ({ card }) => {
     </>
   )
 
+  // Figma 217:601：drop-shadow 4px 4px 3.5px rgba(139,169,139,0.5) 綠色系陰影
   const cardClassName =
-    'flex flex-col gap-4 rounded-[30px] bg-white p-6 shadow-[4px_4px_12px_rgba(139,169,139,0.4)] transition-shadow'
+    'flex flex-col gap-4 rounded-[30px] bg-white p-6 shadow-[4px_4px_3.5px_rgba(139,169,139,0.5)] transition-shadow'
 
   if (card.url) {
     return (
       <a
-        className={`${cardClassName} hover:shadow-[4px_4px_16px_rgba(139,169,139,0.6)]`}
+        className={`${cardClassName} hover:shadow-[4px_4px_10px_rgba(139,169,139,0.6)]`}
         href={card.url}
         {...(card.url.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       >

@@ -76,6 +76,7 @@ async function resolveSender(): Promise<string> {
 
 function buildEmailBody(data: {
   name: string
+  organization: string
   email: string
   phone: string
   category: string
@@ -86,10 +87,11 @@ function buildEmailBody(data: {
   return [
     '官網聯絡表單收到一則新訊息：',
     '',
-    `姓名：${data.name}`,
-    `Email：${data.email}`,
-    `電話：${data.phone || '（未填）'}`,
-    `詢問類別：${categoryLabel}`,
+    `您的姓名：${data.name}`,
+    `單位或稱呼：${data.organization || '（未填）'}`,
+    `聯繫電話：${data.phone || '（未填）'}`,
+    `電子信箱：${data.email}`,
+    `想諮詢的服務：${categoryLabel}`,
     '',
     '訊息內容：',
     data.message,
@@ -140,6 +142,7 @@ export async function submitContactForm(
 
   // 3. 欄位驗證
   const name = (formData.get('name') ?? '').toString().trim()
+  const organization = (formData.get('organization') ?? '').toString().trim()
   const email = (formData.get('email') ?? '').toString().trim()
   const phone = (formData.get('phone') ?? '').toString().trim()
   const category = (formData.get('category') ?? '').toString().trim()
@@ -152,7 +155,7 @@ export async function submitContactForm(
     return { status: 'error', message: MSG.invalidEmail }
   }
 
-  const body = buildEmailBody({ name, email, phone, category, message, ip })
+  const body = buildEmailBody({ name, organization, email, phone, category, message, ip })
   const subject = `【官網聯絡表單】${CATEGORY_ZH_LABELS[category] ?? category}－${name}`
 
   // 4. Dry run（E2E 測試用）：不真寄信，把 payload 印到 server log
