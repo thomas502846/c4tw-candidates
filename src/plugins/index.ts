@@ -50,29 +50,26 @@ export const plugins: Plugin[] = [
     generateTitle,
     generateURL,
   }),
-  // S3 media storage：以 S3_BUCKET 環境變數 gate。
-  // 未設定 → fallback 本機磁碟（public/media）；設定後 → 上傳到 S3（c4twweb-media, ap-northeast-2）。
-  // 認證走 AWS SDK default credential chain（本機 profile / EC2 instance role），
-  // 也可用 S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY 明確指定。
-  ...(process.env.S3_BUCKET
-    ? [
-        s3Storage({
-          collections: {
-            media: true,
-          },
-          bucket: process.env.S3_BUCKET,
-          config: {
-            region: process.env.S3_REGION || 'ap-northeast-2',
-            ...(process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY
-              ? {
-                  credentials: {
-                    accessKeyId: process.env.S3_ACCESS_KEY_ID,
-                    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-                  },
-                }
-              : {}),
-          },
-        }),
-      ]
-    : []),
+  // S3 media storage：plugin 永遠註冊、用 enabled 開關（S3_BUCKET 未設 → 停用，fallback 本機磁碟）。
+  // ⚠️ 不可用展開運算子把 plugin 從陣列中拿掉——config 形狀會隨 env 改變，
+  // importMap（build 時生成）就會缺 storage-s3 的 client 元件，admin 在啟用 S3 的環境整個無聲空白。
+  // 認證走 AWS SDK default credential chain，也可用 S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY 明確指定。
+  s3Storage({
+    enabled: Boolean(process.env.S3_BUCKET),
+    collections: {
+      media: true,
+    },
+    bucket: process.env.S3_BUCKET || 'placeholder-disabled',
+    config: {
+      region: process.env.S3_REGION || 'ap-northeast-2',
+      ...(process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY
+        ? {
+            credentials: {
+              accessKeyId: process.env.S3_ACCESS_KEY_ID,
+              secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+            },
+          }
+        : {}),
+    },
+  }),
 ]
