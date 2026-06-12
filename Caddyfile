@@ -1,0 +1,24 @@
+# c4twweb Caddy 設定
+# 自動 HTTPS（Let's Encrypt）：DNS 指到本機後自動簽憑證。
+# DNS 生效前可先用 http://52.78.36.24/（最下面的 :80 default site）驗證。
+
+{
+	email thomas502846@gmail.com
+}
+
+carefortaiwan.com.tw, www.carefortaiwan.com.tw {
+	encode zstd gzip
+	reverse_proxy app:3000
+}
+
+staging.carefortaiwan.com.tw {
+	encode zstd gzip
+	# staging 一律 noindex（app 層的 NOINDEX=true 也會送，這裡是雙保險）
+	header X-Robots-Tag "noindex, nofollow"
+	reverse_proxy app:3000
+}
+
+# default site：未匹配網域（含直接打 IP）走 HTTP 反代，DNS 生效前用來驗證
+:80 {
+	reverse_proxy app:3000
+}

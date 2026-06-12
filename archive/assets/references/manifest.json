@@ -1,0 +1,1164 @@
+[
+  {
+    "title": "Aesop | 獻給肌膚、頭髮、身體的護理配方",
+    "font": "SuisseIntl, sans-serif",
+    "bg": "rgb(255, 254, 242)",
+    "color": "rgb(51, 51, 51)",
+    "h1": [
+      {
+        "tag": "H1",
+        "text": "全新推出：爍亮手部精華",
+        "font": "SuisseIntl, sans-serif",
+        "size": "30px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "爍亮手部精華",
+        "font": "SuisseIntl, sans-serif",
+        "size": "30px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "疊香護手，加乘呵護",
+        "font": "SuisseIntl, sans-serif",
+        "size": "30px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "獻給母親形象角色的體貼之禮",
+        "font": "Zapf-Humanist, sans-serif",
+        "size": "31px",
+        "weight": "400"
+      }
+    ],
+    "url": "https://www.aesop.com/tw/",
+    "slug": "aesop"
+  },
+  {
+    "title": "歡迎光臨掌生穀粒",
+    "font": "\"Lucida Sans Unicode\", \"Lucida Grande\", 微軟正黑體, Geneva, Verdana, sans-serif",
+    "bg": "rgb(250, 245, 235)",
+    "color": "rgb(98, 98, 90)",
+    "h": [
+      {
+        "tag": "H1",
+        "text": "",
+        "font": "\"Lucida Sans Unicode\", \"Lucida Grande\", 微軟正黑體, Geneva, Verdana, sans-serif",
+        "size": "15px",
+        "weight": "400"
+      },
+      {
+        "tag": "H1",
+        "text": "",
+        "font": "\"Lucida Sans Unicode\", \"Lucida Grande\", 微軟正黑體, Geneva, Verdana, sans-serif",
+        "size": "15px",
+        "weight": "400"
+      }
+    ],
+    "url": "https://www.greeninhand.com/main.php",
+    "slug": "greeninhand"
+  },
+  {
+    "title": "掌生穀粒購物商城",
+    "font": "\"SF Pro TC\", \"SF Pro Text\", \"PingFang TC\", \"Segoe UI\", SegoeUI, \"Microsoft JhengHei\", 微軟正黑體, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "bg": "rgb(255, 255, 255)",
+    "color": "rgb(51, 51, 51)",
+    "h": [],
+    "url": "https://shop.greeninhand.com/",
+    "slug": "greeninhand-shop"
+  },
+  {
+    "title": "Fieldoffice Architects - 田中央聯合建築師事務所",
+    "font": "arial",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(0, 0, 0)",
+    "h": [
+      {
+        "tag": "H2",
+        "text": "Magazine / a+tec 23 / Fieldoffice in Hsinchu 雜誌專刊 / 實構築 季刊 2",
+        "font": "arial",
+        "size": "13px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "NTHU Heritage Museum 國立清華大學捷英文物館 2018-2024",
+        "font": "arial",
+        "size": "13px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "NTHU Literature Museum 國立清華大學王默人周安儀文學館 2018-2024",
+        "font": "arial",
+        "size": "13px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "Urban Green Gateway of NTHU 國立清華大學校門口城市綠門戶 2019-2022",
+        "font": "arial",
+        "size": "13px",
+        "weight": "700"
+      }
+    ],
+    "url": "http://www.fieldoffice-architects.com/",
+    "slug": "fieldoffice"
+  },
+  {
+    "title": "春池玻璃 Spring Pool Glass Official Site | 春池玻璃官方網站",
+    "font": "\"Open Sans\", sans-serif",
+    "bg": "rgb(255, 255, 255)",
+    "color": "rgb(119, 119, 119)",
+    "h": [
+      {
+        "tag": "H2",
+        "text": "關於春池玻璃",
+        "font": "\"Open Sans\", sans-serif",
+        "size": "24px",
+        "weight": "600"
+      },
+      {
+        "tag": "H2",
+        "text": "環境友善大地",
+        "font": "\"Open Sans\", sans-serif",
+        "size": "24px",
+        "weight": "600"
+      },
+      {
+        "tag": "H2",
+        "text": "媒體報導",
+        "font": "\"Open Sans\", sans-serif",
+        "size": "24px",
+        "weight": "600"
+      },
+      {
+        "tag": "H2",
+        "text": "最新消息",
+        "font": "\"Open Sans\", sans-serif",
+        "size": "24px",
+        "weight": "600"
+      }
+    ],
+    "url": "https://springpoolglass.com/",
+    "slug": "springpool"
+  },
+  {
+    "title": "W Glass Project",
+    "font": "\"PingFang TC\", \"PingFang SC\", \"Noto Sans TC\", \"Microsoft JhengHei\", \"Microsoft YaHei\", \"Hiragino Sans GB\", Helvetica, Roboto, Arial, \"sans-serif\"",
+    "bg": "rgb(255, 255, 255)",
+    "color": "rgb(51, 51, 51)",
+    "h": [],
+    "url": "https://www.glasspoolstore.com/pages/w-glass-project",
+    "slug": "wglass"
+  },
+  {
+    "title": "MUJI HOTEL GINZA",
+    "font": "HelveticaNeueBold, HelveticaNeue-Bold, \"Helvetica Neue Bold\", \"Helvetica Neue\", 見出ゴMB31, \"ヒラギノ角ゴ ProN W3\", HiraKakuProN-W3, \"Hiragino Kaku Gothic ProN\", 游ゴシック, \"Yu Gothic\", 游ゴシック体, YuGothic, Helvetica, Arial, sans-serif",
+    "bg": "rgb(255, 255, 255)",
+    "color": "rgb(0, 0, 0)",
+    "h": [
+      {
+        "tag": "H1",
+        "text": "",
+        "font": "HelveticaNeueBold, HelveticaNeue-Bold, \"Helvetica Neue Bold\", \"Helvetica Neue\", 見出ゴMB31, \"ヒラギノ角ゴ ProN W3\", HiraKakuProN-W3, \"Hiragino Kaku Gothic ProN\", 游ゴシック, \"Yu Gothic\", 游ゴシック体, YuGothic, Helvetica, Arial, sans-serif",
+        "size": "28px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "NEWS",
+        "font": "HelveticaNeueBold, HelveticaNeue-Bold, \"Helvetica Neue Bold\", \"Helvetica Neue\", 見出ゴMB31, \"ヒラギノ角ゴ ProN W3\", HiraKakuProN-W3, \"Hiragino Kaku Gothic ProN\", 游ゴシック, \"Yu Gothic\", 游ゴシック体, YuGothic, Helvetica, Arial, sans-serif",
+        "size": "14px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "LOCATION",
+        "font": "HelveticaNeueBold, HelveticaNeue-Bold, \"Helvetica Neue Bold\", \"Helvetica Neue\", 見出ゴMB31, \"ヒラギノ角ゴ ProN W3\", HiraKakuProN-W3, \"Hiragino Kaku Gothic ProN\", 游ゴシック, \"Yu Gothic\", 游ゴシック体, YuGothic, Helvetica, Arial, sans-serif",
+        "size": "24px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "ROOMS",
+        "font": "HelveticaNeueBold, HelveticaNeue-Bold, \"Helvetica Neue Bold\", \"Helvetica Neue\", 見出ゴMB31, \"ヒラギノ角ゴ ProN W3\", HiraKakuProN-W3, \"Hiragino Kaku Gothic ProN\", 游ゴシック, \"Yu Gothic\", 游ゴシック体, YuGothic, Helvetica, Arial, sans-serif",
+        "size": "24px",
+        "weight": "700"
+      }
+    ],
+    "url": "https://hotel.muji.com/ginza/en/",
+    "slug": "muji-hotel-en"
+  },
+  {
+    "title": "Home - Kinfolk",
+    "font": "Kinfolk-Serif-Text, serif",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(0, 0, 0)",
+    "h": [
+      {
+        "tag": "H1",
+        "text": "ISSUE 59",
+        "font": "Kinfolk-Serif-Deck, serif",
+        "size": "50px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "THE CLEAN ISSUE",
+        "font": "Kinfolk-Serif-Deck, serif",
+        "size": "50px",
+        "weight": "400"
+      },
+      {
+        "tag": "H1",
+        "text": "HOME TOUR: STERREKOPJE",
+        "font": "Kinfolk-Serif-Display, serif",
+        "size": "20px",
+        "weight": "400"
+      }
+    ],
+    "url": "https://kinfolk.com/",
+    "slug": "kinfolk"
+  },
+  {
+    "title": "里山十帖 – 里山十帖の日々をお伝えする公式ブログ「里山ジャーナル」。春夏秋冬、季節の物語をお届けします。ぜひご覧下さい。",
+    "font": "\"Yu Gothic\", YuGothic, \"ヒラギノ角ゴ ProN W3\", \"Hiragino Kaku Gothic ProN\", Arial, メイリオ, Meiryo, sans-serif",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(0, 0, 0)",
+    "h": [
+      {
+        "tag": "H1",
+        "text": "",
+        "font": "\"Yu Gothic\", YuGothic, \"ヒラギノ角ゴ ProN W3\", \"Hiragino Kaku Gothic ProN\", Arial, メイリオ, Meiryo, sans-serif",
+        "size": "10px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "さとやまからはじまる十の物語\n「里山十帖」",
+        "font": "\"Yu Gothic\", YuGothic, \"ヒラギノ角ゴ ProN W3\", \"Hiragino Kaku Gothic ProN\", Arial, メイリオ, Meiryo, sans-serif",
+        "size": "10px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "Food\nお食事について",
+        "font": "\"Yu Gothic\", YuGothic, \"ヒラギノ角ゴ ProN W3\", \"Hiragino Kaku Gothic ProN\", Arial, メイリオ, Meiryo, sans-serif",
+        "size": "10px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "Rooms\n客室について",
+        "font": "\"Yu Gothic\", YuGothic, \"ヒラギノ角ゴ ProN W3\", \"Hiragino Kaku Gothic ProN\", Arial, メイリオ, Meiryo, sans-serif",
+        "size": "10px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "Facility\n施設について",
+        "font": "\"Yu Gothic\", YuGothic, \"ヒラギノ角ゴ ProN W3\", \"Hiragino Kaku Gothic ProN\", Arial, メイリオ, Meiryo, sans-serif",
+        "size": "10px",
+        "weight": "400"
+      }
+    ],
+    "imgs_count": 12,
+    "imgs_sample": [
+      {
+        "src": "https://www.satoyama-jujo.com/wp-content/themes/satoyamajujo/images/logo_01.png",
+        "alt": "里山十帖 Satoyama jujo",
+        "w": 352,
+        "h": 205
+      },
+      {
+        "src": "https://www.satoyama-jujo.com/wp-content/themes/satoyamajujo/images/text_journal_01.png",
+        "alt": "Satoyama journal",
+        "w": 854,
+        "h": 70
+      },
+      {
+        "src": "https://www.satoyama-jujo.com/wp-content/uploads/2023/04/top_kv_01-scaled.jpg",
+        "alt": "",
+        "w": 2560,
+        "h": 1600
+      },
+      {
+        "src": "https://www.satoyama-jujo.com/wp-content/uploads/2023/04/top_kv_02-scaled.jpg",
+        "alt": "",
+        "w": 2560,
+        "h": 1600
+      },
+      {
+        "src": "https://www.satoyama-jujo.com/wp-content/uploads/2023/04/top_kv_03-scaled.jpg",
+        "alt": "",
+        "w": 2560,
+        "h": 1600
+      },
+      {
+        "src": "https://www.satoyama-jujo.com/wp-content/uploads/2023/04/top_kv_04-scaled.jpg",
+        "alt": "",
+        "w": 2560,
+        "h": 1600
+      },
+      {
+        "src": "https://www.satoyama-jujo.com/wp-content/uploads/2023/04/top_kv_05-scaled.jpg",
+        "alt": "",
+        "w": 2560,
+        "h": 1600
+      },
+      {
+        "src": "https://www.satoyama-jujo.com/wp-content/themes/satoyamajujo/images/logo_01.png",
+        "alt": "里山十帖 Satoyama jujo",
+        "w": 352,
+        "h": 205
+      }
+    ],
+    "url": "https://satoyama-jujo.com/",
+    "slug": "satoyama-jujo"
+  },
+  {
+    "slug": "ishinomaki-lab",
+    "url": "https://ishinomaki-lab.com/",
+    "error": "Page.goto: Timeout 35000ms exceeded.\nCall log:\n  - navigating to \"https://ishinomaki-lab.com/\", waiting until \"domcontentloaded\"\n"
+  },
+  {
+    "title": "D&DEPARTMENT",
+    "font": "\"ヒラギノUD角ゴ W5 JIS2004\", \"ヒラギノUD角ゴ ProN\", \"ヒラギノUD角ゴ StdN\", sans-serif",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(0, 0, 0)",
+    "h": [
+      {
+        "tag": "H1",
+        "text": "\n\t\t\t\t\t買う\n\t\t\t\t\tSTORE\n\t\t\t\t",
+        "font": "\"ヒラギノUD角ゴ W5 JIS2004\", \"ヒラギノUD角ゴ ProN\", \"ヒラギノUD角ゴ StdN\", sans-serif",
+        "size": "16px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "季節のおすすめ",
+        "font": "Amiri, \"ヒラギノ明朝 W2 JIS2004\", \"ヒラギノ明朝 ProN\", \"ヒラギノ明朝 StdN\", serif",
+        "size": "36px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "新入荷・再入荷",
+        "font": "Amiri, \"ヒラギノ明朝 W2 JIS2004\", \"ヒラギノ明朝 ProN\", \"ヒラギノ明朝 StdN\", serif",
+        "size": "36px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "ブランドから探す",
+        "font": "Amiri, \"ヒラギノ明朝 W2 JIS2004\", \"ヒラギノ明朝 ProN\", \"ヒラギノ明朝 StdN\", serif",
+        "size": "36px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "都道府県から探す",
+        "font": "Amiri, \"ヒラギノ明朝 W2 JIS2004\", \"ヒラギノ明朝 ProN\", \"ヒラギノ明朝 StdN\", serif",
+        "size": "36px",
+        "weight": "400"
+      }
+    ],
+    "imgs_count": 23,
+    "imgs_sample": [
+      {
+        "src": "tps://media.d-department.com/wp/wp-content/uploads/2026/03/REWEAR_26AW_image-3200x1600.jpg",
+        "alt": "d&RE WEAR",
+        "w": 3200,
+        "h": 1600
+      },
+      {
+        "src": "https://media.d-department.com/wp/wp-content/uploads/2020/05/launatablewood_d-490x245.jpg",
+        "alt": "いろいろなスタイルに合わせる LAUAN TABLE",
+        "w": 490,
+        "h": 245
+      },
+      {
+        "src": "media.d-department.com/wp/wp-content/uploads/2026/03/shokudo_kitchen_3200_1600-490x245.jpg",
+        "alt": "D&DEPARTMENTの食の現場で使いつづける　テーブルウェア",
+        "w": 490,
+        "h": 245
+      },
+      {
+        "src": "https://www.d-department.com/client_info/D_DEPARTMENT/itemimage/ITEM/2010000200348_01.jpg",
+        "alt": "Yチェア オーク ソープ仕上げ",
+        "w": 1600,
+        "h": 800
+      },
+      {
+        "src": "https://www.d-department.com/client_info/D_DEPARTMENT/itemimage/ITEM/2010000600245_01.jpg",
+        "alt": "カスタムシェルフ・ローボードW1210・グレー",
+        "w": 3200,
+        "h": 1600
+      },
+      {
+        "src": "https://www.d-department.com/client_info/D_DEPARTMENT/itemimage/ITEM/2010000200532_01.jpg",
+        "alt": "秋田木工スタッキングスツール・ブナ・ウォルナット色",
+        "w": 5161,
+        "h": 2581
+      },
+      {
+        "src": "https://www.d-department.com/client_info/D_DEPARTMENT/itemimage/ITEM/2020009900066_01.jpg",
+        "alt": "d エプロン・リネン・ イエロー",
+        "w": 1600,
+        "h": 800
+      },
+      {
+        "src": "https://www.d-department.com/client_info/D_DEPARTMENT/itemimage/ITEM/2013000300031_01.jpg",
+        "alt": "サイトウ アイロンボード・スタンド式",
+        "w": 1600,
+        "h": 800
+      }
+    ],
+    "url": "https://www.d-department.com/",
+    "slug": "d-department"
+  },
+  {
+    "title": "パタゴニア アウトドアウェア",
+    "font": "\"ヒラギノ角ゴ Pro W3\", \"Hiragino Kaku Gothic Pro W3\", \"ヒラギノ角ゴ Pro\", \"Hiragino Kaku Gothic Pro\", ヒラギノ角ゴ, \"Hiragino Kaku Gothic\", \"游ゴシック Medium\", 游ゴシック体, YuGothic, \"Yu Gothic Medium\", Osaka, メイリオ, Meiryo, \"Hiragino Sans\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"Liberation Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(0, 0, 0)",
+    "h": [
+      {
+        "tag": "H2",
+        "text": "アクティビズム",
+        "font": "\"ヒラギノ角ゴ Pro W6\", \"ヒラギノ角ゴ Pro W3\", \"Hiragino Kaku Gothic Pro W6\", \"ヒラギノ角ゴ Pro\", \"Hiragino Kaku Gothic Pro\", ヒラギノ角ゴ, \"Hiragino Kaku Gothic\", \"游ゴシック Medium\", 游ゴシック体, YuGothic, \"Yu Gothic Medium\", Osaka, メイリオ, Meiryo, \"Hiragino Sans\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"Liberation Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": "38.4px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "ストーリー",
+        "font": "\"ヒラギノ角ゴ Pro W6\", \"ヒラギノ角ゴ Pro W3\", \"Hiragino Kaku Gothic Pro W6\", \"ヒラギノ角ゴ Pro\", \"Hiragino Kaku Gothic Pro\", ヒラギノ角ゴ, \"Hiragino Kaku Gothic\", \"游ゴシック Medium\", 游ゴシック体, YuGothic, \"Yu Gothic Medium\", Osaka, メイリオ, Meiryo, \"Hiragino Sans\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"Liberation Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": "38.4px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "イベント",
+        "font": "\"ヒラギノ角ゴ Pro W6\", \"ヒラギノ角ゴ Pro W3\", \"Hiragino Kaku Gothic Pro W6\", \"ヒラギノ角ゴ Pro\", \"Hiragino Kaku Gothic Pro\", ヒラギノ角ゴ, \"Hiragino Kaku Gothic\", \"游ゴシック Medium\", 游ゴシック体, YuGothic, \"Yu Gothic Medium\", Osaka, メイリオ, Meiryo, \"Hiragino Sans\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"Liberation Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": "38.4px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "もっと見る",
+        "font": "\"ヒラギノ角ゴ Pro W6\", \"ヒラギノ角ゴ Pro W3\", \"Hiragino Kaku Gothic Pro W6\", \"ヒラギノ角ゴ Pro\", \"Hiragino Kaku Gothic Pro\", ヒラギノ角ゴ, \"Hiragino Kaku Gothic\", \"游ゴシック Medium\", 游ゴシック体, YuGothic, \"Yu Gothic Medium\", Osaka, メイリオ, Meiryo, \"Hiragino Sans\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"Liberation Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": "38.4px",
+        "weight": "700"
+      },
+      {
+        "tag": "H1",
+        "text": "キャプリーン・クール・サン\n",
+        "font": "\"ヒラギノ角ゴ Pro W3\", \"Hiragino Kaku Gothic Pro W3\", \"ヒラギノ角ゴ Pro\", \"Hiragino Kaku Gothic Pro\", ヒラギノ角ゴ, \"Hiragino Kaku Gothic\", \"游ゴシック Medium\", 游ゴシック体, YuGothic, \"Yu Gothic Medium\", Osaka, メイリオ, Meiryo, \"Hiragino Sans\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"Liberation Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": "51.2px",
+        "weight": "700"
+      }
+    ],
+    "imgs_count": 14,
+    "imgs_sample": [
+      {
+        "src": "red/default/dwe4deb78b/images/JP-images/homepage/S26_home_caplinecoolsun.jpg?q=70&sw=2000&",
+        "alt": "",
+        "w": 1908,
+        "h": 1073
+      },
+      {
+        "src": "ed/default/dw628febaa/images/JP-images/homepage/s26_sq_mens_rodrigo_manns.jpg?q=85&sw=425&",
+        "alt": "",
+        "w": 422,
+        "h": 422
+      },
+      {
+        "src": "d/default/dw9d1bce72/images/JP-images/homepage/s26_sq_womens_eric_bissell.jpg?q=85&sw=425&",
+        "alt": "",
+        "w": 422,
+        "h": 422
+      },
+      {
+        "src": "Shared/default/dw14b993b0/images/JP-images/homepage/s26_sq_kids_ash_adams.jpg?q=85&sw=425&",
+        "alt": "",
+        "w": 422,
+        "h": 422
+      },
+      {
+        "src": "hared/default/dw3454292b/images/JP-images/homepage/s26_pacs_steven_gnam_2.jpg?q=85&sw=425&",
+        "alt": "",
+        "w": 422,
+        "h": 422
+      },
+      {
+        "src": "y-Sites-PatagoniaShared/default/dw3af4badb/routing-tile/worn-wear-routing.jpg?q=85&sw=425&",
+        "alt": "",
+        "w": 422,
+        "h": 281
+      },
+      {
+        "src": "efault/dw823d23c4/sports/trail-running/s26_trailstoke-topshop-M-multilink.jpg?q=85&sw=590&",
+        "alt": "",
+        "w": 566,
+        "h": 566
+      },
+      {
+        "src": "tes-PatagoniaShared/default/dwd9e37d69/images/JP-images/homepage/s26_hike.jpg?q=85&sw=590&",
+        "alt": "",
+        "w": 566,
+        "h": 377
+      }
+    ],
+    "url": "https://www.patagonia.jp/",
+    "slug": "patagonia-jp"
+  },
+  {
+    "title": "SOU・SOU netshop ― \"Creating New Japanese Culture\"",
+    "font": "\"Noto Serif JP\", \"Noto Serif Japanese\", serif",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(34, 34, 34)",
+    "h": [
+      {
+        "tag": "H1",
+        "text": "SOU・SOU netshop\n            SOU・SOU netshop\n\n              ",
+        "font": "\"Noto Serif JP\", \"Noto Serif Japanese\", serif",
+        "size": "32px",
+        "weight": "700"
+      },
+      {
+        "tag": "H2",
+        "text": "New\nSummer Yosooi",
+        "font": "\"Noto Serif JP\", \"Noto Serif Japanese\", serif",
+        "size": "26.6px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "Store Info",
+        "font": "\"Noto Serif JP\", \"Noto Serif Japanese\", serif",
+        "size": "26.6px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "\nYousou. Summer",
+        "font": "\"Noto Serif JP\", \"Noto Serif Japanese\", serif",
+        "size": "26.6px",
+        "weight": "400"
+      },
+      {
+        "tag": "H2",
+        "text": "\ndeportare Summer",
+        "font": "\"Noto Serif JP\", \"Noto Serif Japanese\", serif",
+        "size": "26.6px",
+        "weight": "400"
+      }
+    ],
+    "imgs_count": 27,
+    "imgs_sample": [
+      {
+        "src": "https://www.sousou.co.jp/cdn/shop/files/sousou_logo_pc2_870x.png?v=1756788169",
+        "alt": "",
+        "w": 870,
+        "h": 60
+      },
+      {
+        "src": "ousou.co.jp/cdn/shop/files/1_4x_df1a5670-74d5-4fbe-aeef-96097f9342e9_870x.png?v=1759118105",
+        "alt": "",
+        "w": 870,
+        "h": 204
+      },
+      {
+        "src": "https://www.sousou.co.jp/cdn/shop/files/official_trademark_logo_250x.png?v=1756787844",
+        "alt": "SOU・SOU netshop",
+        "w": 250,
+        "h": 250
+      },
+      {
+        "src": "www.sousou.co.jp/cdn/shop/files/main_kiromo_summer2026_EN_NEW.webp?v=1776920767&width=1920",
+        "alt": "",
+        "w": 1920,
+        "h": 1124
+      },
+      {
+        "src": "https://www.sousou.co.jp/cdn/shop/files/main_shopilist260120.webp?v=1768882844&width=1920",
+        "alt": "",
+        "w": 1920,
+        "h": 1124
+      },
+      {
+        "src": "ttps://www.sousou.co.jp/cdn/shop/files/main_yousou-2026summer.webp?v=1777878817&width=1920",
+        "alt": "",
+        "w": 1300,
+        "h": 761
+      },
+      {
+        "src": "s://www.sousou.co.jp/cdn/shop/files/main_deportare-2026summer.webp?v=1777460912&width=1920",
+        "alt": "",
+        "w": 1300,
+        "h": 761
+      },
+      {
+        "src": "www.sousou.co.jp/cdn/shop/files/main_kiromo_summer2026_EN_NEW.webp?v=1776920767&width=1920",
+        "alt": "",
+        "w": 1920,
+        "h": 1124
+      }
+    ],
+    "url": "https://www.sousou.co.jp/",
+    "slug": "sousou-kyoto"
+  },
+  {
+    "title": "報導者 The Reporter",
+    "font": "\"Roboto Slab\", \"Noto Sans TC\", sans-serif, \"Tauhu Oo\"",
+    "bg": "rgba(0, 0, 0, 0)",
+    "h": [],
+    "imgs_count": 26,
+    "imgs_sample": [
+      {
+        "src": "tps://www.twreporter.org/images/20260504182737-6d4c4fdb9745d819052ab1b379a4a41e-mobile.jpg",
+        "alt": "一個烏克蘭軍人的工作清單，和他們在前線建立的「無人機長城」",
+        "w": 885,
+        "h": 591
+      },
+      {
+        "src": "tps://www.twreporter.org/images/20260413120546-015975661d9cced4c90af23a49acc6b4-mobile.jpg",
+        "alt": "1.25兆的拔河：全球「再武裝」浪潮下，台灣軍購現況、預算僵局卡在哪？",
+        "w": 885,
+        "h": 590
+      },
+      {
+        "src": "tps://www.twreporter.org/images/20260420141313-542bc0442f95f9f805dd7ebd9f1cba65-mobile.jpg",
+        "alt": "全球AI熱潮下，台灣資料中心的用電壓力與電網挑戰",
+        "w": 885,
+        "h": 590
+      },
+      {
+        "src": "tps://www.twreporter.org/images/20260405110919-909ee5d0217a338bcc2adddcc373b66f-mobile.jpg",
+        "alt": "南山公墓保存爭議：府城400年老墓區的最後「清明」",
+        "w": 885,
+        "h": 590
+      },
+      {
+        "src": "tps://www.twreporter.org/images/20260413151420-d411f311a7556bb301e36e6d5aa7d14d-mobile.jpg",
+        "alt": "海量通報、咎責文化、社工出走──剴剴案後，社安網崩解成防禦孤島？",
+        "w": 885,
+        "h": 664
+      },
+      {
+        "src": "tps://www.twreporter.org/images/20260402145904-dd163111a75b8008839e9842f85425fd-mobile.jpg",
+        "alt": "「臺北網紅節」如何連結「大陸尋奇」：一條潛藏的中國統戰宣傳鏈",
+        "w": 885,
+        "h": 510
+      },
+      {
+        "src": "tps://www.twreporter.org/images/20260413120546-015975661d9cced4c90af23a49acc6b4-mobile.jpg",
+        "alt": "1.25兆的拔河：全球「再武裝」浪潮下，台灣軍購現況、預算僵局卡在哪？",
+        "w": 885,
+        "h": 590
+      },
+      {
+        "src": "tps://www.twreporter.org/images/20260504182737-6d4c4fdb9745d819052ab1b379a4a41e-mobile.jpg",
+        "alt": "一個烏克蘭軍人的工作清單，和他們在前線建立的「無人機長城」",
+        "w": 885,
+        "h": 591
+      },
+      {
+        "src": "tps://www.twreporter.org/images/20260420141313-542bc0442f95f9f805dd7ebd9f1cba65-mobile.jpg",
+        "alt": "全球AI熱潮下，台灣資料中心的用電壓力與電網挑戰",
+        "w": 885,
+        "h": 590
+      },
+      {
+        "src": "tps://www.twreporter.org/images/20260405110919-909ee5d0217a338bcc2adddcc373b66f-mobile.jpg",
+        "alt": "南山公墓保存爭議：府城400年老墓區的最後「清明」",
+        "w": 885,
+        "h": 590
+      }
+    ],
+    "url": "https://www.twreporter.org/",
+    "slug": "twreporter"
+  },
+  {
+    "title": "The Big Issue Taiwan",
+    "font": "\"Times New Roman\"",
+    "bg": "rgba(0, 0, 0, 0)",
+    "h": [
+      {
+        "tag": "H2",
+        "text": "The Big Issue Taiwan",
+        "font": "sohne, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "size": "32px"
+      },
+      {
+        "tag": "H2",
+        "text": "大誌雜誌 5月號 第 194 期出刊",
+        "font": "sohne, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "size": "24px"
+      },
+      {
+        "tag": "H2",
+        "text": "大誌雜誌 4月號 第 193 期出刊",
+        "font": "sohne, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "size": "24px"
+      },
+      {
+        "tag": "H2",
+        "text": "大誌雜誌 3月號 第 192 期出刊",
+        "font": "sohne, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "size": "24px"
+      }
+    ],
+    "imgs_count": 1,
+    "imgs_sample": [
+      {
+        "src": "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*J5_AhclbZxt93DLfGLL7wg.jpeg",
+        "alt": "Publication header background image",
+        "w": 704,
+        "h": 704
+      }
+    ],
+    "url": "https://www.bigissue.tw/",
+    "slug": "bigissue-tw"
+  },
+  {
+    "slug": "ishinomaki-lab",
+    "url": "https://ishinomaki-lab.com/",
+    "error": "Page.goto: net::ERR_NAME_NOT_RESOLVED at https://ishinomaki-lab.com/\nCall log:\n  - navigating to \"https://ishinomaki-lab.com/\", waiting until \"domcontentloaded\"\n"
+  },
+  {
+    "slug": "casabrutus",
+    "url": "https://casabrutus.com/",
+    "error": "Page.goto: Navigation to \"https://casabrutus.com/\" is interrupted by another navigation to \"chrome-error://chromewebdata/\"\nCall log:\n  - navigating to \"https://casabrutus.com/\", waiting until \"domcont"
+  },
+  {
+    "slug": "discover-japan",
+    "url": "https://discoverjapan-web.com/",
+    "error": "Page.goto: Navigation to \"https://discoverjapan-web.com/\" is interrupted by another navigation to \"https://casabrutus.com/\"\nCall log:\n  - navigating to \"https://discoverjapan-web.com/\", waiting until "
+  },
+  {
+    "slug": "smile-tw",
+    "url": "https://smile.cw.com.tw/",
+    "error": "Page.goto: net::ERR_NAME_NOT_RESOLVED at https://smile.cw.com.tw/\nCall log:\n  - navigating to \"https://smile.cw.com.tw/\", waiting until \"domcontentloaded\"\n"
+  },
+  {
+    "slug": "seinsights",
+    "url": "https://seinsights.asia/",
+    "error": "Page.goto: net::ERR_CONNECTION_RESET at https://seinsights.asia/\nCall log:\n  - navigating to \"https://seinsights.asia/\", waiting until \"domcontentloaded\"\n"
+  },
+  {
+    "slug": "rightplus",
+    "url": "https://rightplus.org/",
+    "error": "Page.goto: Navigation to \"https://rightplus.org/\" is interrupted by another navigation to \"chrome-error://chromewebdata/\"\nCall log:\n  - navigating to \"https://rightplus.org/\", waiting until \"domconten"
+  },
+  {
+    "slug": "kurashi-techo",
+    "url": "https://www.kurashi-no-techo.com/",
+    "error": "Page.goto: net::ERR_NAME_NOT_RESOLVED at https://www.kurashi-no-techo.com/\nCall log:\n  - navigating to \"https://www.kurashi-no-techo.com/\", waiting until \"domcontentloaded\"\n"
+  },
+  {
+    "slug": "heyground",
+    "url": "https://heyground.com/",
+    "error": "Page.goto: Navigation to \"https://heyground.com/\" is interrupted by another navigation to \"chrome-error://chromewebdata/\"\nCall log:\n  - navigating to \"https://heyground.com/\", waiting until \"domconten"
+  },
+  {
+    "slug": "rootimpact",
+    "url": "https://rootimpact.org/",
+    "error": "Page.goto: Navigation to \"https://rootimpact.org/\" is interrupted by another navigation to \"https://heyground.com/\"\nCall log:\n  - navigating to \"https://rootimpact.org/\", waiting until \"domcontentload"
+  },
+  {
+    "slug": "doitung",
+    "url": "https://www.doitung.com/",
+    "error": "Page.goto: Navigation to \"https://www.doitung.com/\" is interrupted by another navigation to \"https://rootimpact.org/\"\nCall log:\n  - navigating to \"https://www.doitung.com/\", waiting until \"domcontentl"
+  },
+  {
+    "slug": "localalike",
+    "url": "https://www.localalike.com/",
+    "error": "Page.goto: Navigation to \"https://www.localalike.com/\" is interrupted by another navigation to \"https://www.doitung.com/\"\nCall log:\n  - navigating to \"https://www.localalike.com/\", waiting until \"domc"
+  },
+  {
+    "title": "微笑台灣 - 用深度旅遊體驗鄉鎮魅力",
+    "font": "\"Noto Sans TC\", 微軟正黑體, 繁黑體, \"Microsoft JhengHei\", \"Microsoft YaHei\", \"Heiti TC\",",
+    "bg": "rgb(252, 252, 252)",
+    "imgs_count": 40,
+    "imgs_sample": [
+      {
+        "alt": "微笑台灣",
+        "w": 529,
+        "h": 172
+      },
+      {
+        "alt": "微笑台灣",
+        "w": 529,
+        "h": 172
+      },
+      {
+        "alt": "",
+        "w": 530,
+        "h": 929
+      },
+      {
+        "alt": "桃園珍珠海岸｜全台唯一的海客風景，體驗石滬文化、後湖溪SUP與草漯沙丘",
+        "w": 1600,
+        "h": 1072
+      },
+      {
+        "alt": "深入台三線上的苗栗山城，走古道、水路、老街發現獅潭三仙",
+        "w": 1600,
+        "h": 1072
+      }
+    ],
+    "url": "https://smiletaiwan.cw.com.tw/",
+    "slug": "smile-tw"
+  },
+  {
+    "slug": "seinsights",
+    "url": "https://seinsights.asia/",
+    "error": "Page.goto: net::ERR_CONNECTION_RESET at https://seinsights.asia/\nCall log:\n  - navigating to \"https://seinsights.asia/\", waiting until \"domc"
+  },
+  {
+    "title": "Right Plus 多多益善｜全臺唯一公益媒體",
+    "font": "\"Noto Sans TC\", sans-serif",
+    "bg": "rgb(255, 255, 255)",
+    "imgs_count": 32,
+    "imgs_sample": [
+      {
+        "alt": "Primary Logo",
+        "w": 1236,
+        "h": 285
+      },
+      {
+        "alt": "協助青年重建生活與同儕連結的 NEET Lifers（니트생활자），聚集參與的青年們一起去野餐。圖／取自 니트생활자 臉",
+        "w": 1100,
+        "h": 829
+      },
+      {
+        "alt": "",
+        "w": 800,
+        "h": 600
+      },
+      {
+        "alt": "0327 馴錢師 財務健康",
+        "w": 1920,
+        "h": 1440
+      },
+      {
+        "alt": "六歲的我和我的親生媽媽（圖左一），還有我的養父母。",
+        "w": 1920,
+        "h": 1158
+      }
+    ],
+    "url": "https://rightplus.org/",
+    "slug": "rightplus"
+  },
+  {
+    "title": "暮しの手帖社",
+    "font": "dnp-shuei-mincho-pr6n, serif",
+    "bg": "rgb(255, 255, 255)",
+    "imgs_count": 35,
+    "imgs_sample": [
+      {
+        "alt": "暮しの手帖",
+        "w": 452,
+        "h": 166
+      },
+      {
+        "alt": "暮しの手帖",
+        "w": 452,
+        "h": 166
+      },
+      {
+        "alt": "",
+        "w": 2000,
+        "h": 1240
+      },
+      {
+        "alt": "",
+        "w": 1050,
+        "h": 1500
+      },
+      {
+        "alt": "",
+        "w": 858,
+        "h": 1140
+      }
+    ],
+    "url": "https://www.kurashi-no-techo.co.jp/",
+    "slug": "kurashi-techo"
+  },
+  {
+    "title": "헤이그라운드",
+    "font": "Inter, \"Spoqa Han Sans\", \"Apple SD Gothic Neo\", \"Malgun Gothic\", \"Nanum Gothic\",",
+    "bg": "rgb(255, 255, 255)",
+    "imgs_count": 20,
+    "imgs_sample": [
+      {
+        "alt": "헤이그라운드",
+        "w": 436,
+        "h": 189
+      },
+      {
+        "alt": "헤이그라운드",
+        "w": 436,
+        "h": 189
+      },
+      {
+        "alt": "헤이그라운드",
+        "w": 317,
+        "h": 36
+      },
+      {
+        "alt": "헤이그라운드",
+        "w": 317,
+        "h": 36
+      },
+      {
+        "alt": "",
+        "w": 1920,
+        "h": 969
+      }
+    ],
+    "url": "https://heyground.com/",
+    "slug": "heyground"
+  },
+  {
+    "title": "루트임팩트",
+    "font": "\"Spoqa Han Sans Neo\", -apple-system, BlinkMacSystemFont, \"Malgun Gothic\", \"맑은 고딕",
+    "bg": "rgb(255, 255, 255)",
+    "imgs_count": 15,
+    "imgs_sample": [
+      {
+        "alt": "type",
+        "w": 472,
+        "h": 260
+      },
+      {
+        "alt": "logo of default",
+        "w": 377,
+        "h": 66
+      },
+      {
+        "alt": "type",
+        "w": 472,
+        "h": 260
+      },
+      {
+        "alt": "Building an Impact Ecosystem",
+        "w": 377,
+        "h": 66
+      },
+      {
+        "alt": "type",
+        "w": 472,
+        "h": 260
+      }
+    ],
+    "url": "https://rootimpact.org/",
+    "slug": "rootimpact"
+  },
+  {
+    "title": "หน้าหลัก - DoiTung Corporate",
+    "font": "doitung, sans-serif",
+    "bg": "rgb(255, 255, 255)",
+    "imgs_count": 17,
+    "imgs_sample": [
+      {
+        "alt": "DoiTung Corporate",
+        "w": 266,
+        "h": 86
+      },
+      {
+        "alt": "กาแฟและแมคคาเดเมีย",
+        "w": 1440,
+        "h": 1080
+      },
+      {
+        "alt": "หัตถกรรม",
+        "w": 1440,
+        "h": 1080
+      },
+      {
+        "alt": "คาเฟ่ดอยตุง",
+        "w": 1440,
+        "h": 1080
+      },
+      {
+        "alt": "สวนแม่ฟ้าหลวง",
+        "w": 1440,
+        "h": 1080
+      }
+    ],
+    "url": "https://www.doitung.com/",
+    "slug": "doitung"
+  },
+  {
+    "title": "Local Alike | Discover & Support Communities",
+    "font": "sans-serif",
+    "bg": "rgb(253, 240, 230)",
+    "imgs_count": 13,
+    "imgs_sample": [
+      {
+        "alt": "Local Alike",
+        "w": 350,
+        "h": 250
+      },
+      {
+        "alt": "Local Alike",
+        "w": 350,
+        "h": 250
+      },
+      {
+        "alt": "",
+        "w": 1465,
+        "h": 732
+      },
+      {
+        "alt": "",
+        "w": 1908,
+        "h": 544
+      },
+      {
+        "alt": "Chiang Mai: Explore Tea Culture & Forest Waterfall Trails  |",
+        "w": 431,
+        "h": 287
+      }
+    ],
+    "url": "https://www.localalike.com/",
+    "slug": "localalike"
+  },
+  {
+    "title": "天天里仁 | 有機蔬果 永續食材 環保用品 | 每一天更安心的選擇",
+    "font": "\"Helvetica Neue\", Helvetica, Roboto, Arial, sans-serif",
+    "bg": "rgb(254, 254, 254)",
+    "imgs_count": 29,
+    "imgs_sample": [
+      {
+        "alt": "",
+        "w": 300,
+        "h": 84
+      },
+      {
+        "alt": "里仁 ×《飛吧！熊鷹》｜門市消費滿500即可領電影優惠券",
+        "w": 1440,
+        "h": 605
+      },
+      {
+        "alt": "2026母親節蛋糕",
+        "w": 1440,
+        "h": 605
+      },
+      {
+        "alt": "2026 端午粽預購優惠",
+        "w": 3001,
+        "h": 1262
+      },
+      {
+        "alt": "2026福智文化書展",
+        "w": 2880,
+        "h": 1210
+      }
+    ],
+    "url": "https://www.leezen.com.tw/",
+    "slug": "leezen"
+  },
+  {
+    "slug": "kurashi-hokenshitsu",
+    "url": "https://kurashinohokenshitsu.com/",
+    "error": "Page.goto: net::ERR_NAME_NOT_RESOLVED at https://kurashinohokenshitsu.com/\nCall log:\n  - navigating to \"https://kurashinohokenshitsu.com/\", "
+  },
+  {
+    "title": "Page not found - DoiTung Corporate",
+    "font": "doitung, sans-serif",
+    "bg": "rgb(255, 255, 255)",
+    "imgs_count": 1,
+    "imgs_sample": [
+      {
+        "alt": "DoiTung Corporate",
+        "w": 266,
+        "h": 86
+      }
+    ],
+    "url": "https://www.doitung.com/coffee-project",
+    "slug": "doitung-coffee"
+  },
+  {
+    "title": "หัตถกรรม - DoiTung Corporate",
+    "font": "doitung, sans-serif",
+    "bg": "rgb(255, 255, 255)",
+    "imgs_count": 17,
+    "imgs_sample": [
+      {
+        "alt": "DoiTung Corporate",
+        "w": 266,
+        "h": 86
+      },
+      {
+        "alt": "",
+        "w": 1340,
+        "h": 900
+      },
+      {
+        "alt": "",
+        "w": 1340,
+        "h": 900
+      },
+      {
+        "alt": "",
+        "w": 1340,
+        "h": 900
+      },
+      {
+        "alt": "",
+        "w": 1340,
+        "h": 900
+      }
+    ],
+    "url": "https://www.doitung.com/handicraft",
+    "slug": "doitung-handi"
+  },
+  {
+    "slug": "tsulim",
+    "url": "https://www.tsulim.org.tw/",
+    "error": "Page.goto: net::ERR_NAME_NOT_RESOLVED at https://www.tsulim.org.tw/\nCall log:\n  - navigating to \"https://www.tsulim.org.tw/\", waiting until "
+  },
+  {
+    "title": "黑潮海洋文教基金會 Kuroshio Ocean Education Foundation",
+    "font": "Helvetica, \"Noto Sans TC\", Arial, \"Microsoft JhengHei\", 微軟正黑體, sans-serif, \"Micr",
+    "bg": "rgb(236, 236, 237)",
+    "imgs_count": 21,
+    "imgs_sample": [
+      {
+        "alt": "",
+        "w": 1902,
+        "h": 756
+      },
+      {
+        "alt": "",
+        "w": 1902,
+        "h": 756
+      },
+      {
+        "alt": "",
+        "w": 1902,
+        "h": 756
+      },
+      {
+        "alt": "",
+        "w": 1902,
+        "h": 756
+      },
+      {
+        "alt": "",
+        "w": 1902,
+        "h": 756
+      }
+    ],
+    "url": "https://www.kuroshio.org.tw/",
+    "slug": "kuroshio"
+  }
+]

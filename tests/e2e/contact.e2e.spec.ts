@@ -1,0 +1,34 @@
+import { test, expect } from '@playwright/test'
+
+/**
+ * 聯絡表單（SES_DRY_RUN=true：server action 不真寄信，直接回成功）
+ * 注意：action 有同 IP 每分鐘 3 次的 rate limit，本檔只送出 2 次（zh + en）。
+ */
+test.describe('聯絡表單', () => {
+  test('/contact 填寫送出後顯示成功訊息', async ({ page }) => {
+    await page.goto('/contact')
+
+    await page.fill('#contact-name', 'E2E 測試')
+    await page.fill('#contact-email', 'e2e@example.com')
+    await page.fill('#contact-message', '這是一則 E2E 自動化測試訊息（dry-run，不會真的寄信）。')
+    // 詢問類別 radio 預設已選 family，不需額外操作
+
+    await page.getByRole('button', { name: '送出' }).click()
+
+    await expect(page.getByRole('status')).toContainText('訊息已送出')
+    await expect(page.getByRole('status')).toContainText('我們已收到您的訊息')
+  })
+
+  test('/en/contact 填寫送出後顯示英文成功訊息', async ({ page }) => {
+    await page.goto('/en/contact')
+
+    await page.fill('#contact-name', 'E2E Tester')
+    await page.fill('#contact-email', 'e2e-en@example.com')
+    await page.fill('#contact-message', 'This is an automated E2E test message (dry-run).')
+
+    await page.getByRole('button', { name: 'Send', exact: true }).click()
+
+    await expect(page.getByRole('status')).toContainText('Message sent')
+    await expect(page.getByRole('status')).toContainText('We have received your message')
+  })
+})

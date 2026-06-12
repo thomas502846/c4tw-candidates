@@ -1,0 +1,67 @@
+# c4twweb production compose（Lightsail 上執行；DB 在 RDS，不在本機）
+# 用法（server 上）：
+#   docker compose --env-file .env.production build app
+#   docker compose --env-file .env.production up -d
+#   docker compose --env-file .env.production run --rm migrate
+# 只有 caddy 對外開 80/443；app 僅供內部網路。
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URI: ${DATABASE_URI}
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://staging.carefortaiwan.com.tw}
+        NOINDEX: ${NOINDEX:-true}
+      network: host # build 時 prerender 需連 RDS
+    image: c4twweb-app
+    env_file:
+      - .env.production
+    restart: unless-stopped
+    expose:
+      - '3000'
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:3000/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # 一次性 migration job：docker compose --env-file .env.production run --rm migrate
+  # 用 migrator stage（含 node_modules + src，**不跑 next build**——避免「build 需要表、表需要 migrate」循環）。
+  # 順序：先 migrate（+首次 seed）再 build app。
+  migrate:
+    profiles: ['migrate']
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: migrator
+      args:
+        DATABASE_URI: ${DATABASE_URI}
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://staging.carefortaiwan.com.tw}
+        NOINDEX: ${NOINDEX:-true}
+      network: host
+    image: c4twweb-migrate
+    env_file:
+      - .env.production
+    command: ['pnpm', 'payload', 'migrate']
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  caddy_data:
+  caddy_config:
