@@ -77,16 +77,18 @@ const Plain: React.FC<{ title?: string | null; circles: MissionCircle[] }> = ({ 
           {title}
         </h2>
       )}
-      <div className="mt-12 flex flex-wrap items-start justify-center gap-10 md:gap-[117px]">
+      {/* 行動版單欄直鏈（M-training 288:658 mobile：大實心圓＋雙 chevron＋中介說明）；
+          桌機 ≥md 維持原本橫向排列（flex-wrap、160px 圓、117px gap） */}
+      <div className="mt-12 flex flex-col items-center gap-8 md:flex-row md:flex-wrap md:items-start md:gap-[117px]">
         {circles.map((circle, i) => {
           const color = circleColors[i % circleColors.length]
           return (
-            <div className="flex w-[160px] flex-col items-center" key={circle.id ?? i}>
+            <div className="flex w-full max-w-[260px] flex-col items-center md:w-[160px]" key={circle.id ?? i}>
               <div
-                className="flex h-[160px] w-[160px] items-center justify-center rounded-full px-5 text-center"
+                className="flex aspect-square w-[220px] items-center justify-center rounded-full px-5 text-center md:h-[160px] md:w-[160px]"
                 style={{ backgroundColor: color }}
               >
-                <span className="text-[17px] font-bold leading-[1.5] tracking-[0.1em] text-white md:text-[19px]">
+                <span className="text-[19px] font-bold leading-[1.5] tracking-[0.1em] text-white md:text-[19px]">
                   {circle.label}
                 </span>
               </div>

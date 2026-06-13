@@ -88,7 +88,7 @@ const CountUpNumber: React.FC<{ card: StatCard }> = ({ card }) => {
 }
 
 export const StatsCardsClient: React.FC<{ cards: StatCard[] }> = ({ cards }) => (
-  <div className="mx-auto grid max-w-[1011px] grid-cols-2 gap-x-6 gap-y-10 py-6 md:grid-cols-4">
+  <div className="mx-auto grid max-w-[1011px] grid-cols-1 gap-x-6 gap-y-10 py-6 md:grid-cols-4">
     {cards.map((card, i) => (
       <div className="text-center" key={card.id ?? i}>
         <CountUpNumber card={card} />

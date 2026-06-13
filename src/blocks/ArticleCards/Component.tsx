@@ -80,7 +80,7 @@ export const ArticleCardsBlock: React.FC<ArticleCardsBlockProps> = async ({
       overrideAccess: false,
       sort: resolvedSource === 'media-coverage' ? '-date' : '-createdAt',
     })
-    initialCards = result.docs.map((doc) => normalizeBySource(resolvedSource, doc))
+    initialCards = result.docs.map((doc) => normalizeBySource(resolvedSource, doc, locale))
     totalDocs = result.totalDocs
   }
 

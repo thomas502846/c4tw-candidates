@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { cn } from '@/utilities/ui'
+import { normalizeCtaHref } from '@/utilities/normalizeCtaHref'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
 export type CtaBannerBlockProps = {
@@ -41,6 +42,8 @@ export const CtaBannerBlock: React.FC<CtaBannerBlockProps> = ({
   background,
 }) => {
   const bg = background ?? 'primary'
+  // 指向聯絡頁的 CTA 在渲染層補 #sheet（不依賴 CMS DB，staging 直接生效）
+  const ctaUrl = normalizeCtaHref(cta?.url)
 
   return (
     <section className="container" data-block="ctaBanner">
@@ -69,7 +72,7 @@ export const CtaBannerBlock: React.FC<CtaBannerBlockProps> = ({
               {subtitle}
             </p>
           )}
-          {cta?.label && cta?.url && (
+          {cta?.label && ctaUrl && (
             <a
               className={cn(
                 'group mt-8 inline-flex items-center gap-2.5 rounded-[30px] px-8 py-2.5 text-[16px] font-medium tracking-[0.1em] shadow-sm transition-colors md:text-[19px]',
@@ -78,7 +81,7 @@ export const CtaBannerBlock: React.FC<CtaBannerBlockProps> = ({
                   ? 'bg-brand-lime text-white hover:bg-brand-primary'
                   : 'bg-white text-brand-ink hover:bg-brand-surface',
               )}
-              href={cta.url}
+              href={ctaUrl}
             >
               {cta.label}
               <ArrowRight />

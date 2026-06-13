@@ -270,7 +270,7 @@ export const ArticleCardsClient: React.FC<ArticleCardsClientProps> = ({
       if (!res.ok) throw new Error(`Failed to load more: ${res.status}`)
       const data = await res.json()
       const nextCards: ArticleCardData[] = (data?.docs ?? []).map((doc: unknown) =>
-        normalizeBySource(source, doc),
+        normalizeBySource(source, doc, locale),
       )
       setCards((prev) => {
         const seen = new Set(prev.map((c) => c.id))

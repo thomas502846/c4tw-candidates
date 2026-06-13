@@ -136,6 +136,92 @@ const SAT_RIGHT = [
   { cx: 681, cy: 392 }, // 右下
 ]
 
+// 行動版（M-care 218:856）：兩大圓改垂直堆疊（個人生活在上、職場角色在下），
+// 衛星圓貼外弧、數字放大可讀。viewBox 直式 460×820。
+const M_BIG_R = 150
+const M_TOP = { cx: 230, cy: 200 } // 個人生活影響（上）
+const M_BOT = { cx: 230, cy: 580 } // 職場角色影響（下）
+const M_SAT_R = 66
+// 上圓衛星：左上、左、左下三顆貼外弧
+const M_SAT_TOP = [
+  { cx: 90, cy: 70 },
+  { cx: 60, cy: 230 },
+  { cx: 110, cy: 380 },
+]
+// 下圓衛星：右上、右、右下三顆貼外弧
+const M_SAT_BOT = [
+  { cx: 370, cy: 410 },
+  { cx: 410, cy: 560 },
+  { cx: 360, cy: 710 },
+]
+
+/** 行動版大圓標題（直式，字級加大） */
+const MBigCircleLabel: React.FC<{ cx: number; cy: number; label: string }> = ({ cx, cy, label }) => {
+  const { main, sub } = splitImpactLabel(label)
+  return (
+    <>
+      <text fill="#212121" fontSize="32" fontWeight="700" letterSpacing="4" textAnchor="middle" x={cx} y={sub ? cy + 4 : cy + 12}>
+        {main}
+      </text>
+      {sub && (
+        <text fill="#212121" fontSize="20" fontWeight="500" letterSpacing="8" textAnchor="middle" x={cx + 4} y={cy + 40}>
+          {sub}
+        </text>
+      )}
+    </>
+  )
+}
+
+const VennMobile: React.FC<{
+  leftLabel?: string | null
+  rightLabel?: string | null
+  leftStats?: InfographicStat[] | null
+  rightStats?: InfographicStat[] | null
+}> = ({ leftLabel, rightLabel, leftStats, rightStats }) => (
+  <svg
+    aria-label={`${leftLabel ?? ''}／${rightLabel ?? ''} 痛點數據圖`}
+    className="mx-auto h-auto w-full max-w-[440px] md:hidden"
+    role="img"
+    viewBox="0 0 460 820"
+  >
+    {/* 下大圓（職場角色，淡青 無邊框） */}
+    <circle cx={M_BOT.cx} cy={M_BOT.cy} fill="#ECF7F9" r={M_BIG_R} />
+    {/* 上大圓（個人生活，米底＋亮綠細邊） */}
+    <circle cx={M_TOP.cx} cy={M_TOP.cy} fill="#F7F7EB" r={M_BIG_R} stroke="#ADCB59" strokeWidth="2" />
+    {/* 上圓 icon：房屋線稿 */}
+    <g fill="none" stroke="#ADCB59" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
+      <path d={`M${M_TOP.cx - 30} ${M_TOP.cy - 72}l30-26 30 26M${M_TOP.cx - 24} ${M_TOP.cy - 75}v34h48v-34`} />
+    </g>
+    {leftLabel && <MBigCircleLabel cx={M_TOP.cx} cy={M_TOP.cy} label={leftLabel} />}
+    {/* 下圓 icon：手提包線稿 */}
+    <g fill="none" stroke="#5E8C8C" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
+      <rect height="34" rx="6" width="56" x={M_BOT.cx - 28} y={M_BOT.cy - 75} />
+      <path d={`M${M_BOT.cx - 10} ${M_BOT.cy - 75}v-8a10 10 0 0 1 20 0v8`} />
+    </g>
+    {rightLabel && <MBigCircleLabel cx={M_BOT.cx} cy={M_BOT.cy} label={rightLabel} />}
+    {/* 上圓衛星數據圓 */}
+    {(leftStats ?? []).slice(0, 3).map((stat, i) => {
+      const pos = M_SAT_TOP[i]
+      return (
+        <g key={stat.id ?? `ml${i}`}>
+          <circle cx={pos.cx} cy={pos.cy} fill="#FFFFFF" r={M_SAT_R} stroke="#ADCB59" strokeWidth="2" />
+          <SatelliteText color="#9C9F33" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
+        </g>
+      )
+    })}
+    {/* 下圓衛星數據圓 */}
+    {(rightStats ?? []).slice(0, 3).map((stat, i) => {
+      const pos = M_SAT_BOT[i]
+      return (
+        <g key={stat.id ?? `mr${i}`}>
+          <circle cx={pos.cx} cy={pos.cy} fill="#ECF7F9" r={M_SAT_R} />
+          <SatelliteText color="#5E8C8C" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
+        </g>
+      )
+    })}
+  </svg>
+)
+
 const Venn: React.FC<{
   leftLabel?: string | null
   rightLabel?: string | null
@@ -144,7 +230,7 @@ const Venn: React.FC<{
 }> = ({ leftLabel, rightLabel, leftStats, rightStats }) => (
   <svg
     aria-label={`${leftLabel ?? ''}／${rightLabel ?? ''} 痛點數據圖`}
-    className="mx-auto h-auto w-full max-w-[900px]"
+    className="mx-auto hidden h-auto w-full max-w-[900px] md:block"
     role="img"
     viewBox="0 0 900 460"
   >
@@ -272,22 +358,34 @@ const Radial: React.FC<{ nodes?: InfographicNode[] | null }> = ({ nodes }) => {
           </div>
         ))}
       </div>
-      {/* 行動版：2×2 圓角卡 */}
-      <div className="grid grid-cols-2 gap-4 md:hidden">
-        {list.map((node, i) => (
-          <div
-            className="flex flex-col items-center gap-2 rounded-[30px] bg-brand-surface px-4 py-6 text-center"
-            key={node.id ?? i}
-          >
-            <NodeIcon node={node} />
-            <h3 className="text-base font-bold text-brand-ink">{node.title}</h3>
-            {node.text && <p className="text-xs leading-[1.5] text-brand-ink/80">{node.text}</p>}
-          </div>
-        ))}
-      </div>
+      {/* 行動版：單欄直列（cmt-07：mobile 不沿用桌機菱形群聚） */}
+      <RadialStack nodes={list} />
     </>
   )
 }
+
+/**
+ * 行動版 radial 單欄直列（M-training 306:609 mobile / cmt-07「箭頭指向 與 Desktop版本不同」）：
+ * 每項＝淺米圓底，置中 icon＋粗標＋副標，由上而下堆疊並略相疊（-mt 製造圓相切），
+ * 取代桌機的環形群聚。ZH/EN 共用此 stack（文字來自 nodes，i18n 通用）。
+ */
+const RadialStack: React.FC<{ nodes: InfographicNode[] }> = ({ nodes }) => (
+  <div className="mx-auto flex max-w-[300px] flex-col items-center md:hidden">
+    {nodes.map((node, i) => (
+      <div
+        className={cn(
+          'flex aspect-square w-[240px] flex-col items-center justify-center gap-2 rounded-full bg-brand-surface px-8 text-center',
+          i > 0 && '-mt-5',
+        )}
+        key={node.id ?? i}
+      >
+        <NodeIcon node={node} />
+        <h3 className="text-lg font-bold tracking-[0.05em] text-brand-ink">{node.title}</h3>
+        {node.text && <p className="text-[13px] leading-[1.5] text-brand-ink/80">{node.text}</p>}
+      </div>
+    ))}
+  </div>
+)
 
 /* ---------------------------------------------------------------- */
 /* Block                                                              */
@@ -339,22 +437,36 @@ export const InfographicBlock: React.FC<InfographicBlockProps> = (props) => {
     <Ring photos={props.photos} />
   ) : variant === 'radial' ? (
     hasCjk(props.nodes?.[0]?.title) ? (
-      <img
-        alt={props.title ?? '組織培力痛點放射圖'}
-        className="mx-auto h-auto w-full max-w-[600px]"
-        src="/figma/training-radial.png"
-      />
+      // ZH：桌機沿用 Figma baked 放射圖（含中文 icon＋文字）；行動版改單欄直列
+      // （cmt-07：mobile 箭頭/排版與 desktop 不同，不可把群聚 PNG 縮塞進窄屏）
+      <>
+        <img
+          alt={props.title ?? '組織培力痛點放射圖'}
+          className="mx-auto hidden h-auto w-full max-w-[600px] md:block"
+          src="/figma/training-radial.png"
+        />
+        <RadialStack nodes={(props.nodes ?? []).slice(0, 4)} />
+      </>
     ) : (
       <Radial nodes={props.nodes} />
     )
   ) : (
     // ZH/EN 一律走向量 Venn（文字由 stats 即時繪製）：較 baked PNG 更貼 Figma 比例且 i18n 通用
-    <Venn
-      leftLabel={props.leftLabel}
-      leftStats={props.leftStats}
-      rightLabel={props.rightLabel}
-      rightStats={props.rightStats}
-    />
+    // 桌機橫式雙圓、行動版直式堆疊（M-care 218:856）
+    <>
+      <VennMobile
+        leftLabel={props.leftLabel}
+        leftStats={props.leftStats}
+        rightLabel={props.rightLabel}
+        rightStats={props.rightStats}
+      />
+      <Venn
+        leftLabel={props.leftLabel}
+        leftStats={props.leftStats}
+        rightLabel={props.rightLabel}
+        rightStats={props.rightStats}
+      />
+    </>
   )
 
   const hasText = Boolean(title || body)

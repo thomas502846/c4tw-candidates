@@ -100,12 +100,13 @@ const PERSONAL_ICONS = [
  * 白色圓 icon → 白字 Bold 19 → 白字 Caption 14
  */
 const Pillars: React.FC<{ items: IconFeatureItem[] }> = ({ items }) => (
-  <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:flex md:justify-center md:gap-[54px]">
+  // 行動版（M-care 269:648）：單欄滿版、深淺綠交替的直卡；桌機維持並排 185px 卡
+  <div className="flex flex-col gap-4 md:flex md:flex-row md:justify-center md:gap-[54px]">
     {items.map((item, i) => (
       <div
         key={item.id ?? i}
         className={cn(
-          'flex flex-col items-center gap-4 rounded-[30px] px-6 py-10 text-center md:w-[185px] md:min-h-[290px]',
+          'flex flex-col items-center gap-4 rounded-[30px] px-6 py-8 text-center md:w-[185px] md:py-10 md:min-h-[290px]',
           pillarBgs[i % pillarBgs.length],
         )}
       >

@@ -91,19 +91,20 @@ const DualStackImages: React.FC<{
 }> = ({ images }) => {
   const [a, b] = images
   return (
+    // 行動版（M-care 257:386）：兩張圓角照片左右錯位、負 margin 重疊；桌機維持對角斜疊
     <div className="relative mx-auto w-full max-w-[420px] md:mx-0 md:max-w-none md:aspect-[589/546]">
       {a?.image && typeof a.image === 'object' && (
         <HoverZoomImage
           resource={a.image}
           imgClassName="aspect-[420/292] w-full object-cover"
-          wrapperClassName="rounded-[30px] md:absolute md:left-0 md:top-0 md:w-[71%]"
+          wrapperClassName="mr-8 rounded-[30px] md:mr-0 md:absolute md:left-0 md:top-0 md:w-[71%]"
         />
       )}
       {b?.image && typeof b.image === 'object' && (
         <HoverZoomImage
           resource={b.image}
           imgClassName="aspect-[420/292] w-full object-cover"
-          wrapperClassName="mt-5 rounded-[30px] shadow-[0_10px_30px_rgba(33,33,33,0.12)] md:absolute md:left-[29%] md:top-[46%] md:mt-0 md:w-[71%]"
+          wrapperClassName="-mt-12 ml-8 rounded-[30px] shadow-[0_10px_30px_rgba(33,33,33,0.12)] md:mt-0 md:ml-0 md:absolute md:left-[29%] md:top-[46%] md:w-[71%]"
         />
       )}
     </div>

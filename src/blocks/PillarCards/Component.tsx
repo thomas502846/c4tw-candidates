@@ -77,6 +77,7 @@ export const PillarCardsBlock: React.FC<PillarCardsBlockProps> = ({
 
       {/* 卡片區（蛇形路徑墊底） */}
       <div className="relative">
+        {/* 桌機：橫向蛇形路徑（Vector 2） */}
         <svg
           aria-hidden
           className="pointer-events-none absolute inset-0 hidden h-full w-full md:block"
@@ -92,15 +93,32 @@ export const PillarCardsBlock: React.FC<PillarCardsBlockProps> = ({
             strokeWidth="56"
           />
         </svg>
-        <div className="relative grid grid-cols-2 gap-5 md:grid-cols-4 md:gap-7">
+        {/* Mobile：單欄垂直階梯蛇形路徑（cmt-08）——左右交錯的卡片以淡米色粗線串連 */}
+        <svg
+          aria-hidden
+          className="pointer-events-none absolute inset-0 h-full w-full md:hidden"
+          fill="none"
+          preserveAspectRatio="none"
+          viewBox="0 0 360 1000"
+        >
+          {/* 卡 1(左)→卡 2(右)→卡 3(左)→卡 4(右) 的 S 形垂直蛇形 */}
+          <path
+            d="M120 110 V230 Q120 270 160 270 H240 Q280 270 280 310 V480 Q280 520 240 520 H120 Q80 520 80 560 V730 Q80 770 120 770 H240 Q280 770 280 810 V900"
+            stroke="#F0EFDC"
+            strokeLinecap="round"
+            strokeWidth="64"
+          />
+        </svg>
+        <div className="relative grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-7">
           {cards.slice(0, 4).map((card, i) => (
             // 卡片進場 Fade UP（Tracy node 97:564：卡片用 Fade UP、0→100%、0.6s）；四卡錯開 delay
             <ScrollReveal
               as="div"
               className={cn(
-                'flex flex-col items-center gap-5 self-start rounded-[30px] px-5 py-9 text-center md:min-h-[444px]',
+                'flex w-[78%] flex-col items-center gap-5 self-start rounded-[30px] px-5 py-9 text-center md:w-full md:min-h-[444px]',
                 pillarBgs[i % pillarBgs.length],
-                { 'md:mt-[214px]': i % 2 === 1 },
+                // Mobile 階梯交錯：偶數卡靠左、奇數卡靠右；桌機改回滿欄＋下移
+                i % 2 === 1 ? 'self-end md:self-start md:mt-[214px]' : 'self-start',
               )}
               delay={i * 0.12}
               key={card.id ?? i}

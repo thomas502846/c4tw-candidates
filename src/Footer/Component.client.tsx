@@ -154,8 +154,8 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
       </svg>
 
       <div className="bg-brand-surface">
-        <div className="mx-auto flex max-w-[1140px] flex-col gap-12 px-5 pb-10 pt-6 md:flex-row md:items-center md:justify-between md:pb-14 md:pt-2">
-          {/* 左：大 logo */}
+        <div className="mx-auto flex max-w-[1140px] flex-col items-center gap-12 px-5 pb-10 pt-6 md:flex-row md:items-center md:justify-between md:pb-14 md:pt-2">
+          {/* 左：大 logo（mobile 置中、md+ 靠左） */}
           <Link
             aria-label="Care For Taiwan 創照服務設計"
             className="shrink-0"
@@ -173,14 +173,17 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
             />
           </Link>
 
-          {/* 右：欄位群（小標 #9C9F33、連結 #212121；聯絡資訊帶綠底圓 icon） */}
-          <div className="grid min-w-0 grid-cols-1 gap-10 sm:grid-cols-2 md:gap-[45px] lg:grid-cols-[auto_auto_auto]">
+          {/* 右：欄位群（小標 #9C9F33、連結 #212121；聯絡資訊帶綠底圓 icon）
+              mobile（Figma M-home）：標題與連結置中；md+ 維持靠左。 */}
+          <div className="grid min-w-0 grid-cols-1 gap-10 text-center sm:grid-cols-2 sm:text-left md:gap-[45px] lg:grid-cols-[auto_auto_auto]">
             {columns.map((column) => {
               const isContact = isContactColumnTitle(column.title)
               return (
                 <div key={column.id}>
                   <h3 className={columnTitleClass}>{column.title}</h3>
-                  <ul className={`flex flex-col ${isContact ? 'gap-4' : 'gap-2'}`}>
+                  <ul
+                    className={`flex flex-col ${isContact ? 'gap-4' : 'gap-2'} items-center sm:items-start`}
+                  >
                     {(column.links ?? []).map((link) => (
                       <li key={link.id}>
                         {isContact ? (
@@ -200,7 +203,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
                 <h3 className={columnTitleClass}>
                   {isEn ? 'Family of Ventures' : '家族事業'}
                 </h3>
-                <ul className="flex flex-col gap-2">
+                <ul className="flex flex-col items-center gap-2 sm:items-start">
                   {familyVentures.map((venture) => (
                     <li key={venture.id}>
                       <FooterLink isEn={isEn} label={venture.name} url={venture.url} />

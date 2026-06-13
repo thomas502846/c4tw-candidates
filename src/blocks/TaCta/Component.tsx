@@ -4,6 +4,7 @@ import HoverZoomImage from '@/components/HoverZoomImage'
 import { Media } from '@/components/Media'
 import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
+import { normalizeCtaHref } from '@/utilities/normalizeCtaHref'
 import type { Media as MediaDoc } from '@/payload-types'
 
 import { AnchorLink } from './AnchorLink'
@@ -75,16 +76,19 @@ const CardIllustration: React.FC<{
   )
 }
 
-/** 白底 pill 按鈕（Tracy LINE 定稿：白底 #FFFFFF + 深字 #212121 + 深色箭頭） */
+/**
+ * 白底 pill 按鈕（Tracy LINE 定稿：白底 #FFFFFF + 深字 #212121 + 深色箭頭）
+ * mobile（Figma M-home）：滿版寬、文字靠左、箭頭靠右；md+ 維持原 inline 居中尺寸。
+ */
 const WhitePill: React.FC<{ label: string; url?: string | null }> = ({ label, url }) => {
   const inner = (
     <>
-      {label}
+      <span>{label}</span>
       <ArrowRight className="h-4 w-4" />
     </>
   )
   const cls =
-    'inline-flex items-center gap-2 rounded-[30px] bg-white px-6 py-2 text-[15px] font-medium tracking-[0.1em] text-brand-ink transition-opacity hover:opacity-85 md:px-7 md:text-[19px]'
+    'flex w-full items-center justify-between gap-2 rounded-[30px] bg-white px-6 py-2.5 text-[15px] font-medium tracking-[0.1em] text-brand-ink transition-opacity hover:opacity-85 md:inline-flex md:w-auto md:justify-center md:px-7 md:py-2 md:text-[19px]'
   return url ? (
     <a className={cls} href={url}>
       {inner}
@@ -102,24 +106,42 @@ const tileBgs = ['bg-brand-primary', 'bg-brand-green', 'bg-brand-lime']
  */
 const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
   const [c1, c2, c3] = cards
+  // 左欄兩張橫卡（c1/c2）：md+ 維持原「圖左、文字＋pill 右半置中」；
+  // mobile（Figma M-home）：線稿 icon 左 + 標題右（兩欄上排）＋滿版白 pill 下排。
   const horizontal = (card: TaCtaCard, i: number) => (
     <div
       key={card.id ?? i}
       className={cn(
-        'flex items-center gap-6 rounded-[30px] px-7 py-7 md:h-[180px] md:px-9',
+        'flex flex-col gap-5 rounded-[30px] px-7 py-7 md:h-[180px] md:flex-row md:items-center md:gap-6 md:px-9',
         tileBgs[i % tileBgs.length],
       )}
     >
-      <CardIllustration
-        card={card}
-        className="hidden h-[110px] w-[110px] md:block lg:h-[140px] lg:w-[140px]"
-        fallbackSrc={taTileIcons[i]}
-      />
-      {/* Figma：標語與白底 pill 在卡片右半置中對齊 */}
-      <div className="flex flex-1 flex-col items-center gap-4">
-        <h3 className="text-lg font-medium tracking-[0.1em] text-white md:text-[22px]">{card.title}</h3>
-        {card.buttonLabel && <WhitePill label={card.buttonLabel} url={card.url} />}
+      {/* 上排（mobile）/ 左欄（md+）：icon 左 + 標題右 */}
+      <div className="flex items-center gap-5 md:contents">
+        <CardIllustration
+          card={card}
+          className="h-[88px] w-[88px] shrink-0 md:h-[110px] md:w-[110px] lg:h-[140px] lg:w-[140px]"
+          fallbackSrc={taTileIcons[i]}
+        />
+        {/* md+：標語＋pill 在卡片右半置中；mobile：標題在 icon 右側 */}
+        <div className="flex flex-1 flex-col items-start gap-4 md:items-center">
+          <h3 className="text-lg font-medium tracking-[0.1em] text-white md:text-[22px]">
+            {card.title}
+          </h3>
+          {/* md+ 才在右半放 pill；mobile 的 pill 移到卡片底部滿版 */}
+          {card.buttonLabel && (
+            <span className="hidden md:block">
+              <WhitePill label={card.buttonLabel} url={card.url} />
+            </span>
+          )}
+        </div>
       </div>
+      {/* mobile 滿版 pill（md+ 隱藏，已在右半顯示） */}
+      {card.buttonLabel && (
+        <div className="md:hidden">
+          <WhitePill label={card.buttonLabel} url={card.url} />
+        </div>
+      )}
     </div>
   )
 
@@ -138,17 +160,32 @@ const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
         {c3 && (
           <div
             className={cn(
-              'flex flex-col items-center justify-center gap-6 rounded-[30px] px-8 py-10 text-center',
+              // mobile：icon 左 + 標題右（兩欄上排）＋滿版白 pill 下排（與 c1/c2 一致）；
+              // md+：右側直卡，icon→標題→pill 垂直置中。
+              'flex flex-col gap-5 rounded-[30px] px-7 py-7 md:items-center md:justify-center md:gap-6 md:px-8 md:py-10 md:text-center',
               tileBgs[2],
             )}
           >
-            <CardIllustration
-              card={c3}
-              className="h-[150px] w-[200px] md:h-[200px] md:w-[200px]"
-              fallbackSrc={taTileIcons[2]}
-            />
-            <h3 className="text-lg font-medium tracking-[0.1em] text-white md:text-[22px]">{c3.title}</h3>
-            {c3.buttonLabel && <WhitePill label={c3.buttonLabel} url={c3.url} />}
+            <div className="flex items-center gap-5 md:flex-col md:gap-6">
+              <CardIllustration
+                card={c3}
+                className="h-[88px] w-[88px] shrink-0 md:h-[200px] md:w-[200px]"
+                fallbackSrc={taTileIcons[2]}
+              />
+              <h3 className="text-lg font-medium tracking-[0.1em] text-white md:text-[22px]">
+                {c3.title}
+              </h3>
+              {c3.buttonLabel && (
+                <span className="hidden md:block">
+                  <WhitePill label={c3.buttonLabel} url={c3.url} />
+                </span>
+              )}
+            </div>
+            {c3.buttonLabel && (
+              <div className="md:hidden">
+                <WhitePill label={c3.buttonLabel} url={c3.url} />
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -256,7 +293,9 @@ const PhotoBand: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
 
 export const TaCtaBlock: React.FC<TaCtaBlockProps> = ({ variant, intro, cards }) => {
   if (!cards || cards.length === 0) return null
-  if (variant === 'photoCards') return <PhotoCards cards={cards} intro={intro} />
-  if (variant === 'photoBand') return <PhotoBand cards={cards} />
-  return <Tiles cards={cards} />
+  // 指向聯絡頁的 CTA 在渲染層補 #sheet（不依賴 CMS DB，staging 直接生效）
+  const normalized = cards.map((card) => ({ ...card, url: normalizeCtaHref(card.url) }))
+  if (variant === 'photoCards') return <PhotoCards cards={normalized} intro={intro} />
+  if (variant === 'photoBand') return <PhotoBand cards={normalized} />
+  return <Tiles cards={normalized} />
 }

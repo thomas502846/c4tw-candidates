@@ -10,8 +10,6 @@ import { CONTACT_CATEGORIES, type ContactCategory } from './categories'
 type Locale = 'zh-TW' | 'en'
 
 // 欄位與文案依 Sheet contact 02：您的姓名／單位或稱呼／聯繫電話／電子信箱／想諮詢的服務＋訊息欄
-// ⚠️ 待客戶確認：「3 個工作天內回覆」（afterSubmitHint）為自擬句，Sheet 未明定回覆時效，客戶定案前先保留。
-//    同句另見 actions.ts（成功回執信）與 page.tsx（meta description），確認後三處需一併更新。
 const COPY = {
   'zh-TW': {
     taHeading: '想諮詢的服務',
@@ -23,7 +21,6 @@ const COPY = {
     messagePlaceholder: '歡迎留下您的訊息，我們會協助您找到適合的資源與方向...',
     submit: '送出',
     submitting: '送出中…',
-    afterSubmitHint: '送出後我們會在 3 個工作天內回覆您',
     successTitle: '訊息已送出',
     sendAnother: '再寫一則訊息',
     // 驗證訊息（zhtw-ui-copy：告訴使用者怎麼填對，不是只說哪裡錯）
@@ -48,7 +45,6 @@ const COPY = {
       'Leave us a message — we will help you find the right resources and direction...',
     submit: 'Send',
     submitting: 'Sending…',
-    afterSubmitHint: 'We will get back to you within 3 business days',
     successTitle: 'Message sent',
     sendAnother: 'Write another message',
     errRequired: 'This field is required',
@@ -303,12 +299,13 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
       </div>
 
       {/* 想諮詢的服務（Sheet：家庭照顧服務｜組織培力｜組織合作｜媒體採訪）
-          Figma 視覺＝方形圓角勾選框一列；行為維持單選（radio，送信邏輯不動） */}
+          Figma 視覺＝方形圓角勾選框；行為維持單選（radio，送信邏輯不動）
+          mobile（M-contact）＝乾淨 2×2 grid；桌機 ≥sm 維持四項並排一列 */}
       <fieldset>
         <legend className="text-brand-muted mb-3 text-[17px] font-medium tracking-[0.05em] md:text-[19px]">
           {t.taHeading}
         </legend>
-        <div className="flex flex-wrap gap-x-5 gap-y-3">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-3 sm:flex sm:flex-wrap">
           {CONTACT_CATEGORIES.map((c) => (
             <label
               key={c.value}
@@ -376,17 +373,16 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
         </p>
       )}
 
-      <div className="flex flex-col items-center gap-3">
-        <button
-          type="submit"
-          disabled={isPending || hasErrors}
-          aria-disabled={isPending || hasErrors}
-          className="btn-contact-submit inline-flex h-[62px] w-full items-center justify-center rounded-full text-[17px] font-medium tracking-[0.1em] disabled:pointer-events-none disabled:opacity-60 md:h-[70px] md:text-[19px]"
-        >
-          {isPending ? t.submitting : t.submit}
-        </button>
-        <p className="text-brand-muted text-sm">{t.afterSubmitHint}</p>
-      </div>
+      {/* 送出鈕：整欄寬 pill。送出鈕下方原有「3 個工作天內回覆」一行，
+          Figma M-contact 與文案 Sheet 皆無，依文字真理＝Sheet 移除（2026-06-14）。 */}
+      <button
+        type="submit"
+        disabled={isPending || hasErrors}
+        aria-disabled={isPending || hasErrors}
+        className="btn-contact-submit inline-flex h-[62px] w-full items-center justify-center rounded-full text-[17px] font-medium tracking-[0.1em] disabled:pointer-events-none disabled:opacity-60 md:h-[70px] md:text-[19px]"
+      >
+        {isPending ? t.submitting : t.submit}
+      </button>
     </form>
   )
 }

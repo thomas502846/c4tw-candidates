@@ -31,8 +31,12 @@ const pickImage = (image: any): { url: string | null; alt: string | null } => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const normalizeCaseStory = (doc: any): ArticleCardData => {
+export const normalizeCaseStory = (doc: any, locale: 'zh-TW' | 'en' = 'zh-TW'): ArticleCardData => {
   const { url, alt } = pickImage(doc?.image)
+  // Figma 217:601 / care 案例分享：卡片左上分類 pill。case-stories 尚無分類欄位，
+  // 以「文章分類」佔位（與設計稿一致），待客戶定義分類欄位後改抓真實值。
+  const rawCategory = typeof doc?.category === 'string' ? doc.category.trim() : null
+  const category = rawCategory || (locale === 'en' ? 'Category' : '文章分類')
   return {
     id: String(doc?.id ?? ''),
     title: doc?.title ?? '',
@@ -40,7 +44,7 @@ export const normalizeCaseStory = (doc: any): ArticleCardData => {
     imageUrl: url,
     imageAlt: alt,
     url: null,
-    meta: null,
+    meta: category,
   }
 }
 
@@ -66,5 +70,6 @@ export const normalizeBySource = (
   source: 'case-stories' | 'media-coverage',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   doc: any,
+  locale: 'zh-TW' | 'en' = 'zh-TW',
 ): ArticleCardData =>
-  source === 'case-stories' ? normalizeCaseStory(doc) : normalizeMediaCoverage(doc)
+  source === 'case-stories' ? normalizeCaseStory(doc, locale) : normalizeMediaCoverage(doc)

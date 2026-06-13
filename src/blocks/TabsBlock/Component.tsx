@@ -157,6 +157,30 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
           </>
         )}
       </div>
+
+      {/* Mobile-only 次要地圖快速切換（cmt-09/cmt-10）：除 active 外其餘 tab 以堆疊綠按鈕呈現，
+          底下置中提示字「↑ 點擊地圖查看課程特色 ↑」；此整段於 Desktop 隱藏 */}
+      {list.length > 1 && (
+        <div className="md:hidden">
+          <div className="-space-y-2 pt-2">
+            {list.map((tab, i) =>
+              i === active ? null : (
+                <button
+                  className="block w-full rounded-b-[20px] bg-brand-green px-4 py-4 text-center text-[17px] font-medium tracking-[0.1em] text-white transition-colors hover:bg-brand-green/90"
+                  key={tab.id ?? i}
+                  onClick={() => setActive(i)}
+                  type="button"
+                >
+                  {tab.label}
+                </button>
+              ),
+            )}
+          </div>
+          <p className="mt-6 text-center text-base font-bold tracking-[0.1em] text-brand-ink">
+            ↑ 點擊地圖查看課程特色 ↑
+          </p>
+        </div>
+      )}
     </section>
   )
 }
