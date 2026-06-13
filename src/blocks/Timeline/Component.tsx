@@ -17,13 +17,19 @@ export type TimelineBlockProps = {
   mode?: 'manual' | 'reference' | null
   items?: TimelineItem[] | null
   events?: (number | TimelineEvent)[] | null
+  /** 是否在 pill 下方顯示說明文字。Figma about（27:61）為乾淨單行 pill → 預設不顯示 */
+  showDescription?: boolean | null
   locale?: 'zh-TW' | 'en'
 }
 
 type Entry = { date: string; title: string; description?: string | null; key: string }
 
 // Figma 創照歷程：中央直線 + 果綠節點，年份與事件 pill 左右交錯
-const Row: React.FC<{ entry: Entry; index: number }> = ({ entry, index }) => {
+const Row: React.FC<{ entry: Entry; index: number; showDescription: boolean }> = ({
+  entry,
+  index,
+  showDescription,
+}) => {
   const eventOnRight = index % 2 === 0
 
   const year = (
@@ -36,7 +42,7 @@ const Row: React.FC<{ entry: Entry; index: number }> = ({ entry, index }) => {
       <span className="inline-block rounded-[30px] bg-brand-green px-6 py-1.5 text-[14px] font-medium leading-[1.7] tracking-[0.08em] text-white md:text-[16px]">
         {entry.title}
       </span>
-      {entry.description && (
+      {showDescription && entry.description && (
         <p
           className={cn(
             'max-w-[26rem] text-[13px] leading-[1.7] tracking-[0.05em] text-brand-muted md:text-[14px]',
@@ -74,7 +80,7 @@ const Row: React.FC<{ entry: Entry; index: number }> = ({ entry, index }) => {
           <span className="inline-block self-start rounded-[30px] bg-brand-green px-5 py-1.5 text-[14px] font-medium leading-[1.7] tracking-[0.08em] text-white">
             {entry.title}
           </span>
-          {entry.description && (
+          {showDescription && entry.description && (
             <p className="text-[13px] leading-[1.7] tracking-[0.05em] text-brand-muted">
               {entry.description}
             </p>
@@ -85,13 +91,14 @@ const Row: React.FC<{ entry: Entry; index: number }> = ({ entry, index }) => {
   )
 }
 
-const TimelineList: React.FC<{ entries: Entry[]; locale: 'zh-TW' | 'en' }> = ({
-  entries,
-  locale,
-}) => (
+const TimelineList: React.FC<{
+  entries: Entry[]
+  locale: 'zh-TW' | 'en'
+  showDescription: boolean
+}> = ({ entries, locale, showDescription }) => (
   // 滿版暖米底（Figma history bg 1440×920）
   <section className="w-full bg-brand-surface py-14 md:py-20" data-block="timeline">
-    {/* 區塊進場 Fade In（Tracy node 45:240）；底色帶不動，內容淡入 */}
+    {/* 區塊進場 Fade In（Tracy node 27:61）；底色帶不動，內容淡入 */}
     <ScrollReveal className="container">
       {/* 眉標 + 標題（暫硬寫，待 block config 增欄位後改 CMS 餵） */}
       <div className="mb-10 md:mb-14">
@@ -112,7 +119,7 @@ const TimelineList: React.FC<{ entries: Entry[]; locale: 'zh-TW' | 'en' }> = ({
         />
         <ol className="relative flex flex-col gap-10 md:gap-12">
           {entries.map((entry, i) => (
-            <Row entry={entry} index={i} key={entry.key} />
+            <Row entry={entry} index={i} key={entry.key} showDescription={showDescription} />
           ))}
         </ol>
       </div>
@@ -124,6 +131,7 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
   mode,
   items,
   events,
+  showDescription,
   locale = 'zh-TW',
 }) => {
   let entries: Entry[] = []
@@ -151,5 +159,7 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
 
   if (entries.length === 0) return null
 
-  return <TimelineList entries={entries} locale={locale} />
+  return (
+    <TimelineList entries={entries} locale={locale} showDescription={showDescription !== false} />
+  )
 }

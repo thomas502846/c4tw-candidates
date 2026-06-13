@@ -77,7 +77,8 @@ export const ContactSection: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW'
   const t = COPY[locale]
 
   return (
-    <section className="container mt-16 max-w-[1240px]">
+    /* id=sheet：about/care/training CTA 以 /contact/#sheet 捲到表單；scroll-mt 補 sticky header 高 */
+    <section className="container mt-16 max-w-[1240px] scroll-mt-[88px] lg:scroll-mt-[120px]" id="sheet">
       {/* Figma Frame 120：左表單 462／右資訊 550／gap 128（≈ 1140 寬內 40.5%:48.2%:11.3%） */}
       <div className="flex flex-col gap-14 md:flex-row md:gap-[11%]">
         {/* 左欄：表單 */}

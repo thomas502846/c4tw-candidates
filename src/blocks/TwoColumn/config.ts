@@ -67,6 +67,22 @@ export const TwoColumn: Block = {
       required: true,
     },
     {
+      name: 'images',
+      type: 'array',
+      label: '斜疊雙圖（可選；給 2 張時標準二欄圖側改用對角錯位疊圖，care 257:386）',
+      maxRows: 2,
+      labels: { singular: '圖片', plural: '圖片' },
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          label: '圖片',
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'title',
       type: 'text',
       label: '標題',

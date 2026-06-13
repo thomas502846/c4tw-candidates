@@ -235,6 +235,7 @@ export interface Page {
     | TabsBlockBlock
     | PillarCardsBlock
     | MapLocationsBlock
+    | PhotoStripBlock
     | CtaBannerBlock
     | CallToActionBlock
     | MediaBlock
@@ -504,7 +505,11 @@ export interface NewsTickerBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
+  eyebrow?: string | null;
   title?: string | null;
+  align?: ('left' | 'center') | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
   richText?: {
     root: {
       type: string;
@@ -541,6 +546,7 @@ export interface TimelineBlock {
       }[]
     | null;
   events?: (number | TimelineEvent)[] | null;
+  showDescription?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'timeline';
@@ -634,6 +640,9 @@ export interface Award {
  */
 export interface ArticleCardsBlock {
   source: 'case-stories' | 'media-coverage' | 'manual';
+  eyebrow?: string | null;
+  heading?: string | null;
+  leadImage?: (number | null) | Media;
   batchSize?: number | null;
   enableLoadMore?: boolean | null;
   cards?:
@@ -694,6 +703,12 @@ export interface TwoColumnBlock {
   background?: ('none' | 'surface') | null;
   eyebrow?: string | null;
   image: number | Media;
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
   title?: string | null;
   richText?: {
     root: {
@@ -955,6 +970,22 @@ export interface MapLocationsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'mapLocations';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PhotoStripBlock".
+ */
+export interface PhotoStripBlock {
+  parallax?: boolean | null;
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'photoStrip';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1445,6 +1476,7 @@ export interface PagesSelect<T extends boolean = true> {
         tabsBlock?: T | TabsBlockBlockSelect<T>;
         pillarCards?: T | PillarCardsBlockSelect<T>;
         mapLocations?: T | MapLocationsBlockSelect<T>;
+        photoStrip?: T | PhotoStripBlockSelect<T>;
         ctaBanner?: T | CtaBannerBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1518,7 +1550,11 @@ export interface NewsTickerBlockSelect<T extends boolean = true> {
  * via the `definition` "ContentBlock_select".
  */
 export interface ContentBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   title?: T;
+  align?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   richText?: T;
   image?: T;
   imagePosition?: T;
@@ -1540,6 +1576,7 @@ export interface TimelineBlockSelect<T extends boolean = true> {
         id?: T;
       };
   events?: T;
+  showDescription?: T;
   id?: T;
   blockName?: T;
 }
@@ -1585,6 +1622,9 @@ export interface AwardsBlockSelect<T extends boolean = true> {
  */
 export interface ArticleCardsBlockSelect<T extends boolean = true> {
   source?: T;
+  eyebrow?: T;
+  heading?: T;
+  leadImage?: T;
   batchSize?: T;
   enableLoadMore?: T;
   cards?:
@@ -1639,6 +1679,12 @@ export interface TwoColumnBlockSelect<T extends boolean = true> {
   background?: T;
   eyebrow?: T;
   image?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   title?: T;
   richText?: T;
   cta?:
@@ -1873,6 +1919,21 @@ export interface MapLocationsBlockSelect<T extends boolean = true> {
     | {
         name?: T;
         nameEn?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PhotoStripBlock_select".
+ */
+export interface PhotoStripBlockSelect<T extends boolean = true> {
+  parallax?: T;
+  images?:
+    | T
+    | {
+        image?: T;
         id?: T;
       };
   id?: T;

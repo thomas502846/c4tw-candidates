@@ -381,7 +381,7 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
           type="submit"
           disabled={isPending || hasErrors}
           aria-disabled={isPending || hasErrors}
-          className="btn-cft btn-lime inline-flex h-[62px] w-full items-center justify-center rounded-full text-[17px] font-medium tracking-[0.1em] disabled:pointer-events-none disabled:opacity-60 md:h-[70px] md:text-[19px]"
+          className="btn-contact-submit inline-flex h-[62px] w-full items-center justify-center rounded-full text-[17px] font-medium tracking-[0.1em] disabled:pointer-events-none disabled:opacity-60 md:h-[70px] md:text-[19px]"
         >
           {isPending ? t.submitting : t.submit}
         </button>

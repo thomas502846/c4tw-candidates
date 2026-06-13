@@ -21,6 +21,31 @@ export const ArticleCards: Block = {
       ],
     },
     {
+      name: 'eyebrow',
+      type: 'text',
+      label: '眉標（媒體報導兩欄右側英文小標，可選）',
+      admin: {
+        condition: (_data, siblingData) => siblingData?.source === 'media-coverage',
+      },
+    },
+    {
+      name: 'heading',
+      type: 'text',
+      label: '標題（媒體報導兩欄右側 H1，可選）',
+      admin: {
+        condition: (_data, siblingData) => siblingData?.source === 'media-coverage',
+      },
+    },
+    {
+      name: 'leadImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: '左側代表圖（媒體報導兩欄；590×400）',
+      admin: {
+        condition: (_data, siblingData) => siblingData?.source === 'media-coverage',
+      },
+    },
+    {
       name: 'batchSize',
       type: 'number',
       label: '每批顯示數',

@@ -26,6 +26,8 @@ export interface ParallaxProps {
   speed?: number
   /** 最大位移上下限（px），避免極端視窗下露邊。預設 60 */
   maxOffset?: number
+  /** 位移軸向：'y'（預設，背景上下緩動）或 'x'（橫向帶緩動，care photowall 263:431） */
+  axis?: 'x' | 'y'
   as?: React.ElementType
   className?: string
   [key: string]: unknown
@@ -53,6 +55,7 @@ export const Parallax: React.FC<ParallaxProps> = ({
   children,
   speed = 0.2,
   maxOffset = 60,
+  axis = 'y',
   as,
   className,
   ...rest
@@ -86,7 +89,10 @@ export const Parallax: React.FC<ParallaxProps> = ({
       let offset = -delta * speed
       if (offset > maxOffset) offset = maxOffset
       if (offset < -maxOffset) offset = -maxOffset
-      node.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`
+      node.style.transform =
+        axis === 'x'
+          ? `translate3d(${offset.toFixed(1)}px, 0, 0)`
+          : `translate3d(0, ${offset.toFixed(1)}px, 0)`
     }
 
     const onScroll = () => {
@@ -117,7 +123,7 @@ export const Parallax: React.FC<ParallaxProps> = ({
       if (frame.current != null) window.cancelAnimationFrame(frame.current)
       if (el) el.style.transform = ''
     }
-  }, [reduced, speed, maxOffset])
+  }, [reduced, speed, maxOffset, axis])
 
   return (
     <Tag ref={ref} className={cn(className)} style={{ willChange: reduced ? undefined : 'transform' }} {...rest}>

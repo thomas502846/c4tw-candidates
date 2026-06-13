@@ -16,9 +16,37 @@ export const Content: Block = {
   },
   fields: [
     {
+      name: 'eyebrow',
+      type: 'text',
+      label: '眉標（圓點後小字，可選）',
+    },
+    {
       name: 'title',
       type: 'text',
       label: '標題',
+    },
+    {
+      name: 'align',
+      type: 'select',
+      label: '標題／眉標對齊（無配圖時生效）',
+      defaultValue: 'left',
+      options: [
+        { label: '靠左', value: 'left' },
+        { label: '置中', value: 'center' },
+      ],
+    },
+    {
+      name: 'ctaLabel',
+      type: 'text',
+      label: 'CTA 按鈕文字（可選）',
+    },
+    {
+      name: 'ctaUrl',
+      type: 'text',
+      label: 'CTA 連結（可選）',
+      admin: {
+        condition: (_data, siblingData) => Boolean(siblingData?.ctaLabel),
+      },
     },
     {
       name: 'richText',

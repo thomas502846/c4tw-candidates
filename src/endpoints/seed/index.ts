@@ -633,10 +633,13 @@ export const seed = async ({
               },
             ],
           },
-          // Sheet 首頁 03 品牌簡介（Figma：左圖右文）
+          // Sheet 首頁 03 品牌簡介（Figma 230:803：左圖右文 + About 眉標 + 認識創照 pill）
           {
             blockType: 'content',
+            eyebrow: 'About',
             title: '創新照顧，開啟照顧無限可能',
+            ctaLabel: '認識創照',
+            ctaUrl: '/about',
             richText: rt(
               '創照服務設計關注臺灣高齡化社會中的照顧需求，致力於人才培育、服務創新與跨領域合作，陪伴更多人找到適合自己的照顧支持。',
               '我們透過 All In One（AIO）整合照顧模式，串連醫療、長照、社福與社區資源，培育跨專業人才，推動以人為本的長照模式落地臺灣，也串起照顧現場的每個角色——讓需要照顧的人獲得支持，也讓投入照顧的人才被看見與培育。',
@@ -669,8 +672,8 @@ export const seed = async ({
               },
             ],
           },
-          // Sheet 首頁 05 案例輪播：創照分享（CMS 自動抓取最新三篇）
-          { blockType: 'content', title: '創照分享' },
+          // Sheet 首頁 05 案例輪播：創照分享（Figma 217:601：NEWS 眉標+標題置中，CMS 自動抓取最新三篇）
+          { blockType: 'content', eyebrow: 'NEWS', title: '創照分享', align: 'center' },
           {
             blockType: 'articleCards',
             source: 'case-stories',
@@ -723,7 +726,10 @@ export const seed = async ({
           },
           {
             blockType: 'content',
+            eyebrow: 'About',
             title: 'Innovating care, opening every possibility',
+            ctaLabel: 'About us',
+            ctaUrl: '/en/about',
             richText: rt(
               'Care For Taiwan focuses on the care needs of Taiwan’s aging society, committed to talent cultivation, service innovation, and cross-disciplinary collaboration — helping more people find the care support that fits them.',
               'Through the All In One (AIO) integrated care model, we connect medical, long-term care, social welfare, and community resources, cultivate cross-disciplinary talent, and bring person-centered long-term care to Taiwan — supporting those who need care, and recognizing and cultivating those who give it.',
@@ -755,7 +761,7 @@ export const seed = async ({
               },
             ],
           },
-          { blockType: 'content', title: 'Stories' },
+          { blockType: 'content', eyebrow: 'NEWS', title: 'Stories', align: 'center' },
           {
             blockType: 'articleCards',
             source: 'case-stories',
@@ -805,6 +811,7 @@ export const seed = async ({
           // Sheet about 02 品牌故事(Why)：緣起
           {
             blockType: 'content',
+            eyebrow: 'Beginning',
             title: '緣起',
             richText: rtNodes(
               h3('從照顧一個人，到改變一個照顧系統'),
@@ -849,10 +856,11 @@ export const seed = async ({
               { number: '8', suffix: '+', label: '社區參與' },
             ],
           },
-          // Sheet about 05 歷程：先以既有大事紀佔位
+          // Sheet about 05 歷程：先以既有大事紀佔位（Figma 乾淨單行 pill→不顯示說明文）
           {
             blockType: 'timeline',
             mode: 'reference',
+            showDescription: false,
             events: timelineDocs.map((doc) => doc.id),
           },
           // Sheet about 06 公信力：獲獎記錄
@@ -861,20 +869,27 @@ export const seed = async ({
             source: 'collection',
             awards: awardDocs.map((doc) => doc.id),
           },
-          // Sheet about 07 品牌曝光(Press)：媒體報導
-          { blockType: 'content', title: '媒體報導' },
+          // Sheet about 07 品牌曝光(Press)：媒體報導（左圖+右側 Press眉標/H1/列表，米色帶）
           {
             blockType: 'articleCards',
             source: 'media-coverage',
+            eyebrow: 'Press',
+            heading: '媒體報導',
+            leadImage: photos[1].id,
             batchSize: 3,
             enableLoadMore: true,
           },
-          // Sheet about 08 CTA按鈕：聯絡我們（頁尾全幅照片帶）
+          // Sheet about 08 CTA按鈕：聯絡我們（頁尾全幅照片帶；round4 #1→指向 /contact 詢問表單錨點 #sheet）
           {
             blockType: 'taCta',
             variant: 'photoBand',
             cards: [
-              { title: '聯絡我們', buttonLabel: '聯絡我們', url: '/contact', image: photos[3].id },
+              {
+                title: '聯絡我們',
+                buttonLabel: '聯絡我們',
+                url: '/contact/#sheet',
+                image: photos[3].id,
+              },
             ],
           },
         ],
@@ -890,6 +905,7 @@ export const seed = async ({
           },
           {
             blockType: 'content',
+            eyebrow: 'Beginning',
             title: 'Our Story',
             richText: rtNodes(
               h3('From caring for one person to changing a care system'),
@@ -936,6 +952,7 @@ export const seed = async ({
           {
             blockType: 'timeline',
             mode: 'reference',
+            showDescription: false,
             events: timelineDocs.map((doc) => doc.id),
           },
           {
@@ -943,10 +960,12 @@ export const seed = async ({
             source: 'collection',
             awards: awardDocs.map((doc) => doc.id),
           },
-          { blockType: 'content', title: 'Media Coverage' },
           {
             blockType: 'articleCards',
             source: 'media-coverage',
+            eyebrow: 'Press',
+            heading: 'Media Coverage',
+            leadImage: photos[1].id,
             batchSize: 3,
             enableLoadMore: true,
           },
@@ -957,7 +976,7 @@ export const seed = async ({
               {
                 title: 'Contact Us',
                 buttonLabel: 'Contact Us',
-                url: '/en/contact',
+                url: '/en/contact/#sheet',
                 image: photos[3].id,
               },
             ],
@@ -1013,6 +1032,8 @@ export const seed = async ({
             direction: 'imageRight',
             eyebrow: 'Family Care Services',
             image: photos[0].id,
+            // Figma care 257:386：右側 pic1+pic2 對角錯位斜疊
+            images: [{ image: photos[0].id }, { image: photos[1].id }],
             title: '家庭照顧服務如何運作',
             richText: rtNodes(
               h3('從理解需求開始，陪伴每一段照顧歷程'),
@@ -1086,6 +1107,18 @@ export const seed = async ({
               },
             ],
           },
+          // Figma photowall 263:431：全寬 5 圖橫向視差帶（EAP 與個人 AIO 之間）
+          {
+            blockType: 'photoStrip',
+            parallax: true,
+            images: [
+              { image: photos[0].id },
+              { image: photos[1].id },
+              { image: photos[2].id },
+              { image: photos[3].id },
+              { image: photos[4].id },
+            ],
+          },
           // Sheet care 07 個人AIO服務（Figma 263:442 米色帶：左文＋右 slogan＋綠引言卡）
           {
             blockType: 'twoColumn',
@@ -1132,7 +1165,7 @@ export const seed = async ({
               {
                 title: '諮詢家庭照顧服務',
                 buttonLabel: '諮詢家庭照顧服務',
-                url: '/contact',
+                url: '/contact/#sheet',
                 image: photos[7].id,
               },
             ],
@@ -1178,6 +1211,7 @@ export const seed = async ({
             direction: 'imageRight',
             eyebrow: 'Family Care Services',
             image: photos[0].id,
+            images: [{ image: photos[0].id }, { image: photos[1].id }],
             title: 'How family care services work',
             richText: rtNodes(
               h3('Starting from understanding, accompanying every care journey'),
@@ -1255,6 +1289,18 @@ export const seed = async ({
               },
             ],
           },
+          // Figma photowall 263:431：full-width 5-image horizontal parallax band
+          {
+            blockType: 'photoStrip',
+            parallax: true,
+            images: [
+              { image: photos[0].id },
+              { image: photos[1].id },
+              { image: photos[2].id },
+              { image: photos[3].id },
+              { image: photos[4].id },
+            ],
+          },
           {
             blockType: 'twoColumn',
             variant: 'quotes',
@@ -1315,7 +1361,7 @@ export const seed = async ({
               {
                 title: 'Ask about family care services',
                 buttonLabel: 'Ask about family care services',
-                url: '/en/contact',
+                url: '/en/contact/#sheet',
                 image: photos[7].id,
               },
             ],
@@ -1335,7 +1381,7 @@ export const seed = async ({
           {
             blockType: 'pageHeader',
             title: 'AIO解決方案－組織培力',
-            eyebrow: 'Organizational Training',
+            eyebrow: 'AIO Solutions-Organization Support',
             image: photos[4].id,
           },
           // Sheet training 02 Hero 引言
@@ -1426,15 +1472,20 @@ export const seed = async ({
               { label: '社會使命型組織', description: '打造可持續的照顧模式' },
             ],
           },
-          // Sheet training 08 真實案例
-          { blockType: 'content', title: '案例分享' },
+          // Sheet training 08 真實案例（Figma：● Care Stories 眉標、置中）
+          { blockType: 'content', eyebrow: 'Care Stories', title: '案例分享', align: 'center' },
           { blockType: 'articleCards', source: 'case-stories', batchSize: 3, enableLoadMore: true },
-          // Sheet training 09 CTA
+          // Sheet training 09 CTA（指向 /contact 表單錨點 #sheet）
           {
             blockType: 'taCta',
             variant: 'photoBand',
             cards: [
-              { title: '諮詢組織培力', buttonLabel: '諮詢組織培力', url: '/contact', image: photos[4].id },
+              {
+                title: '諮詢組織培力',
+                buttonLabel: '諮詢組織培力',
+                url: '/contact/#sheet',
+                image: photos[4].id,
+              },
             ],
           },
         ],
@@ -1610,6 +1661,7 @@ export const seed = async ({
           // Sheet school 02 關於學校 (What)：左圖右文
           {
             blockType: 'content',
+            eyebrow: 'About CFT',
             title: '關於照顧學校',
             richText: rtNodes(
               h3('為台灣長照而教的人才培育基地'),
@@ -1748,12 +1800,23 @@ export const seed = async ({
             ],
           },
           // Sheet school 07 學習成果 (Proof)：課程回顧（CMS 自動抓取最新三篇；專屬資料源待接，先以案例故事佔位）
-          { blockType: 'content', title: '課程回顧' },
+          { blockType: 'content', eyebrow: 'Stories', title: '課程回顧' },
           {
             blockType: 'articleCards',
             source: 'case-stories',
             batchSize: 3,
             enableLoadMore: false,
+          },
+          // photowall（Figma 85:287）：課程回顧與羅布森空間之間的滿版 5 格照片橫帶
+          {
+            blockType: 'photoStrip',
+            images: [
+              { image: photos[0].id },
+              { image: photos[1].id },
+              { image: photos[3].id },
+              { image: photos[5].id },
+              { image: photos[6].id },
+            ],
           },
           // Sheet school 08 線下場域 (Proof)：羅布森空間＝在地地形圖＋pin（Figma Frame 179 341:639）
           {
@@ -1795,6 +1858,7 @@ export const seed = async ({
           },
           {
             blockType: 'content',
+            eyebrow: 'About CFT',
             title: 'About the Care School',
             richText: rtNodes(
               h3('A talent-cultivation base teaching for Taiwan’s long-term care'),
@@ -1941,12 +2005,22 @@ export const seed = async ({
               },
             ],
           },
-          { blockType: 'content', title: 'Course Stories' },
+          { blockType: 'content', eyebrow: 'Stories', title: 'Course Stories' },
           {
             blockType: 'articleCards',
             source: 'case-stories',
             batchSize: 3,
             enableLoadMore: false,
+          },
+          {
+            blockType: 'photoStrip',
+            images: [
+              { image: photos[0].id },
+              { image: photos[1].id },
+              { image: photos[3].id },
+              { image: photos[5].id },
+              { image: photos[6].id },
+            ],
           },
           {
             blockType: 'mapLocations',

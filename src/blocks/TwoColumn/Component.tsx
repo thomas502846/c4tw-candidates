@@ -25,6 +25,8 @@ export type TwoColumnBlockProps = {
   eyebrow?: string | null
   lead?: string | null
   image: MediaDoc | string | number
+  /** 斜疊雙圖（Figma care 257:386：pic1+pic2 對角錯位）；給定 2 張時標準二欄圖側改用斜疊 */
+  images?: { image: MediaDoc | string | number; id?: string | null }[] | null
   title?: string | null
   richText?: DefaultTypedEditorState | null
   cta?: { label?: string | null; url?: string | null } | null
@@ -80,6 +82,31 @@ const ItemIcon: React.FC<{ item: TwoColumnItem; index: number; size?: string }> 
     <span aria-hidden className={cn('flex shrink-0 items-center justify-center rounded-full', size, fallbackBg)}>
       <span className="h-1/3 w-1/3 rounded-full border-[3px] border-white/90" />
     </span>
+  )
+}
+
+/** 斜疊雙圖（Figma care 257:386）：兩張 420×292 對角錯位，pic2 往右下偏移疊在 pic1 上 */
+const DualStackImages: React.FC<{
+  images: NonNullable<TwoColumnBlockProps['images']>
+}> = ({ images }) => {
+  const [a, b] = images
+  return (
+    <div className="relative mx-auto w-full max-w-[420px] md:mx-0 md:max-w-none md:aspect-[589/546]">
+      {a?.image && typeof a.image === 'object' && (
+        <HoverZoomImage
+          resource={a.image}
+          imgClassName="aspect-[420/292] w-full object-cover"
+          wrapperClassName="rounded-[30px] md:absolute md:left-0 md:top-0 md:w-[71%]"
+        />
+      )}
+      {b?.image && typeof b.image === 'object' && (
+        <HoverZoomImage
+          resource={b.image}
+          imgClassName="aspect-[420/292] w-full object-cover"
+          wrapperClassName="mt-5 rounded-[30px] shadow-[0_10px_30px_rgba(33,33,33,0.12)] md:absolute md:left-[29%] md:top-[46%] md:mt-0 md:w-[71%]"
+        />
+      )}
+    </div>
   )
 }
 
@@ -256,12 +283,14 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
   eyebrow,
   lead,
   image,
+  images,
   title,
   richText,
   cta,
   items,
   itemsStyle,
 }) => {
+  const hasDualStack = Boolean(images && images.length === 2)
   const ItemsComponent = itemsComponents[itemsStyle ?? 'iconCards'] ?? ItemsIconCards
   const hasItems = Boolean(items && items.length > 0)
 
@@ -361,18 +390,20 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
 
   const inner =
     variant === 'hero' ? (
-      /* 大圖引言：大圖靠左 + 白色文字卡疊右下（care/training hero） */
+      /* 大圖引言：大圖近左滿版（Figma hero-pic x=0 width=1037/1440≈72%）+ 白色文字卡疊右下
+         （care/training hero；Figma hero-info width=843≈58%） */
       <div className="relative">
         <HoverZoomImage
           resource={image}
           imgClassName="aspect-[16/9] w-full object-cover"
-          wrapperClassName={cn('rounded-[30px] md:w-[82%]', {
-            'md:ml-auto': direction === 'imageRight',
+          wrapperClassName={cn('overflow-hidden rounded-[30px] md:w-[72%]', {
+            'md:ml-auto md:-mr-8 md:rounded-r-none': direction === 'imageRight',
+            'md:-ml-8 md:rounded-l-none': direction !== 'imageRight',
           })}
         />
         <div
           className={cn(
-            'relative -mt-8 mx-4 rounded-[30px] bg-white px-7 py-6 shadow-[0_8px_30px_rgba(33,33,33,0.08)] md:absolute md:bottom-10 md:mx-0 md:mt-0 md:max-w-[46%] md:px-10 md:py-8',
+            'relative -mt-8 mx-4 rounded-[30px] bg-white px-7 py-6 shadow-[0_8px_30px_rgba(33,33,33,0.08)] md:absolute md:bottom-10 md:mx-0 md:mt-0 md:max-w-[58%] md:px-10 md:py-8',
             direction === 'imageRight' ? 'md:left-0' : 'md:right-0',
           )}
         >
@@ -405,11 +436,15 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
           })}
         >
           <div className="md:w-1/2">
-            <HoverZoomImage
-              resource={image}
-              imgClassName="aspect-[4/3] w-full object-cover"
-              wrapperClassName="rounded-[30px]"
-            />
+            {hasDualStack ? (
+              <DualStackImages images={images as NonNullable<TwoColumnBlockProps['images']>} />
+            ) : (
+              <HoverZoomImage
+                resource={image}
+                imgClassName="aspect-[4/3] w-full object-cover"
+                wrapperClassName="rounded-[30px]"
+              />
+            )}
           </div>
           <div className="md:w-1/2">
             {eyebrow && <Eyebrow text={eyebrow} />}

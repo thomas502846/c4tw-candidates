@@ -188,12 +188,13 @@ const Venn: React.FC<{
 /* Ring：#8BA98B 粗 donut＋4 照片圓（45° 對角，school 341:652）       */
 /* ---------------------------------------------------------------- */
 
-// 環帶中心半徑 ≈ 37%；45° 對角 → offset ≈ 26.2%
+// Figma 量測（school-problem-ring 裁切）：照片圓徑 ≈ 44% donut、圓心 45° 對角 offset ≈ 28%
+// → 圓被推向環帶外緣、貼住外圈，內緣不蓋住中央米色洞口。
 const RING_POS = [
-  { left: '76.2%', top: '23.8%' }, // 右上
-  { left: '76.2%', top: '76.2%' }, // 右下
-  { left: '23.8%', top: '76.2%' }, // 左下
-  { left: '23.8%', top: '23.8%' }, // 左上
+  { left: '78%', top: '22%' }, // 右上
+  { left: '78%', top: '78%' }, // 右下
+  { left: '22%', top: '78%' }, // 左下
+  { left: '22%', top: '22%' }, // 左上
 ]
 
 const Ring: React.FC<{ photos?: InfographicPhoto[] | null }> = ({ photos }) => (
@@ -213,7 +214,7 @@ const Ring: React.FC<{ photos?: InfographicPhoto[] | null }> = ({ photos }) => (
     </svg>
     {(photos ?? []).slice(0, 4).map((photo, i) => (
       <div
-        className="absolute h-[39%] w-[39%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-[#D9D9D9]"
+        className="absolute h-[44%] w-[44%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-[#D9D9D9]"
         key={photo.id ?? i}
         style={RING_POS[i]}
       >

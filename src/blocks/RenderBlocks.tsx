@@ -18,6 +18,7 @@ import { MissionCirclesBlock } from '@/blocks/MissionCircles/Component'
 import { NewsTickerBlock } from '@/blocks/NewsTicker/Component'
 import { NumberedFeaturesBlock } from '@/blocks/NumberedFeatures/Component'
 import { PageHeaderBlock } from '@/blocks/PageHeader/Component'
+import { PhotoStripBlock } from '@/blocks/PhotoStrip/Component'
 import { PillarCardsBlock } from '@/blocks/PillarCards/Component'
 import { QuoteBlock } from '@/blocks/Quote/Component'
 import { StatsCardsBlock } from '@/blocks/StatsCards/Component'
@@ -39,6 +40,7 @@ const fullBleedBlocks = new Set([
   'taCta',
   'videoBlock',
   'missionCircles',
+  'photoStrip',
 ])
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,6 +61,7 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   newsTicker: NewsTickerBlock,
   numberedFeatures: NumberedFeaturesBlock,
   pageHeader: PageHeaderBlock,
+  photoStrip: PhotoStripBlock,
   pillarCards: PillarCardsBlock,
   quote: QuoteBlock,
   statsCards: StatsCardsBlock,

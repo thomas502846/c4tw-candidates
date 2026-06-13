@@ -26,6 +26,11 @@ export type ArticleCardsBlockProps = {
   batchSize?: number | null
   enableLoadMore?: boolean | null
   cards?: ManualCard[] | null
+  /** 媒體報導（press）兩欄版型的右側眉標／標題（Figma about press 230:732） */
+  eyebrow?: string | null
+  heading?: string | null
+  /** 媒體報導兩欄左側代表圖（590×400）；媒體報導項目本身無圖時用此 */
+  leadImage?: MediaDoc | string | number | null
   locale?: 'zh-TW' | 'en'
 }
 
@@ -47,10 +52,17 @@ export const ArticleCardsBlock: React.FC<ArticleCardsBlockProps> = async ({
   batchSize,
   enableLoadMore,
   cards,
+  eyebrow,
+  heading,
+  leadImage,
   locale = 'zh-TW',
 }) => {
   const resolvedSource = source ?? 'manual'
   const limit = batchSize && batchSize > 0 ? batchSize : 3
+
+  const leadImageDoc = leadImage && typeof leadImage === 'object' ? leadImage : null
+  const leadImageUrl = leadImageDoc?.sizes?.card?.url || leadImageDoc?.url || null
+  const leadImageAlt = leadImageDoc?.alt || null
 
   let initialCards: ArticleCardData[] = []
   let totalDocs = 0
@@ -74,6 +86,29 @@ export const ArticleCardsBlock: React.FC<ArticleCardsBlockProps> = async ({
 
   if (initialCards.length === 0) return null
 
+  // 媒體報導（press）：滿版米色帶 #F7F7EB（Figma about press bg 52:198），兩欄版型置中
+  if (resolvedSource === 'media-coverage') {
+    return (
+      <section className="w-full bg-brand-surface py-14 md:py-20" data-block="articleCards">
+        {/* 區塊進場 Fade In（Tracy node 27:61）；底色帶不動，內容淡入 */}
+        <ScrollReveal className="container">
+          <ArticleCardsClient
+            source={resolvedSource}
+            initialCards={initialCards}
+            totalDocs={totalDocs}
+            batchSize={limit}
+            enableLoadMore={enableLoadMore !== false}
+            eyebrow={eyebrow ?? null}
+            heading={heading ?? null}
+            leadImageUrl={leadImageUrl}
+            leadImageAlt={leadImageAlt}
+            locale={locale}
+          />
+        </ScrollReveal>
+      </section>
+    )
+  }
+
   return (
     // 區塊進場 Fade In（Tracy node 4:4/45:240/86:363：滑到觸發、0→100%、0.6s）
     <ScrollReveal as="section" className="container" data-block="articleCards">
@@ -83,6 +118,8 @@ export const ArticleCardsBlock: React.FC<ArticleCardsBlockProps> = async ({
         totalDocs={totalDocs}
         batchSize={limit}
         enableLoadMore={enableLoadMore !== false}
+        eyebrow={eyebrow ?? null}
+        heading={heading ?? null}
         locale={locale}
       />
     </ScrollReveal>

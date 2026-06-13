@@ -41,14 +41,29 @@ const ChevronDown: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 )
 
+// 當前頁判斷：navbar 主連結 href 命中目前路徑時回 true（Figma：active 連結用 brand-lime #adcb59）
+// 比對忽略結尾斜線；'/' 與 '/en' 僅在完全相等時 active（避免首頁恆亮）
+const isActivePath = (href: string, pathname: string): boolean => {
+  if (!href || href === '#' || href.startsWith('http')) return false
+  const norm = (p: string) => (p !== '/' && p.endsWith('/') ? p.slice(0, -1) : p)
+  const h = norm(href)
+  const p = norm(pathname)
+  if (h === '/' || h === '/en') return p === h
+  return p === h || p.startsWith(`${h}/`)
+}
+
 const NavLink: React.FC<{
   item: NavItem | SubItem
   isEn: boolean
   className?: string
+  activeClassName?: string
+  pathname?: string
   withChevron?: boolean
   onClick?: () => void
-}> = ({ item, isEn, className, withChevron, onClick }) => {
+}> = ({ item, isEn, className, activeClassName, pathname, withChevron, onClick }) => {
   const href = localizeHref(item.url, isEn)
+  const active = activeClassName != null && pathname != null && isActivePath(href, pathname)
+  const cls = active ? `${className ?? ''} ${activeClassName}` : className
   const external = item.type === 'external' || item.url.startsWith('http')
   const content = (
     <>
@@ -60,7 +75,7 @@ const NavLink: React.FC<{
   if (external) {
     return (
       <a
-        className={className}
+        className={cls}
         href={item.url}
         onClick={onClick}
         rel="noopener noreferrer"
@@ -72,11 +87,11 @@ const NavLink: React.FC<{
   }
 
   if (href === '#') {
-    return <span className={className}>{content}</span>
+    return <span className={cls}>{content}</span>
   }
 
   return (
-    <Link className={className} href={href} onClick={onClick}>
+    <Link aria-current={active ? 'page' : undefined} className={cls} href={href} onClick={onClick}>
       {content}
     </Link>
   )
@@ -128,26 +143,46 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
           {items.map((item) => {
             const hasSub = (item.subItems?.length ?? 0) > 0
             const baseClass = item.highlight ? desktopPillClass : desktopLinkClass
+            // pill（highlight）本身已是 lime 填色，不另加 active 色；一般連結套 brand-lime + semibold
+            const activeClass = item.highlight ? undefined : 'text-brand-lime font-semibold'
 
             if (!hasSub) {
-              return <NavLink className={baseClass} isEn={isEn} item={item} key={item.id} />
+              return (
+                <NavLink
+                  activeClassName={activeClass}
+                  className={baseClass}
+                  isEn={isEn}
+                  item={item}
+                  key={item.id}
+                  pathname={pathname}
+                />
+              )
             }
+
+            // 父連結：自身命中或任一子項命中 → active
+            const childActive = (item.subItems ?? []).some((sub) =>
+              isActivePath(localizeHref(sub.url, isEn), pathname),
+            )
 
             return (
               <div className="group relative" key={item.id}>
                 <NavLink
-                  className={`${baseClass} cursor-pointer`}
+                  activeClassName={childActive ? undefined : activeClass}
+                  className={`${baseClass} cursor-pointer${childActive ? ' text-brand-lime font-semibold' : ''}`}
                   isEn={isEn}
                   item={item}
+                  pathname={pathname}
                   withChevron
                 />
                 <div className="invisible absolute left-0 top-full z-30 min-w-[200px] translate-y-1 rounded-[20px] border border-border bg-white py-3 opacity-0 shadow-lg transition-all group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
                   {(item.subItems ?? []).map((sub) => (
                     <NavLink
+                      activeClassName="text-brand-lime font-semibold"
                       className="block whitespace-nowrap px-6 py-3 text-base tracking-[0.1em] text-brand-ink transition-colors hover:bg-brand-surface hover:text-brand-primary"
                       isEn={isEn}
                       item={sub}
                       key={sub.id}
+                      pathname={pathname}
                     />
                   ))}
                 </div>
@@ -206,11 +241,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
             if (!hasSub) {
               return (
                 <NavLink
+                  activeClassName="text-brand-lime font-semibold"
                   className="block border-b border-border py-4 text-[17px] font-medium tracking-[0.1em] text-brand-green"
                   isEn={isEn}
                   item={item}
                   key={item.id}
                   onClick={() => setMobileOpen(false)}
+                  pathname={pathname}
                 />
               )
             }
@@ -223,11 +260,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
                 <div className="mt-2 flex flex-col">
                   {(item.subItems ?? []).map((sub) => (
                     <NavLink
+                      activeClassName="text-brand-lime font-semibold"
                       className="py-2 pl-4 text-base tracking-[0.1em] text-brand-ink"
                       isEn={isEn}
                       item={sub}
                       key={sub.id}
                       onClick={() => setMobileOpen(false)}
+                      pathname={pathname}
                     />
                   ))}
                 </div>

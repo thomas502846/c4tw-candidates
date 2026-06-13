@@ -234,6 +234,25 @@
     background-color: #8fae3c; /* press 再深 */
   }
 
+  /* Contact 送出鈕（Figma 41:156 效果註）：hover/press 由純 lime 轉左#adcb59→右#dcd020 漸層、
+     文字恆白、0.3s ease。只用於 /contact 表單，不動共用 .btn-lime。 */
+  .btn-contact-submit {
+    color: #fff;
+    background-color: #adcb59;
+    background-image: linear-gradient(90deg, #adcb59 0%, #adcb59 100%);
+    transition:
+      background-image 0.3s ease,
+      background-color 0.3s ease,
+      color 0.3s ease,
+      opacity 0.3s ease;
+  }
+  .btn-contact-submit:hover,
+  .btn-contact-submit:focus-visible,
+  .btn-contact-submit:active {
+    color: #fff;
+    background-image: linear-gradient(90deg, #adcb59 0%, #dcd020 100%);
+  }
+
   .btn-highlight {
     background-color: #dcd020;
   }
@@ -258,7 +277,8 @@
 
   /* prefers-reduced-motion：去過場、保留變色（無位移風險，色變即時即可） */
   @media (prefers-reduced-motion: reduce) {
-    .btn-cft {
+    .btn-cft,
+    .btn-contact-submit {
       transition: none;
     }
   }

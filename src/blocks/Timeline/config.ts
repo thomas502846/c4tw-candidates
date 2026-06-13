@@ -63,5 +63,11 @@ export const Timeline: Block = {
         condition: (_data, siblingData) => siblingData?.mode === 'reference',
       },
     },
+    {
+      name: 'showDescription',
+      type: 'checkbox',
+      label: '顯示每筆說明文字（關閉＝乾淨單行 pill，符合 Figma about）',
+      defaultValue: false,
+    },
   ],
 }

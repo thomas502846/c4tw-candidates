@@ -18,6 +18,12 @@ export type ArticleCardsClientProps = {
   totalDocs: number
   batchSize: number
   enableLoadMore: boolean
+  /** 媒體報導兩欄右側眉標／標題（Figma about press 230:732） */
+  eyebrow?: string | null
+  heading?: string | null
+  /** 媒體報導兩欄左側代表圖（項目本身無圖時的 fallback） */
+  leadImageUrl?: string | null
+  leadImageAlt?: string | null
   locale: 'zh-TW' | 'en'
 }
 
@@ -142,26 +148,52 @@ const CoverageList: React.FC<{
   hasMore: boolean
   loading: boolean
   loadMore: () => void
+  eyebrow?: string | null
+  heading?: string | null
+  leadImageUrl?: string | null
+  leadImageAlt?: string | null
   locale: 'zh-TW' | 'en'
-}> = ({ cards, hasMore, loading, loadMore, locale }) => {
-  const lead = cards.find((c) => c.imageUrl)
+}> = ({ cards, hasMore, loading, loadMore, eyebrow, heading, leadImageUrl, leadImageAlt, locale }) => {
+  // 左圖：優先用區塊指定的代表圖，否則取最新一則有圖的報導
+  const cardLead = cards.find((c) => c.imageUrl)
+  const leadUrl = leadImageUrl || cardLead?.imageUrl || null
+  const leadAlt = leadImageAlt || cardLead?.imageAlt || cardLead?.title || null
   return (
-    <div className="grid gap-10 md:grid-cols-[412fr_728fr] md:gap-14">
-      {/* 左側代表圖（取最新一則有圖者；無圖則隱藏，清單佔滿） */}
-      {lead?.imageUrl && (
+    <div className="grid items-start gap-10 md:grid-cols-[590fr_550fr] md:gap-[60px]">
+      {/* 左側代表圖 590×400（Figma about press 230:732） */}
+      {leadUrl && (
         <div className="md:sticky md:top-28 md:self-start">
-          {/* 照片懸浮放大同首頁（Tracy node 45:240） */}
+          {/* 照片懸浮放大同首頁（Tracy node 27:61） */}
           <HoverZoomImage wrapperClassName="rounded-[30px] shadow-[4px_4px_3.5px_rgba(139,169,139,0.4)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt={lead.imageAlt || lead.title}
-              className="aspect-[412/360] w-full object-cover"
-              src={lead.imageUrl}
+              alt={leadAlt || ''}
+              className="aspect-[590/400] w-full object-cover"
+              src={leadUrl}
             />
           </HoverZoomImage>
         </div>
       )}
       <div>
+        {/* 右側眉標 Press（果綠圓點）+ H1 媒體報導（Figma about press） */}
+        {(eyebrow || heading) && (
+          <div className="mb-7">
+            {eyebrow && (
+              <p className="flex items-center gap-2.5 text-[15px] tracking-[0.1em] text-brand-highlight md:text-[16px]">
+                <span
+                  aria-hidden
+                  className="inline-block h-[13px] w-[13px] rounded-full bg-brand-highlight"
+                />
+                {eyebrow}
+              </p>
+            )}
+            {heading && (
+              <h2 className="mt-3 text-[28px] font-bold tracking-[0.1em] text-brand-green md:text-[40px]">
+                {heading}
+              </h2>
+            )}
+          </div>
+        )}
         <ul>
           {cards.map((card) => (
             <li key={card.id}>
@@ -198,6 +230,10 @@ export const ArticleCardsClient: React.FC<ArticleCardsClientProps> = ({
   totalDocs,
   batchSize,
   enableLoadMore,
+  eyebrow,
+  heading,
+  leadImageUrl,
+  leadImageAlt,
   locale,
 }) => {
   // manual：一次拿到全部，前端分批顯示
@@ -255,7 +291,11 @@ export const ArticleCardsClient: React.FC<ArticleCardsClientProps> = ({
     return (
       <CoverageList
         cards={cards}
+        eyebrow={eyebrow}
         hasMore={hasMore}
+        heading={heading}
+        leadImageAlt={leadImageAlt}
+        leadImageUrl={leadImageUrl}
         loading={loading}
         loadMore={loadMore}
         locale={locale}

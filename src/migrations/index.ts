@@ -1,6 +1,7 @@
 import * as migration_20260612_024004_initial from './20260612_024004_initial';
 import * as migration_20260612_085939_blocks_round2 from './20260612_085939_blocks_round2';
 import * as migration_20260612_094116_two_column_quotes_centered from './20260612_094116_two_column_quotes_centered';
+import * as migration_20260613_150252_round5_photostrip_eyebrows from './20260613_150252_round5_photostrip_eyebrows';
 
 export const migrations = [
   {
@@ -16,6 +17,11 @@ export const migrations = [
   {
     up: migration_20260612_094116_two_column_quotes_centered.up,
     down: migration_20260612_094116_two_column_quotes_centered.down,
-    name: '20260612_094116_two_column_quotes_centered'
+    name: '20260612_094116_two_column_quotes_centered',
+  },
+  {
+    up: migration_20260613_150252_round5_photostrip_eyebrows.up,
+    down: migration_20260613_150252_round5_photostrip_eyebrows.down,
+    name: '20260613_150252_round5_photostrip_eyebrows'
   },
 ];

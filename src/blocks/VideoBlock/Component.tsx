@@ -26,6 +26,7 @@ function youtubeId(url: string): string | null {
  */
 export const VideoBlockBlock: React.FC<VideoBlockProps> = ({ videoUrl, poster }) => {
   const [playing, setPlaying] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
   const ytId = videoUrl ? youtubeId(videoUrl) : null
 
   if (playing && videoUrl) {
@@ -61,28 +62,58 @@ export const VideoBlockBlock: React.FC<VideoBlockProps> = ({ videoUrl, poster })
           className="absolute inset-0"
         />
       )}
-      {videoUrl && (
-        <button
-          aria-label="播放影片"
-          className="absolute inset-0 flex items-center justify-center"
-          onClick={() => setPlaying(true)}
-          type="button"
+      {/* Figma 82:233：中央播放鈕恆在。影片網址待客戶提供 → 先做 modal 殼觸發鈕（round4 殘留 4）。
+          有 videoUrl 才真的播放；尚未提供時點擊開啟「影片即將上線」modal 殼。 */}
+      <button
+        aria-label="播放影片"
+        className="absolute inset-0 flex items-center justify-center"
+        onClick={() => (videoUrl ? setPlaying(true) : setModalOpen(true))}
+        type="button"
+      >
+        <svg
+          aria-hidden
+          className="h-[80px] w-[80px] transition-transform hover:scale-105 md:h-[125px] md:w-[125px]"
+          fill="none"
+          viewBox="0 0 125 125"
         >
-          <svg
-            aria-hidden
-            className="h-[80px] w-[80px] transition-transform hover:scale-105 md:h-[125px] md:w-[125px]"
-            fill="none"
-            viewBox="0 0 125 125"
+          <circle cx="62.5" cy="62.5" r="60" stroke="#ADCB59" strokeWidth="4" />
+          <polygon
+            points="52,42 88,62.5 52,83"
+            stroke="#ADCB59"
+            strokeLinejoin="round"
+            strokeWidth="4"
+          />
+        </svg>
+      </button>
+
+      {/* Modal 殼：影片尚未提供時的佔位 lightbox（client-only） */}
+      {modalOpen && !videoUrl && (
+        <div
+          aria-modal
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6"
+          onClick={() => setModalOpen(false)}
+          role="dialog"
+        >
+          <div
+            className="relative w-full max-w-3xl rounded-[20px] bg-white p-10 text-center"
+            onClick={(e) => e.stopPropagation()}
           >
-            <circle cx="62.5" cy="62.5" r="60" stroke="#ADCB59" strokeWidth="4" />
-            <polygon
-              points="52,42 88,62.5 52,83"
-              stroke="#ADCB59"
-              strokeLinejoin="round"
-              strokeWidth="4"
-            />
-          </svg>
-        </button>
+            <button
+              aria-label="關閉"
+              className="absolute right-5 top-4 text-2xl leading-none text-brand-muted hover:text-brand-ink"
+              onClick={() => setModalOpen(false)}
+              type="button"
+            >
+              ×
+            </button>
+            <p className="text-[18px] font-medium tracking-[0.08em] text-brand-ink">
+              品牌形象影片即將上線
+            </p>
+            <p className="mt-3 text-[14px] leading-[1.8] tracking-[0.05em] text-brand-muted">
+              影片內容整備中，敬請期待。
+            </p>
+          </div>
+        </div>
       )}
     </section>
   )
