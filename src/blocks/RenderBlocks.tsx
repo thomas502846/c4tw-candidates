@@ -31,6 +31,16 @@ import { VideoBlockBlock } from '@/blocks/VideoBlock/Component'
 
 export type Locale = 'zh-TW' | 'en'
 
+// 區塊錨點 id：由 block.title 推導，供頁內導流連結（如 care「我是企業HR」→ #企業EAP方案）對位。
+// 規則＝去頭尾空白、空白轉連字號。ZH 標題（無空白）原樣保留＝`企業EAP方案`；
+// EN 標題轉連字號＝`Corporate EAP Program` → `Corporate-EAP-Program`，與 seed 的 href 片段一致。
+const anchorIdFromTitle = (title: unknown): string | undefined => {
+  if (typeof title !== 'string') return undefined
+  const trimmed = title.trim()
+  if (!trimmed) return undefined
+  return trimmed.replace(/\s+/g, '-')
+}
+
 // 滿版帶狀區塊（Figma 各 band 上下相接、留白由區塊內部 padding 控制）→ 不加 my-16 外距
 const fullBleedBlocks = new Set([
   'hero',
@@ -91,8 +101,20 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              // anchorId：頁內導流（TaCta 雙按鈕等）以 #title 捲動到對應區塊；scroll-mt 補 sticky header 高
+              const anchorId = anchorIdFromTitle((block as { title?: unknown }).title)
               return (
-                <div className={fullBleedBlocks.has(blockType) ? undefined : 'my-16'} key={index}>
+                <div
+                  className={
+                    fullBleedBlocks.has(blockType)
+                      ? anchorId
+                        ? 'scroll-mt-[88px] lg:scroll-mt-[120px]'
+                        : undefined
+                      : `my-16${anchorId ? ' scroll-mt-[88px] lg:scroll-mt-[120px]' : ''}`
+                  }
+                  id={anchorId}
+                  key={index}
+                >
                   <Block {...block} locale={locale} disableInnerContainer />
                 </div>
               )

@@ -5,6 +5,8 @@ import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
+import { CountUpRuns } from './CountUpRuns'
+
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
 export type InfographicStat = { value: string; label: string; id?: string | null }
 export type InfographicPhoto = { image?: MediaDoc | string | number | null; id?: string | null }
@@ -90,11 +92,8 @@ const SatelliteText: React.FC<{
   return (
     <>
       <text fill={color} fontSize="28" fontWeight="700" textAnchor="middle" x={cx} y={valueY}>
-        {valueRuns(value).map((run, i) => (
-          <tspan fontSize={run.big ? 28 : 14} fontWeight={run.big ? 700 : 500} key={i}>
-            {run.text}
-          </tspan>
-        ))}
+        {/* 數字片段滑入視窗後 Count Up（care 痛點數據）；中文單位原樣保留 */}
+        <CountUpRuns bigSize={28} runs={valueRuns(value)} smallSize={14} />
       </text>
       <text fill={color} fontSize="12" textAnchor="middle" x={cx} y={valueY + 22}>
         {lines.map((line, li) => (
@@ -112,11 +111,11 @@ const BigCircleLabel: React.FC<{ x: number; label: string }> = ({ x, label }) =>
   const { main, sub } = splitImpactLabel(label)
   return (
     <>
-      <text fill="#212121" fontSize="28" fontWeight="700" letterSpacing="4" textAnchor="middle" x={x} y={sub ? 282 : 290}>
+      <text fill="#212121" fontSize="30" fontWeight="700" letterSpacing="4" textAnchor="middle" x={x} y={sub ? 250 : 240}>
         {main}
       </text>
       {sub && (
-        <text fill="#212121" fontSize="17" fontWeight="500" letterSpacing="8" textAnchor="middle" x={x + 4} y={316}>
+        <text fill="#212121" fontSize="18" fontWeight="500" letterSpacing="8" textAnchor="middle" x={x + 4} y={284}>
           {sub}
         </text>
       )}
@@ -124,15 +123,17 @@ const BigCircleLabel: React.FC<{ x: number; label: string }> = ({ x, label }) =>
   )
 }
 
+// Figma 86:363：兩大圓近等徑、重疊較深、衛星圓貼住外弧（非外撐）
+const SAT_R = 62
 const SAT_LEFT = [
-  { cx: 150, cy: 95 },
-  { cx: 88, cy: 245 },
-  { cx: 150, cy: 395 },
+  { cx: 219, cy: 68 }, // 左上
+  { cx: 140, cy: 230 }, // 左
+  { cx: 219, cy: 392 }, // 左下
 ]
 const SAT_RIGHT = [
-  { cx: 712, cy: 95 },
-  { cx: 774, cy: 245 },
-  { cx: 712, cy: 395 },
+  { cx: 681, cy: 68 }, // 右上
+  { cx: 760, cy: 230 }, // 右
+  { cx: 681, cy: 392 }, // 右下
 ]
 
 const Venn: React.FC<{
@@ -143,23 +144,23 @@ const Venn: React.FC<{
 }> = ({ leftLabel, rightLabel, leftStats, rightStats }) => (
   <svg
     aria-label={`${leftLabel ?? ''}／${rightLabel ?? ''} 痛點數據圖`}
-    className="mx-auto h-auto w-full max-w-[822px]"
+    className="mx-auto h-auto w-full max-w-[900px]"
     role="img"
-    viewBox="0 0 862 490"
+    viewBox="0 0 900 460"
   >
     {/* 右大圓（職場角色，淡青 無邊框） */}
-    <circle cx="555" cy="245" fill="#ECF7F9" r="180" />
+    <circle cx="555" cy="230" fill="#ECF7F9" r="170" />
     {/* 左大圓（個人生活，米底＋亮綠細邊） */}
-    <circle cx="318" cy="245" fill="#F7F7EB" r="155" stroke="#ADCB59" strokeWidth="2" />
+    <circle cx="345" cy="230" fill="#F7F7EB" r="170" stroke="#ADCB59" strokeWidth="2" />
     {/* 左圓 icon：房屋線稿 */}
     <g fill="none" stroke="#ADCB59" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
-      <path d="M288 205l30-26 30 26M294 202v34h48v-34" />
+      <path d="M315 168l30-26 30 26M321 165v34h48v-34" />
     </g>
-    {leftLabel && <BigCircleLabel label={leftLabel} x={318} />}
+    {leftLabel && <BigCircleLabel label={leftLabel} x={345} />}
     {/* 右圓 icon：手提包線稿 */}
     <g fill="none" stroke="#5E8C8C" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
-      <rect height="34" rx="6" width="56" x="527" y="200" />
-      <path d="M545 200v-8a10 10 0 0 1 20 0v8" />
+      <rect height="34" rx="6" width="56" x="527" y="165" />
+      <path d="M545 165v-8a10 10 0 0 1 20 0v8" />
     </g>
     {rightLabel && <BigCircleLabel label={rightLabel} x={555} />}
     {/* 衛星數據圓 */}
@@ -167,7 +168,7 @@ const Venn: React.FC<{
       const pos = SAT_LEFT[i]
       return (
         <g key={stat.id ?? `l${i}`}>
-          <circle cx={pos.cx} cy={pos.cy} fill="#FFFFFF" r="64" stroke="#ADCB59" strokeWidth="2" />
+          <circle cx={pos.cx} cy={pos.cy} fill="#FFFFFF" r={SAT_R} stroke="#ADCB59" strokeWidth="2" />
           <SatelliteText color="#9C9F33" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
         </g>
       )
@@ -176,7 +177,7 @@ const Venn: React.FC<{
       const pos = SAT_RIGHT[i]
       return (
         <g key={stat.id ?? `r${i}`}>
-          <circle cx={pos.cx} cy={pos.cy} fill="#ECF7F9" r="64" />
+          <circle cx={pos.cx} cy={pos.cy} fill="#ECF7F9" r={SAT_R} />
           <SatelliteText color="#5E8C8C" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
         </g>
       )
@@ -188,13 +189,14 @@ const Venn: React.FC<{
 /* Ring：#8BA98B 粗 donut＋4 照片圓（45° 對角，school 341:652）       */
 /* ---------------------------------------------------------------- */
 
-// Figma 量測（school-problem-ring 裁切）：照片圓徑 ≈ 44% donut、圓心 45° 對角 offset ≈ 28%
-// → 圓被推向環帶外緣、貼住外圈，內緣不蓋住中央米色洞口。
+// Figma 量測（problem-pic 67:166，donut 466、照片圓 129）：照片圓徑 = 129/466 ≈ 27.7% donut，
+// 圓心貼四角（55:284~287 中心換算 ≈ 14%／86%），坐落在環帶上、不蓋中央米色洞口。
+const RING_DIAM = '27.7%'
 const RING_POS = [
-  { left: '78%', top: '22%' }, // 右上
-  { left: '78%', top: '78%' }, // 右下
-  { left: '22%', top: '78%' }, // 左下
-  { left: '22%', top: '22%' }, // 左上
+  { left: '86.2%', top: '14.9%' }, // 右上（55:287）
+  { left: '86.2%', top: '86.2%' }, // 右下（55:286）
+  { left: '13.8%', top: '86.2%' }, // 左下（55:285）
+  { left: '13.8%', top: '14.9%' }, // 左上（55:284）
 ]
 
 const Ring: React.FC<{ photos?: InfographicPhoto[] | null }> = ({ photos }) => (
@@ -214,9 +216,9 @@ const Ring: React.FC<{ photos?: InfographicPhoto[] | null }> = ({ photos }) => (
     </svg>
     {(photos ?? []).slice(0, 4).map((photo, i) => (
       <div
-        className="absolute h-[44%] w-[44%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-[#D9D9D9]"
+        className="absolute -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-[#D9D9D9]"
         key={photo.id ?? i}
-        style={RING_POS[i]}
+        style={{ ...RING_POS[i], width: RING_DIAM, height: RING_DIAM }}
       >
         {photo.image && typeof photo.image === 'object' && (
           <Media resource={photo.image} imgClassName="h-full w-full object-cover" />
@@ -345,13 +347,8 @@ export const InfographicBlock: React.FC<InfographicBlockProps> = (props) => {
     ) : (
       <Radial nodes={props.nodes} />
     )
-  ) : hasCjk(props.leftLabel) ? (
-    <img
-      alt={`${props.leftLabel ?? ''}／${props.rightLabel ?? ''} 痛點數據圖`}
-      className="mx-auto h-auto w-full max-w-[822px]"
-      src="/figma/care-venn.png"
-    />
   ) : (
+    // ZH/EN 一律走向量 Venn（文字由 stats 即時繪製）：較 baked PNG 更貼 Figma 比例且 i18n 通用
     <Venn
       leftLabel={props.leftLabel}
       leftStats={props.leftStats}

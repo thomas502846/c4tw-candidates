@@ -56,14 +56,25 @@ export const VideoBlockBlock: React.FC<VideoBlockProps> = ({ videoUrl, poster })
       data-block="videoBlock"
     >
       {poster && typeof poster === 'object' && (
-        <Media
-          resource={poster}
-          imgClassName="absolute inset-0 h-full w-full object-cover"
-          className="absolute inset-0"
-        />
+        <>
+          <Media
+            resource={poster}
+            imgClassName="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0"
+          />
+          {/* 有封面圖時加極淡白色 radial scrim，確保 #ADCB59 播放鈕在任何深色封面上都讀得到 */}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(circle at center, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 38%)',
+            }}
+          />
+        </>
       )}
-      {/* Figma 82:233：中央播放鈕恆在。影片網址待客戶提供 → 先做 modal 殼觸發鈕（round4 殘留 4）。
-          有 videoUrl 才真的播放；尚未提供時點擊開啟「影片即將上線」modal 殼。 */}
+      {/* Figma 82:233（1440×660＝aspect 24/11，淺灰 #D9D9D9 底）：中央播放鈕恆在。
+          影片網址待客戶提供 → 點擊開啟置中 modal lightbox 殼；有 videoUrl 才真的內嵌播放。 */}
       <button
         aria-label="播放影片"
         className="absolute inset-0 flex items-center justify-center"

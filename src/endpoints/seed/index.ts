@@ -702,8 +702,9 @@ export const seed = async ({
               },
             ],
           },
-          // Sheet 首頁 07 氛圍收尾：品牌影片（影片網址待客戶提供，先放封面佔位）
-          { blockType: 'videoBlock', poster: photos[4].id },
+          // Sheet 首頁 07 氛圍收尾：品牌影片（Figma 82:233＝淺灰 #D9D9D9 placeholder＋中央播放鈕；
+          // 影片網址與封面圖待客戶提供，先留 Figma 灰底佔位，不套深色照片以免播放鈕被吃掉）
+          { blockType: 'videoBlock' },
         ],
       },
       en: {
@@ -789,7 +790,7 @@ export const seed = async ({
               },
             ],
           },
-          { blockType: 'videoBlock', poster: photos[4].id },
+          { blockType: 'videoBlock' },
         ],
       },
     },
@@ -1635,7 +1636,7 @@ export const seed = async ({
               {
                 title: 'Ask about organizational training',
                 buttonLabel: 'Ask about organizational training',
-                url: '/en/contact',
+                url: '/en/contact/#sheet',
                 image: photos[4].id,
               },
             ],

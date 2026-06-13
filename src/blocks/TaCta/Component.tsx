@@ -6,6 +6,8 @@ import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
+import { AnchorLink } from './AnchorLink'
+
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
 export type TaCtaCard = {
   image?: MediaDoc | string | number | null
@@ -191,9 +193,10 @@ const PhotoCards: React.FC<{ intro?: string | null; cards: TaCtaCard[] }> = ({ i
           const cls =
             'group block overflow-hidden rounded-[30px] shadow-[4px_4px_3.5px_rgba(139,169,139,0.25)] transition-transform hover:-translate-y-1'
           return card.url ? (
-            <a className={cls} href={card.url} key={card.id ?? i}>
+            // 頁內 # 錨點（TA 導流）走平滑捲動；其餘維持原生連結
+            <AnchorLink className={cls} href={card.url} key={card.id ?? i}>
               {inner}
-            </a>
+            </AnchorLink>
           ) : (
             <div className={cls} key={card.id ?? i}>
               {inner}

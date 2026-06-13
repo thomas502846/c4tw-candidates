@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { Media } from '@/components/Media'
 import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
@@ -25,28 +24,18 @@ export type MissionCirclesBlockProps = {
 const circleColors = ['#DCD020', '#8BA98B', '#ADCB59']
 
 /**
- * variant band：About Vision 使命帶（34:88）——滿版照片底＋白字標語兩行＋
- * 三圓（外圈半透明 halo + 內實心圓 + 白字 label）
+ * variant band：About Vision 使命帶（Figma 34:88 Vision-bg）——淺灰底（非深色照片）＋
+ * 深色標語兩行＋三圓（外圈半透明 halo + 內實心圓 220/260 比例 + 白字 label）。
+ * Figma 底為 #D9D9D9 淺灰；標語改深墨色以確保可讀（淺灰底白字對比不足）。
  */
 const Band: React.FC<{
   slogan?: string | null
-  backgroundImage?: MediaDoc | string | number | null
   circles: MissionCircle[]
-}> = ({ slogan, backgroundImage, circles }) => (
-  <section className="relative overflow-hidden py-16 md:py-24" data-block="missionCircles">
-    {backgroundImage && typeof backgroundImage === 'object' ? (
-      <Media
-        resource={backgroundImage}
-        imgClassName="absolute inset-0 h-full w-full object-cover"
-        className="absolute inset-0"
-      />
-    ) : (
-      <div aria-hidden className="absolute inset-0 bg-brand-green" />
-    )}
-    <div aria-hidden className="absolute inset-0 bg-black/40" />
-    <ScrollReveal as="div" variant="in" className="container relative max-w-[1240px]">
+}> = ({ slogan, circles }) => (
+  <section className="bg-[#D9D9D9] py-16 md:py-24" data-block="missionCircles">
+    <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
       {slogan && (
-        <h2 className="whitespace-pre-line text-center text-xl font-bold leading-[1.9] tracking-[0.15em] text-white md:text-4xl md:leading-[1.7]">
+        <h2 className="whitespace-pre-line text-center text-xl font-bold leading-[1.9] tracking-[0.15em] text-brand-ink md:text-4xl md:leading-[1.7]">
           {slogan}
         </h2>
       )}
@@ -56,11 +45,12 @@ const Band: React.FC<{
           return (
             <div
               key={circle.id ?? i}
-              className="relative flex h-[180px] w-[180px] items-center justify-center rounded-full md:h-[260px] md:w-[260px]"
+              className="relative flex h-[200px] w-[200px] items-center justify-center rounded-full md:h-[260px] md:w-[260px]"
               style={{ backgroundColor: `${color}59` }} // 外圈半透明 halo（35%）
             >
+              {/* Figma：260 frame 內 220 實心圓 → 85% */}
               <div
-                className="flex h-[80%] w-[80%] items-center justify-center rounded-full px-4 text-center"
+                className="flex h-[85%] w-[85%] items-center justify-center rounded-full px-4 text-center"
                 style={{ backgroundColor: color }}
               >
                 <span className="text-base font-bold tracking-[0.15em] text-white md:text-[19px]">
@@ -133,10 +123,9 @@ export const MissionCirclesBlock: React.FC<MissionCirclesBlockProps> = ({
   variant,
   title,
   slogan,
-  backgroundImage,
   circles,
 }) => {
   if (!circles || circles.length === 0) return null
   if (variant === 'plain') return <Plain circles={circles} title={title} />
-  return <Band backgroundImage={backgroundImage} circles={circles} slogan={slogan} />
+  return <Band circles={circles} slogan={slogan} />
 }
