@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -93,13 +94,17 @@ export const PillarCardsBlock: React.FC<PillarCardsBlockProps> = ({
         </svg>
         <div className="relative grid grid-cols-2 gap-5 md:grid-cols-4 md:gap-7">
           {cards.slice(0, 4).map((card, i) => (
-            <div
+            // 卡片進場 Fade UP（Tracy node 97:564：卡片用 Fade UP、0→100%、0.6s）；四卡錯開 delay
+            <ScrollReveal
+              as="div"
               className={cn(
                 'flex flex-col items-center gap-5 self-start rounded-[30px] px-5 py-9 text-center md:min-h-[444px]',
                 pillarBgs[i % pillarBgs.length],
                 { 'md:mt-[214px]': i % 2 === 1 },
               )}
+              delay={i * 0.12}
               key={card.id ?? i}
+              variant="up"
             >
               {card.tag && (
                 <span className="rounded-[30px] border border-white bg-white px-4 py-1 text-sm font-medium tracking-[0.05em] text-brand-ink">
@@ -129,7 +134,7 @@ export const PillarCardsBlock: React.FC<PillarCardsBlockProps> = ({
               {card.text && (
                 <p className="text-sm leading-[1.7] tracking-[0.03em] text-white/95">{card.text}</p>
               )}
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

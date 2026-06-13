@@ -1,5 +1,7 @@
 import React from 'react'
 
+import ScrollReveal from '@/components/ScrollReveal'
+
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
 export type StatsCardsBlockProps = {
   blockType: 'statsCards'
@@ -18,7 +20,8 @@ export const StatsCardsBlock: React.FC<StatsCardsBlockProps> = ({ cards }) => {
   if (!cards || cards.length === 0) return null
 
   return (
-    <section className="container" data-block="statsCards">
+    // 數據區塊進場 Fade In（Tracy node 27:61；Count Up 動態數字另列待辦，本輪先進場淡入）
+    <ScrollReveal as="section" className="container" data-block="statsCards">
       <div className="mx-auto grid max-w-[1011px] grid-cols-2 gap-x-6 gap-y-10 py-6 md:grid-cols-4">
         {cards.map((card, i) => (
           <div className="text-center" key={card.id ?? i}>
@@ -36,6 +39,6 @@ export const StatsCardsBlock: React.FC<StatsCardsBlockProps> = ({ cards }) => {
           </div>
         ))}
       </div>
-    </section>
+    </ScrollReveal>
   )
 }

@@ -26,6 +26,7 @@ test.describe('聯絡表單', () => {
 
     await page.fill('#contact-name', 'E2E Tester')
     await page.fill('#contact-organization', 'E2E Test Org')
+    await page.fill('#contact-phone', '0912345678')
     await page.fill('#contact-email', 'e2e-en@example.com')
     await page.fill('#contact-message', 'This is an automated E2E test message (dry-run).')
 

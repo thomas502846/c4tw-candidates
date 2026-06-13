@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -173,12 +174,15 @@ export const StepsBlockBlock: React.FC<StepsBlockProps> = ({ variant, title, ite
 
   return (
     <section className="container max-w-[1240px]" data-block="stepsBlock">
-      {title && (
-        <h2 className="mb-10 text-center text-[24px] font-bold leading-[1.7] tracking-[0.1em] text-brand-ink md:text-[30px]">
-          {title}
-        </h2>
-      )}
-      <Variant items={items} />
+      {/* 區塊進場 Fade In（標題）＋ Fade UP（步驟卡）（Tracy node 86:363/97:564） */}
+      <ScrollReveal variant="in">
+        {title && (
+          <h2 className="mb-10 text-center text-[24px] font-bold leading-[1.7] tracking-[0.1em] text-brand-ink md:text-[30px]">
+            {title}
+          </h2>
+        )}
+        <Variant items={items} />
+      </ScrollReveal>
     </section>
   )
 }

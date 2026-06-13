@@ -4,6 +4,7 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -25,7 +26,8 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
   const showImage = Boolean(image) && imagePosition !== 'none' && imagePosition != null
 
   return (
-    <section className="container" data-block="content">
+    // 標題、內文/圖文區塊進場 Fade In（Tracy node 0:1/45:240：滑到觸發、0→100%、0.6s）
+    <ScrollReveal as="section" className="container" data-block="content">
       <div
         className={cn('flex flex-col gap-10', {
           'md:flex-row-reverse md:items-center md:gap-16': showImage && imagePosition === 'left',
@@ -67,6 +69,6 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
           </div>
         )}
       </div>
-    </section>
+    </ScrollReveal>
   )
 }

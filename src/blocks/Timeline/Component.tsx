@@ -1,5 +1,6 @@
 import React from 'react'
 
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { TimelineEvent } from '@/payload-types'
 
@@ -90,7 +91,8 @@ const TimelineList: React.FC<{ entries: Entry[]; locale: 'zh-TW' | 'en' }> = ({
 }) => (
   // 滿版暖米底（Figma history bg 1440×920）
   <section className="w-full bg-brand-surface py-14 md:py-20" data-block="timeline">
-    <div className="container">
+    {/* 區塊進場 Fade In（Tracy node 45:240）；底色帶不動，內容淡入 */}
+    <ScrollReveal className="container">
       {/* 眉標 + 標題（暫硬寫，待 block config 增欄位後改 CMS 餵） */}
       <div className="mb-10 md:mb-14">
         <p className="flex items-center gap-2.5 text-[15px] tracking-[0.1em] text-brand-muted md:text-[16px]">
@@ -114,7 +116,7 @@ const TimelineList: React.FC<{ entries: Entry[]; locale: 'zh-TW' | 'en' }> = ({
           ))}
         </ol>
       </div>
-    </div>
+    </ScrollReveal>
   </section>
 )
 

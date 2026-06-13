@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react'
 
+import HoverZoomImage from '@/components/HoverZoomImage'
 import { Media } from '@/components/Media'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -54,8 +56,13 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
         </p>
       )}
 
-      {/* tab 列 */}
-      <div className="mt-12 grid grid-cols-2 gap-1 md:grid-cols-4" role="tablist">
+      {/* tab 列 — 分頁進場 Fade UP（Tracy node 97:564：分頁用 Fade UP、0→100%、0.6s） */}
+      <ScrollReveal
+        as="div"
+        className="mt-12 grid grid-cols-2 gap-1 md:grid-cols-4"
+        role="tablist"
+        variant="up"
+      >
         {list.map((tab, i) => (
           <button
             aria-selected={i === active}
@@ -73,17 +80,20 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
             {tab.label}
           </button>
         ))}
-      </div>
+      </ScrollReveal>
 
       {/* 面板 */}
       <div className="rounded-b-[30px] bg-brand-surface px-6 py-8 md:px-8 md:py-8" role="tabpanel">
-        <div className="overflow-hidden rounded-[20px] bg-[#D9D9D9]">
-          {current.image && typeof current.image === 'object' ? (
+        {/* 圖文卡照片 Hover 放大 110%（Tracy：圖文卡照片，自帶 group） */}
+        {current.image && typeof current.image === 'object' ? (
+          <HoverZoomImage wrapperClassName="rounded-[20px] bg-[#D9D9D9]">
             <Media resource={current.image} imgClassName="w-full object-cover" />
-          ) : (
+          </HoverZoomImage>
+        ) : (
+          <div className="overflow-hidden rounded-[20px] bg-[#D9D9D9]">
             <div className="aspect-[1075/590] w-full" />
-          )}
-        </div>
+          </div>
+        )}
 
         {current.pills && current.pills.length > 0 && (
           <div className="mt-6 flex flex-wrap gap-3">

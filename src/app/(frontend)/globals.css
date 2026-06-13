@@ -199,4 +199,101 @@
   }
 }
 
+/* ---------------------------------------------------------------
+ * 按鈕原語（Tracy 動效規格：按鈕 hover/press 變色 13 處）
+ *   - 文字恆白、Transition 0.3s ease
+ *   - hover + press（active）皆變色（press 比 hover 再深一階）
+ *   - variant 對應 Figma 指定底色：
+ *       .btn-lime      一般按鈕 #adcb59（左側雙鈕、care/training CTA）
+ *       .btn-highlight CTA / 右側雙鈕 #dcd020
+ *       .btn-green     部分按鈕 / 選單 hover #8ba98b
+ *   用法：<a class="btn-cft btn-lime">…</a>（btn-cft 給共通行為，btn-* 給配色）
+ *   版面（尺寸/圓角/字級）仍由各區塊自己的 Tailwind class 決定，這裡只負責配色與過場。
+ * --------------------------------------------------------------- */
+@layer components {
+  .btn-cft {
+    color: #fff;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      opacity 0.3s ease;
+  }
+  .btn-cft:hover,
+  .btn-cft:focus-visible {
+    color: #fff;
+  }
+
+  .btn-lime {
+    background-color: #adcb59;
+  }
+  .btn-lime:hover,
+  .btn-lime:focus-visible {
+    background-color: #9fbf48; /* 深一階 */
+  }
+  .btn-lime:active {
+    background-color: #8fae3c; /* press 再深 */
+  }
+
+  .btn-highlight {
+    background-color: #dcd020;
+  }
+  .btn-highlight:hover,
+  .btn-highlight:focus-visible {
+    background-color: #ccc014;
+  }
+  .btn-highlight:active {
+    background-color: #b8ad10;
+  }
+
+  .btn-green {
+    background-color: #8ba98b;
+  }
+  .btn-green:hover,
+  .btn-green:focus-visible {
+    background-color: #789878;
+  }
+  .btn-green:active {
+    background-color: #678567;
+  }
+
+  /* prefers-reduced-motion：去過場、保留變色（無位移風險，色變即時即可） */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-cft {
+      transition: none;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------
+ * 全站 reduced-motion 安全網（Tracy 動效規格收斂）
+ *   原語（ScrollReveal / Parallax / HoverZoomImage）已在 JS 層尊重 reduce；
+ *   這裡用 CSS 再加一道保險，涵蓋：
+ *     1) HoverZoomImage 的 group-hover:scale-110（純 CSS，不經 JS）→ 取消縮放與過場
+ *     2) tw-animate-css / 任意 transition / animation → 退化為近瞬時、不位移
+ *     3) 任何 data-parallax-target 背景 → 強制歸零 transform（即使 JS 慢一拍）
+ *   關鍵安全保證：絕不用 reduce 規則把任何內容 opacity:0 / visibility:hidden，
+ *   避免「開了 reduce 內容反而消失」。進場類一律以「直接可見」收尾。
+ * --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* HoverZoomImage：取消 hover 放大（圖片維持原尺寸、靜態） */
+  .group:hover [class*='group-hover\\:scale-'],
+  [class*='group-hover\\:scale-']:hover {
+    transform: none !important;
+  }
+
+  /* Parallax 背景層：強制歸零位移 */
+  [data-parallax-target] > * {
+    transform: none !important;
+  }
+}
+
 /* 強制 light mode：data-theme 由 layout 靜態設為 light，無 FOUC 需求 */

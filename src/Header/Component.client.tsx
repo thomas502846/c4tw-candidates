@@ -93,6 +93,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
     setMobileOpen(false)
   }, [pathname])
 
+  // Header 固定於視窗頂端（Tracy：sticky top）；捲動後加 subtle shadow 與內容分層
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   // 語言切換：/path ↔ /en/path
   const switchHref = isEn
     ? pathname.replace(/^\/en/, '') || '/'
@@ -104,7 +113,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
     'inline-flex items-center rounded-full bg-brand-lime pl-6 pr-5 py-3 text-[17px] xl:text-[19px] font-medium tracking-[0.1em] text-white transition-opacity hover:opacity-90'
 
   return (
-    <header className="relative z-20 bg-brand-surface">
+    <header
+      className={`sticky top-0 z-50 bg-brand-surface transition-shadow duration-300 ${
+        scrolled ? 'shadow-md' : ''
+      }`}
+    >
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 lg:h-[104px] lg:px-[50px]">
         <Link aria-label="Care For Taiwan 創照服務設計" href={isEn ? '/en' : '/'}>
           <Logo loading="eager" priority="high" />

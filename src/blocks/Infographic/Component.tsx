@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -386,16 +387,19 @@ export const InfographicBlock: React.FC<InfographicBlockProps> = (props) => {
 
   // ring（school problem-bg 55:249）＝滿版米色帶；其餘變體維持白底 container
   if (isRing) {
+    // 底色帶不加效果，僅內容進場 Fade In（Tracy：底色不加效果）
     return (
       <section className="bg-brand-surface py-14 md:py-24" data-block="infographic">
-        <div className="container max-w-[1240px]">{inner}</div>
+        <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
+          {inner}
+        </ScrollReveal>
       </section>
     )
   }
 
   return (
-    <section className="container max-w-[1240px]" data-block="infographic">
+    <ScrollReveal as="section" variant="in" className="container max-w-[1240px]" data-block="infographic">
       {inner}
-    </section>
+    </ScrollReveal>
   )
 }

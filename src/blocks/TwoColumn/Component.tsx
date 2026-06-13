@@ -4,6 +4,8 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
+import HoverZoomImage from '@/components/HoverZoomImage'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -49,10 +51,10 @@ const Eyebrow: React.FC<{ text: string }> = ({ text }) => (
   </p>
 )
 
-/** pill CTA 按鈕：rounded-30 綠底白字 + 箭頭 */
+/** pill CTA 按鈕：rounded-30 綠底白字 + 箭頭（配色走 btn-cft 系統：care/training #8ba98b btn-green） */
 const PillCta: React.FC<{ label: string; url: string }> = ({ label, url }) => (
   <a
-    className="inline-flex items-center gap-2.5 rounded-[30px] bg-brand-lime px-7 py-2.5 text-[17px] font-medium tracking-[0.1em] text-white transition-colors hover:bg-brand-primary"
+    className="btn-cft btn-green inline-flex items-center gap-2.5 rounded-[30px] px-7 py-2.5 text-[17px] font-medium tracking-[0.1em]"
     href={url}
   >
     {label}
@@ -145,10 +147,15 @@ const ItemsPillars: React.FC<{ items: TwoColumnItem[] }> = ({ items }) => (
 const ItemsGrid: React.FC<{ items: TwoColumnItem[] }> = ({ items }) => (
   <div className="mt-14 grid gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-[27px]">
     {items.map((item, i) => (
-      <div key={item.id ?? i} className="flex flex-col overflow-hidden rounded-[30px]">
-        <div className="aspect-[362/200] overflow-hidden bg-[#D9D9D9]">
+      <div key={item.id ?? i} className="group flex flex-col overflow-hidden rounded-[30px]">
+        <div className="aspect-[362/200] bg-[#D9D9D9]">
           {item.image && typeof item.image === 'object' && (
-            <Media resource={item.image} imgClassName="h-full w-full object-cover" />
+            <HoverZoomImage
+              resource={item.image}
+              useParentGroup
+              imgClassName="h-full w-full object-cover"
+              wrapperClassName="h-full w-full"
+            />
           )}
         </div>
         <div className="flex flex-1 flex-col gap-1.5 bg-brand-surface px-6 py-5">
@@ -277,7 +284,7 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
         data-block="twoColumn"
         id={anchorId(title)}
       >
-        <div className="container max-w-[1240px]">
+        <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
           <div className="flex flex-col gap-12 md:flex-row md:gap-20">
             <div className="md:w-[44%]">
               {eyebrow && <Eyebrow text={eyebrow} />}
@@ -310,7 +317,7 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
               {hasItems && <QuoteCards items={items as TwoColumnItem[]} />}
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
     )
   }
@@ -324,23 +331,29 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
         id={anchorId(title)}
       >
         <div className="container max-w-[1240px]">
-          {title && (
-            <h2 className="text-center text-[28px] font-bold tracking-[0.15em] text-brand-green md:text-4xl">
-              {title}
-            </h2>
+          <ScrollReveal variant="in">
+            {title && (
+              <h2 className="text-center text-[28px] font-bold tracking-[0.15em] text-brand-green md:text-4xl">
+                {title}
+              </h2>
+            )}
+            <span aria-hidden className="mx-auto mt-6 block h-px w-full bg-brand-green/30" />
+            {lead && (
+              <p className="mt-6 whitespace-pre-line text-center text-base leading-[1.85] tracking-[0.1em] text-brand-ink">
+                {lead}
+              </p>
+            )}
+            {richText && (
+              <div className="mt-6 text-center text-base leading-[1.85] tracking-[0.1em] text-brand-ink">
+                <RichText data={richText} enableGutter={false} enableProse={false} />
+              </div>
+            )}
+          </ScrollReveal>
+          {hasItems && (
+            <ScrollReveal variant="up">
+              <ItemsComponent items={items as TwoColumnItem[]} />
+            </ScrollReveal>
           )}
-          <span aria-hidden className="mx-auto mt-6 block h-px w-full bg-brand-green/30" />
-          {lead && (
-            <p className="mt-6 whitespace-pre-line text-center text-base leading-[1.85] tracking-[0.1em] text-brand-ink">
-              {lead}
-            </p>
-          )}
-          {richText && (
-            <div className="mt-6 text-center text-base leading-[1.85] tracking-[0.1em] text-brand-ink">
-              <RichText data={richText} enableGutter={false} enableProse={false} />
-            </div>
-          )}
-          {hasItems && <ItemsComponent items={items as TwoColumnItem[]} />}
         </div>
       </section>
     )
@@ -350,13 +363,13 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
     variant === 'hero' ? (
       /* 大圖引言：大圖靠左 + 白色文字卡疊右下（care/training hero） */
       <div className="relative">
-        <div
-          className={cn('overflow-hidden rounded-[30px] md:w-[82%]', {
+        <HoverZoomImage
+          resource={image}
+          imgClassName="aspect-[16/9] w-full object-cover"
+          wrapperClassName={cn('rounded-[30px] md:w-[82%]', {
             'md:ml-auto': direction === 'imageRight',
           })}
-        >
-          <Media resource={image} imgClassName="aspect-[16/9] w-full object-cover" />
-        </div>
+        />
         <div
           className={cn(
             'relative -mt-8 mx-4 rounded-[30px] bg-white px-7 py-6 shadow-[0_8px_30px_rgba(33,33,33,0.08)] md:absolute md:bottom-10 md:mx-0 md:mt-0 md:max-w-[46%] md:px-10 md:py-8',
@@ -392,9 +405,11 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
           })}
         >
           <div className="md:w-1/2">
-            <div className="overflow-hidden rounded-[30px]">
-              <Media resource={image} imgClassName="aspect-[4/3] w-full object-cover" />
-            </div>
+            <HoverZoomImage
+              resource={image}
+              imgClassName="aspect-[4/3] w-full object-cover"
+              wrapperClassName="rounded-[30px]"
+            />
           </div>
           <div className="md:w-1/2">
             {eyebrow && <Eyebrow text={eyebrow} />}
@@ -425,11 +440,13 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
       data-block="twoColumn"
       id={variant !== 'hero' ? anchorId(title) : undefined}
     >
-      <div className="container max-w-[1240px]">{inner}</div>
+      <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
+        {inner}
+      </ScrollReveal>
       {variant === 'hero' && hasItems && (
-        <div className="container max-w-[1240px]">
+        <ScrollReveal as="div" variant="up" className="container max-w-[1240px]">
           <ItemsComponent items={items as TwoColumnItem[]} />
-        </div>
+        </ScrollReveal>
       )}
     </section>
   )

@@ -5,6 +5,8 @@ import { getPayload } from 'payload'
 
 import type { Media as MediaDoc } from '@/payload-types'
 
+import ScrollReveal from '@/components/ScrollReveal'
+
 import { ArticleCardsClient } from './Component.client'
 import type { ArticleCardData } from './shared'
 import { normalizeBySource } from './shared'
@@ -73,7 +75,8 @@ export const ArticleCardsBlock: React.FC<ArticleCardsBlockProps> = async ({
   if (initialCards.length === 0) return null
 
   return (
-    <section className="container" data-block="articleCards">
+    // 區塊進場 Fade In（Tracy node 4:4/45:240/86:363：滑到觸發、0→100%、0.6s）
+    <ScrollReveal as="section" className="container" data-block="articleCards">
       <ArticleCardsClient
         source={resolvedSource}
         initialCards={initialCards}
@@ -82,6 +85,6 @@ export const ArticleCardsBlock: React.FC<ArticleCardsBlockProps> = async ({
         enableLoadMore={enableLoadMore !== false}
         locale={locale}
       />
-    </section>
+    </ScrollReveal>
   )
 }

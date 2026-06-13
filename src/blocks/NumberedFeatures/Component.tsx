@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -77,20 +78,25 @@ export const NumberedFeaturesBlock: React.FC<NumberedFeaturesBlockProps> = ({ ey
           </div>
         )
 
+        const inner = (
+          <div
+            className={cn('container flex max-w-[1240px] flex-col gap-10 md:items-center md:gap-16', {
+              'md:flex-row': imageRight,
+              'md:flex-row-reverse': !imageRight,
+            })}
+          >
+            {textCol}
+            {imageCol}
+          </div>
+        )
+
         return (
           <section
             key={item.id ?? i}
             className={cn(surface ? 'mt-24 bg-brand-surface py-14 md:py-16' : 'py-14 md:py-16')}
           >
-            <div
-              className={cn('container flex max-w-[1240px] flex-col gap-10 md:items-center md:gap-16', {
-                'md:flex-row': imageRight,
-                'md:flex-row-reverse': !imageRight,
-              })}
-            >
-              {textCol}
-              {imageCol}
-            </div>
+            {/* 01~03 圖文進場 Fade UP（Tracy node 0:1）；底色帶（surface）不加效果 */}
+            {surface ? inner : <ScrollReveal variant="up">{inner}</ScrollReveal>}
           </section>
         )
       })}

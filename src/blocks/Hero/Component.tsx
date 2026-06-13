@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
@@ -15,7 +15,9 @@ export type HeroBlockProps = {
   cta?: { label?: string | null; url?: string | null } | null
 }
 
-const SLIDE_INTERVAL_MS = 5000
+// Tracy 規格（node 4:4 / 0:1）：自動輪播、右→左、3s、Slide 轉場、不放大、循環、手機左右滑
+const SLIDE_INTERVAL_MS = 3000
+const SWIPE_THRESHOLD_PX = 40
 
 const ArrowRight: React.FC = () => (
   <svg
@@ -35,8 +37,9 @@ const ArrowRight: React.FC = () => (
 export const HeroBlock: React.FC<HeroBlockProps> = ({ images, title, subtitle, cta }) => {
   const slides = (images ?? []).filter((item) => Boolean(item?.image))
   const [active, setActive] = useState(0)
+  const touchStartX = useRef<number | null>(null)
 
-  // 自動輪播（Tracy 6/11 定稿：多張 KV + 圓點指示）
+  // 自動輪播（Tracy：右→左、3s、循環）；右→左＝track 往負向位移、active 遞增
   useEffect(() => {
     if (slides.length <= 1) return
     const id = setInterval(() => {
@@ -45,24 +48,45 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ images, title, subtitle, c
     return () => clearInterval(id)
   }, [slides.length])
 
+  // 手機左右滑切換
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0]?.clientX ?? null
+  }
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current == null || slides.length <= 1) return
+    const dx = (e.changedTouches[0]?.clientX ?? 0) - touchStartX.current
+    if (Math.abs(dx) >= SWIPE_THRESHOLD_PX) {
+      setActive((current) =>
+        dx < 0
+          ? (current + 1) % slides.length // 左滑→下一張
+          : (current - 1 + slides.length) % slides.length, // 右滑→上一張
+      )
+    }
+    touchStartX.current = null
+  }
+
   return (
     <section
       className="relative -mt-16 h-[420px] w-full overflow-hidden md:h-[700px]"
       data-block="hero"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
     >
-      {/* 輪播底圖 */}
-      {slides.map((item, i) => (
-        <div
-          aria-hidden={i !== active}
-          className={cn(
-            'absolute inset-0 transition-opacity duration-1000 ease-in-out',
-            i === active ? 'opacity-100' : 'opacity-0',
-          )}
-          key={item.id ?? i}
-        >
-          <Media fill imgClassName="object-cover" priority={i === 0} resource={item.image} />
-        </div>
-      ))}
+      {/* 輪播底圖：Slide 轉場（水平 track，translateX 隨 active 位移） */}
+      <div
+        className="absolute inset-0 flex h-full transition-transform duration-700 ease-in-out motion-reduce:transition-none"
+        style={{ transform: `translateX(-${active * 100}%)` }}
+      >
+        {slides.map((item, i) => (
+          <div
+            aria-hidden={i !== active}
+            className="relative h-full w-full shrink-0"
+            key={item.id ?? i}
+          >
+            <Media fill imgClassName="object-cover" priority={i === 0} resource={item.image} />
+          </div>
+        ))}
+      </div>
       {/* 全幅遮罩（Figma rgba(50,50,50,0.7)，取較透值保照片可辨） */}
       <div aria-hidden className="absolute inset-0 bg-[rgba(50,50,50,0.5)]" />
 
@@ -81,7 +105,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ images, title, subtitle, c
         )}
         {cta?.label && cta?.url && (
           <a
-            className="mt-1 inline-flex items-center gap-2 rounded-[30px] bg-brand-lime px-7 py-2.5 text-[16px] font-medium tracking-[0.1em] text-white transition-colors hover:bg-brand-primary md:text-[19px]"
+            className="btn-cft btn-highlight mt-1 inline-flex items-center gap-2 rounded-[30px] px-7 py-2.5 text-[16px] font-medium tracking-[0.1em] md:text-[19px]"
             href={cta.url}
           >
             {cta.label}

@@ -2,6 +2,9 @@
 
 import React, { useCallback, useState } from 'react'
 
+import HoverZoomImage from '@/components/HoverZoomImage'
+import ScrollReveal from '@/components/ScrollReveal'
+
 import type { ArticleCardData } from './shared'
 import { normalizeBySource } from './shared'
 
@@ -50,17 +53,21 @@ const Card: React.FC<{ card: ArticleCardData }> = ({ card }) => {
         )}
       </div>
       {card.imageUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          alt={card.imageAlt || card.title}
-          className="h-[130px] w-full object-cover"
-          loading="lazy"
-          src={card.imageUrl}
-        />
+        // 照片 Hover 放大 110%（Tracy node 4:4/86:363；縮放跟卡片整體 hover→useParentGroup）
+        <HoverZoomImage useParentGroup>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt={card.imageAlt || card.title}
+            className="h-[130px] w-full object-cover"
+            loading="lazy"
+            src={card.imageUrl}
+          />
+        </HoverZoomImage>
       ) : (
         <div aria-hidden className="h-[130px] w-full bg-brand-surface" />
       )}
-      <h3 className="line-clamp-2 text-justify text-[17px] font-medium leading-[28px] tracking-[0.1em] text-brand-ink md:text-[19px]">
+      {/* 文章標題 hover/press 變色 #adcb59（Tracy node 4:4） */}
+      <h3 className="line-clamp-2 text-justify text-[17px] font-medium leading-[28px] tracking-[0.1em] text-brand-ink transition-colors group-hover:text-brand-lime group-active:text-brand-lime md:text-[19px]">
         {card.title}
       </h3>
       {card.excerpt && (
@@ -72,8 +79,9 @@ const Card: React.FC<{ card: ArticleCardData }> = ({ card }) => {
   )
 
   // Figma 217:601：drop-shadow 4px 4px 3.5px rgba(139,169,139,0.5) 綠色系陰影
+  // group：照片 hover 放大 + 標題 hover 變色都綁在卡片整體 hover
   const cardClassName =
-    'flex flex-col gap-4 rounded-[30px] bg-white p-6 shadow-[4px_4px_3.5px_rgba(139,169,139,0.5)] transition-shadow'
+    'group flex flex-col gap-4 rounded-[30px] bg-white p-6 shadow-[4px_4px_3.5px_rgba(139,169,139,0.5)] transition-shadow'
 
   if (card.url) {
     return (
@@ -142,12 +150,15 @@ const CoverageList: React.FC<{
       {/* 左側代表圖（取最新一則有圖者；無圖則隱藏，清單佔滿） */}
       {lead?.imageUrl && (
         <div className="md:sticky md:top-28 md:self-start">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt={lead.imageAlt || lead.title}
-            className="aspect-[412/360] w-full rounded-[30px] object-cover shadow-[4px_4px_3.5px_rgba(139,169,139,0.4)]"
-            src={lead.imageUrl}
-          />
+          {/* 照片懸浮放大同首頁（Tracy node 45:240） */}
+          <HoverZoomImage wrapperClassName="rounded-[30px] shadow-[4px_4px_3.5px_rgba(139,169,139,0.4)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt={lead.imageAlt || lead.title}
+              className="aspect-[412/360] w-full object-cover"
+              src={lead.imageUrl}
+            />
+          </HoverZoomImage>
         </div>
       )}
       <div>
@@ -255,8 +266,11 @@ export const ArticleCardsClient: React.FC<ArticleCardsClientProps> = ({
   return (
     <div>
       <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-        {cards.map((card) => (
-          <Card card={card} key={card.id} />
+        {cards.map((card, i) => (
+          // 卡片進場 Fade UP（Tracy node 4:4/45:240）；同列卡片錯開 delay
+          <ScrollReveal delay={(i % 3) * 0.1} key={card.id} variant="up">
+            <Card card={card} />
+          </ScrollReveal>
         ))}
       </div>
       {hasMore && (

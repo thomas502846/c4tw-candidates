@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import { Parallax } from '@/components/Parallax'
 import type { Media as MediaDoc } from '@/payload-types'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
@@ -100,13 +101,22 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
           )}
         </div>
 
-        {/* 右側地圖 + pin */}
+        {/* 右側地圖 + pin（Tracy node 341:650 PARALLAX）：
+          * 背景地圖層隨視差緩動、區塊高度不變、內容文字正常往上滑。
+          * - 背景層（Media/TerrainSvg）包進 <Parallax>，由 JS 依捲動位移 transform。
+          * - 外層 overflow-hidden 確保位移不露邊、且區塊高度不被撐開。
+          * - pin/label 為 Parallax 的「兄弟」絕對定位層，維持正常文檔流，不隨視差移動。
+          * - prefers-reduced-motion / 無 JS：背景靜態可見（Parallax 內部保證）。 */}
         <div className="relative md:w-[52%]">
-          {image && typeof image === 'object' ? (
-            <Media resource={image} imgClassName="h-auto w-full object-contain" />
-          ) : (
-            <TerrainSvg />
-          )}
+          <div className="overflow-hidden" data-parallax-target="school-map-bg">
+            <Parallax speed={0.18}>
+              {image && typeof image === 'object' ? (
+                <Media resource={image} imgClassName="h-auto w-full object-contain" />
+              ) : (
+                <TerrainSvg />
+              )}
+            </Parallax>
+          </div>
           {(locations ?? []).map((location, i) => (
             <div
               className="absolute flex items-start gap-3"

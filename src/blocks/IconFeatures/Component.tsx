@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -126,7 +127,10 @@ export const IconFeaturesBlock: React.FC<IconFeaturesBlockProps> = ({ variant, i
   if (!items || items.length === 0) return null
   return (
     <section className="container max-w-[1240px]" data-block="iconFeatures">
-      {variant === 'pillars' ? <Pillars items={items} /> : <Cards items={items} />}
+      {/* 卡片進場 Fade UP（Tracy node 86:363：滑到觸發、0→100%、0.6s） */}
+      <ScrollReveal variant="up">
+        {variant === 'pillars' ? <Pillars items={items} /> : <Cards items={items} />}
+      </ScrollReveal>
     </section>
   )
 }

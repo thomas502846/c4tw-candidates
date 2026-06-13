@@ -1,6 +1,8 @@
 import React from 'react'
 
+import HoverZoomImage from '@/components/HoverZoomImage'
 import { Media } from '@/components/Media'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -164,13 +166,18 @@ const PhotoCards: React.FC<{ intro?: string | null; cards: TaCtaCard[] }> = ({ i
           {intro}
         </p>
       )}
-      <div className="mx-auto grid max-w-[1140px] gap-8 md:grid-cols-2 md:gap-[8%]">
+      <ScrollReveal as="div" variant="up" className="mx-auto grid max-w-[1140px] gap-8 md:grid-cols-2 md:gap-[8%]">
         {cards.map((card, i) => {
           const inner = (
             <>
-              <div className="h-[180px] overflow-hidden bg-[#D9D9D9] md:h-[212px]">
+              <div className="h-[180px] bg-[#D9D9D9] md:h-[212px]">
                 {card.image && typeof card.image === 'object' && (
-                  <Media resource={card.image} imgClassName="h-full w-full object-cover" />
+                  <HoverZoomImage
+                    resource={card.image}
+                    useParentGroup
+                    imgClassName="h-full w-full object-cover"
+                    wrapperClassName="h-full w-full"
+                  />
                 )}
               </div>
               <div className="flex h-[70px] items-center justify-between bg-brand-lime px-7 md:h-[80px]">
@@ -182,7 +189,7 @@ const PhotoCards: React.FC<{ intro?: string | null; cards: TaCtaCard[] }> = ({ i
             </>
           )
           const cls =
-            'block overflow-hidden rounded-[30px] shadow-[4px_4px_3.5px_rgba(139,169,139,0.25)] transition-transform hover:-translate-y-1'
+            'group block overflow-hidden rounded-[30px] shadow-[4px_4px_3.5px_rgba(139,169,139,0.25)] transition-transform hover:-translate-y-1'
           return card.url ? (
             <a className={cls} href={card.url} key={card.id ?? i}>
               {inner}
@@ -193,7 +200,7 @@ const PhotoCards: React.FC<{ intro?: string | null; cards: TaCtaCard[] }> = ({ i
             </div>
           )
         })}
-      </div>
+      </ScrollReveal>
     </div>
   </section>
 )
@@ -205,8 +212,14 @@ const PhotoCards: React.FC<{ intro?: string | null; cards: TaCtaCard[] }> = ({ i
  */
 const PhotoBand: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
   const bg = cards[0]
-  const pill = (card: TaCtaCard) => (
-    <span className="inline-flex items-center gap-2 rounded-[30px] bg-brand-lime px-7 py-2 text-[16px] font-medium tracking-[0.1em] text-white shadow-sm transition-colors hover:bg-brand-primary md:px-8 md:py-2.5 md:text-[19px]">
+  // 按鈕 hover/press 變色、白字、0.3s（Tracy node 45:240/86:363）：左 #adcb59、右 #dcd020
+  const pill = (card: TaCtaCard, i: number) => (
+    <span
+      className={cn(
+        'btn-cft inline-flex items-center gap-2 rounded-[30px] px-7 py-2 text-[16px] font-medium tracking-[0.1em] shadow-sm md:px-8 md:py-2.5 md:text-[19px]',
+        i === 0 ? 'btn-lime' : 'btn-highlight',
+      )}
+    >
       {card.buttonLabel ?? card.title}
       <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
     </span>
@@ -222,17 +235,18 @@ const PhotoBand: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
       ) : (
         <div aria-hidden className="absolute inset-0 bg-brand-green" />
       )}
-      <div className="relative flex h-full flex-wrap items-center justify-center gap-4 md:gap-6">
+      {/* 區塊進場 Fade In（Tracy node 45:240：滑到觸發、0→100%、0.6s） */}
+      <ScrollReveal className="relative flex h-full flex-wrap items-center justify-center gap-4 md:gap-6">
         {cards.map((card, i) =>
           card.url ? (
             <a aria-label={card.buttonLabel ?? card.title} href={card.url} key={i}>
-              {pill(card)}
+              {pill(card, i)}
             </a>
           ) : (
-            <React.Fragment key={i}>{pill(card)}</React.Fragment>
+            <React.Fragment key={i}>{pill(card, i)}</React.Fragment>
           ),
         )}
-      </div>
+      </ScrollReveal>
     </section>
   )
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
@@ -43,7 +44,7 @@ const Band: React.FC<{
       <div aria-hidden className="absolute inset-0 bg-brand-green" />
     )}
     <div aria-hidden className="absolute inset-0 bg-black/40" />
-    <div className="container relative max-w-[1240px]">
+    <ScrollReveal as="div" variant="in" className="container relative max-w-[1240px]">
       {slogan && (
         <h2 className="whitespace-pre-line text-center text-xl font-bold leading-[1.9] tracking-[0.15em] text-white md:text-4xl md:leading-[1.7]">
           {slogan}
@@ -70,7 +71,7 @@ const Band: React.FC<{
           )
         })}
       </div>
-    </div>
+    </ScrollReveal>
   </section>
 )
 
@@ -80,7 +81,7 @@ const Band: React.FC<{
  */
 const Plain: React.FC<{ title?: string | null; circles: MissionCircle[] }> = ({ title, circles }) => (
   <section className="py-16" data-block="missionCircles">
-    <div className="container max-w-[1240px]">
+    <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
       {title && (
         <h2 className="text-center text-[26px] font-bold tracking-[0.15em] text-brand-green md:text-4xl">
           {title}
@@ -124,7 +125,7 @@ const Plain: React.FC<{ title?: string | null; circles: MissionCircle[] }> = ({ 
           )
         })}
       </div>
-    </div>
+    </ScrollReveal>
   </section>
 )
 

@@ -1,6 +1,8 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import HoverZoomImage from '@/components/HoverZoomImage'
+import ScrollReveal from '@/components/ScrollReveal'
 import type { Award, Media as MediaDoc } from '@/payload-types'
 
 type AwardItem = {
@@ -37,7 +39,8 @@ const AwardsLayout: React.FC<{ entries: Entry[]; locale: 'zh-TW' | 'en' }> = ({
   const photo = entries.find((entry) => entry.photo && typeof entry.photo === 'object')?.photo
 
   return (
-    <section className="container" data-block="awards">
+    // 區塊進場 Fade In（Tracy node 45:240：滑到觸發、0→100%、0.6s）
+    <ScrollReveal as="section" className="container" data-block="awards">
       <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-14">
         <div className="md:w-1/2">
           {/* 眉標 + 標題（全站 pattern：圓點 + 英文眉標 + H1 灰綠） */}
@@ -75,16 +78,18 @@ const AwardsLayout: React.FC<{ entries: Entry[]; locale: 'zh-TW' | 'en' }> = ({
 
         <div className="md:w-1/2">
           {photo ? (
-            <Media
-              imgClassName="aspect-[59/40] w-full rounded-[30px] object-cover"
+            // 照片懸浮放大 110%（Tracy node 45:240：同首頁照片 hover）
+            <HoverZoomImage
+              imgClassName="aspect-[59/40] w-full object-cover"
               resource={photo}
+              wrapperClassName="rounded-[30px]"
             />
           ) : (
             <div aria-hidden className="aspect-[59/40] w-full rounded-[30px] bg-brand-surface" />
           )}
         </div>
       </div>
-    </section>
+    </ScrollReveal>
   )
 }
 
