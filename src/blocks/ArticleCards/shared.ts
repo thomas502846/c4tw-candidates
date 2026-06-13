@@ -48,6 +48,9 @@ export const normalizeCaseStory = (doc: any): ArticleCardData => {
 export const normalizeMediaCoverage = (doc: any): ArticleCardData => {
   const { url, alt } = pickImage(doc?.image)
   const date = doc?.date ? String(doc.date).slice(0, 10) : null
+  // 媒體名稱待客戶補齊前，collection 以「待補」佔位；對外不外露佔位字樣。
+  const rawOutlet = typeof doc?.outlet === 'string' ? doc.outlet.trim() : null
+  const outlet = rawOutlet && rawOutlet !== '待補' ? rawOutlet : null
   return {
     id: String(doc?.id ?? ''),
     title: doc?.title ?? '',
@@ -55,7 +58,7 @@ export const normalizeMediaCoverage = (doc: any): ArticleCardData => {
     imageUrl: url,
     imageAlt: alt,
     url: doc?.url ?? null,
-    meta: [doc?.outlet, date].filter(Boolean).join(' · ') || null,
+    meta: [outlet, date].filter(Boolean).join(' · ') || null,
   }
 }
 

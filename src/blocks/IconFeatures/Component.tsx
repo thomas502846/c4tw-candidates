@@ -18,11 +18,24 @@ export type IconFeaturesBlockProps = {
   items?: IconFeatureItem[] | null
 }
 
-const ItemIcon: React.FC<{ item: IconFeatureItem; className?: string }> = ({ item, className }) => {
+const ItemIcon: React.FC<{ item: IconFeatureItem; className?: string; fallbackSrc?: string }> = ({
+  item,
+  className,
+  fallbackSrc,
+}) => {
   if (item.icon && typeof item.icon === 'object') {
     return (
       <span className={cn('block shrink-0 overflow-hidden', className)}>
         <Media resource={item.icon} imgClassName="h-full w-full object-contain" />
+      </span>
+    )
+  }
+  // 未上傳 icon 時，落地 Figma 抽出的線稿向量（care-icon 258:640 / personal-icon 269:648 拆件）
+  if (fallbackSrc) {
+    return (
+      <span className={cn('block shrink-0 overflow-hidden', className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img alt="" className="h-full w-full object-contain" src={fallbackSrc} />
       </span>
     )
   }
@@ -36,6 +49,14 @@ const ItemIcon: React.FC<{ item: IconFeatureItem; className?: string }> = ({ ite
   )
 }
 
+// Care 運作 4 步驟線稿 icon（care-icon 258:640 拆件，落地 public/figma）
+const CARE_STEP_ICONS = [
+  '/figma/care-step-1-assess.svg',
+  '/figma/care-step-2-design.svg',
+  '/figma/care-step-3-connect.svg',
+  '/figma/care-step-4-accompany.svg',
+]
+
 /**
  * variant cards：Care 運作步驟列（care-icon 258:640）——4 張米色 #F7F7EB 橫卡
  * （左 icon ~64 + 右 title Bold 19 / caption 14）
@@ -47,7 +68,7 @@ const Cards: React.FC<{ items: IconFeatureItem[] }> = ({ items }) => (
         key={item.id ?? i}
         className="flex items-center gap-4 rounded-[30px] bg-brand-surface px-6 py-6 lg:min-h-[120px]"
       >
-        <ItemIcon className="h-14 w-14 lg:h-16 lg:w-16" item={item} />
+        <ItemIcon className="h-14 w-14 lg:h-16 lg:w-16" fallbackSrc={CARE_STEP_ICONS[i]} item={item} />
         <div>
           <h3 className="text-[17px] font-bold tracking-[0.05em] text-brand-ink lg:text-[19px]">
             {item.title}
@@ -64,6 +85,15 @@ const Cards: React.FC<{ items: IconFeatureItem[] }> = ({ items }) => (
 // Care 個人 AIO 五直卡：深淺綠輪替 #8BA98B / #ADCB59
 const pillarBgs = ['bg-brand-green', 'bg-brand-lime']
 
+// 個人 AIO 5 直卡白圓內線稿 icon（personal-icon 269:648 拆件）
+const PERSONAL_ICONS = [
+  '/figma/personal-1.svg',
+  '/figma/personal-2.svg',
+  '/figma/personal-3.svg',
+  '/figma/personal-4.svg',
+  '/figma/personal-5.svg',
+]
+
 /**
  * variant pillars：Care 個人 AIO 五直卡（personal-icon 269:648，卡 185×290）
  * 白色圓 icon → 白字 Bold 19 → 白字 Caption 14
@@ -79,7 +109,7 @@ const Pillars: React.FC<{ items: IconFeatureItem[] }> = ({ items }) => (
         )}
       >
         <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white">
-          <ItemIcon className="h-9 w-9" item={item} />
+          <ItemIcon className="h-9 w-9" fallbackSrc={PERSONAL_ICONS[i]} item={item} />
         </span>
         <h3 className="text-[17px] font-bold leading-[1.5] tracking-[0.05em] text-white md:text-[19px]">
           {item.title}

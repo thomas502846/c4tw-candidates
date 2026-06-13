@@ -45,3 +45,4 @@ public/sitemap*.xml
 /blob-report/
 /playwright/.cache/
 tsconfig.tsbuildinfo
+.gstack/

@@ -90,6 +90,97 @@ const Card: React.FC<{ card: ArticleCardData }> = ({ card }) => {
   return <article className={cardClassName}>{body}</article>
 }
 
+/**
+ * 媒體報導列（Figma about press 230:732）：左側代表圖 + 右側報導清單。
+ * 每列＝日期 + 標題（連結時整列可點）+ 媒體名（有才顯示），底線分隔。
+ */
+const CoverageRow: React.FC<{ card: ArticleCardData }> = ({ card }) => {
+  const { tag, date } = splitMeta(card.meta)
+  const body = (
+    <>
+      <div className="flex items-baseline gap-4">
+        {date && (
+          <time className="w-[92px] shrink-0 text-[14px] font-medium tracking-[0.08em] text-brand-primary md:text-[15px]">
+            {date.replaceAll('-', '/')}
+          </time>
+        )}
+        <span className="flex-1 text-justify text-[16px] font-medium leading-[1.7] tracking-[0.06em] text-brand-ink md:text-[18px]">
+          {card.title}
+        </span>
+      </div>
+      {tag && (
+        <span className="mt-1 block pl-[108px] text-[13px] tracking-[0.08em] text-brand-muted">
+          {tag}
+        </span>
+      )}
+    </>
+  )
+  const cls = 'block border-b border-brand-surface py-5 first:pt-0'
+  return card.url && card.url !== '#' ? (
+    <a
+      className={`${cls} transition-colors hover:text-brand-primary`}
+      href={card.url}
+      {...(card.url.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
+      {body}
+    </a>
+  ) : (
+    <div className={cls}>{body}</div>
+  )
+}
+
+const CoverageList: React.FC<{
+  cards: ArticleCardData[]
+  hasMore: boolean
+  loading: boolean
+  loadMore: () => void
+  locale: 'zh-TW' | 'en'
+}> = ({ cards, hasMore, loading, loadMore, locale }) => {
+  const lead = cards.find((c) => c.imageUrl)
+  return (
+    <div className="grid gap-10 md:grid-cols-[412fr_728fr] md:gap-14">
+      {/* 左側代表圖（取最新一則有圖者；無圖則隱藏，清單佔滿） */}
+      {lead?.imageUrl && (
+        <div className="md:sticky md:top-28 md:self-start">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt={lead.imageAlt || lead.title}
+            className="aspect-[412/360] w-full rounded-[30px] object-cover shadow-[4px_4px_3.5px_rgba(139,169,139,0.4)]"
+            src={lead.imageUrl}
+          />
+        </div>
+      )}
+      <div>
+        <ul>
+          {cards.map((card) => (
+            <li key={card.id}>
+              <CoverageRow card={card} />
+            </li>
+          ))}
+        </ul>
+        {hasMore && (
+          <div className="mt-8 text-right">
+            <button
+              className="text-[16px] font-medium tracking-[0.15em] text-brand-ink underline underline-offset-4 transition-colors hover:text-brand-primary disabled:opacity-50 md:text-[18px]"
+              disabled={loading}
+              onClick={loadMore}
+              type="button"
+            >
+              {loading
+                ? locale === 'en'
+                  ? 'Loading…'
+                  : '載入中…'
+                : locale === 'en'
+                  ? 'Load more...'
+                  : '載入更多...'}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export const ArticleCardsClient: React.FC<ArticleCardsClientProps> = ({
   source,
   initialCards,
@@ -147,6 +238,19 @@ export const ArticleCardsClient: React.FC<ArticleCardsClientProps> = ({
   }, [loading, source, initialCards, cards.length, batchSize, page, locale])
 
   if (cards.length === 0) return null
+
+  // 媒體報導＝左圖 + 右列表（Figma about press）；其餘來源＝卡片網格
+  if (source === 'media-coverage') {
+    return (
+      <CoverageList
+        cards={cards}
+        hasMore={hasMore}
+        loading={loading}
+        loadMore={loadMore}
+        locale={locale}
+      />
+    )
+  }
 
   return (
     <div>

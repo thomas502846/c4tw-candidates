@@ -19,15 +19,25 @@ export type StepsBlockProps = {
   items?: StepItem[] | null
 }
 
-const StepIcon: React.FC<{ item: StepItem; className?: string; placeholderClass?: string }> = ({
-  item,
-  className,
-  placeholderClass,
-}) => {
+const StepIcon: React.FC<{
+  item: StepItem
+  className?: string
+  placeholderClass?: string
+  fallbackSrc?: string
+}> = ({ item, className, placeholderClass, fallbackSrc }) => {
   if (item.icon && typeof item.icon === 'object') {
     return (
       <span className={cn('block shrink-0 overflow-hidden', className)}>
         <Media resource={item.icon} imgClassName="h-full w-full object-contain" />
+      </span>
+    )
+  }
+  // 未上傳 icon 時落地 Figma 抽出線稿（eap-icon 263:421 / training 流程 285:497 拆件）
+  if (fallbackSrc) {
+    return (
+      <span className={cn('block shrink-0 overflow-hidden', className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img alt="" className="h-full w-full object-contain" src={fallbackSrc} />
       </span>
     )
   }
@@ -47,6 +57,16 @@ const ArrowRightCircle: React.FC = () => (
   </span>
 )
 
+// EAP 三步驟綠圓內白線稿 icon（eap-icon 263:421 拆件）
+const EAP_STEP_ICONS = ['/figma/eap-step-1.svg', '/figma/eap-step-2.svg', '/figma/eap-step-3.svg']
+
+// Training 發展路徑三步驟線稿 icon（training 流程 285:497／icon-26~28）
+const TRAINING_FLOW_ICONS = [
+  '/figma/training-icon-26.svg',
+  '/figma/training-icon-27.svg',
+  '/figma/training-icon-28.svg',
+]
+
 /**
  * variant cardRow：Care EAP 三步驟（eap-icon 263:421）——一張整寬米色卡 #F7F7EB rounded-30，
  * 內含 3 步驟（圓形 #8BA98B icon → title Bold 19 → caption 14）＋步驟間淺綠圓箭頭
@@ -62,7 +82,7 @@ const CardRow: React.FC<{ items: StepItem[] }> = ({ items }) => (
         )}
         <div className="flex flex-1 flex-col items-center gap-3 text-center md:max-w-[292px]">
           <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-green">
-            <StepIcon className="h-7 w-7" item={item} />
+            <StepIcon className="h-7 w-7" fallbackSrc={EAP_STEP_ICONS[i]} item={item} />
           </span>
           {item.title && (
             <h3 className="text-[17px] font-bold tracking-[0.05em] text-brand-ink md:text-[19px]">
@@ -93,7 +113,12 @@ const Inline: React.FC<{ items: StepItem[] }> = ({ items }) => (
           </span>
         )}
         <div className="flex flex-col items-center gap-3 text-center">
-          <StepIcon className="h-16 w-16 md:h-20 md:w-20" item={item} placeholderClass="border-brand-lime" />
+          <StepIcon
+            className="h-16 w-16 md:h-20 md:w-20"
+            fallbackSrc={TRAINING_FLOW_ICONS[i]}
+            item={item}
+            placeholderClass="border-brand-lime"
+          />
           {item.title && (
             <h3 className="text-[17px] font-bold tracking-[0.1em] text-brand-ink md:text-[19px]">
               {item.title}

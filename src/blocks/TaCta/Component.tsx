@@ -35,11 +35,31 @@ const ArrowRight: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 )
 
-const CardIllustration: React.FC<{ card: TaCtaCard; className?: string }> = ({ card, className }) => {
+// Home CTA 三磚 TA 線稿插圖（Figma 236:378 / 239:510 / 239:719，白色線稿，無底）
+// 依卡片順序套用；CMS 後續若上傳 image 則優先用 image。
+const taTileIcons = [
+  '/figma/home-ta-icon-1-cft.svg',
+  '/figma/home-ta-icon-2-service.svg',
+  '/figma/home-ta-icon-3-org.svg',
+]
+
+const CardIllustration: React.FC<{
+  card: TaCtaCard
+  className?: string
+  fallbackSrc?: string
+}> = ({ card, className, fallbackSrc }) => {
   if (card.image && typeof card.image === 'object') {
     return (
       <span className={cn('block shrink-0', className)}>
         <Media resource={card.image} imgClassName="h-full w-full object-contain" />
+      </span>
+    )
+  }
+  if (fallbackSrc) {
+    return (
+      <span aria-hidden className={cn('block shrink-0', className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img alt="" className="h-full w-full object-contain" src={fallbackSrc} />
       </span>
     )
   }
@@ -86,7 +106,11 @@ const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
         tileBgs[i % tileBgs.length],
       )}
     >
-      <CardIllustration card={card} className="hidden h-[110px] w-[110px] md:block lg:h-[140px] lg:w-[140px]" />
+      <CardIllustration
+        card={card}
+        className="hidden h-[110px] w-[110px] md:block lg:h-[140px] lg:w-[140px]"
+        fallbackSrc={taTileIcons[i]}
+      />
       {/* Figma：標語與白底 pill 在卡片右半置中對齊 */}
       <div className="flex flex-1 flex-col items-center gap-4">
         <h3 className="text-lg font-medium tracking-[0.1em] text-white md:text-[22px]">{card.title}</h3>
@@ -114,7 +138,11 @@ const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
               tileBgs[2],
             )}
           >
-            <CardIllustration card={c3} className="h-[150px] w-[200px] md:h-[160px] md:w-[220px]" />
+            <CardIllustration
+              card={c3}
+              className="h-[150px] w-[200px] md:h-[200px] md:w-[200px]"
+              fallbackSrc={taTileIcons[2]}
+            />
             <h3 className="text-lg font-medium tracking-[0.1em] text-white md:text-[22px]">{c3.title}</h3>
             {c3.buttonLabel && <WhitePill label={c3.buttonLabel} url={c3.url} />}
           </div>

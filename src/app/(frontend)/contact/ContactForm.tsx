@@ -10,6 +10,8 @@ import { CONTACT_CATEGORIES, type ContactCategory } from './categories'
 type Locale = 'zh-TW' | 'en'
 
 // 欄位與文案依 Sheet contact 02：您的姓名／單位或稱呼／聯繫電話／電子信箱／想諮詢的服務＋訊息欄
+// ⚠️ 待客戶確認：「3 個工作天內回覆」（afterSubmitHint）為自擬句，Sheet 未明定回覆時效，客戶定案前先保留。
+//    同句另見 actions.ts（成功回執信）與 page.tsx（meta description），確認後三處需一併更新。
 const COPY = {
   'zh-TW': {
     taHeading: '想諮詢的服務',

@@ -32,6 +32,9 @@ export type InfographicBlockProps = {
 /* Venn：兩大圓微交疊＋左右各 3 顆衛星數據圓（care 306:606 SVG 重現） */
 /* ---------------------------------------------------------------- */
 
+/** 是否含 CJK：ZH 內容才用 Figma baked 圖（圖內文字為中文）；EN 退回 code 向量版以保 i18n */
+const hasCjk = (s?: string | null): boolean => Boolean(s && /[㐀-鿿豈-﫿]/.test(s))
+
 /** 把長 label 折行成 tspan（衛星圓內小字）：zh 依字數切、含空白的 latin 文字依單字累積 */
 function wrapLabel(label: string, maxChars = 6): string[] {
   const lines: string[] = []
@@ -194,8 +197,19 @@ const RING_POS = [
 
 const Ring: React.FC<{ photos?: InfographicPhoto[] | null }> = ({ photos }) => (
   <div className="relative mx-auto aspect-square w-full max-w-[470px]">
-    {/* donut：環帶厚 ~25%（470 寬時 ≈ 120） */}
-    <div aria-hidden className="absolute inset-0 rounded-full border-[clamp(60px,12.7vw,120px)] border-brand-green md:border-[120px]" />
+    {/* donut：Figma 真圖向量（school-ring-donut.svg / 55:257），even-odd 外466內226 #8BA98B */}
+    <svg
+      aria-hidden
+      className="absolute inset-0 h-full w-full"
+      fill="none"
+      viewBox="0 0 466 466"
+    >
+      <path
+        d="M233 0C361.682 0 466 104.318 466 233C466 361.682 361.682 466 233 466C104.318 466 0 361.682 0 233C0 104.318 104.318 0 233 0ZM232.539 119.724C170.233 119.724 119.724 170.233 119.724 232.539C119.724 294.846 170.233 345.355 232.539 345.355C294.846 345.355 345.355 294.846 345.355 232.539C345.355 170.233 294.846 119.724 232.539 119.724Z"
+        fill="#8BA98B"
+        fillRule="evenodd"
+      />
+    </svg>
     {(photos ?? []).slice(0, 4).map((photo, i) => (
       <div
         className="absolute h-[39%] w-[39%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-[#D9D9D9]"
@@ -315,10 +329,26 @@ export const InfographicBlock: React.FC<InfographicBlockProps> = (props) => {
   const { variant, eyebrow, title, body } = props
   const isRing = variant === 'ring'
 
+  // ZH 版直接落地 Figma baked 設計圖（306:606 Venn／306:609 放射圖，含全部數據文字）；
+  // EN 版圖內中文不適用，退回等價的 code 向量版（用 stats/nodes 文字重繪）。
   const figure = isRing ? (
     <Ring photos={props.photos} />
   ) : variant === 'radial' ? (
-    <Radial nodes={props.nodes} />
+    hasCjk(props.nodes?.[0]?.title) ? (
+      <img
+        alt={props.title ?? '組織培力痛點放射圖'}
+        className="mx-auto h-auto w-full max-w-[600px]"
+        src="/figma/training-radial.png"
+      />
+    ) : (
+      <Radial nodes={props.nodes} />
+    )
+  ) : hasCjk(props.leftLabel) ? (
+    <img
+      alt={`${props.leftLabel ?? ''}／${props.rightLabel ?? ''} 痛點數據圖`}
+      className="mx-auto h-auto w-full max-w-[822px]"
+      src="/figma/care-venn.png"
+    />
   ) : (
     <Venn
       leftLabel={props.leftLabel}

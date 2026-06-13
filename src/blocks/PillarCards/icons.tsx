@@ -8,12 +8,24 @@ import React from 'react'
 
 type IconProps = { className?: string }
 
-const stroke = '#3F4A3F'
-const accent = '#D9534F'
+/*
+ * 配色逐字取自 Figma 四柱地圖真圖（school-fourmap-row.svg，class 304:605）：
+ * 線稿描邊 #212121、暖橘 accent #EC682A、亮綠 leaf #ADCB59。
+ * 先前 fallback 用的純紅 #D9534F 為自擬偏離，已改回 Figma 真圖色票。
+ */
+const stroke = '#212121'
+const accent = '#EC682A'
+const leaf = '#ADCB59'
 
-/** 課程地圖：翻開的書＋紅書籤 */
+/** 課程地圖：翻開的書（左頁亮綠填、右橘書籤） */
 export const BookMapIcon: React.FC<IconProps> = ({ className }) => (
   <svg aria-hidden className={className} fill="none" viewBox="0 0 48 48">
+    {/* 左頁亮綠填底 */}
+    <path
+      d="M24 13 C 19.5 9 12 8.6 8 10.6 V 36 C 12 34 19.5 34.4 24 38.4 V 13 Z"
+      fill={leaf}
+      fillOpacity="0.55"
+    />
     <path
       d="M24 13 C 19.5 9 12 8.6 8 10.6 V 36 C 12 34 19.5 34.4 24 38.4 C 28.5 34.4 36 34 40 36 V 10.6 C 36 8.6 28.5 9 24 13 Z"
       stroke={stroke}
@@ -26,7 +38,7 @@ export const BookMapIcon: React.FC<IconProps> = ({ className }) => (
   </svg>
 )
 
-/** 實作地圖：房屋＋心 */
+/** 實作地圖：房屋＋橘心 */
 export const PracticeMapIcon: React.FC<IconProps> = ({ className }) => (
   <svg aria-hidden className={className} fill="none" viewBox="0 0 48 48">
     <path
@@ -43,9 +55,10 @@ export const PracticeMapIcon: React.FC<IconProps> = ({ className }) => (
   </svg>
 )
 
-/** 證照地圖：證書框＋紅緞帶章 */
+/** 證照地圖：證書框（內亮綠底）＋橘緞帶章 */
 export const LicenseMapIcon: React.FC<IconProps> = ({ className }) => (
   <svg aria-hidden className={className} fill="none" viewBox="0 0 48 48">
+    <rect fill={leaf} fillOpacity="0.45" height="24" rx="3" width="34" x="7" y="9" />
     <rect height="24" rx="3" stroke={stroke} strokeWidth="2.4" width="34" x="7" y="9" />
     <path d="M13 17 h 14 M13 22.5 h 10" stroke={stroke} strokeLinecap="round" strokeWidth="2.4" />
     <path d="M29.6 31 l -2 8 4.4 -2.4 4.4 2.4 -2 -8 Z" fill={accent} />
@@ -54,10 +67,10 @@ export const LicenseMapIcon: React.FC<IconProps> = ({ className }) => (
   </svg>
 )
 
-/** 職涯地圖：披風人物 */
+/** 職涯地圖：披風人物（橘披風） */
 export const CareerMapIcon: React.FC<IconProps> = ({ className }) => (
   <svg aria-hidden className={className} fill="none" viewBox="0 0 48 48">
-    {/* 紅披風（身後） */}
+    {/* 橘披風（身後） */}
     <path d="M18.5 20 L12 40 L24 35 L36 40 L29.5 20 Z" fill={accent} />
     {/* 身體 */}
     <path

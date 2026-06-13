@@ -78,14 +78,15 @@ export const ContactSection: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW'
 
   return (
     <section className="container mt-16 max-w-[1240px]">
-      <div className="flex flex-col gap-14 md:flex-row md:gap-16 lg:gap-24">
+      {/* Figma Frame 120：左表單 462／右資訊 550／gap 128（≈ 1140 寬內 40.5%:48.2%:11.3%） */}
+      <div className="flex flex-col gap-14 md:flex-row md:gap-[11%]">
         {/* 左欄：表單 */}
-        <div className="md:w-[42%]">
+        <div className="md:w-[40.5%]">
           <ContactForm locale={locale} />
         </div>
 
         {/* 右欄：聯絡資訊三列 + Google Map */}
-        <div className="flex flex-col md:w-[50%]">
+        <div className="flex flex-1 flex-col">
           <ul className="flex flex-col gap-3">
             <li className="flex items-center gap-3">
               <InfoIcon kind="phone" />
