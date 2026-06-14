@@ -84,7 +84,7 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
           {rows.map((item, row) => (
             <span
               aria-hidden={row === 1}
-              className="flex h-[64px] items-center text-[16px] font-medium leading-[28px] tracking-[0.1em] whitespace-nowrap text-brand-ink md:h-[80px] md:text-[19px]"
+              className="block h-[64px] truncate text-[16px] font-medium leading-[64px] tracking-[0.1em] text-brand-ink md:h-[80px] md:text-[19px] md:leading-[80px]"
               key={row}
             >
               {renderText(item)}
