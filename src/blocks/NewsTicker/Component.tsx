@@ -17,14 +17,14 @@ export type NewsTickerBlockProps = {
 }
 
 // Tracy 規格（node 4:4）：垂直輪播 Vertical News Slider — 每則停留 5 秒、向上滑動切換、無限循環。
-// 切換時長：暫放慢到 1.2s 方便觀察；確認無誤後可調回 0.5~0.65s。
+// 切換時長：0.65s（Tracy 標 0.5s，取 0.65 較順）。
 //
 // 設計：純 tick 推導（不用 index、不用 onAnimationEnd）。
 //  - tick T 時：上列 = 前一則、下列 = 第 T 則；軌道 key=T → 每輪掛「全新 DOM 節點」，
 //    CSS keyframe 必從頭跑（持久節點重複套同名 animation 不會重啟 → 第二輪起 flash，這是 PC/Edge 看到的根因）。
 //  - 動畫 forwards 停在 -50%（顯示第 T 則）；下一輪 remount 從 translateY(0) 起、上列正好也是第 T 則 → 視覺連續、不跳。
 const HOLD_MS = 5000
-const SLIDE_MS = 1200
+const SLIDE_MS = 650
 
 export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale = 'zh-TW' }) => {
   const enabledItems = (items ?? []).filter((item) => item.enabled !== false)
