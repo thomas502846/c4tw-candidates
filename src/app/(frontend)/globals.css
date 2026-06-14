@@ -317,3 +317,12 @@
 }
 
 /* 強制 light mode：data-theme 由 layout 靜態設為 light，無 FOUC 需求 */
+
+/* 最新消息垂直輪播：整體向上滾動 100%（keyframe 明確 from→to，避免 transition 同幀閃現） */
+@keyframes news-roll-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-block="newsTicker"] * { animation: none !important; }
+}

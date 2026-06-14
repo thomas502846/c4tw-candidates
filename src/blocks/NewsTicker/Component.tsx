@@ -17,14 +17,16 @@ export type NewsTickerBlockProps = {
 }
 
 // Tracy 規格（node 4:4）：垂直輪播 Vertical News Slider
-// － 每則停留 5 秒、向上滑動切換下一則、切換時間約 0.5 秒、無限循環
+// － 每則停留 5 秒、向上滑動切換下一則、無限循環
+// 切換時長：Tracy 標 0.5s，實作取 0.8s（較順）。
+// 用 CSS keyframes（非 transition）：明確 from→to，避免 transition 同幀無起點而「閃現不滑」。
 const HOLD_MS = 5000
-const SLIDE_MS = 500
+const SLIDE_MS = 650
 
 export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale = 'zh-TW' }) => {
   const enabledItems = (items ?? []).filter((item) => item.enabled !== false)
   const [index, setIndex] = useState(0)
-  const [animating, setAnimating] = useState(false)
+  const [rolling, setRolling] = useState(false)
   const reduced = useRef(false)
 
   useEffect(() => {
@@ -40,13 +42,7 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
         setIndex((i) => (i + 1) % enabledItems.length)
         return
       }
-      // 觸發向上滑出 → 動畫結束後切到下一則並瞬間復位
-      setAnimating(true)
-      const t = setTimeout(() => {
-        setIndex((i) => (i + 1) % enabledItems.length)
-        setAnimating(false)
-      }, SLIDE_MS)
-      return () => clearTimeout(t)
+      setRolling(true) // 觸發 keyframe：兩列一起向上滾動 100%
     }, HOLD_MS)
     return () => clearInterval(id)
   }, [enabledItems.length])
@@ -65,6 +61,12 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
       item.text
     )
 
+  // keyframe 結束 → 換到下一則並瞬間復位（此時 rolling=false，無 animation，不會閃）
+  const onRollEnd = () => {
+    setIndex((i) => (i + 1) % enabledItems.length)
+    setRolling(false)
+  }
+
   return (
     <aside
       aria-label={locale === 'en' ? 'Latest news' : '最新消息'}
@@ -77,14 +79,16 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
         {locale === 'en' ? 'NEWS' : '最新消息'}
       </span>
 
-      {/* 垂直輪播視窗：兩列堆疊，向上位移 -100% 帶出下一則，動畫結束瞬間復位換內容 */}
+      {/* 垂直輪播視窗：兩列堆疊，rolling 時整體向上滾動 100% 帶出下一則 */}
       <div className="relative h-full flex-1 overflow-hidden">
         <div
           className="absolute inset-x-0 top-0 flex flex-col"
-          style={{
-            transform: animating ? 'translateY(-100%)' : 'translateY(0)',
-            transition: animating ? `transform ${SLIDE_MS}ms ease` : 'none',
-          }}
+          onAnimationEnd={onRollEnd}
+          style={
+            rolling
+              ? { animation: `news-roll-up ${SLIDE_MS}ms ease forwards` }
+              : { transform: 'translateY(0)' }
+          }
         >
           {[current, next].map((item, row) => (
             <span
