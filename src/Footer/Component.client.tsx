@@ -42,9 +42,14 @@ const FooterLink: React.FC<{ url?: string | null; label: string; isEn: boolean }
 }
 
 /* 聯絡資訊 icon（Figma：28×28 圓形 #ADCB59 底 + 16px 白色線 icon） */
-type ContactKind = 'phone' | 'mail' | 'address'
+type ContactKind = 'phone' | 'mail' | 'address' | 'line' | 'fb'
 
-const detectContactKind = (label: string): ContactKind => {
+const detectContactKind = (label: string, url?: string | null): ContactKind => {
+  // url 優先：LINE 標籤含 @564enhuc 會誤判為 mail，故先看連結網域
+  if (url) {
+    if (/facebook\.com/i.test(url)) return 'fb'
+    if (/lin\.ee|line\.me/i.test(url)) return 'line'
+  }
   if (label.includes('@')) return 'mail'
   if (/^[0-9+\-() ]+$/.test(label.trim())) return 'phone'
   return 'address'
@@ -91,12 +96,29 @@ const ContactIcon: React.FC<{ kind: ContactKind }> = ({ kind }) => (
         />
       </svg>
     )}
+    {kind === 'line' && (
+      <svg fill="white" height="16" viewBox="0 0 24 24" width="16">
+        <path d="M12 2C6.477 2 2 5.648 2 10.13c0 4.017 3.55 7.38 8.347 8.017.325.07.767.214.879.49.1.252.066.646.032.901l-.142.853c-.043.252-.2.985.863.537 1.064-.448 5.74-3.38 7.83-5.787C21.323 13.554 22 11.926 22 10.13 22 5.648 17.523 2 12 2zM8.09 12.6a.19.19 0 0 1-.19.19H5.09a.19.19 0 0 1-.19-.19V8.41a.19.19 0 0 1 .19-.19h.53a.19.19 0 0 1 .19.19v3.47h1.99a.19.19 0 0 1 .19.19v.53zm1.29 0a.19.19 0 0 1-.19.19h-.53a.19.19 0 0 1-.19-.19V8.41a.19.19 0 0 1 .19-.19h.53a.19.19 0 0 1 .19.19v4.19zm4.66 0a.19.19 0 0 1-.19.19h-.53a.19.19 0 0 1-.153-.077l-1.92-2.594v2.481a.19.19 0 0 1-.19.19h-.53a.19.19 0 0 1-.19-.19V8.41a.19.19 0 0 1 .19-.19h.546a.19.19 0 0 1 .15.078l1.917 2.594V8.41a.19.19 0 0 1 .19-.19h.53a.19.19 0 0 1 .19.19v4.19zm3.55-3.66a.19.19 0 0 1-.19.19h-1.99v.768h1.99a.19.19 0 0 1 .19.19v.53a.19.19 0 0 1-.19.19h-1.99v.768h1.99a.19.19 0 0 1 .19.19v.53a.19.19 0 0 1-.19.19h-2.71a.19.19 0 0 1-.19-.19V8.41a.19.19 0 0 1 .19-.19h2.71a.19.19 0 0 1 .19.19v.53z" />
+      </svg>
+    )}
+    {kind === 'fb' && (
+      <svg fill="white" height="16" viewBox="0 0 24 24" width="16">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    )}
   </span>
 )
 
-const ContactRow: React.FC<{ label: string }> = ({ label }) => {
-  const kind = detectContactKind(label)
-  const href = kind === 'mail' ? `mailto:${label}` : kind === 'phone' ? `tel:${label}` : null
+const ContactRow: React.FC<{ label: string; url?: string | null }> = ({ label, url }) => {
+  const kind = detectContactKind(label, url)
+  const isExternal = kind === 'line' || kind === 'fb'
+  const href = isExternal
+    ? url
+    : kind === 'mail'
+      ? `mailto:${label}`
+      : kind === 'phone'
+        ? `tel:${label}`
+        : null
 
   const inner = (
     <>
@@ -113,7 +135,11 @@ const ContactRow: React.FC<{ label: string }> = ({ label }) => {
 
   if (href) {
     return (
-      <a className="flex items-center gap-3 transition-opacity hover:opacity-80" href={href}>
+      <a
+        className="flex items-center gap-3 transition-opacity hover:opacity-80"
+        href={href}
+        {...(isExternal ? { rel: 'noopener noreferrer', target: '_blank' } : {})}
+      >
         {inner}
       </a>
     )
@@ -187,7 +213,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
                     {(column.links ?? []).map((link) => (
                       <li key={link.id}>
                         {isContact ? (
-                          <ContactRow label={link.label} />
+                          <ContactRow label={link.label} url={link.url} />
                         ) : (
                           <FooterLink isEn={isEn} label={link.label} url={link.url} />
                         )}
