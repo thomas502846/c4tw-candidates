@@ -19,6 +19,13 @@ const INFO = {
     'zh-TW': '臺中市烏日區溪岸路8-3號',
     en: 'No. 8-3, Xi’an Rd., Wuri Dist., Taichung City, Taiwan',
   },
+  line: {
+    url: 'https://lin.ee/xQ63Ufj',
+    label: {
+      'zh-TW': '官方 LINE：@564enhuc',
+      en: 'Official LINE: @564enhuc',
+    },
+  },
 } as const
 
 const MAP_QUERY = '臺中市烏日區溪岸路8-3號'
@@ -31,7 +38,7 @@ const COPY = {
 } as const
 
 /* icon 系統同 footer（Figma：28×28 圓形 #ADCB59 底＋白色線 icon） */
-const InfoIcon: React.FC<{ kind: 'phone' | 'mail' | 'address' }> = ({ kind }) => (
+const InfoIcon: React.FC<{ kind: 'phone' | 'mail' | 'address' | 'line' }> = ({ kind }) => (
   <span
     aria-hidden="true"
     className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-lime"
@@ -70,6 +77,11 @@ const InfoIcon: React.FC<{ kind: 'phone' | 'mail' | 'address' }> = ({ kind }) =>
           strokeLinecap="round"
           strokeLinejoin="round"
         />
+      </svg>
+    )}
+    {kind === 'line' && (
+      <svg fill="white" height="16" viewBox="0 0 24 24" width="16">
+        <path d="M12 2C6.477 2 2 5.648 2 10.13c0 4.017 3.55 7.38 8.347 8.017.325.07.767.214.879.49.1.252.066.646.032.901l-.142.853c-.043.252-.2.985.863.537 1.064-.448 5.74-3.38 7.83-5.787C21.323 13.554 22 11.926 22 10.13 22 5.648 17.523 2 12 2zM8.09 12.6a.19.19 0 0 1-.19.19H5.09a.19.19 0 0 1-.19-.19V8.41a.19.19 0 0 1 .19-.19h.53a.19.19 0 0 1 .19.19v3.47h1.99a.19.19 0 0 1 .19.19v.53zm1.29 0a.19.19 0 0 1-.19.19h-.53a.19.19 0 0 1-.19-.19V8.41a.19.19 0 0 1 .19-.19h.53a.19.19 0 0 1 .19.19v4.19zm4.66 0a.19.19 0 0 1-.19.19h-.53a.19.19 0 0 1-.153-.077l-1.92-2.594v2.481a.19.19 0 0 1-.19.19h-.53a.19.19 0 0 1-.19-.19V8.41a.19.19 0 0 1 .19-.19h.546a.19.19 0 0 1 .15.078l1.917 2.594V8.41a.19.19 0 0 1 .19-.19h.53a.19.19 0 0 1 .19.19v4.19zm3.55-3.66a.19.19 0 0 1-.19.19h-1.99v.768h1.99a.19.19 0 0 1 .19.19v.53a.19.19 0 0 1-.19.19h-1.99v.768h1.99a.19.19 0 0 1 .19.19v.53a.19.19 0 0 1-.19.19h-2.71a.19.19 0 0 1-.19-.19V8.41a.19.19 0 0 1 .19-.19h2.71a.19.19 0 0 1 .19.19v.53z" />
       </svg>
     )}
   </span>
@@ -122,6 +134,17 @@ export const ContactSection: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW'
               <span className="text-base tracking-[0.1em] text-brand-ink">
                 {INFO.address[locale]}
               </span>
+            </li>
+            <li className="flex items-center gap-3">
+              <InfoIcon kind="line" />
+              <a
+                className="text-base tracking-[0.1em] text-brand-ink hover:text-brand-primary"
+                href={INFO.line.url}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {INFO.line.label[locale]}
+              </a>
             </li>
           </ul>
 

@@ -1,4 +1,4 @@
-// 聯絡表單「想諮詢的服務」選項（Sheet contact 02 定案：家庭照顧服務｜組織培力｜組織合作｜媒體採訪）
+// 聯絡表單「想諮詢的服務」選項（Sheet contact 02 6/13 修訂：家庭照顧服務｜組織培力｜組織合作｜媒體採訪｜其他）
 export const CONTACT_CATEGORIES = [
   {
     value: 'family',
@@ -19,6 +19,11 @@ export const CONTACT_CATEGORIES = [
     value: 'media',
     zh: '媒體採訪',
     en: 'Media inquiries',
+  },
+  {
+    value: 'other',
+    zh: '其他',
+    en: 'Other',
   },
 ] as const
 

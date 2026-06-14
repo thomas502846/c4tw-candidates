@@ -813,15 +813,16 @@ export const seed = async ({
           {
             blockType: 'content',
             eyebrow: 'About',
-            title: '創新照顧，開啟照顧無限可能',
+            title: '在熟悉之處，尊嚴安老；用創新照顧，支持生活的無限可能。',
             ctaLabel: '認識創照',
             ctaUrl: '/about',
             richText: rt(
-              '創照服務設計關注臺灣高齡化社會中的照顧需求，致力於人才培育、服務創新與跨領域合作，陪伴更多人找到適合自己的照顧支持。',
-              '我們透過 All In One（AIO）整合照顧模式，串連醫療、長照、社福與社區資源，培育跨專業人才，推動以人為本的長照模式落地臺灣，也串起照顧現場的每個角色——讓需要照顧的人獲得支持，也讓投入照顧的人才被看見與培育。',
+              '「需求之所在，服務之所在」創照服務設計緊扣這份初衷。',
+              '聚焦臺灣高齡社會的在地需求，推動 AIO（All In One）整合照顧模式，緊密串連醫療、長照與社區資源，致力陪伴更多家庭找到最適切且安心的照顧支持。',
+              '在落實以人為本生活照顧服務的同時，我們更深耕長照從業人員的專業價值，讓投入這份志業的人才被社會看見並珍視，期盼這份溫暖的力量能永續，共創一個溫馨的在地安老社會。',
             ),
             // Figma 230:803：3 張情境照錯位拼貼（主圖／右下小圖／左下寬圖）
-            images: [{ image: photos[1].id }, { image: photos[4].id }, { image: photos[6].id }],
+            images: [{ image: photos[1].id }, { image: photos[2].id }, { image: photos[3].id }],
             imagePosition: 'left',
           },
           // Sheet 首頁 04 三大服務（1-3）＝編號特色大區（01/02/03 交錯帶）
@@ -831,20 +832,20 @@ export const seed = async ({
             items: [
               {
                 number: '01',
-                title: '人才培育創新',
-                text: '面對長照人才職涯受限、薪資停滯與專業發展不足的現況，我們成立 Care for Taiwan（CFT）照顧學校，培育照顧服務員、照顧教練、照顧設計師及在宅醫師等跨專業人才，發展社區／居家融合照顧模式。',
-                image: photos[2].id,
+                title: '整合服務創新',
+                text: '照顧需求不只存在於醫院，也存在於返家後的每一天。面對出院返家後繁瑣的照顧安排與需求，我們透過跨專業團隊整合照顧資源，提供從醫療到居家的全方位支持，陪伴家庭度過照顧轉換期。',
+                image: photos[3].id,
               },
               {
                 number: '02',
-                title: '整合服務創新',
-                text: '照顧需求不只存在於醫院，也存在於返家後的每一天。面對住院返家後繁瑣的照顧安排與需求，我們透過跨專業團隊整合照顧資源，提供從醫療到居家的全方位支持，陪伴家庭度過照顧轉換期。',
-                image: photos[3].id,
+                title: '人才培育創新',
+                text: '面對長照人才職涯受限、薪資停滯與專業發展不足的現況，我們成立 Care for Taiwan（CFT）照顧學校，培育AIO照顧服務員、AIO照顧教練、AIO照顧設計師及AIO在宅醫師等跨專業人才，發展社區／居家融合照顧模式。',
+                image: photos[2].id,
               },
               {
                 number: '03',
                 title: '照顧科技創新',
-                text: '隨著照顧需求日益複雜，資訊與服務的協作效率也變得更加重要。我們將智齡科技結合 All In One（AIO）整合照顧模式，提升照顧協作與服務效率，打造出全新、以人為本的AI平台。',
+                text: 'All In One（AIO）整合照顧模式參與對象有照顧服務員、專業人員、家屬等多種角色，為提升照顧協作與服務效率，打造出全新、以人為本的溝通系統-Connect 10，希望藉由此系統達到資訊共享，讓整體照顧歷程能被即時看見、延續與回饋，也讓照顧決策更貼近個案的需求。',
                 image: photos[5].id,
               },
             ],
@@ -928,15 +929,17 @@ export const seed = async ({
           {
             blockType: 'content',
             eyebrow: 'About',
-            title: 'Innovating care, opening every possibility',
+            title:
+              'Ageing with dignity in familiar surroundings; supporting life’s endless possibilities through innovative care.',
             ctaLabel: 'About us',
             ctaUrl: '/en/about',
             richText: rt(
-              'Care For Taiwan focuses on the care needs of Taiwan’s aging society, committed to talent cultivation, service innovation, and cross-disciplinary collaboration — helping more people find the care support that fits them.',
-              'Through the All In One (AIO) integrated care model, we connect medical, long-term care, social welfare, and community resources, cultivate cross-disciplinary talent, and bring person-centered long-term care to Taiwan — supporting those who need care, and recognizing and cultivating those who give it.',
+              '“Where the need is, there the service is.” This is the conviction at the heart of Care For Taiwan’s service design.',
+              'We focus on the local needs of Taiwan’s aging society and advance the AIO (All In One) integrated care model, tightly connecting medical, long-term care, and community resources — committed to helping more families find the most fitting and reassuring care support.',
+              'While delivering person-centered everyday care, we also deepen the professional value of long-term care workers, so those who devote themselves to this calling are seen and cherished by society. We hope this warm strength can endure, together creating a caring society where people age well in their own communities.',
             ),
             // Figma 230:803: 3-photo offset collage
-            images: [{ image: photos[1].id }, { image: photos[4].id }, { image: photos[6].id }],
+            images: [{ image: photos[1].id }, { image: photos[2].id }, { image: photos[3].id }],
             imagePosition: 'left',
           },
           {
@@ -945,20 +948,20 @@ export const seed = async ({
             items: [
               {
                 number: '01',
-                title: 'Talent cultivation innovation',
-                text: 'Facing limited career paths, stagnant pay, and insufficient professional development in long-term care, we founded the Care for Taiwan (CFT) Care School — cultivating care workers, care coaches, care designers, and home physicians, and developing community/home integrated care models.',
-                image: photos[2].id,
+                title: 'Integrated service innovation',
+                text: 'Care needs exist not only in hospitals but in every day after returning home. Facing the complex care arrangements and needs after discharge, we integrate care resources through cross-disciplinary teams, providing full support from medical care to home life, accompanying families through care transitions.',
+                image: photos[3].id,
               },
               {
                 number: '02',
-                title: 'Integrated service innovation',
-                text: 'Care needs exist not only in hospitals but in every day after returning home. We integrate care resources through cross-disciplinary teams, providing full support from medical care to home life, accompanying families through care transitions.',
-                image: photos[3].id,
+                title: 'Talent cultivation innovation',
+                text: 'Facing limited career paths, stagnant pay, and insufficient professional development in long-term care, we founded the Care for Taiwan (CFT) Care School — cultivating AIO care workers, AIO care coaches, AIO care designers, and AIO home physicians, and developing community/home integrated care models.',
+                image: photos[2].id,
               },
               {
                 number: '03',
                 title: 'Care technology innovation',
-                text: 'As care needs grow more complex, efficient collaboration matters more than ever. We combine Jubo technology with the All In One (AIO) integrated care model to improve care collaboration and service efficiency — building a new, person-centered AI platform.',
+                text: 'The All In One (AIO) integrated care model involves many roles — care workers, professionals, family members, and more. To improve care collaboration and service efficiency, we built a new, person-centered communication system — Connect 10 — so that information is shared, the whole care journey can be seen, continued, and fed back in real time, and care decisions stay closer to each person’s needs.',
                 image: photos[5].id,
               },
             ],
@@ -1018,24 +1021,10 @@ export const seed = async ({
             richText: rtNodes(
               h3('從照顧一個人，到改變一個照顧系統'),
               p(
-                '台灣邁入超高齡社會，照顧需求持續增加。然而許多家庭在面對長照時，仍常陷入資源分散、資訊複雜、人才不足的困境。',
+                '臺灣邁入超高齡社會，照顧需求急遽攀升，許多家庭仍受困於資源分散、資訊複雜的困境。多年來，我們深入社區與照顧第一線，深刻體會到——照顧不只是服務的加總，更是一段陪伴、理解與整合的過程。為此，我們持續發展 All In One（AIO）照顧模式，串連跨專業團隊、社區資源與人才，將零散轉化為陪伴家庭的支持系統。',
               ),
               p(
-                '多年來，創照團隊深入社區、家庭與照顧現場，看見照顧除了服務、制度的提供之外，更是一段需要陪伴、理解與整合的過程。',
-              ),
-              // about-context §緣起5：「如果…」句獨立上色加重 → 果綠 #9C9F33（Tracy LINE 指示）
-              pRich(
-                { text: '因此，我們開始思考：' },
-                {
-                  text: '如果照顧從「跨專業整合、以人為本、扎根在地」的核心出發，會是什麼模樣？',
-                  bold: true,
-                },
-              ),
-              p(
-                '帶著這個問題，我們持續發展 All In One（AIO）照顧模式，串連跨專業團隊、社區資源與照顧人才，讓照顧成為一套能陪伴家庭走過不同階段的支持系統。',
-              ),
-              p(
-                '我們透過人才培育、整合服務與創新實踐，讓照顧成為被尊重且能持續發展的專業力量，並建立一個以人為本的照顧生態系。',
+                '我們致力於人才培育與服務創新，讓照顧成為被尊重且永續的專業力量，攜手建立以人為本的All In One 照顧生態系。',
               ),
             ),
             image: photos[6].id,
@@ -1045,7 +1034,7 @@ export const seed = async ({
           {
             blockType: 'missionCircles',
             variant: 'band',
-            slogan: '讓需要照顧的人獲得更完整的支持，\n讓投入照顧的人擁有更好的成長與發展。',
+            slogan: '讓需要照顧的人，獲得完整的支持；\n讓投入照顧的人，擁有更好的成長與發展。',
             backgroundImage: photos[7].id,
             circles: [
               { label: '培育照顧的人' },
@@ -1117,19 +1106,10 @@ export const seed = async ({
             richText: rtNodes(
               h3('From caring for one person to changing a care system'),
               p(
-                'Taiwan has entered a super-aged society, and care needs keep growing. Yet many families facing long-term care are still caught in scattered resources, complex information, and a shortage of care talent.',
+                'As Taiwan enters a super-aged society, care needs are rising sharply, and many families are still caught in scattered resources and complex information. For years, we have worked deep in communities and on the front lines of care, coming to understand that care is not merely the sum of services — it is a journey of companionship, understanding, and integration. That is why we keep developing the All In One (AIO) care model, connecting cross-disciplinary teams, community resources, and talent, turning the scattered into a support system that walks with families.',
               ),
               p(
-                'For years, the Care For Taiwan team has worked deep in communities, families, and the front lines of care — seeing that care is not only services and systems, but a journey that needs companionship, understanding, and integration.',
-              ),
-              p(
-                'So we began to ask: what would care look like if it started from cross-disciplinary integration, person-centered values, and local roots?',
-              ),
-              p(
-                'With that question, we keep developing the All In One (AIO) care model — connecting cross-disciplinary teams, community resources, and care talent, so care becomes a support system that walks with families through every stage.',
-              ),
-              p(
-                'Through talent cultivation, integrated services, and innovative practice, we make care a respected and sustainable profession — and build a person-centered care ecosystem.',
+                'Committed to talent cultivation and service innovation, we make care a respected and sustainable profession — building a person-centered All In One care ecosystem together.',
               ),
             ),
             image: photos[6].id,
@@ -1139,7 +1119,7 @@ export const seed = async ({
             blockType: 'missionCircles',
             variant: 'band',
             slogan:
-              'More complete support for those who need care,\nand better growth and development for those who give care.',
+              'Complete support for those who need care;\nbetter growth and development for those who give care.',
             backgroundImage: photos[7].id,
             circles: [
               { label: 'Cultivating the people of care' },
@@ -1874,13 +1854,13 @@ export const seed = async ({
             richText: rtNodes(
               h3('為台灣長照而教的人才培育基地'),
               p(
-                'Care For Taiwan（CFT）照顧學校，致力於培育照顧專業人士，創造社區/居家融合創新長照，推動 All In One（AIO）整合照顧模式。我們相信，好的照顧不只是完成服務，而是理解人的需求、看見生活的樣貌，並整合跨專業資源，陪伴每個人在熟悉的環境中持續生活。',
+                'Care For Taiwan（CFT）照顧學校，致力於培育照顧專業人才，落實社區/居家融合創新長照，推動 All In One（AIO）整合照顧模式。我們相信，好的照顧不只是完成服務，而是理解人的需求、看見生活的樣貌，並整合跨專業資源，陪伴每個人在熟悉的環境中持續生活。',
               ),
               p(
-                '面對高齡化社會帶來的照顧需求，學校發展各式長照課程，並透過四大學習地圖：涵括課程學習、實作服務、證照管理與職涯支持等多層次內容，讓學員不只是理解照顧，更能將所學轉化為實際能力。我們建立一套從入門到進階的人才培育系統，協助更多人投入照顧工作，也讓照顧成為一條能夠長期發展的專業道路。',
+                '面對超高齡社會帶來的照顧需求，照顧學校發展各式長照課程，並透過四大學習地圖：涵括課程學習、實作服務、證照管理與職涯支持等多層次內容，讓學員不只是理解照顧，更能將所學轉化為實際能力。我們建立一套從入門到進階的人才培育系統，協助更多人投入照顧工作，也讓照顧成為一條能夠長期發展的專業道路。',
               ),
               p(
-                '在這裡，學習不只發生在教室，而是在真實的服務現場、人與人的互動之間，以及每一次實踐與反思的過程中。',
+                '在這裡，學習從不侷限於教室，我們透過每月開設「真功夫加強班」，帶領學員走進真實的服務現場；在與人的互動中，以及動手實踐與深刻反思，真正淬鍊出貼近照顧需求的扎實真功夫。',
               ),
             ),
             image: photos[2].id,
@@ -1892,7 +1872,7 @@ export const seed = async ({
             variant: 'ring',
             eyebrow: 'Problematic',
             title: '我們看見的問題',
-            body: '社會中的照顧需求快速增加，我們也在現場看見：\n1.職涯單一路徑：照顧工作常缺乏清晰的成長路徑與發展機會，難以吸引人才長期投入。\n2.薪資與價值落差：照顧工作的重要性逐年提升，但專業價值仍未被充分看見。\n3.專業彼此分散：醫療、照護、社區與家庭之間缺乏整合，跨領域合作不容易建立與串連。\n因此，我們希望透過人才培育，建立新的照顧能力與照顧語言。',
+            body: '社會中的照顧需求日益攀升，我們也在照顧現場看見：\n1.職涯單一路徑：照顧工作常缺乏清晰的成長路徑與發展機會，難以吸引人才長期投入。\n2.薪資與價值落差：照顧工作的重要性逐年提升，但專業價值仍未被充分看見。\n3.專業分散：醫療、照顧、社區與家庭之間缺乏整合，跨領域合作不容易建立與串連。\n因此，我們希望透過人才培育，建立以人為本的觀點思維，以及與時俱進的溝通能力。',
             photos: [
               { image: photos[0].id },
               { image: photos[2].id },
@@ -1940,7 +1920,7 @@ export const seed = async ({
                 ],
                 heading: '課程地圖',
                 subheading: '建立照顧知識與專業學習',
-                body: '照顧能力的建立，來自系統化學習與持續累積。 課程地圖整合 AIO 課程、八大模組、真功夫加強班、共學活動與研究實踐，協助學員從照顧理念出發，逐步建立完整的專業基礎與實務能力。',
+                body: '照顧能力的建立，來自系統化學習與持續累積。課程地圖整合 AIO 課程、八大模組、真功夫加強班、共學圈與身心靈年會串聯，引導學員從照顧理念出發，逐步建立完整的專業基礎與實務能力。',
                 featuresLabel: '學習特色',
                 features: [
                   {
@@ -1949,11 +1929,11 @@ export const seed = async ({
                   },
                   {
                     title: '八大模組',
-                    text: '涵蓋人本照顧、舒適照顧、高齡照顧、失智症照顧、身心障礙支持、全方位療癒、...等主題，從不同面向建立照顧專業知識與跨領域視野。',
+                    text: '涵蓋人本照顧導論、舒適照顧真功夫、全方位療癒、高齡全人照顧、失智症全人照顧、身心障礙全人照顧、社區共生創新照顧、共學圈及模組PLUS豐富的主題，從不同面向建立照顧專業知識與跨領域視野。',
                   },
                   {
                     title: '真功夫加強班',
-                    text: '把照顧技能練成真正帶得走的能力。學員將反覆練習照護動作，讓照顧「真功夫」能在需要時真正派上用場。',
+                    text: '讓課堂的「知識」落地為手邊的「技術」，並在反覆演練照顧動作的過程中，把技術昇華為內化的「技能」，在關鍵時刻真正派上用場。',
                   },
                   {
                     title: '共學活動',
@@ -1965,24 +1945,24 @@ export const seed = async ({
                 label: '實作地圖',
                 heading: '實作地圖',
                 subheading: '在真實場域累積照顧經驗',
-                body: '實作地圖透過 AIO 服務梯隊、共生之家、日間照顧與國際研修等多元場域，讓學員走出教室，進入真實服務現場，逐步建立自己的照顧判斷與服務能力。',
+                body: '「移地訓練」是照顧學校最珍貴且無可取代的特色。我們打破傳統課堂的邊界，擁有全臺灣最獨特且多元的實作場域，帶領學員走出教室、跨越地域。透過 AIO 服務梯隊、共生之家、日間照顧與國際研修，學員將走進生命現場，在實踐中逐步長出敏銳的照顧判斷與解決問題的跨界能力。',
                 featuresLabel: '學習特色',
                 features: [
                   {
-                    title: 'AIO 服務梯隊',
-                    text: '實際進入社區與家庭服務現場，學習需求評估、陪伴照顧、團隊合作與問題解決，學員在帶領下參與真實服務過程，累積第一線經驗。',
+                    title: 'AIO 服務梯隊｜走進偏鄉落實文化照顧',
+                    text: '走進偏鄉部落與社區，在 AIO 照顧設計師與 AIO 教練帶領下，學員直接參與真實照顧。從零學習需求評估、陪伴與團隊協作，在最需要支持的地方，累積接地氣的第一線經驗。',
                   },
                   {
-                    title: '共生之家',
-                    text: '走進不同地區的共生照顧據點，理解照顧如何與社區結合，透過參訪與交流，學習在地照顧模式與社區共生實踐。',
+                    title: '共生之家｜打破制度高牆的在地實踐',
+                    text: '深入社區，理解「共生」意涵，體會照顧與在地居民、社區生活的融合。學習陪伴長者在熟悉環境自在生活，練就因地制宜、靈活不設限的照顧思維。',
                   },
                   {
-                    title: '日間照顧',
-                    text: '進入日照中心與照顧場域觀察服務流程，理解長者生活需求、活動設計與照顧支持系統，建立對長照現場的整體認識。',
+                    title: '日間照顧｜日常照顧的創新應用',
+                    text: '進駐日間照顧中心，觀察並參與日常服務。從長者生活細節出發，理解尊嚴照顧、學習創新活動設計，看懂整體長照支持系統，建立對現場全面且立體的認識。',
                   },
                   {
-                    title: '國際研修',
-                    text: '與日本長照機構及合作單位交流學習，了解不同國家的照顧模式與創新實踐，拓展照顧視野並帶回在地應用的可能性。',
+                    title: '國際研修｜跨越國界的沉浸式體驗',
+                    text: '飛越東海，深入日本標竿長照單位沉浸式實作，不只是參訪，更投注於深度在地文化與照顧哲學的體驗，在異國視野激盪下拓展思維，帶回臺灣創新落地的無限可能。',
                   },
                 ],
               },
@@ -1990,12 +1970,24 @@ export const seed = async ({
                 label: '證照地圖',
                 heading: '證照地圖',
                 subheading: '建立專業認證與學習履歷',
-                body: '從照顧服務員、特殊照護訓練到進階專業課程，協助學員逐步取得所需資格與能力認證，建立專業可信度；照顧學校也透過證照制度與數位化管理系統，協助學員累積專業歷程，掌握自己的學習進度與成長軌跡。',
+                body: '協助學員逐步取得核心資格，建立專業可信度。透過完善的證照制度與數位化系統，清晰記錄專業歷程，精準掌握學習進度與成長軌跡。',
                 featuresLabel: '學習特色',
                 features: [
                   {
-                    title: '數位化學習履歷',
-                    text: '透過照顧學校學習平台，整合課程紀錄、證照成果、學習檔案與能力發展軌跡，建立專屬於自己的照顧人才履歷。',
+                    title: 'AIO 照顧服務員證書',
+                    text: '奠定扎實的第一線照顧基礎，掌握核心實務，落實以人為本的尊嚴照顧。',
+                  },
+                  {
+                    title: 'AIO 照顧教練證書',
+                    text: '具備實務指導與引領能力，在真實場域陪伴學員淬鍊技術，深化即戰力。',
+                  },
+                  {
+                    title: 'AIO 照顧設計師證書',
+                    text: '發揮核心設計思維，跨專業串連醫療與長照資源，量身打造最適切的照顧方案。',
+                  },
+                  {
+                    title: 'AIO 在宅醫師證書',
+                    text: '深耕在宅醫療與社區共生，結合在地資源，全面支持長者在熟悉處尊嚴安老。',
                   },
                 ],
               },
@@ -2071,13 +2063,13 @@ export const seed = async ({
             richText: rtNodes(
               h3('A talent-cultivation base teaching for Taiwan’s long-term care'),
               p(
-                'The Care For Taiwan (CFT) Care School cultivates care professionals, creates innovative community/home integrated long-term care, and advances the All In One (AIO) integrated care model. We believe good care is not just completing services — it is understanding people’s needs, seeing how they live, integrating cross-disciplinary resources, and accompanying everyone to keep living in familiar surroundings.',
+                'The Care For Taiwan (CFT) Care School cultivates care professionals, delivers innovative community/home integrated long-term care, and advances the All In One (AIO) integrated care model. We believe good care is not just completing services — it is understanding people’s needs, seeing how they live, integrating cross-disciplinary resources, and accompanying everyone to keep living in familiar surroundings.',
               ),
               p(
-                'Facing the care needs of an aging society, the school develops long-term care courses through four learning maps — courses, practice, certification, and career — so learners not only understand care but turn learning into real ability. We build a talent system from entry to advanced levels, helping more people join care work and making care a profession with long-term growth.',
+                'Facing the care needs of a super-aged society, the Care School develops long-term care courses through four learning maps — courses, practice, certification, and career — so learners not only understand care but turn learning into real ability. We build a talent system from entry to advanced levels, helping more people join care work and making care a profession with long-term growth.',
               ),
               p(
-                'Here, learning happens not only in classrooms, but in real service settings, in human connection, and in every cycle of practice and reflection.',
+                'Here, learning is never confined to the classroom. Through the monthly “Hands-on Intensive,” we lead learners into real service settings — in human connection, hands-on practice, and deep reflection, forging the solid, real skills that truly meet care needs.',
               ),
             ),
             image: photos[2].id,
@@ -2088,7 +2080,7 @@ export const seed = async ({
             variant: 'ring',
             eyebrow: 'Problematic',
             title: 'The problems we see',
-            body: 'As care needs grow rapidly, on the front lines we see:\n1. A single career path: care work often lacks clear growth paths and development opportunities, making long-term commitment hard to attract.\n2. A pay-and-value gap: care work matters more every year, but its professional value is still not fully seen.\n3. Scattered professions: medical, care, community, and family lack integration; cross-disciplinary collaboration is hard to build and connect.\nThat is why we cultivate talent — to build new care capabilities and a new language of care.',
+            body: 'As care needs keep rising, on the care front lines we see:\n1. A single career path: care work often lacks clear growth paths and development opportunities, making long-term commitment hard to attract.\n2. A pay-and-value gap: care work matters more every year, but its professional value is still not fully seen.\n3. Scattered professions: medical, care, community, and family lack integration; cross-disciplinary collaboration is hard to build and connect.\nThat is why we cultivate talent — to build person-centered thinking and communication skills that keep pace with the times.',
             photos: [
               { image: photos[0].id },
               { image: photos[2].id },
@@ -2146,7 +2138,7 @@ export const seed = async ({
                 ],
                 heading: 'Course Map',
                 subheading: 'Building care knowledge and professional learning',
-                body: 'Care capability comes from systematic learning and steady accumulation. The course map integrates AIO courses, the eight modules, hands-on intensives, and co-learning activities — helping learners build a complete professional foundation from care philosophy outward.',
+                body: 'Care capability comes from systematic learning and steady accumulation. The course map integrates AIO courses, the eight modules, hands-on intensives, the co-learning circle, and the mind-body-spirit annual gathering — guiding learners from care philosophy outward to build a complete professional foundation and practical ability.',
                 featuresLabel: 'Learning features',
                 features: [
                   {
@@ -2155,11 +2147,11 @@ export const seed = async ({
                   },
                   {
                     title: 'Eight modules',
-                    text: 'Person-centered care, comfort care, elder care, dementia care, disability support, holistic healing, and more — building professional knowledge and cross-disciplinary perspective.',
+                    text: 'Spanning an introduction to person-centered care, comfort-care techniques, holistic healing, whole-person elder care, whole-person dementia care, whole-person disability care, innovative community-symbiosis care, the co-learning circle, and module PLUS topics — building professional knowledge and cross-disciplinary perspective from many angles.',
                   },
                   {
                     title: 'Hands-on intensives',
-                    text: 'Turning care skills into abilities you can truly carry. Learners practice care techniques repeatedly so real skills are ready when needed.',
+                    text: 'Turning classroom “knowledge” into hands-on “technique,” then — through repeated practice of care movements — refining technique into internalized “skill” that truly serves at the critical moment.',
                   },
                   {
                     title: 'Co-learning activities',
@@ -2171,24 +2163,24 @@ export const seed = async ({
                 label: 'Practice Map',
                 heading: 'Practice Map',
                 subheading: 'Gaining care experience in real settings',
-                body: 'Through AIO service teams, symbiosis homes, day care, and international study, learners step out of the classroom into real service settings — building their own care judgment and service capability.',
+                body: '“Field training” is the Care School’s most precious and irreplaceable feature. We break the boundaries of the traditional classroom, with the most unique and diverse hands-on settings in Taiwan, leading learners out of the classroom and across regions. Through AIO service teams, symbiosis homes, day care, and international study, learners step into the heart of life — growing keen care judgment and cross-boundary problem-solving through practice.',
                 featuresLabel: 'Learning features',
                 features: [
                   {
-                    title: 'AIO service teams',
-                    text: 'Entering community and family service settings to learn needs assessment, companionship care, teamwork, and problem-solving with guided, real service experience.',
+                    title: 'AIO service teams｜Cultural care in rural communities',
+                    text: 'Entering rural tribes and communities, learners take part in real care under AIO care designers and coaches — learning needs assessment, companionship, and teamwork from the ground up, gaining down-to-earth front-line experience where support is needed most.',
                   },
                   {
-                    title: 'Symbiosis homes',
-                    text: 'Visiting symbiotic care hubs in different regions to learn local care models and community practice.',
+                    title: 'Symbiosis homes｜Local practice beyond institutional walls',
+                    text: 'Going deep into communities to understand what “symbiosis” means and how care blends with local residents and community life — learning to accompany elders living freely in familiar surroundings, and to think flexibly and adapt to each setting.',
                   },
                   {
-                    title: 'Day care',
-                    text: 'Observing service flows at day care centers to understand elders’ daily needs, activity design, and care support systems.',
+                    title: 'Day care｜Innovation in everyday care',
+                    text: 'Embedding in day-care centers to observe and join daily service. Starting from the details of elders’ lives, learners grasp dignified care, learn innovative activity design, and read the whole long-term care support system — building a full, three-dimensional understanding of the field.',
                   },
                   {
-                    title: 'International study',
-                    text: 'Exchanging with Japanese long-term care institutions and partners to broaden care perspectives and bring innovations home.',
+                    title: 'International study｜An immersive experience across borders',
+                    text: 'Crossing the East Sea for immersive practice at Japan’s benchmark long-term care units — not just a visit, but a deep experience of local culture and care philosophy, broadening thinking through a foreign lens and bringing endless possibilities for innovation back to Taiwan.',
                   },
                 ],
               },
@@ -2196,12 +2188,24 @@ export const seed = async ({
                 label: 'Certification Map',
                 heading: 'Certification Map',
                 subheading: 'Building credentials and a learning record',
-                body: 'From care worker training and specialized care to advanced courses, we help learners earn qualifications step by step and build professional credibility — with a certification system and digital management that tracks each learner’s progress and growth.',
+                body: 'We help learners earn core qualifications step by step and build professional credibility. Through a complete certification system and a digital platform, each learner’s professional journey is clearly recorded, with precise tracking of learning progress and growth.',
                 featuresLabel: 'Learning features',
                 features: [
                   {
-                    title: 'Digital learning portfolio',
-                    text: 'The Care School learning platform integrates course records, certifications, learning files, and skill development into each learner’s own care-talent portfolio.',
+                    title: 'AIO Care Worker Certificate',
+                    text: 'Laying a solid front-line care foundation, mastering core practice, and delivering person-centered, dignified care.',
+                  },
+                  {
+                    title: 'AIO Care Coach Certificate',
+                    text: 'Equipped to guide and lead in practice — accompanying learners in real settings to refine technique and deepen battle-ready skills.',
+                  },
+                  {
+                    title: 'AIO Care Designer Certificate',
+                    text: 'Applying core design thinking to connect medical and long-term care resources across disciplines, tailoring the most fitting care plans.',
+                  },
+                  {
+                    title: 'AIO Home Physician Certificate',
+                    text: 'Deepening home medical care and community symbiosis, combining local resources to fully support elders ageing with dignity in familiar surroundings.',
                   },
                 ],
               },
