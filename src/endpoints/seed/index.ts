@@ -616,19 +616,49 @@ export const seed = async ({
         metaDescription:
           '創照服務設計（Care For Taiwan）以 ALL IN ONE 整合照顧服務陪伴長照家庭：返家照顧、人才培育、組織培力與照顧科技。',
         layout: [
-          // Sheet 首頁 01 Banner：Slogan 兩行壓圖（title/subtitle 各一行）
+          // Sheet 首頁 01 Banner：每張圖各自帶文字（圖＋文一起滑）。
+          // 預設三張同一句 Slogan（客戶可在後台逐張改成不同文字）。
           {
             blockType: 'hero',
-            images: [{ image: photos[0].id }, { image: photos[1].id }, { image: photos[7].id }],
-            title: '讓需要照顧的人獲得更完整的支持，',
-            subtitle: '讓投入照顧的人擁有更好的成長與發展。',
+            images: [
+              {
+                image: photos[0].id,
+                title: '讓需要照顧的人獲得更完整的支持，',
+                subtitle: '讓投入照顧的人擁有更好的成長與發展。',
+              },
+              {
+                image: photos[1].id,
+                title: '讓需要照顧的人獲得更完整的支持，',
+                subtitle: '讓投入照顧的人擁有更好的成長與發展。',
+              },
+              {
+                image: photos[7].id,
+                title: '讓需要照顧的人獲得更完整的支持，',
+                subtitle: '讓投入照顧的人擁有更好的成長與發展。',
+              },
+            ],
           },
-          // Sheet 首頁 02 最新消息條（範例文字照 Sheet）
+          // Sheet 首頁 02 最新消息條：垂直輪播需多則才會動（範例文字照 Sheet）
           {
             blockType: 'newsTicker',
             items: [
               {
                 text: '開學日 2026/03/07（六）09:00–16:30　·　CFT 照顧學校（414 臺中市烏日區溪岸路 8-3 號）',
+                enabled: true,
+              },
+              {
+                text: '「新竹縣陪出院推動計畫」進行中，歡迎符合公益援助資格的家庭洽詢',
+                url: '/care',
+                enabled: true,
+              },
+              {
+                text: 'CFT 照顧學校課程陸續開放報名，歡迎有意投入照顧的夥伴了解',
+                url: 'https://school.carefortaiwan.com.tw',
+                enabled: true,
+              },
+              {
+                text: '杜格納合作社於林口社宅持續招募社區夥伴，一起在地共老',
+                url: '/training',
                 enabled: true,
               },
             ],
@@ -712,15 +742,39 @@ export const seed = async ({
         layout: [
           {
             blockType: 'hero',
-            images: [{ image: photos[0].id }, { image: photos[1].id }, { image: photos[7].id }],
-            title: 'More complete support for those who need care,',
-            subtitle: 'and better growth and development for those who give care.',
+            images: [
+              {
+                image: photos[0].id,
+                title: 'More complete support for those who need care,',
+                subtitle: 'and better growth and development for those who give care.',
+              },
+              {
+                image: photos[1].id,
+                title: 'More complete support for those who need care,',
+                subtitle: 'and better growth and development for those who give care.',
+              },
+              {
+                image: photos[7].id,
+                title: 'More complete support for those who need care,',
+                subtitle: 'and better growth and development for those who give care.',
+              },
+            ],
           },
           {
             blockType: 'newsTicker',
             items: [
               {
                 text: 'Opening Day 2026/03/07 (Sat) 09:00–16:30 · CFT Care School (No. 8-3, Xi’an Rd., Wuri Dist., Taichung 414)',
+                enabled: true,
+              },
+              {
+                text: 'The Hsinchu County “Companion-Home Discharge” program is underway — families eligible for public-benefit support are welcome to enquire.',
+                url: '/en/care',
+                enabled: true,
+              },
+              {
+                text: 'CFT Care School courses are opening for enrollment — partners interested in caregiving are welcome to learn more.',
+                url: 'https://school.carefortaiwan.com.tw',
                 enabled: true,
               },
             ],

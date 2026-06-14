@@ -455,18 +455,21 @@ export interface User {
  * via the `definition` "HeroBlock".
  */
 export interface HeroBlock {
+  /**
+   * 每張圖可設定各自的標題/副標/按鈕——想全部一樣就填一樣，想每張不同就分別填。圖與文字會一起滑動切換。
+   */
   images?:
     | {
         image: number | Media;
+        title?: string | null;
+        subtitle?: string | null;
+        cta?: {
+          label?: string | null;
+          url?: string | null;
+        };
         id?: string | null;
       }[]
     | null;
-  title: string;
-  subtitle?: string | null;
-  cta?: {
-    label?: string | null;
-    url?: string | null;
-  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'hero';
@@ -1505,15 +1508,15 @@ export interface HeroBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        title?: T;
+        subtitle?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
         id?: T;
-      };
-  title?: T;
-  subtitle?: T;
-  cta?:
-    | T
-    | {
-        label?: T;
-        url?: T;
       };
   id?: T;
   blockName?: T;
