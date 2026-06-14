@@ -57,12 +57,14 @@ export const PillarCardsBlock: React.FC<PillarCardsBlockProps> = ({
           <div className="md:w-[52%]">
             {eyebrow && <Eyebrow text={eyebrow} />}
             {title && (
-              <h2 className="text-[26px] font-bold tracking-[0.15em] text-brand-green md:text-4xl">
+              // .fig 人才培育系統：Noto Sans TC Bold 40 / lh60 / ls10%
+              <h2 className="text-[26px] font-bold leading-[1.5] tracking-[0.1em] text-brand-green md:text-[40px] md:leading-[60px]">
                 {title}
               </h2>
             )}
             {subtitle && (
-              <p className="mt-4 text-lg font-bold tracking-[0.1em] text-brand-ink md:text-[22px]">
+              // .fig 以AIO為核心…：Noto Sans TC Medium 22 / lh35 / ls10%（非 Bold）
+              <p className="mt-4 text-lg font-medium leading-[35px] tracking-[0.1em] text-brand-ink md:text-[22px]">
                 {subtitle}
               </p>
             )}

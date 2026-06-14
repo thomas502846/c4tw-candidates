@@ -17,6 +17,7 @@ type MediaLike = {
   alt?: string | null
   sizes?: {
     card?: { url?: string | null } | null
+    hero?: { url?: string | null } | null
   } | null
 } | null
 
@@ -24,8 +25,11 @@ type MediaLike = {
 const pickImage = (image: any): { url: string | null; alt: string | null } => {
   if (!image || typeof image !== 'object') return { url: null, alt: null }
   const media = image as MediaLike
+  // 卡片顯示約 380×288（@2x≈760px）。原本優先 card(768×576) 變體，但該變體在
+  // staging/S3 偶發未上傳 → -768x576 圖 HTTP 400 破圖（與 leadImage 同一坑）。
+  // 改先取原圖 / hero，最後才退 card，確保所有斷點都有可用圖。
   return {
-    url: media?.sizes?.card?.url || media?.url || null,
+    url: media?.url || media?.sizes?.hero?.url || media?.sizes?.card?.url || null,
     alt: media?.alt || null,
   }
 }

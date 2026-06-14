@@ -325,7 +325,35 @@ const RADIAL_POS = [
   { left: '50%', top: '74%' }, // 下
 ]
 
-const NodeIcon: React.FC<{ node: InfographicNode }> = ({ node }) => {
+/**
+ * 放射節點 fallback 線稿 icon（training 306:609 / M-training 第2屏）：
+ * 依節點序對應 擴音器/人形/建築/手 四款，與 Figma 圓內 icon 一致。
+ * 桌機用 baked PNG 故無此 fallback；此處主要服務行動版 RadialStack。
+ */
+const RADIAL_NODE_ICONS = [
+  // 0 高齡化需求增加 → 擴音器 megaphone
+  <path
+    d="M9 19v8a3 3 0 0 0 3 3h3l16 8V8L15 16h-3a3 3 0 0 0-3 3ZM31 18a8 8 0 0 1 0 10M15 30v6a3 3 0 0 0 6 0v-2"
+    key="0"
+  />,
+  // 1 照顧人才不足 → 人形 person
+  <>
+    <circle cx="23" cy="15" r="7" key="c" />
+    <path d="M10 38c2.5-9 7.5-13 13-13s10.5 4 13 13" key="b" />
+  </>,
+  // 2 偏鄉資源落差 → 建築 building
+  <path
+    d="M12 40V12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v28M28 22h6a2 2 0 0 1 2 2v16M17 17h4M17 24h4M17 31h4M31 28h2M31 34h2M8 40h32"
+    key="2"
+  />,
+  // 3 在地培力不易 → 手 hand（支持/培力）
+  <path
+    d="M14 24v-9a3 3 0 0 1 6 0v8M20 23v-11a3 3 0 0 1 6 0v11M26 23v-8a3 3 0 0 1 6 0v15a10 10 0 0 1-10 10h-3a9 9 0 0 1-7-4l-5-7a3 3 0 0 1 5-3l2 2"
+    key="3"
+  />,
+]
+
+const NodeIcon: React.FC<{ node: InfographicNode; index?: number }> = ({ node, index = 0 }) => {
   if (node.icon && typeof node.icon === 'object') {
     return (
       <span className="block h-12 w-12 md:h-14 md:w-14">
@@ -333,10 +361,20 @@ const NodeIcon: React.FC<{ node: InfographicNode }> = ({ node }) => {
       </span>
     )
   }
+  const icon = RADIAL_NODE_ICONS[index % RADIAL_NODE_ICONS.length]
   return (
-    <span aria-hidden className="flex h-12 w-12 items-center justify-center md:h-14 md:w-14">
-      <span className="h-3/4 w-3/4 rounded-full border-[3px] border-brand-lime" />
-    </span>
+    <svg
+      aria-hidden
+      className="h-12 w-12 md:h-14 md:w-14"
+      fill="none"
+      stroke="#9C9F33"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2.2"
+      viewBox="0 0 48 48"
+    >
+      {icon}
+    </svg>
   )
 }
 
@@ -352,7 +390,7 @@ const Radial: React.FC<{ nodes?: InfographicNode[] | null }> = ({ nodes }) => {
             key={node.id ?? i}
             style={RADIAL_POS[i]}
           >
-            <NodeIcon node={node} />
+            <NodeIcon index={i} node={node} />
             <h3 className="text-lg font-bold tracking-[0.05em] text-brand-ink md:text-[20px]">{node.title}</h3>
             {node.text && <p className="text-[13px] leading-[1.5] text-brand-ink/80">{node.text}</p>}
           </div>
@@ -379,7 +417,7 @@ const RadialStack: React.FC<{ nodes: InfographicNode[] }> = ({ nodes }) => (
         )}
         key={node.id ?? i}
       >
-        <NodeIcon node={node} />
+        <NodeIcon index={i} node={node} />
         <h3 className="text-lg font-bold tracking-[0.05em] text-brand-ink">{node.title}</h3>
         {node.text && <p className="text-[13px] leading-[1.5] text-brand-ink/80">{node.text}</p>}
       </div>

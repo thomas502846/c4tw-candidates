@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
-import { Noto_Sans_TC } from 'next/font/google'
+import { Noto_Sans_TC, Roboto } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -19,6 +19,14 @@ const notoSansTC = Noto_Sans_TC({
   variable: '--font-noto-sans-tc',
 })
 
+// 數字序號（01/02/03）Figma 指定 Roboto SemiBold(600)
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+  display: 'swap',
+  variable: '--font-roboto',
+})
+
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
@@ -27,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html
-      className={cn(notoSansTC.variable, GeistMono.variable)}
+      className={cn(notoSansTC.variable, roboto.variable, GeistMono.variable)}
       data-theme="light"
       lang="zh-TW"
       suppressHydrationWarning

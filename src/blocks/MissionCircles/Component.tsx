@@ -35,17 +35,22 @@ const Band: React.FC<{
   <section className="bg-[#D9D9D9] py-16 md:py-24" data-block="missionCircles">
     <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
       {slogan && (
-        <h2 className="whitespace-pre-line text-center text-xl font-bold leading-[1.9] tracking-[0.15em] text-brand-ink md:text-4xl md:leading-[1.7]">
+        // .fig H2：Bold 36 / lh60 固定 / ls15%。tablet(768) 36px 會把第二句擠出孤字「展。」，
+        // 故 md(641–1024) 降到 30px、lg(≥1024) 才回 36px；text-balance-cjk 再保險防孤行。
+        <h2 className="text-balance-cjk whitespace-pre-line text-center text-xl font-bold leading-[1.9] tracking-[0.15em] text-brand-ink md:text-[30px] md:leading-[48px] lg:text-4xl lg:leading-[60px]">
           {slogan}
         </h2>
       )}
-      <div className="mt-12 flex flex-wrap items-center justify-center gap-8 md:gap-[103px]">
+      {/* mobile：直排（M-about.png 三圓直排）→ flex-wrap 置中堆疊。
+          tablet(md 768)：縮圓 200 + gap-10，三圓同列剛好容納（3×200+2×40=680<704），避免 2+1 折行。
+          desktop(lg ≥1024)：回設計 260 圓 + 103px gap 一排三圓。 */}
+      <div className="mt-12 flex flex-wrap items-center justify-center gap-8 md:flex-nowrap md:gap-10 lg:gap-[103px]">
         {circles.map((circle, i) => {
           const color = circleColors[i % circleColors.length]
           return (
             <div
               key={circle.id ?? i}
-              className="relative flex h-[200px] w-[200px] items-center justify-center rounded-full md:h-[260px] md:w-[260px]"
+              className="relative flex h-[200px] w-[200px] shrink-0 items-center justify-center rounded-full lg:h-[260px] lg:w-[260px]"
               style={{ backgroundColor: `${color}59` }} // 外圈半透明 halo（35%）
             >
               {/* Figma：260 frame 內 220 實心圓 → 85% */}
@@ -73,7 +78,7 @@ const Plain: React.FC<{ title?: string | null; circles: MissionCircle[] }> = ({ 
   <section className="py-16" data-block="missionCircles">
     <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
       {title && (
-        <h2 className="text-center text-[26px] font-bold tracking-[0.15em] text-brand-green md:text-4xl">
+        <h2 className="text-center text-[30px] font-bold leading-[1.4] tracking-[0.1em] text-brand-green md:text-[40px] md:leading-[60px]">
           {title}
         </h2>
       )}

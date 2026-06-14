@@ -47,9 +47,31 @@
   --font-sans:
     var(--font-noto-sans-tc), 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', ui-sans-serif,
     system-ui, sans-serif;
+  /* 數字序號（01/02/03 等 Figma 指定 Roboto SemiBold 的 ASCII 數字） */
+  --font-num: var(--font-roboto), 'Roboto', ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer utilities {
+  /* RWD 文字換行系統（docs/rwd-text-guidelines.md §3.3）：additive，零視覺風險 */
+  /* 標題平衡換行：避免最後一行只剩一兩個字（孤字）。用於 H1/H2/大標 */
+  .text-balance-cjk {
+    text-wrap: balance;
+  }
+  /* 內文順排：避免段落結尾孤字，但不像 balance 那樣重排整段。用於 body 長段落 */
+  .text-pretty-cjk {
+    text-wrap: pretty;
+  }
+  /* flex 文字欄：和 icon/圖並排的文字容器，一鍵防溢出 */
+  .flex-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  /* 強制把不可斷長字串（URL/email/代碼）在任意點斷 */
+  .break-token {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+
   .container {
     width: 100%;
     margin-inline: auto;

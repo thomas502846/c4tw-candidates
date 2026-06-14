@@ -45,17 +45,20 @@ export const NumberedFeaturesBlock: React.FC<NumberedFeaturesBlockProps> = ({ ey
           <div className="md:w-[41%]">
             {i === 0 && eyebrow && <Eyebrow text={eyebrow} />}
             <div className="flex items-baseline gap-3">
+              {/* 序號 01/02/03：Figma Roboto SemiBold 52 / lh64 / ls -0.25px（text-styles.md L23/124） */}
               <span
-                className="text-[40px] font-semibold leading-none tracking-tight text-brand-highlight md:text-[52px]"
+                className="font-num text-[40px] font-semibold leading-none tracking-[-0.25px] text-brand-highlight md:text-[52px] md:leading-[64px]"
                 aria-hidden
               >
                 {item.number}
               </span>
-              <h2 className="text-[26px] font-bold tracking-[0.15em] text-brand-green md:text-4xl">
+              {/* 標題：Figma Noto Sans TC Bold 36 / lh60 / ls15%（H2） */}
+              <h2 className="text-[26px] font-bold leading-[40px] tracking-[0.15em] text-brand-green md:text-4xl md:leading-[60px]">
                 {item.title}
               </h2>
             </div>
-            <p className="mt-6 whitespace-pre-line text-justify text-base leading-[1.85] tracking-[0.1em] text-brand-ink">
+            {/* 內文：Figma Noto Sans TC Regular 16 / lh29 / ls10% */}
+            <p className="mt-6 whitespace-pre-line text-justify text-base leading-[29px] tracking-[0.1em] text-brand-ink">
               {item.text}
             </p>
           </div>

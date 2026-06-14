@@ -40,7 +40,8 @@ const normalizeManualCard = (card: ManualCard, index: number): ArticleCardData =
     id: card.id ?? `manual-${index}`,
     title: card.title,
     excerpt: card.excerpt ?? null,
-    imageUrl: image?.sizes?.card?.url || image?.url || null,
+    // 原圖 / hero 優先；避開 card(768×576) 變體在 staging 偶發 400 破圖
+    imageUrl: image?.url || image?.sizes?.hero?.url || image?.sizes?.card?.url || null,
     imageAlt: image?.alt || null,
     url: card.url ?? null,
     meta: null,
@@ -61,7 +62,13 @@ export const ArticleCardsBlock: React.FC<ArticleCardsBlockProps> = async ({
   const limit = batchSize && batchSize > 0 ? batchSize : 3
 
   const leadImageDoc = leadImage && typeof leadImage === 'object' ? leadImage : null
-  const leadImageUrl = leadImageDoc?.sizes?.card?.url || leadImageDoc?.url || null
+  // 左欄代表圖顯示 590×400（@2x≈1180px），故優先用 hero(1920) 或原圖，最後才退 card(768)。
+  // 也順帶避開 staging 上 card 變體偶發未上傳 S3 造成的破圖（-768x576 404）。
+  const leadImageUrl =
+    leadImageDoc?.sizes?.hero?.url ||
+    leadImageDoc?.url ||
+    leadImageDoc?.sizes?.card?.url ||
+    null
   const leadImageAlt = leadImageDoc?.alt || null
 
   let initialCards: ArticleCardData[] = []

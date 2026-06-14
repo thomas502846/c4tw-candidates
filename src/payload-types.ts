@@ -528,8 +528,20 @@ export interface ContentBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * 若要多張錯位拼貼（如首頁品牌簡介 3 張情境照），請改用下方「配圖（多張錯位拼貼）」。兩者擇一即可，多張優先。
+   */
   image?: (number | null) | Media;
-  imagePosition?: ('left' | 'right' | 'none') | null;
+  /**
+   * 依 Figma 首頁品牌簡介排列：第 1 張上方主圖、第 2 張右下小圖、第 3 張左下寬圖。可加／刪／拖曳排序，建議 3 張。
+   */
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  imagePosition?: ('left' | 'right' | 'belowCenter' | 'none') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
@@ -1560,6 +1572,12 @@ export interface ContentBlockSelect<T extends boolean = true> {
   ctaUrl?: T;
   richText?: T;
   image?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   imagePosition?: T;
   id?: T;
   blockName?: T;

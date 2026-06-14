@@ -32,6 +32,7 @@ const COPY = {
     errEmail: '請填寫電子信箱',
     errEmailFormat: '信箱格式不太對，請確認有 @ 與網域（例：name@example.com）',
     errMessage: '請留下您想諮詢的內容',
+    errCategory: '請至少勾選一項想諮詢的服務',
     errFix: '還有欄位需要修正，請依各欄提示補齊後再送出',
   },
   en: {
@@ -55,6 +56,7 @@ const COPY = {
     errEmail: 'Please enter your email',
     errEmailFormat: 'That email looks off — make sure it has @ and a domain (e.g. name@example.com)',
     errMessage: 'Please tell us what you would like to ask about',
+    errCategory: 'Please select at least one topic',
     errFix: 'Some fields still need fixing — follow the hints, then send again',
   },
 } satisfies Record<Locale, Record<string, string>>
@@ -91,7 +93,16 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
 }) => {
   const t = COPY[locale]
   const [state, formAction, isPending] = useActionState(submitContactForm, initialState)
-  const [category, setCategory] = useState<ContactCategory>('family')
+  // 想諮詢的服務＝checkbox 多選（Figma 41:156 + contact-supplement 修正版：方形圓角勾選框、可複選）
+  const [categories, setCategories] = useState<ContactCategory[]>([])
+  // 想諮詢的服務：送出時若一項都沒勾才提示（multi-select 不適合 native required）
+  const [categoryError, setCategoryError] = useState(false)
+  const toggleCategory = (value: ContactCategory) =>
+    setCategories((prev) => {
+      const next = prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+      if (next.length > 0) setCategoryError(false)
+      return next
+    })
 
   // 前端即時驗證：欄位值、錯誤、已互動（touched）
   const [values, setValues] = useState<Record<FieldKey, string>>({
@@ -149,12 +160,16 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
     const next = validateAll()
     setErrors(next)
     setTouched({ name: true, organization: true, phone: true, email: true, message: true })
-    if (Object.values(next).some(Boolean)) {
+    const noCategory = categories.length === 0
+    setCategoryError(noCategory)
+    if (Object.values(next).some(Boolean) || noCategory) {
       e.preventDefault()
       const firstKey = (Object.keys(next) as FieldKey[]).find((k) => next[k])
       if (firstKey) {
         const el = e.currentTarget.querySelector<HTMLElement>(`[name="${firstKey}"]`)
         el?.focus()
+      } else if (noCategory) {
+        e.currentTarget.querySelector<HTMLElement>('[name="category"]')?.focus()
       }
     }
   }
@@ -299,34 +314,38 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
       </div>
 
       {/* 想諮詢的服務（Sheet：家庭照顧服務｜組織培力｜組織合作｜媒體採訪）
-          Figma 視覺＝方形圓角勾選框；行為維持單選（radio，送信邏輯不動）
-          mobile（M-contact）＝乾淨 2×2 grid；桌機 ≥sm 維持四項並排一列 */}
+          Figma 41:156 + contact-supplement 修正版＝方形圓角勾選框、checkbox 多選；
+          mobile（M-contact）＝乾淨 2×2 grid；lg 桌機四項並排一列 */}
       <fieldset>
         <legend className="text-brand-muted mb-3 text-[17px] font-medium tracking-[0.05em] md:text-[19px]">
           {t.taHeading}
         </legend>
-        <div className="grid grid-cols-2 gap-x-5 gap-y-3 sm:flex sm:flex-wrap">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-3 lg:flex lg:flex-wrap">
           {CONTACT_CATEGORIES.map((c) => (
             <label
               key={c.value}
               className={cn(
                 'flex cursor-pointer items-center gap-2 text-base transition-colors',
-                category === c.value ? 'text-brand-ink font-medium' : 'text-brand-ink',
+                categories.includes(c.value) ? 'text-brand-ink font-medium' : 'text-brand-ink',
               )}
             >
               <input
-                type="radio"
+                type="checkbox"
                 name="category"
                 value={c.value}
-                checked={category === c.value}
-                onChange={() => setCategory(c.value)}
+                checked={categories.includes(c.value)}
+                onChange={() => toggleCategory(c.value)}
                 className="border-brand-green checked:bg-brand-green size-[18px] shrink-0 appearance-none rounded-[4px] border-[1.5px] bg-white transition-colors focus-visible:ring-brand-primary/40 focus-visible:outline-none focus-visible:ring-2"
-                required
               />
               {categoryLabel(c)}
             </label>
           ))}
         </div>
+        {categoryError && (
+          <p className="text-destructive mt-2 text-sm" role="alert">
+            {t.errCategory}
+          </p>
+        )}
       </fieldset>
 
       {/* 訊息內容：placeholder 照 Sheet */}

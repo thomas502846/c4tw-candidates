@@ -3,6 +3,7 @@ import * as migration_20260612_085939_blocks_round2 from './20260612_085939_bloc
 import * as migration_20260612_094116_two_column_quotes_centered from './20260612_094116_two_column_quotes_centered';
 import * as migration_20260613_150252_round5_photostrip_eyebrows from './20260613_150252_round5_photostrip_eyebrows';
 import * as migration_20260614_014135_hero_slide_text from './20260614_014135_hero_slide_text';
+import * as migration_20260614_081821_content_images_collage from './20260614_081821_content_images_collage';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20260614_014135_hero_slide_text.up,
     down: migration_20260614_014135_hero_slide_text.down,
-    name: '20260614_014135_hero_slide_text'
+    name: '20260614_014135_hero_slide_text',
+  },
+  {
+    up: migration_20260614_081821_content_images_collage.up,
+    down: migration_20260614_081821_content_images_collage.down,
+    name: '20260614_081821_content_images_collage'
   },
 ];

@@ -319,7 +319,7 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
             <div className="md:w-[44%]">
               {eyebrow && <Eyebrow text={eyebrow} />}
               {title && (
-                <h2 className="mb-5 text-[26px] font-bold leading-[1.6] tracking-[0.15em] text-[color:var(--page-accent,#8BA98B)] md:text-4xl md:leading-[1.65]">
+                <h2 className="mb-5 text-[28px] font-bold leading-[1.5] tracking-[0.1em] text-[color:var(--page-accent,#8BA98B)] md:text-[40px] md:leading-[60px]">
                   {title}
                 </h2>
               )}
@@ -363,7 +363,7 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
         <div className="container max-w-[1240px]">
           <ScrollReveal variant="in">
             {title && (
-              <h2 className="text-center text-[28px] font-bold tracking-[0.15em] text-brand-green md:text-4xl">
+              <h2 className="text-center text-[30px] font-bold leading-[1.4] tracking-[0.1em] text-brand-green md:text-[40px] md:leading-[60px]">
                 {title}
               </h2>
             )}
@@ -389,10 +389,30 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
     )
   }
 
+  // 純引言 hero（care/training 02）：無標題/眉標/CTA，只有一句引言 → 全寬大圖＋引言置中大標疊放
+  const isQuoteHero = variant === 'hero' && !title && !eyebrow && !cta?.label && !hasItems
+
   const inner =
-    variant === 'hero' ? (
-      /* 大圖引言：大圖近左滿版（Figma hero-pic x=0 width=1037/1440≈72%）+ 白色文字卡疊右下
-         （care/training hero；Figma hero-info width=843≈58%） */
+    isQuoteHero ? (
+      /* 全寬大圖＋引言置中大標（Figma care/training hero）：引言為視覺主角的大標
+         （Bold 36 / lh60 / ls15%），疊在近全寬大圖上、加暗角 scrim 保可讀性。 */
+      <div className="relative overflow-hidden rounded-[30px]">
+        <HoverZoomImage
+          resource={image}
+          imgClassName="aspect-[16/9] w-full object-cover md:aspect-[1240/420]"
+          wrapperClassName="h-full w-full"
+        />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/15 to-black/10" />
+        {richText && (
+          <div className="absolute inset-0 flex items-center justify-center px-6 md:px-16">
+            <div className="text-center text-[24px] font-bold leading-[1.5] tracking-[0.15em] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.45)] [&_p]:m-0 md:text-[36px] md:leading-[60px]">
+              <RichText data={richText} enableGutter={false} enableProse={false} />
+            </div>
+          </div>
+        )}
+      </div>
+    ) : variant === 'hero' ? (
+      /* 帶標題/眉標/CTA 的 hero（保留舊白卡疊放版型供需要時使用） */
       <div className="relative">
         <HoverZoomImage
           resource={image}
@@ -450,7 +470,7 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
           <div className="md:w-1/2">
             {eyebrow && <Eyebrow text={eyebrow} />}
             {title && (
-              <h2 className="mb-5 text-[26px] font-bold leading-[1.6] tracking-[0.15em] text-[color:var(--page-accent,#8BA98B)] md:text-4xl md:leading-[1.65]">
+              <h2 className="mb-5 text-[28px] font-bold leading-[1.5] tracking-[0.1em] text-[color:var(--page-accent,#8BA98B)] md:text-[40px] md:leading-[60px]">
                 {title}
               </h2>
             )}

@@ -67,7 +67,32 @@ export const Content: Block = {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      label: '配圖（可選）',
+      label: '配圖（單張，可選）',
+      admin: {
+        description: '若要多張錯位拼貼（如首頁品牌簡介 3 張情境照），請改用下方「配圖（多張錯位拼貼）」。兩者擇一即可，多張優先。',
+      },
+    },
+    {
+      name: 'images',
+      type: 'array',
+      label: '配圖（多張錯位拼貼，可選）',
+      labels: {
+        singular: '配圖',
+        plural: '配圖',
+      },
+      admin: {
+        description:
+          '依 Figma 首頁品牌簡介排列：第 1 張上方主圖、第 2 張右下小圖、第 3 張左下寬圖。可加／刪／拖曳排序，建議 3 張。',
+      },
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          label: '圖片',
+          required: true,
+        },
+      ],
     },
     {
       name: 'imagePosition',
@@ -77,10 +102,12 @@ export const Content: Block = {
       options: [
         { label: '靠左', value: 'left' },
         { label: '靠右', value: 'right' },
+        { label: '下方橫排（置中）', value: 'belowCenter' },
         { label: '不顯示', value: 'none' },
       ],
       admin: {
-        condition: (_data, siblingData) => Boolean(siblingData?.image),
+        condition: (_data, siblingData) =>
+          Boolean(siblingData?.image) || (siblingData?.images?.length ?? 0) > 0,
       },
     },
   ],

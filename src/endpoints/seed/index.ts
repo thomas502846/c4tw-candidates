@@ -1,5 +1,6 @@
 import type { CollectionSlug, Payload, PayloadRequest } from 'payload'
 
+import { promises as fsp } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -7,6 +8,8 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 const PHOTOS_DIR = path.resolve(dirname, '../../../content-assets/photos')
+// Media collection 的 staticDir（src/collections/Media.ts: ../../public/media）
+const MEDIA_DIR = path.resolve(dirname, '../../../public/media')
 
 // 清空後重建的 collections（posts / categories / partners / redirects 不動）
 const collectionsToClear: CollectionSlug[] = [
@@ -30,6 +33,22 @@ const p = (text: string): RTNode => ({
   type: 'paragraph',
   version: 1,
   children: [{ type: 'text', version: 1, text }],
+})
+
+/**
+ * 段落 node，支援混合 run（部分文字加粗）。
+ * runs：{ text, bold? }；bold 的 run 以 Lexical format bit 1 輸出 → 前台渲成 <strong>
+ * （Content block 的 prose-strong 會上果綠 #9C9F33，例：緣起「如果…」強調句）。
+ */
+const pRich = (...runs: { text: string; bold?: boolean }[]): RTNode => ({
+  type: 'paragraph',
+  version: 1,
+  children: runs.map((r) => ({
+    type: 'text',
+    version: 1,
+    text: r.text,
+    format: r.bold ? 1 : 0,
+  })),
 })
 
 /** 小標（h3）node：Sheet 的「小標：」用這個 */
@@ -101,14 +120,132 @@ export const seed = async ({
     '照顧現場情境照：長輩在熟悉的家中安老',
   ]
 
+  // S3 媒體上傳的根本問題（round-3、今天各踩一次）：
+  // db.deleteMany('media') 只清 DB，不刪 S3 物件 → bucket 累積多代孤兒檔（-2/-4/-5/-16…）。
+  // Payload 上傳遇同名會逐「尺寸」各自挑下一個沒被佔用的 -N 後綴，跨次 reseed 後綴會錯位，
+  // 導致 DB 記錄指到的後綴在 S3 並非「主檔＋三尺寸」都齊全那一份 → 前台圖整批破。
+  // 解法：reseed 前把 bucket 清空（命名重新乾淨無後綴），上傳後逐張 head 驗證齊全＋重試。
+  // 鏡像 plugin（src/plugins/index.ts）的 region/credential 邏輯；S3_BUCKET 未設＝本機磁碟，跳過。
+  const s3Bucket = process.env.S3_BUCKET
+  let s3: import('@aws-sdk/client-s3').S3Client | null = null
+  if (s3Bucket) {
+    const { S3Client } = await import('@aws-sdk/client-s3')
+    s3 = new S3Client({
+      region: process.env.S3_REGION || 'ap-northeast-2',
+      ...(process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY
+        ? {
+            credentials: {
+              accessKeyId: process.env.S3_ACCESS_KEY_ID,
+              secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+            },
+          }
+        : {}),
+    })
+  }
+
+  // reseed 前清空 bucket（分批刪，每批 ≤1000），讓本次上傳取得乾淨無後綴檔名。
+  if (s3 && s3Bucket) {
+    const { ListObjectsV2Command, DeleteObjectsCommand } = await import('@aws-sdk/client-s3')
+    let cleared = 0
+    let token: string | undefined
+    do {
+      const listed = await s3.send(
+        new ListObjectsV2Command({ Bucket: s3Bucket, ContinuationToken: token }),
+      )
+      const objects = (listed.Contents ?? []).map((o) => ({ Key: o.Key! }))
+      if (objects.length > 0) {
+        await s3.send(
+          new DeleteObjectsCommand({ Bucket: s3Bucket, Delete: { Objects: objects } }),
+        )
+        cleared += objects.length
+      }
+      token = listed.IsTruncated ? listed.NextContinuationToken : undefined
+    } while (token)
+    payload.logger.info(`— Cleared ${cleared} stale object(s) from s3://${s3Bucket}`)
+  }
+
+  // ⭐ 真正的根本原因：Payload 的同名檔去重是查 staticDir（public/media）本機磁碟，
+  // 不是查 S3。歷次 reseed 在 public/media 累積了 16 代殘檔（-1…-16，共數百檔），
+  // 於是 `_2.jpg` 被去重成 `_2-16.jpg`，DB 記下這個後綴名、再以此名上傳 S3——
+  // 但跨代殘檔讓「DB 記到的後綴」與「S3 真正齊全的那一份」錯位 → 前台圖整批破。
+  // 解法：reseed 前一併清空 public/media，讓本次檔名乾淨無後綴、DB↔磁碟↔S3 三方一致。
+  try {
+    const entries = await fsp.readdir(MEDIA_DIR)
+    let removed = 0
+    for (const name of entries) {
+      if (name === '.gitkeep') continue
+      await fsp.rm(path.join(MEDIA_DIR, name), { force: true, recursive: true })
+      removed += 1
+    }
+    payload.logger.info(`— Cleared ${removed} stale file(s) from ${MEDIA_DIR}`)
+  } catch (err) {
+    // 目錄不存在等情形不致命
+    payload.logger.warn(`— Could not clear ${MEDIA_DIR}: ${(err as Error).message}`)
+  }
+
+  // 取一個 media doc 的所有 S3 key（主檔＋每個尺寸），用 doc 實際回傳檔名（不猜尺寸後綴）。
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mediaKeys = (doc: any): string[] => {
+    const keys: string[] = []
+    const prefix = doc?.prefix ? `${doc.prefix}/` : ''
+    if (doc?.filename) keys.push(`${prefix}${doc.filename}`)
+    for (const size of Object.values(doc?.sizes ?? {})) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const fn = (size as any)?.filename
+      if (fn) keys.push(`${prefix}${fn}`)
+    }
+    return keys
+  }
+
+  // head-object 驗證一個 key 是否真的進了 S3。
+  const headExists = async (key: string): Promise<boolean> => {
+    if (!s3 || !s3Bucket) return true
+    const { HeadObjectCommand } = await import('@aws-sdk/client-s3')
+    try {
+      await s3.send(new HeadObjectCommand({ Bucket: s3Bucket, Key: key }))
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  // 序列上傳（一張完成才下一張）＋上傳後驗證主檔與所有尺寸齊全；缺檔則刪 doc 重試（最多 3 次）。
   const photos = []
   for (let i = 0; i < 8; i++) {
-    const doc = await payload.create({
-      collection: 'media',
-      context: seedContext,
-      data: { alt: photoAlts[i] },
-      filePath: path.resolve(PHOTOS_DIR, `LINE_ALBUM_情境照_260610_${i + 1}.jpg`),
-    })
+    const filePath = path.resolve(PHOTOS_DIR, `LINE_ALBUM_情境照_260610_${i + 1}.jpg`)
+    let doc: Awaited<ReturnType<typeof payload.create>> | null = null
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const created = await payload.create({
+        collection: 'media',
+        // ⚠️ 每次上傳給「全新」context 物件，不可共用 seedContext：
+        // cloud-storage plugin 的 preserveFileData hook 會把 req.file 暫存進
+        // req.context._payloadCloudStorage，afterChange 又會塞 skipCloudStorage。
+        // 共用同一個 context 物件 → 上一張的暫存檔/旗標殘留到下一張，
+        // 後續圖片的 afterChange 走 skip 分支或拿到 stale file，主檔＋縮圖整批不進 S3。
+        context: { ...seedContext },
+        data: { alt: photoAlts[i] },
+        filePath,
+      })
+      const keys = mediaKeys(created)
+      const missing: string[] = []
+      for (const key of keys) {
+        if (!(await headExists(key))) missing.push(key)
+      }
+      if (missing.length === 0) {
+        doc = created
+        break
+      }
+      payload.logger.warn(
+        `— media[${i + 1}] attempt ${attempt}/3: ${missing.length} S3 object(s) missing (${missing.join(', ')}); retrying...`,
+      )
+      // 刪掉這次的 doc（連帶刪它已上傳的部分檔），避免後綴累積。
+      await payload.delete({ collection: 'media', id: created.id, context: { ...seedContext } })
+    }
+    if (!doc) {
+      throw new Error(
+        `media[${i + 1}] failed S3 upload verification after 3 attempts (${filePath})`,
+      )
+    }
     photos.push(doc)
   }
 
@@ -572,6 +709,7 @@ export const seed = async ({
   // Sheet care/training 03「什麼是AIO？」共用全文
   const aioZh = {
     blockType: 'content',
+    align: 'center',
     title: '什麼是 AIO解決方案？',
     richText: rtNodes(
       h3('一套以人為本的整合照顧模式'),
@@ -579,12 +717,14 @@ export const seed = async ({
         'AIO是源自於創辦人（林依瑩）發展「All In One」的照護理念，認為好的照顧應該是依照個案的需求出發，透過整合醫療、照顧、社區與生活資源，串連不同階段所需的協助，建構人性化的長照、提供更多元且完整的照顧支持。',
       ),
     ),
-    image: photos[1].id,
-    imagePosition: 'right',
+    // Figma mid1：標題/副標/內文置中，下方三圖橫排置中
+    images: [{ image: photos[1].id }, { image: photos[4].id }, { image: photos[6].id }],
+    imagePosition: 'belowCenter',
   }
 
   const aioEn = {
     blockType: 'content',
+    align: 'center',
     title: 'What is the AIO Solution?',
     richText: rtNodes(
       h3('An integrated, person-centered care model'),
@@ -592,9 +732,14 @@ export const seed = async ({
         'AIO comes from founder Lin Yi-ying’s “All In One” care philosophy: good care starts from each person’s needs, integrating medical, care, community, and daily-life resources to connect the support needed at every stage — building humane long-term care with more complete support.',
       ),
     ),
-    image: photos[1].id,
-    imagePosition: 'right',
+    images: [{ image: photos[1].id }, { image: photos[4].id }, { image: photos[6].id }],
+    imagePosition: 'belowCenter',
   }
+
+  // care 專屬：AIO 區帶眉標「AIO Solutions」（care-context-supplement §「什麼是 AIO 解決方案？」
+  // 明列此區眉標；training 版該區無眉標故沿用無眉標的 aioZh/aioEn，不共改）
+  const aioZhCare = { ...aioZh, eyebrow: 'AIO Solutions' }
+  const aioEnCare = { ...aioEn, eyebrow: 'AIO Solutions' }
 
   /*
    * Sheet 首頁 03 品牌簡介【替代版】（CMS content block 無備用欄位，先留存於此，
@@ -675,7 +820,8 @@ export const seed = async ({
               '創照服務設計關注臺灣高齡化社會中的照顧需求，致力於人才培育、服務創新與跨領域合作，陪伴更多人找到適合自己的照顧支持。',
               '我們透過 All In One（AIO）整合照顧模式，串連醫療、長照、社福與社區資源，培育跨專業人才，推動以人為本的長照模式落地臺灣，也串起照顧現場的每個角色——讓需要照顧的人獲得支持，也讓投入照顧的人才被看見與培育。',
             ),
-            image: photos[1].id,
+            // Figma 230:803：3 張情境照錯位拼貼（主圖／右下小圖／左下寬圖）
+            images: [{ image: photos[1].id }, { image: photos[4].id }, { image: photos[6].id }],
             imagePosition: 'left',
           },
           // Sheet 首頁 04 三大服務（1-3）＝編號特色大區（01/02/03 交錯帶）
@@ -789,7 +935,8 @@ export const seed = async ({
               'Care For Taiwan focuses on the care needs of Taiwan’s aging society, committed to talent cultivation, service innovation, and cross-disciplinary collaboration — helping more people find the care support that fits them.',
               'Through the All In One (AIO) integrated care model, we connect medical, long-term care, social welfare, and community resources, cultivate cross-disciplinary talent, and bring person-centered long-term care to Taiwan — supporting those who need care, and recognizing and cultivating those who give it.',
             ),
-            image: photos[1].id,
+            // Figma 230:803: 3-photo offset collage
+            images: [{ image: photos[1].id }, { image: photos[4].id }, { image: photos[6].id }],
             imagePosition: 'left',
           },
           {
@@ -876,8 +1023,13 @@ export const seed = async ({
               p(
                 '多年來，創照團隊深入社區、家庭與照顧現場，看見照顧除了服務、制度的提供之外，更是一段需要陪伴、理解與整合的過程。',
               ),
-              p(
-                '因此，我們開始思考：如果照顧從「跨專業整合、以人為本、扎根在地」的核心出發，會是什麼模樣？',
+              // about-context §緣起5：「如果…」句獨立上色加重 → 果綠 #9C9F33（Tracy LINE 指示）
+              pRich(
+                { text: '因此，我們開始思考：' },
+                {
+                  text: '如果照顧從「跨專業整合、以人為本、扎根在地」的核心出發，會是什麼模樣？',
+                  bold: true,
+                },
               ),
               p(
                 '帶著這個問題，我們持續發展 All In One（AIO）照顧模式，串連跨專業團隊、社區資源與照顧人才，讓照顧成為一套能陪伴家庭走過不同階段的支持系統。',
@@ -1051,7 +1203,7 @@ export const seed = async ({
           {
             blockType: 'pageHeader',
             title: 'AIO解決方案－家庭照顧服務',
-            eyebrow: 'Family Care Services',
+            eyebrow: 'AIO Solutions-Family Care Services',
             image: photos[5].id,
           },
           // Sheet care 02 Hero 引言（Figma hero 大圖+引言卡）
@@ -1062,8 +1214,8 @@ export const seed = async ({
             image: photos[3].id,
             richText: rt('從需求評估、整合照護到返家支持，我們陪伴每個家庭走向穩定的長照生活。'),
           },
-          // Sheet care 03 什麼是AIO？
-          aioZh,
+          // Sheet care 03 什麼是AIO？（care 版帶「AIO Solutions」眉標）
+          aioZhCare,
           // Sheet care 04 痛點介紹（Figma 306:606 Venn＋衛星數據圓）
           {
             blockType: 'infographic',
@@ -1233,6 +1385,7 @@ export const seed = async ({
           {
             blockType: 'pageHeader',
             title: 'AIO Solutions — Family Care Services',
+            eyebrow: 'AIO Solutions — Family Care Services',
             image: photos[5].id,
           },
           {
@@ -1244,7 +1397,7 @@ export const seed = async ({
               'From needs assessment and integrated care to homecoming support, we walk with every family toward a stable long-term care life.',
             ),
           },
-          aioEn,
+          aioEnCare,
           {
             blockType: 'infographic',
             variant: 'venn',

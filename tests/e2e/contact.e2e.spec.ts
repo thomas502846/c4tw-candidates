@@ -13,7 +13,8 @@ test.describe('聯絡表單', () => {
     await page.fill('#contact-phone', '0912345678')
     await page.fill('#contact-email', 'e2e@example.com')
     await page.fill('#contact-message', '這是一則 E2E 自動化測試訊息（dry-run，不會真的寄信）。')
-    // 想諮詢的服務 radio 預設已選 family（家庭照顧服務），不需額外操作
+    // 想諮詢的服務＝checkbox 多選，預設皆未勾選，須至少勾一項才可送出
+    await page.locator('input[name="category"]').first().check()
 
     await page.getByRole('button', { name: '送出' }).click()
 
@@ -29,6 +30,8 @@ test.describe('聯絡表單', () => {
     await page.fill('#contact-phone', '0912345678')
     await page.fill('#contact-email', 'e2e-en@example.com')
     await page.fill('#contact-message', 'This is an automated E2E test message (dry-run).')
+    // Topic = multi-select checkboxes, none checked by default; must check at least one
+    await page.locator('input[name="category"]').first().check()
 
     await page.getByRole('button', { name: 'Send', exact: true }).click()
 

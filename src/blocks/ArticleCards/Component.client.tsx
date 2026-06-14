@@ -114,11 +114,14 @@ const CoverageRow: React.FC<{ card: ArticleCardData }> = ({ card }) => {
     <>
       <div className="flex items-baseline gap-4">
         {date && (
-          <time className="w-[92px] shrink-0 text-[14px] font-medium tracking-[0.08em] text-brand-primary md:text-[15px]">
+          // .fig Caption：Noto Sans TC Medium 14 / lh20 / ls10%（=1.4px）果綠（about-context §媒體報導）
+          <time className="w-[92px] shrink-0 text-[14px] font-medium leading-[20px] tracking-[0.1em] text-brand-primary">
             {date.replaceAll('-', '/')}
           </time>
         )}
-        <span className="flex-1 text-justify text-[16px] font-medium leading-[1.7] tracking-[0.06em] text-brand-ink md:text-[18px]">
+        {/* .fig 報導標題：Noto Sans TC Regular 16 / lh29 / justify / underline（about-context §媒體報導）。
+            min-w-0：flex-1 文字與固定寬 time 欄並排，長標題不擠爆日期欄（rwd-text-guidelines §3.2） */}
+        <span className="min-w-0 flex-1 text-justify text-[16px] font-normal leading-[29px] tracking-[0.1em] text-brand-ink underline underline-offset-4">
           {card.title}
         </span>
       </div>

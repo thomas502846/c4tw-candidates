@@ -45,13 +45,15 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
   return (
     <section className="container max-w-[1240px]" data-block="tabsBlock">
       {title && (
-        <h2 className="text-center text-[24px] font-bold tracking-[0.15em] text-brand-green md:text-4xl">
+        // .fig 從學習到實踐…：Noto Sans TC Bold 40 / lh60 / ls10%
+        <h2 className="text-center text-[24px] font-bold leading-[1.5] tracking-[0.1em] text-brand-green md:text-[40px] md:leading-[60px]">
           {title}
         </h2>
       )}
       {title && <hr className="mx-auto mt-6 border-brand-green/30" />}
       {intro && (
-        <p className="mt-6 whitespace-pre-line text-center text-base leading-[1.9] tracking-[0.1em] text-brand-ink">
+        // .fig 無論是剛接觸…：Noto Sans TC Medium 22 / lh35 / ls10%
+        <p className="mt-6 whitespace-pre-line text-center text-[18px] font-medium leading-[1.6] tracking-[0.1em] text-brand-ink md:text-[22px] md:leading-[35px]">
           {intro}
         </p>
       )}
@@ -115,13 +117,15 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
               const TabIcon = MAP_ICONS[Math.min(active, list.length - 1) % MAP_ICONS.length]
               return <TabIcon className="h-10 w-10 shrink-0 md:h-11 md:w-11" />
             })()}
-            <h3 className="text-xl font-bold tracking-[0.1em] text-brand-ink md:text-[22px]">
+            {/* .fig 課程地圖（面板標題）：Noto Sans TC Bold 36 / lh60 / ls15% */}
+            <h3 className="text-2xl font-bold leading-[1.4] tracking-[0.15em] text-brand-ink md:text-[36px] md:leading-[60px]">
               {current.heading}
             </h3>
           </div>
         )}
         {current.subheading && (
-          <p className="mt-3 text-base font-bold tracking-[0.1em] text-brand-primary">
+          // .fig 建立照顧知識…（面板小標）：Noto Sans TC Medium 22 / lh35 / ls10%
+          <p className="mt-3 text-lg font-medium leading-[35px] tracking-[0.1em] text-brand-primary md:text-[22px]">
             {current.subheading}
           </p>
         )}

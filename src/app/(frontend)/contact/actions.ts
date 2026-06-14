@@ -79,11 +79,12 @@ function buildEmailBody(data: {
   organization: string
   email: string
   phone: string
-  category: string
+  categories: string[]
   message: string
   ip: string
 }): string {
-  const categoryLabel = CATEGORY_ZH_LABELS[data.category] ?? data.category
+  const categoryLabel =
+    data.categories.map((c) => CATEGORY_ZH_LABELS[c] ?? c).join('、') || '（未選）'
   return [
     '官網聯絡表單收到一則新訊息：',
     '',
@@ -145,18 +146,23 @@ export async function submitContactForm(
   const organization = (formData.get('organization') ?? '').toString().trim()
   const email = (formData.get('email') ?? '').toString().trim()
   const phone = (formData.get('phone') ?? '').toString().trim()
-  const category = (formData.get('category') ?? '').toString().trim()
+  // 想諮詢的服務＝checkbox 多選：取所有勾選值（contact-supplement 修正版）
+  const categories = formData
+    .getAll('category')
+    .map((c) => c.toString().trim())
+    .filter(Boolean)
   const message = (formData.get('message') ?? '').toString().trim()
 
-  if (!name || !email || !message || !category) {
+  if (!name || !email || !message || categories.length === 0) {
     return { status: 'error', message: MSG.invalid }
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return { status: 'error', message: MSG.invalidEmail }
   }
 
-  const body = buildEmailBody({ name, organization, email, phone, category, message, ip })
-  const subject = `【官網聯絡表單】${CATEGORY_ZH_LABELS[category] ?? category}－${name}`
+  const categoryLabels = categories.map((c) => CATEGORY_ZH_LABELS[c] ?? c).join('、')
+  const body = buildEmailBody({ name, organization, email, phone, categories, message, ip })
+  const subject = `【官網聯絡表單】${categoryLabels}－${name}`
 
   // 4. Dry run（E2E 測試用）：不真寄信，把 payload 印到 server log
   if (process.env.SES_DRY_RUN === 'true') {

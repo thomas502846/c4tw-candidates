@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { ScrollReveal } from '@/components/ScrollReveal'
+
 import { ContactForm } from './ContactForm'
 
 type Locale = 'zh-TW' | 'en'
@@ -77,17 +79,25 @@ export const ContactSection: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW'
   const t = COPY[locale]
 
   return (
-    /* id=sheet：about/care/training CTA 以 /contact/#sheet 捲到表單；scroll-mt 補 sticky header 高 */
-    <section className="container mt-16 max-w-[1240px] scroll-mt-[88px] lg:scroll-mt-[120px]" id="sheet">
-      {/* Figma Frame 120：左表單 462／右資訊 550／gap 128（≈ 1140 寬內 40.5%:48.2%:11.3%） */}
-      <div className="flex flex-col gap-14 md:flex-row md:gap-[11%]">
-        {/* 左欄：表單 */}
-        <div className="md:w-[40.5%]">
+    /* id=sheet：about/care/training CTA 以 /contact/#sheet 捲到表單；scroll-mt 補 sticky header 高
+       寬度：不用 .container（其 2xl 變體 max-width 1376px 會蓋過 max-w-[1240px]，把表單攤到 1376）。
+       改用固定 mx-auto + 自管 padding，硬鎖 max-w-[1240px]＝Figma 1140 內容 + 左右 50 padding。 */
+    <ScrollReveal
+      as="section"
+      className="mx-auto mt-16 w-full max-w-[1240px] scroll-mt-[88px] px-4 md:px-[50px] lg:scroll-mt-[120px]"
+      id="sheet"
+    >
+      {/* Figma Frame 120（1140 寬）：左表單 462／右資訊 550／gap 128
+          → 1140 內 462=40.5%、gap 128=11.2%、右 550=48.2%。md+ 用固定 gap-[128px] 對齊規格、
+          並用 basis 鎖左右欄寬比，避免容器寬度浮動時欄寬連帶飄移。 */}
+      <div className="flex flex-col gap-14 lg:flex-row lg:gap-[128px]">
+        {/* 左欄：表單（Figma 462）。lg 以 basis 鎖約 40.5%，flex-none 不被內容撐寬 */}
+        <div className="lg:w-[462px] lg:flex-none">
           <ContactForm locale={locale} />
         </div>
 
-        {/* 右欄：聯絡資訊三列 + Google Map */}
-        <div className="flex flex-1 flex-col">
+        {/* 右欄：聯絡資訊三列 + Google Map（Figma 550，min-w-0 允許收縮） */}
+        <div className="flex min-w-0 flex-1 flex-col">
           <ul className="flex flex-col gap-3">
             <li className="flex items-center gap-3">
               <InfoIcon kind="phone" />
@@ -101,7 +111,7 @@ export const ContactSection: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW'
             <li className="flex items-center gap-3">
               <InfoIcon kind="mail" />
               <a
-                className="break-all text-base text-brand-ink hover:text-brand-primary"
+                className="break-all text-base tracking-[0.1em] text-brand-ink hover:text-brand-primary"
                 href={`mailto:${INFO.email}`}
               >
                 {INFO.email}
@@ -115,15 +125,16 @@ export const ContactSection: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW'
             </li>
           </ul>
 
+          {/* Figma conect 地圖 550×337、rounded-30。寬度跟右欄（≤550），高度固定 337（lg）。 */}
           <iframe
-            className="mt-8 h-[280px] w-full rounded-[30px] border-0 md:h-[337px]"
+            className="mt-8 h-[280px] w-full rounded-[30px] border-0 lg:h-[337px] lg:max-w-[550px]"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             src={MAP_EMBED_SRC}
             title={t.mapTitle}
           />
           <a
-            className="mt-3 self-end text-sm tracking-[0.05em] text-brand-muted underline-offset-4 hover:text-brand-primary hover:underline"
+            className="mt-3 self-end text-sm tracking-[0.05em] text-brand-muted underline-offset-4 hover:text-brand-primary hover:underline lg:max-w-[550px]"
             href={MAP_LINK}
             rel="noopener noreferrer"
             target="_blank"
@@ -132,6 +143,6 @@ export const ContactSection: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW'
           </a>
         </div>
       </div>
-    </section>
+    </ScrollReveal>
   )
 }
