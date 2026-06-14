@@ -66,7 +66,7 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
     <aside
       aria-label={locale === 'en' ? 'Latest news' : '最新消息'}
       aria-live="polite"
-      className="flex h-[64px] w-full items-center gap-5 overflow-hidden bg-brand-surface md:h-[80px]"
+      className="flex h-[88px] w-full items-center gap-3 overflow-hidden bg-brand-surface md:h-[80px] md:gap-5"
       data-block="newsTicker"
     >
       {/* 左側固定 label（Figma 110:346 / 10:17：#ADCB59 pill 白字） */}
@@ -81,14 +81,18 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
           className="absolute inset-x-0 top-0 flex flex-col"
           style={animating ? { animation: `news-roll-up ${SLIDE_MS}ms ease forwards` } : undefined}
         >
+          {/* 手機：每則最多 2 行（line-clamp-2），等高 88px → 垂直置中、不再被切字；
+              桌機：維持單行 truncate（Figma 規格）。兩列等高才能讓 -50% 滑動精準對齊。 */}
           {rows.map((item, row) => (
-            <span
+            <div
               aria-hidden={row === 1}
-              className="block h-[64px] truncate text-[16px] font-medium leading-[64px] tracking-[0.1em] text-brand-ink md:h-[80px] md:text-[19px] md:leading-[80px]"
+              className="flex h-[88px] items-center md:h-[80px]"
               key={row}
             >
-              {renderText(item)}
-            </span>
+              <span className="line-clamp-2 text-[15px] font-medium leading-[1.45] tracking-[0.1em] text-brand-ink md:line-clamp-none md:block md:truncate md:text-[19px] md:leading-normal">
+                {renderText(item)}
+              </span>
+            </div>
           ))}
         </div>
       </div>
