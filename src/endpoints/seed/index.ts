@@ -620,6 +620,8 @@ export const seed = async ({
           // 預設三張同一句 Slogan（客戶可在後台逐張改成不同文字）。
           {
             blockType: 'hero',
+            // 三句皆取自文案 Sheet（Banner slogan + 品牌簡介兩版標題），示範「每張圖各自文字」。
+            // 客戶可於後台逐張改成想要的文字，或全部設成同一句。
             images: [
               {
                 image: photos[0].id,
@@ -628,13 +630,12 @@ export const seed = async ({
               },
               {
                 image: photos[1].id,
-                title: '讓需要照顧的人獲得更完整的支持，',
-                subtitle: '讓投入照顧的人擁有更好的成長與發展。',
+                title: '創新照顧，開啟照顧無限可能。',
               },
               {
                 image: photos[7].id,
-                title: '讓需要照顧的人獲得更完整的支持，',
-                subtitle: '讓投入照顧的人擁有更好的成長與發展。',
+                title: '在熟悉之處，尊嚴安老；',
+                subtitle: '用創新照顧，支持生活的無限可能。',
               },
             ],
           },
@@ -750,13 +751,12 @@ export const seed = async ({
               },
               {
                 image: photos[1].id,
-                title: 'More complete support for those who need care,',
-                subtitle: 'and better growth and development for those who give care.',
+                title: 'Innovating care, opening every possibility.',
               },
               {
                 image: photos[7].id,
-                title: 'More complete support for those who need care,',
-                subtitle: 'and better growth and development for those who give care.',
+                title: 'Ageing with dignity in familiar surroundings,',
+                subtitle: 'supported by innovative care.',
               },
             ],
           },
