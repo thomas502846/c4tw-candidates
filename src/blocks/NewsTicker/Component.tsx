@@ -16,17 +16,19 @@ export type NewsTickerBlockProps = {
   locale?: 'zh-TW' | 'en'
 }
 
-// Tracy 規格（node 4:4）：垂直輪播 Vertical News Slider
-// － 每則停留 5 秒、向上滑動切換下一則、無限循環
-// 切換時長：Tracy 標 0.5s，實作取 0.8s（較順）。
-// 用 CSS keyframes（非 transition）：明確 from→to，避免 transition 同幀無起點而「閃現不滑」。
+// Tracy 規格（node 4:4）：垂直輪播 Vertical News Slider — 每則停留 5 秒、向上滑動切換、無限循環。
+// 切換時長：暫放慢到 1.2s 方便觀察；確認無誤後可調回 0.5~0.65s。
+//
+// 設計：純 tick 推導（不用 index、不用 onAnimationEnd）。
+//  - tick T 時：上列 = 前一則、下列 = 第 T 則；軌道 key=T → 每輪掛「全新 DOM 節點」，
+//    CSS keyframe 必從頭跑（持久節點重複套同名 animation 不會重啟 → 第二輪起 flash，這是 PC/Edge 看到的根因）。
+//  - 動畫 forwards 停在 -50%（顯示第 T 則）；下一輪 remount 從 translateY(0) 起、上列正好也是第 T 則 → 視覺連續、不跳。
 const HOLD_MS = 5000
-const SLIDE_MS = 650
+const SLIDE_MS = 1200
 
 export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale = 'zh-TW' }) => {
   const enabledItems = (items ?? []).filter((item) => item.enabled !== false)
-  const [index, setIndex] = useState(0)
-  const [rolling, setRolling] = useState(false)
+  const [tick, setTick] = useState(0)
   const reduced = useRef(false)
 
   useEffect(() => {
@@ -37,20 +39,19 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
 
   useEffect(() => {
     if (enabledItems.length <= 1) return
-    const id = setInterval(() => {
-      if (reduced.current) {
-        setIndex((i) => (i + 1) % enabledItems.length)
-        return
-      }
-      setRolling(true) // 觸發 keyframe：兩列一起向上滾動 100%
-    }, HOLD_MS)
+    const id = setInterval(() => setTick((t) => t + 1), HOLD_MS)
     return () => clearInterval(id)
   }, [enabledItems.length])
 
   if (enabledItems.length === 0) return null
 
-  const current = enabledItems[index]
-  const next = enabledItems[(index + 1) % enabledItems.length]
+  const len = enabledItems.length
+  const animating = tick > 0 && !reduced.current
+  const cur = enabledItems[tick % len]
+  const prev = enabledItems[(tick - 1 + len) % len]
+  const next = enabledItems[(tick + 1) % len]
+  // 動畫時：上列=前一則滑出、下列=本則滑入；靜態時（首載 / reduced）：上列=本則、下列=下一則
+  const rows = animating ? [prev, cur] : [cur, next]
 
   const renderText = (item: { text: string; url?: string | null }) =>
     item.url ? (
@@ -60,12 +61,6 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
     ) : (
       item.text
     )
-
-  // keyframe 結束 → 換到下一則並瞬間復位（此時 rolling=false，無 animation，不會閃）
-  const onRollEnd = () => {
-    setIndex((i) => (i + 1) % enabledItems.length)
-    setRolling(false)
-  }
 
   return (
     <aside
@@ -79,22 +74,18 @@ export const NewsTickerBlock: React.FC<NewsTickerBlockProps> = ({ items, locale 
         {locale === 'en' ? 'NEWS' : '最新消息'}
       </span>
 
-      {/* 垂直輪播視窗：兩列堆疊，rolling 時整體向上滾動 100% 帶出下一則 */}
+      {/* key=tick → 每輪全新節點，動畫保證從頭跑 */}
       <div className="relative h-full flex-1 overflow-hidden">
         <div
+          key={tick}
           className="absolute inset-x-0 top-0 flex flex-col"
-          onAnimationEnd={onRollEnd}
-          style={
-            rolling
-              ? { animation: `news-roll-up ${SLIDE_MS}ms ease forwards` }
-              : { transform: 'translateY(0)' }
-          }
+          style={animating ? { animation: `news-roll-up ${SLIDE_MS}ms ease forwards` } : undefined}
         >
-          {[current, next].map((item, row) => (
+          {rows.map((item, row) => (
             <span
               aria-hidden={row === 1}
               className="flex h-[64px] items-center text-[16px] font-medium leading-[28px] tracking-[0.1em] whitespace-nowrap text-brand-ink md:h-[80px] md:text-[19px]"
-              key={`${item.id ?? row}-${index}-${row}`}
+              key={row}
             >
               {renderText(item)}
             </span>
