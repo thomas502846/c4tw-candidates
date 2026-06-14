@@ -321,7 +321,7 @@
 /* 最新消息垂直輪播：整體向上滾動 100%（keyframe 明確 from→to，避免 transition 同幀閃現） */
 @keyframes news-roll-up {
   from { transform: translateY(0); }
-  to { transform: translateY(-100%); }
+  to { transform: translateY(-50%); }
 }
 @media (prefers-reduced-motion: reduce) {
   [data-block="newsTicker"] * { animation: none !important; }
