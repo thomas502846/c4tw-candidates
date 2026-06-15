@@ -2030,13 +2030,12 @@ export const seed = async ({
           // Sheet school 09 CTA按鈕（照片帶＋兩顆 pill；按鈕2 課程表 URL 待客戶補，先連學習平台）
           {
             blockType: 'taCta',
-            variant: 'photoBand',
+            variant: 'darkBand',
             cards: [
               {
                 title: '加入照顧學校',
                 buttonLabel: '加入照顧學校',
                 url: 'https://school.carefortaiwan.com.tw',
-                image: photos[2].id,
               },
               {
                 title: '了解課程內容',

@@ -36,7 +36,12 @@ const INFO = {
 } as const
 
 const MAP_QUERY = '臺中市烏日區溪岸路8-3號'
-const MAP_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&output=embed&hl=zh-TW`
+// 官方 Google Maps Embed API（免費、不計次）：設定 NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY 後啟用；
+// 未設 key 時退回免金鑰 output=embed（仍可顯示，但官方版較穩、可設網域限制）。
+const MAP_EMBED_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY
+const MAP_EMBED_SRC = MAP_EMBED_KEY
+  ? `https://www.google.com/maps/embed/v1/place?key=${MAP_EMBED_KEY}&q=${encodeURIComponent(MAP_QUERY)}&language=zh-TW`
+  : `https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&output=embed&hl=zh-TW`
 const MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAP_QUERY)}`
 
 const COPY = {

@@ -58,10 +58,12 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
         </p>
       )}
 
-      {/* tab 列 — 分頁進場 Fade UP（Tracy node 97:564：分頁用 Fade UP、0→100%、0.6s） */}
+      {/* tab 列 — 分頁進場 Fade UP（Tracy node 97:564：分頁用 Fade UP、0→100%、0.6s）。
+          桌機才顯示頂部 4 顆 tab；行動版改用面板下方「堆疊未選 tab」模式（cmt-09：僅 Mobile 顯示），
+          避免行動版上下各出現一次 tab（重複）。 */}
       <ScrollReveal
         as="div"
-        className="mt-12 grid grid-cols-2 gap-1 md:grid-cols-4"
+        className="mt-12 hidden gap-1 md:grid md:grid-cols-4"
         role="tablist"
         variant="up"
       >
@@ -85,7 +87,10 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
       </ScrollReveal>
 
       {/* 面板 */}
-      <div className="rounded-b-[30px] bg-brand-surface px-6 py-8 md:px-8 md:py-8" role="tabpanel">
+      <div
+        className="rounded-t-[30px] rounded-b-[30px] bg-brand-surface px-6 py-8 md:rounded-t-none md:px-8 md:py-8"
+        role="tabpanel"
+      >
         {/* 圖文卡照片 Hover 放大 110%（Tracy：圖文卡照片，自帶 group） */}
         {current.image && typeof current.image === 'object' ? (
           <HoverZoomImage wrapperClassName="rounded-[20px] bg-[#D9D9D9]">

@@ -20,7 +20,7 @@ export type TaCtaCard = {
 
 export type TaCtaBlockProps = {
   blockType: 'taCta'
-  variant?: 'tiles' | 'photoCards' | 'photoBand' | null
+  variant?: 'tiles' | 'photoCards' | 'photoBand' | 'darkBand' | null
   intro?: string | null
   cards?: TaCtaCard[] | null
 }
@@ -291,11 +291,45 @@ const PhotoBand: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
   )
 }
 
+/**
+ * variant darkBand：School 頁尾 CTA（Figma 85:357）——深灰底 #4C4C4C + 兩顆實心 pill
+ * （加入照顧學校＝灰綠 #8BA98B；了解課程內容＝亮綠 #ADCB59），置中並排、區塊 Fade In。
+ */
+const DarkBand: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
+  const pill = (card: TaCtaCard, i: number) => (
+    <span
+      className={cn(
+        'btn-cft inline-flex items-center gap-2 rounded-[30px] px-7 py-2.5 text-[16px] font-medium tracking-[0.1em] shadow-sm md:px-9 md:py-3 md:text-[19px]',
+        i === 0 ? 'btn-green' : 'btn-lime',
+      )}
+    >
+      {card.buttonLabel ?? card.title}
+      <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+    </span>
+  )
+  return (
+    <section className="w-full bg-[#4C4C4C] py-14 md:py-20" data-block="taCta">
+      <ScrollReveal className="container flex max-w-[1240px] flex-col items-center justify-center gap-4 sm:flex-row md:gap-7">
+        {cards.map((card, i) =>
+          card.url ? (
+            <a aria-label={card.buttonLabel ?? card.title} href={card.url} key={i}>
+              {pill(card, i)}
+            </a>
+          ) : (
+            <React.Fragment key={i}>{pill(card, i)}</React.Fragment>
+          ),
+        )}
+      </ScrollReveal>
+    </section>
+  )
+}
+
 export const TaCtaBlock: React.FC<TaCtaBlockProps> = ({ variant, intro, cards }) => {
   if (!cards || cards.length === 0) return null
   // 指向聯絡頁的 CTA 在渲染層補 #sheet（不依賴 CMS DB，staging 直接生效）
   const normalized = cards.map((card) => ({ ...card, url: normalizeCtaHref(card.url) }))
   if (variant === 'photoCards') return <PhotoCards cards={normalized} intro={intro} />
   if (variant === 'photoBand') return <PhotoBand cards={normalized} />
+  if (variant === 'darkBand') return <DarkBand cards={normalized} />
   return <Tiles cards={normalized} />
 }

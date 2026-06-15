@@ -18,6 +18,7 @@ export const TaCta: Block = {
         { label: '首頁三磚（米色帶＋三綠磚卡＋白底按鈕）', value: 'tiles' },
         { label: '照片連結雙卡（照片＋亮綠色條＋箭頭）', value: 'photoCards' },
         { label: '全幅照片帶＋單一按鈕（頁尾 CTA，取第 1 張卡）', value: 'photoBand' },
+        { label: '深底雙按鈕帶（深灰底＋灰綠/亮綠 pill，School 頁尾 CTA）', value: 'darkBand' },
       ],
     },
     {

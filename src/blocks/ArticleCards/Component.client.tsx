@@ -121,7 +121,7 @@ const CoverageRow: React.FC<{ card: ArticleCardData }> = ({ card }) => {
         )}
         {/* .fig 報導標題：Noto Sans TC Regular 16 / lh29 / justify / underline（about-context §媒體報導）。
             min-w-0：flex-1 文字與固定寬 time 欄並排，長標題不擠爆日期欄（rwd-text-guidelines §3.2） */}
-        <span className="min-w-0 flex-1 text-justify text-[16px] font-normal leading-[29px] tracking-[0.1em] text-brand-ink underline underline-offset-4">
+        <span className="line-clamp-2 min-w-0 flex-1 text-justify text-[16px] font-normal leading-[29px] tracking-[0.1em] text-brand-ink underline underline-offset-4">
           {card.title}
         </span>
       </div>
