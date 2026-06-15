@@ -28,6 +28,8 @@ export interface ParallaxProps {
   maxOffset?: number
   /** 位移軸向：'y'（預設，背景上下緩動）或 'x'（橫向帶緩動，care photowall 263:431） */
   axis?: 'x' | 'y'
+  /** 只在桌機（≥1024px / lg）位移；手機與平板完全靜態（transform none），讓容器可改為可滑動帶。預設 false */
+  desktopOnly?: boolean
   as?: React.ElementType
   className?: string
   [key: string]: unknown
@@ -56,6 +58,7 @@ export const Parallax: React.FC<ParallaxProps> = ({
   speed = 0.2,
   maxOffset = 60,
   axis = 'y',
+  desktopOnly = false,
   as,
   className,
   ...rest
@@ -81,6 +84,12 @@ export const Parallax: React.FC<ParallaxProps> = ({
       frame.current = null
       const node = ref.current
       if (!node) return
+      // 行動版／平板（<1024，lg 以下）若設 desktopOnly：保持靜態，讓外層容器可橫向滑動、
+      // 不被 transform 推移（出血視差只在 lg+ 桌機生效，平板與手機不位移，避免邊緣溢出）。
+      if (desktopOnly && (window.innerWidth || document.documentElement.clientWidth) < 1024) {
+        node.style.transform = ''
+        return
+      }
       const rect = node.getBoundingClientRect()
       const vh = window.innerHeight || document.documentElement.clientHeight
       // 以元素中心相對視窗中心的距離計算位移：在視窗中央時 0
@@ -123,7 +132,7 @@ export const Parallax: React.FC<ParallaxProps> = ({
       if (frame.current != null) window.cancelAnimationFrame(frame.current)
       if (el) el.style.transform = ''
     }
-  }, [reduced, speed, maxOffset, axis])
+  }, [reduced, speed, maxOffset, axis, desktopOnly])
 
   return (
     <Tag ref={ref} className={cn(className)} style={{ willChange: reduced ? undefined : 'transform' }} {...rest}>

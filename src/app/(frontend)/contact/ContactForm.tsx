@@ -366,7 +366,7 @@ const ContactFormInner: React.FC<{ locale: Locale; onReset: () => void }> = ({
           aria-invalid={Boolean(touched.message && errors.message)}
           aria-describedby={touched.message && errors.message ? errId('message') : undefined}
           className={cn(
-            'border-brand-green text-brand-ink placeholder:text-brand-ink/60 focus-visible:border-brand-primary focus-visible:ring-brand-primary/30 min-h-[200px] w-full rounded-[30px] border-[1.5px] bg-white px-7 py-6 text-base transition-colors focus-visible:outline-none focus-visible:ring-2',
+            'border-brand-green text-brand-ink placeholder:text-brand-ink/60 focus-visible:border-brand-primary focus-visible:ring-brand-primary/30 min-h-[200px] w-full resize-none rounded-[30px] border-[1.5px] bg-white px-7 py-6 text-base transition-colors focus-visible:outline-none focus-visible:ring-2',
             invalidClass('message'),
           )}
         />

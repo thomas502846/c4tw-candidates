@@ -101,12 +101,13 @@ const PERSONAL_ICONS = [
  */
 const Pillars: React.FC<{ items: IconFeatureItem[] }> = ({ items }) => (
   // 行動版（M-care 269:648）：單欄滿版、深淺綠交替的直卡；桌機維持並排 185px 卡
-  <div className="flex flex-col gap-4 md:flex md:flex-row md:justify-center md:gap-[54px]">
+  <div className="flex flex-col gap-4 md:flex md:flex-row md:justify-center md:gap-4 lg:gap-[54px]">
     {items.map((item, i) => (
       <div
         key={item.id ?? i}
         className={cn(
-          'flex flex-col items-center gap-4 rounded-[30px] px-6 py-8 text-center md:w-[185px] md:py-10 md:min-h-[290px]',
+          // 平板（md）：5 卡等分縮放填滿、不爆版；桌機（lg）：回到 Figma 固定 185px 卡
+          'flex flex-col items-center gap-4 rounded-[30px] px-6 py-8 text-center md:min-w-0 md:flex-1 md:py-10 md:min-h-[290px] lg:w-[185px] lg:flex-none',
           pillarBgs[i % pillarBgs.length],
         )}
       >

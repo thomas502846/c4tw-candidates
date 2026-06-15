@@ -832,15 +832,15 @@ export const seed = async ({
             items: [
               {
                 number: '01',
-                title: '整合服務創新',
-                text: '照顧需求不只存在於醫院，也存在於返家後的每一天。面對出院返家後繁瑣的照顧安排與需求，我們透過跨專業團隊整合照顧資源，提供從醫療到居家的全方位支持，陪伴家庭度過照顧轉換期。',
-                image: photos[3].id,
-              },
-              {
-                number: '02',
                 title: '人才培育創新',
                 text: '面對長照人才職涯受限、薪資停滯與專業發展不足的現況，我們成立 Care for Taiwan（CFT）照顧學校，培育AIO照顧服務員、AIO照顧教練、AIO照顧設計師及AIO在宅醫師等跨專業人才，發展社區／居家融合照顧模式。',
                 image: photos[2].id,
+              },
+              {
+                number: '02',
+                title: '整合服務創新',
+                text: '照顧需求不只存在於醫院，也存在於返家後的每一天。面對出院返家後繁瑣的照顧安排與需求，我們透過跨專業團隊整合照顧資源，提供從醫療到居家的全方位支持，陪伴家庭度過照顧轉換期。',
+                image: photos[3].id,
               },
               {
                 number: '03',
@@ -2348,7 +2348,6 @@ export const seed = async ({
             { label: '組織培力', type: 'internal', url: '/training' },
           ],
         },
-        { label: '聯絡我們', type: 'internal', url: '/contact' },
         {
           label: 'CFT照顧學校',
           type: 'internal',
@@ -2359,6 +2358,7 @@ export const seed = async ({
             { label: '課程學習', type: 'external', url: 'https://school.carefortaiwan.com.tw' },
           ],
         },
+        { label: '聯絡我們', type: 'internal', url: '/contact' },
       ],
     },
   })

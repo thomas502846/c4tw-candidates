@@ -330,27 +330,44 @@ const RADIAL_POS = [
  * 依節點序對應 擴音器/人形/建築/手 四款，與 Figma 圓內 icon 一致。
  * 桌機用 baked PNG 故無此 fallback；此處主要服務行動版 RadialStack。
  */
+// 線稿重繪，對齊 Figma 真圖（node 306:609，2026-06-14 MCP 抽圖核對）：
+// 主色橄欖綠 #ADCB59（Figma 量到 #ACCA59）、手部袖口橘 #FF681F、新芽葉片填色。
+// Figma 來源為 baked PNG（無向量），故依視覺忠實重繪為可縮放線稿（桌機菱形與行動版直列共用）。
 const RADIAL_NODE_ICONS = [
   // 0 高齡化需求增加 → 擴音器 megaphone
   <path
-    d="M9 19v8a3 3 0 0 0 3 3h3l16 8V8L15 16h-3a3 3 0 0 0-3 3ZM31 18a8 8 0 0 1 0 10M15 30v6a3 3 0 0 0 6 0v-2"
+    d="M10 20v8a3 3 0 0 0 3 3h2l16 7V10L15 17h-2a3 3 0 0 0-3 3ZM33 19a8 8 0 0 1 0 10M16 31v5a3 3 0 0 0 6 0v-3"
     key="0"
   />,
-  // 1 照顧人才不足 → 人形 person
-  <>
-    <circle cx="23" cy="15" r="7" key="c" />
-    <path d="M10 38c2.5-9 7.5-13 13-13s10.5 4 13 13" key="b" />
-  </>,
-  // 2 偏鄉資源落差 → 建築 building
-  <path
-    d="M12 40V12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v28M28 22h6a2 2 0 0 1 2 2v16M17 17h4M17 24h4M17 31h4M31 28h2M31 34h2M8 40h32"
-    key="2"
-  />,
-  // 3 在地培力不易 → 手 hand（支持/培力）
-  <path
-    d="M14 24v-9a3 3 0 0 1 6 0v8M20 23v-11a3 3 0 0 1 6 0v11M26 23v-8a3 3 0 0 1 6 0v15a10 10 0 0 1-10 10h-3a9 9 0 0 1-7-4l-5-7a3 3 0 0 1 5-3l2 2"
-    key="3"
-  />,
+  // 1 照顧人才不足 → 三人群聚＋放大鏡（人才搜尋）
+  <React.Fragment key="1">
+    <circle cx="17" cy="18" r="4" key="h1" />
+    <circle cx="27" cy="18" r="4" key="h2" />
+    <circle cx="22" cy="12.5" r="4" key="h3" />
+    <path
+      d="M10.5 31c0-5 3.3-8.3 7.5-8.3M33.5 31c0-5-3.3-8.3-7.5-8.3M16.5 29.5c0-3.6 2.5-6 5.5-6s5.5 2.4 5.5 6"
+      key="b"
+    />
+    <circle cx="31" cy="30" r="6" key="m" />
+    <path d="M35.5 34.5l5 5" key="mh" />
+  </React.Fragment>,
+  // 2 偏鄉資源落差 → 兩棟建築（其一橘窗點綴）
+  <React.Fragment key="2">
+    <path d="M9 40V19a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v21" key="a" />
+    <path d="M22 40V26a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v14" key="bb" />
+    <path d="M7 40h34" key="g" />
+    <path d="M13 23h4M13 28h4M13 33h4" key="wa" />
+    <path d="M26 29h4M26 34h4" stroke="#FF681F" key="wb" />
+  </React.Fragment>,
+  // 3 在地培力不易 → 手捧新芽（橘袖口＋綠葉）
+  <React.Fragment key="3">
+    <path d="M11 26c1 7 6 12 13 12s12-5 13-12" key="palm" />
+    <path d="M21 38v3.5M27 38v3.5" key="arm" />
+    <path d="M20 41.5h8" stroke="#FF681F" strokeWidth="3.2" key="cuff" />
+    <path d="M24 26V15" key="stem" />
+    <path d="M24 20c-1.2-4-4.2-6.3-8-6.3-.2 3.9 2.8 6.3 8 6.3Z" fill="#ADCB59" stroke="none" key="lf" />
+    <path d="M24 17.5c.2-4 2.6-6.8 6.5-7.2.2 3.9-2.4 6.8-6.5 7.2Z" fill="#ADCB59" stroke="none" key="rf" />
+  </React.Fragment>,
 ]
 
 const NodeIcon: React.FC<{ node: InfographicNode; index?: number }> = ({ node, index = 0 }) => {
@@ -367,7 +384,7 @@ const NodeIcon: React.FC<{ node: InfographicNode; index?: number }> = ({ node, i
       aria-hidden
       className="h-12 w-12 md:h-14 md:w-14"
       fill="none"
-      stroke="#9C9F33"
+      stroke="#ADCB59"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2.2"

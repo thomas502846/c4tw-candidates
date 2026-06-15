@@ -44,8 +44,15 @@ export const PhotoStripBlock: React.FC<PhotoStripBlockProps> = ({ images, parall
       data-block="photoStrip"
     >
       {parallax ? (
-        // 橫向視差：帶寬略大於視窗（1800/1620≈111%），整列緩慢橫移，桌機呈現出血流動感
-        <Parallax axis="x" speed={0.12} maxOffset={90} className="flex md:w-[112%]">
+        // 桌機：橫向視差出血（帶寬 112%，緩慢橫移）；行動版：關視差、改可橫向滑動帶，
+        // 讓 5 張照片都滑得到（否則第 3–5 張被 overflow-hidden 裁掉且無法觸及）。
+        <Parallax
+          axis="x"
+          speed={0.12}
+          maxOffset={90}
+          desktopOnly
+          className="flex overflow-x-auto lg:w-[112%] lg:overflow-x-visible"
+        >
           {cells}
         </Parallax>
       ) : (

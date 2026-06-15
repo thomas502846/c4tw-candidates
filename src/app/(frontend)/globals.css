@@ -219,6 +219,14 @@
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
+  /* 標題平衡換行 baseline（docs/rwd-text-guidelines.md §5 step4）：CJK 大標在窄屏避免
+     「最後一行只剩一兩個字」的孤字。text-wrap: balance 只作用於少行數標題、成本極低，
+     全站 H1–H3 一次受惠，新內容也預設安全。內文段落不套（避免重排），維持 .text-pretty-cjk 手動用。 */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
 }
 
 /* ---------------------------------------------------------------
