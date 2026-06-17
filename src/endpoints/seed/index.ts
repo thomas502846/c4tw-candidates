@@ -706,15 +706,15 @@ export const seed = async ({
     }
   }
 
-  // Sheet care/training 03「什麼是AIO？」共用全文
+  // Sheet training 03「什麼是AIO？」（training 版小標：從「人」出發）
   const aioZh = {
     blockType: 'content',
     align: 'center',
     title: '什麼是 AIO解決方案？',
     richText: rtNodes(
-      h3('一套以人為本的整合照顧模式'),
+      h3('從「人」出發的 AIO 整合照顧模式'),
       p(
-        'AIO是源自於創辦人（林依瑩）發展「All In One」的照護理念，認為好的照顧應該是依照個案的需求出發，透過整合醫療、照顧、社區與生活資源，串連不同階段所需的協助，建構人性化的長照、提供更多元且完整的照顧支持。',
+        'AIO是源自於創辦人（林依瑩）發展「All In One」的照顧理念，認為好的照顧應該是依照個案的需求出發，透過整合醫療、照顧、社區與生活資源，串連不同階段所需的協助，建構人性化的長照、提供更多元且完整的照顧支持。',
       ),
     ),
     // Figma mid1：標題/副標/內文置中，下方三圖橫排置中
@@ -736,9 +736,22 @@ export const seed = async ({
     imagePosition: 'belowCenter',
   }
 
-  // care 專屬：AIO 區帶眉標「AIO Solutions」（care-context-supplement §「什麼是 AIO 解決方案？」
-  // 明列此區眉標；training 版該區無眉標故沿用無眉標的 aioZh/aioEn，不共改）
-  const aioZhCare = { ...aioZh, eyebrow: 'AIO Solutions' }
+  // care 專屬：AIO 區帶眉標「AIO Solutions」+ care 版小標「一套以人為本的AIO整合照顧模式」
+  // （Sheet care 03 與 training 03 小標不同，故 care 不再 spread aioZh）
+  const aioZhCare = {
+    blockType: 'content',
+    align: 'center',
+    eyebrow: 'AIO Solutions',
+    title: '什麼是 AIO整合照顧模式？',
+    richText: rtNodes(
+      h3('一套以人為本的AIO整合照顧模式'),
+      p(
+        'AIO是源自於創辦人（林依瑩）發展「All In One」的照顧理念，認為好的照顧應該是依照個案的需求出發，透過整合醫療、照顧、社區與生活資源，串連不同階段所需的協助，建構人性化的長照、提供更多元且完整的照顧支持。',
+      ),
+    ),
+    images: [{ image: photos[1].id }, { image: photos[4].id }, { image: photos[6].id }],
+    imagePosition: 'belowCenter',
+  }
   const aioEnCare = { ...aioEn, eyebrow: 'AIO Solutions' }
 
   /*
@@ -787,6 +800,7 @@ export const seed = async ({
           // Sheet 首頁 02 最新消息條：垂直輪播需多則才會動（範例文字照 Sheet）
           {
             blockType: 'newsTicker',
+            enabled: false,
             items: [
               {
                 text: '開學日 2026/03/07（六）09:00–16:30　·　CFT 照顧學校（414 臺中市烏日區溪岸路 8-3 號）',
@@ -812,7 +826,7 @@ export const seed = async ({
           // Sheet 首頁 03 品牌簡介（Figma 230:803：左圖右文 + About 眉標 + 認識創照 pill）
           {
             blockType: 'content',
-            eyebrow: 'About',
+            eyebrow: 'About Us',
             title: '在熟悉之處，尊嚴安老；用創新照顧，支持生活的無限可能。',
             ctaLabel: '認識創照',
             ctaUrl: '/about',
@@ -828,19 +842,19 @@ export const seed = async ({
           // Sheet 首頁 04 三大服務（1-3）＝編號特色大區（01/02/03 交錯帶）
           {
             blockType: 'numberedFeatures',
-            eyebrow: 'Service',
+            eyebrow: 'Services',
             items: [
               {
                 number: '01',
-                title: '人才培育創新',
-                text: '面對長照人才職涯受限、薪資停滯與專業發展不足的現況，我們成立 Care for Taiwan（CFT）照顧學校，培育AIO照顧服務員、AIO照顧教練、AIO照顧設計師及AIO在宅醫師等跨專業人才，發展社區／居家融合照顧模式。',
-                image: photos[2].id,
-              },
-              {
-                number: '02',
                 title: '整合服務創新',
                 text: '照顧需求不只存在於醫院，也存在於返家後的每一天。面對出院返家後繁瑣的照顧安排與需求，我們透過跨專業團隊整合照顧資源，提供從醫療到居家的全方位支持，陪伴家庭度過照顧轉換期。',
                 image: photos[3].id,
+              },
+              {
+                number: '02',
+                title: '人才培育創新',
+                text: '面對長照人才職涯受限、薪資停滯與專業發展不足的現況，我們成立 Care for Taiwan（CFT）照顧學校，培育AIO照顧服務員、AIO照顧教練、AIO照顧設計師及AIO在宅醫師等跨專業人才，發展長照多元人才。',
+                image: photos[2].id,
               },
               {
                 number: '03',
@@ -851,38 +865,39 @@ export const seed = async ({
             ],
           },
           // Sheet 首頁 05 案例輪播：創照分享（Figma 217:601：NEWS 眉標+標題置中，CMS 自動抓取最新三篇）
-          { blockType: 'content', eyebrow: 'NEWS', title: '創照分享', align: 'center' },
+          { blockType: 'content', enabled: false, eyebrow: 'NEWS', title: '創照分享', align: 'center' },
           {
             blockType: 'articleCards',
+            enabled: false,
             source: 'case-stories',
             batchSize: 3,
             enableLoadMore: false,
           },
-          // Sheet 首頁 06 CTA按鈕 1-3（TA 導流三磚）
+          // Sheet 首頁 06 CTA按鈕 1-3（TA 導流三磚；視覺順序 school / training / care）
           {
             blockType: 'taCta',
             variant: 'tiles',
             cards: [
               {
-                title: '我想成為照顧專業人才',
-                buttonLabel: '探索照顧學校與課程學習',
+                title: '我想探索照顧專業的更多可能',
+                buttonLabel: '認識照顧學校',
                 url: '/school',
               },
               {
-                title: '我正在尋找照顧服務',
-                buttonLabel: '了解 AIO 家庭照顧服務',
-                url: '/care',
+                title: '我想導入AIO整合照顧模式到組織',
+                buttonLabel: '洽詢組織培力合作模式',
+                url: '/training',
               },
               {
-                title: '我希望提升組織照顧能力',
-                buttonLabel: '洽詢組織培力與合作模式',
-                url: '/training',
+                title: '我需要整合照顧',
+                buttonLabel: '了解 AIO 整合照顧模式',
+                url: '/care',
               },
             ],
           },
           // Sheet 首頁 07 氛圍收尾：品牌影片（Figma 82:233＝淺灰 #D9D9D9 placeholder＋中央播放鈕；
           // 影片網址與封面圖待客戶提供，先留 Figma 灰底佔位，不套深色照片以免播放鈕被吃掉）
-          { blockType: 'videoBlock' },
+          { blockType: 'videoBlock', enabled: false },
         ],
       },
       en: {
@@ -909,6 +924,7 @@ export const seed = async ({
           },
           {
             blockType: 'newsTicker',
+            enabled: false,
             items: [
               {
                 text: 'Opening Day 2026/03/07 (Sat) 09:00–16:30 · CFT Care School (No. 8-3, Xi’an Rd., Wuri Dist., Taichung 414)',
@@ -928,7 +944,7 @@ export const seed = async ({
           },
           {
             blockType: 'content',
-            eyebrow: 'About',
+            eyebrow: 'About Us',
             title:
               'Ageing with dignity in familiar surroundings; supporting life’s endless possibilities through innovative care.',
             ctaLabel: 'About us',
@@ -944,7 +960,7 @@ export const seed = async ({
           },
           {
             blockType: 'numberedFeatures',
-            eyebrow: 'Service',
+            eyebrow: 'Services',
             items: [
               {
                 number: '01',
@@ -966,9 +982,10 @@ export const seed = async ({
               },
             ],
           },
-          { blockType: 'content', eyebrow: 'NEWS', title: 'Stories', align: 'center' },
+          { blockType: 'content', enabled: false, eyebrow: 'NEWS', title: 'Stories', align: 'center' },
           {
             blockType: 'articleCards',
+            enabled: false,
             source: 'case-stories',
             batchSize: 3,
             enableLoadMore: false,
@@ -983,18 +1000,18 @@ export const seed = async ({
                 url: '/en/school',
               },
               {
-                title: 'I am looking for care services',
-                buttonLabel: 'Learn about AIO family care services',
-                url: '/en/care',
-              },
-              {
                 title: 'I want to strengthen my organization’s care capacity',
                 buttonLabel: 'Ask about organizational training',
                 url: '/en/training',
               },
+              {
+                title: 'I am looking for care services',
+                buttonLabel: 'Learn about AIO family care services',
+                url: '/en/care',
+              },
             ],
           },
-          { blockType: 'videoBlock' },
+          { blockType: 'videoBlock', enabled: false },
         ],
       },
     },
@@ -1021,10 +1038,10 @@ export const seed = async ({
             richText: rtNodes(
               h3('從照顧一個人，到改變一個照顧系統'),
               p(
-                '臺灣邁入超高齡社會，照顧需求急遽攀升，許多家庭仍受困於資源分散、資訊複雜的困境。多年來，我們深入社區與照顧第一線，深刻體會到——照顧不只是服務的加總，更是一段陪伴、理解與整合的過程。為此，我們持續發展 All In One（AIO）照顧模式，串連跨專業團隊、社區資源與人才，將零散轉化為陪伴家庭的支持系統。',
+                '臺灣邁入超高齡社會，照顧需求急遽攀升，許多家庭仍受困於資源分散、資訊複雜的困境。多年來，我們深入社區與照顧第一線，深刻體會到——照顧不只是服務項目的加總，更是一段陪伴、理解與整合的過程。為此，我們持續發展AIO（All In One）整合照顧模式，串連跨專業團隊、社區資源與人才，將零散轉化為陪伴家庭的支持系統。',
               ),
               p(
-                '我們致力於人才培育與服務創新，讓照顧成為被尊重且永續的專業力量，攜手建立以人為本的All In One 照顧生態系。',
+                '我們致力於人才培育與服務創新，讓照顧成為被尊重且永續的專業力量，攜手建立以人為本的AIO照顧生態系。',
               ),
             ),
             image: photos[6].id,
@@ -1045,6 +1062,7 @@ export const seed = async ({
           // Sheet about 04 影響力：Sheet 空白——數字為佔位，待客戶補
           {
             blockType: 'statsCards',
+            enabled: false,
             cards: [
               { number: '500', suffix: '+', label: '照顧學校學員' },
               { number: '15', suffix: '+', label: '合作組織' },
@@ -1055,6 +1073,7 @@ export const seed = async ({
           // Sheet about 05 歷程：先以既有大事紀佔位（Figma 乾淨單行 pill→不顯示說明文）
           {
             blockType: 'timeline',
+            enabled: false,
             mode: 'reference',
             showDescription: false,
             events: timelineDocs.map((doc) => doc.id),
@@ -1068,6 +1087,7 @@ export const seed = async ({
           // Sheet about 07 品牌曝光(Press)：媒體報導（左圖+右側 Press眉標/H1/列表，米色帶）
           {
             blockType: 'articleCards',
+            enabled: false,
             source: 'media-coverage',
             eyebrow: 'Press',
             heading: '媒體報導',
@@ -1129,6 +1149,7 @@ export const seed = async ({
           },
           {
             blockType: 'statsCards',
+            enabled: false,
             cards: [
               { number: '500', suffix: '+', label: 'Care School learners' },
               { number: '15', suffix: '+', label: 'partner organizations' },
@@ -1138,6 +1159,7 @@ export const seed = async ({
           },
           {
             blockType: 'timeline',
+            enabled: false,
             mode: 'reference',
             showDescription: false,
             events: timelineDocs.map((doc) => doc.id),
@@ -1149,6 +1171,7 @@ export const seed = async ({
           },
           {
             blockType: 'articleCards',
+            enabled: false,
             source: 'media-coverage',
             eyebrow: 'Press',
             heading: 'Media Coverage',
@@ -1175,15 +1198,15 @@ export const seed = async ({
       slug: 'care',
       zh: {
         title: '家庭照顧服務',
-        metaTitle: 'AIO解決方案－家庭照顧服務',
+        metaTitle: 'AIO整合照顧服務',
         metaDescription:
-          '從需求評估、整合照護到返家支持，我們陪伴每個家庭走向穩定的長照生活。AIO 整合照顧模式：企業 EAP 方案與個人 AIO 服務。',
+          '從需求評估、整合照顧到返家支持，我們陪伴每個家庭走向穩定的長照生活。AIO 整合照顧模式：個人 AIO 服務。',
         layout: [
           // Sheet care 01 Banner（Figma 共用 master Banner）
           {
             blockType: 'pageHeader',
-            title: 'AIO解決方案－家庭照顧服務',
-            eyebrow: 'AIO Solutions-Family Care Services',
+            title: 'AIO整合照顧服務',
+            eyebrow: 'AIO Solution-Continuum of Care',
             image: photos[5].id,
           },
           // Sheet care 02 Hero 引言（Figma hero 大圖+引言卡）
@@ -1192,7 +1215,7 @@ export const seed = async ({
             variant: 'hero',
             direction: 'imageLeft',
             image: photos[3].id,
-            richText: rt('從需求評估、整合照護到返家支持，我們陪伴每個家庭走向穩定的長照生活。'),
+            richText: rt('從需求評估、整合照顧到返家支持，我們陪伴每個家庭走向穩定的長照生活。'),
           },
           // Sheet care 03 什麼是AIO？（care 版帶「AIO Solutions」眉標）
           aioZhCare,
@@ -1203,14 +1226,14 @@ export const seed = async ({
             leftLabel: '個人生活影響',
             rightLabel: '職場角色影響',
             leftStats: [
-              { value: '8+年', label: '平均照顧' },
-              { value: '6成', label: '照顧者出現身心耗損' },
+              { value: '8年', label: '平均照顧年限為' },
+              { value: '6-7成', label: '照顧者出現身心耗損' },
               { value: '前6個月', label: '最混亂也最無助' },
             ],
             rightStats: [
               { value: '13.3萬', label: '每年因照顧離職人數' },
-              { value: '45歲', label: '離職高峰主力' },
-              { value: '5倍', label: '消失一人約損失年薪' },
+              { value: '45-49歲', label: '離職高峰主力' },
+              { value: '5倍', label: '流失一位員工，約損失其年薪' },
             ],
           },
           // Sheet care 04 服務內容（Figma 257:387 左文右圖）
@@ -1221,7 +1244,7 @@ export const seed = async ({
             image: photos[0].id,
             // Figma care 257:386：右側 pic1+pic2 對角錯位斜疊
             images: [{ image: photos[0].id }, { image: photos[1].id }],
-            title: '家庭照顧服務如何運作',
+            title: 'AIO整合照顧服務模式',
             richText: rtNodes(
               h3('從理解需求開始，陪伴每一段照顧歷程'),
               p('家庭照顧壓力，正悄悄影響著個人的生活，也影響著工作職場角色⋯'),
@@ -1239,6 +1262,7 @@ export const seed = async ({
           // Figma care-icon 258:640：運作 4 米色橫卡
           {
             blockType: 'iconFeatures',
+            enabled: false,
             variant: 'cards',
             items: [
               { title: '需求評估', text: '梳理照顧困境' },
@@ -1247,54 +1271,17 @@ export const seed = async ({
               { title: '持續陪伴', text: '建立友善照顧支持機制' },
             ],
           },
-          // Sheet care 05 導流（Figma ta 米色帶 95:509 + 雙連結卡 269:650；錨點到 06/07）
+          // Sheet care 05 導流（Figma ta 米色帶 95:509 + 雙連結卡；EAP 隱藏故兩按鈕暫連 /contact）
           {
             blockType: 'taCta',
             variant: 'photoCards',
-            intro:
-              '我們提供兩種切入方式。\n企業可以透過 EAP 方案系統性支持員工；\n一般個人也可以直接預約諮詢，快速得到照顧規劃的協助。',
+            intro: '我們提供兩種切入方式。\n企業可以透過系統性支持員工；一般個人也可以直接預約諮詢，快速得到照顧協助。',
             cards: [
-              { title: '我是企業HR或主管', image: photos[6].id, url: '#企業EAP方案' },
-              { title: '我是一般照顧者或家屬', image: photos[3].id, url: '#個人AIO服務' },
+              { title: '我是企業HR或主管', image: photos[6].id, url: '/contact/#sheet' },
+              { title: '我是家屬', image: photos[3].id, url: '/contact/#sheet' },
             ],
           },
-          // Sheet care 06 企業EAP方案（Figma 269:655：跨欄 slogan＋左圖右文）
-          {
-            blockType: 'twoColumn',
-            direction: 'imageLeft',
-            lead: '工作與照顧角色之間的拉扯，\n企業也能成為支持的力量',
-            eyebrow: 'Enterprise EAP Program',
-            image: photos[6].id,
-            title: '企業EAP方案',
-            richText: rtNodes(
-              p(
-                '台灣已進入超高齡社會，每天都有員工為照顧家人，悄悄地分心、請假、甚至離職。當照顧需求增加，往往影響專注、出勤與身心狀態，也讓主管與團隊面臨新的挑戰。',
-              ),
-              p(
-                '透過企業EAP方案，從照顧風險調查、員工諮詢到後續轉介服務，協助企業建立友善照顧支持機制、讓員工找到適合的資源與解方，也讓企業在照顧員工的同時，守護團隊的穩定與發展。',
-              ),
-            ),
-          },
-          // Figma eap-icon 263:421：整寬米色卡 3 步驟
-          {
-            blockType: 'stepsBlock',
-            variant: 'cardRow',
-            items: [
-              {
-                title: 'Step 1 員工家庭照顧壓力指數調查',
-                text: '評估員工的照顧壓力、工作影響與身心狀態',
-              },
-              {
-                title: 'Step 2 高風險員工舒壓相談會',
-                text: '陪伴員工釐清困境與精準需求，提供即時支持',
-              },
-              {
-                title: 'Step 3 AIO 評估與個案轉介',
-                text: '連結政府長照與跨專業資源，制定可持續照顧計畫，降低員工照顧壓力',
-              },
-            ],
-          },
-          // Figma photowall 263:431：全寬 5 圖橫向視差帶（EAP 與個人 AIO 之間）
+          // Figma photowall 263:431：全寬 5 圖橫向視差帶（導流與個人 AIO 之間）
           {
             blockType: 'photoStrip',
             parallax: true,
@@ -1311,7 +1298,6 @@ export const seed = async ({
             blockType: 'twoColumn',
             variant: 'quotes',
             direction: 'imageRight',
-            background: 'surface',
             eyebrow: 'Personal AIO Service',
             lead: '照顧需求出現時，\n我們不需要單打獨鬥',
             image: photos[3].id,
@@ -1338,15 +1324,60 @@ export const seed = async ({
               { title: '長期照顧規劃', text: '依需求共同討論照顧方向與安排' },
               { title: '醫療與照顧資源整合', text: '串連醫療、長照與社區支持系統' },
               { title: '跨專業團隊協作', text: '整合不同專業角色，共同回應照顧需求' },
-              { title: '持續追蹤陪伴', text: '陪伴家屬面對照顧歷程中的挑戰' },
+              { title: '持續追蹤陪伴', text: '陪伴照顧者與被照顧者，給予支持' },
+            ],
+          },
+          // Sheet care 06 企業EAP方案（Figma 269:655：跨欄 slogan＋左圖右文）
+          {
+            blockType: 'twoColumn',
+            enabled: false,
+            direction: 'imageLeft',
+            lead: '工作與照顧角色之間的拉扯，\n企業也能成為支持的力量',
+            eyebrow: 'Enterprise EAP Program',
+            image: photos[6].id,
+            title: '企業EAP方案',
+            richText: rtNodes(
+              p(
+                '台灣已進入超高齡社會，每天都有員工為照顧家人，悄悄地分心、請假、甚至離職。當照顧需求增加，往往影響專注、出勤與身心狀態，也讓主管與團隊面臨新的挑戰。',
+              ),
+              p(
+                '透過企業EAP方案，從照顧風險調查、員工諮詢到後續轉介服務，協助企業建立友善照顧支持機制、讓員工找到適合的資源與解方，也讓企業在照顧員工的同時，守護團隊的穩定與發展。',
+              ),
+            ),
+          },
+          // Figma eap-icon 263:421：整寬米色卡 3 步驟
+          {
+            blockType: 'stepsBlock',
+            enabled: false,
+            variant: 'cardRow',
+            items: [
+              {
+                title: 'Step 1 員工家庭照顧壓力指數調查',
+                text: '評估員工的照顧壓力、工作影響與身心狀態',
+              },
+              {
+                title: 'Step 2 高風險員工舒壓相談會',
+                text: '陪伴員工釐清困境與精準需求，提供即時支持',
+              },
+              {
+                title: 'Step 3 AIO 評估與個案轉介',
+                text: '連結政府長照與跨專業資源，制定可持續照顧計畫，降低員工照顧壓力',
+              },
             ],
           },
           // Sheet care 07 真實案例
-          { blockType: 'content', title: '案例分享' },
-          { blockType: 'articleCards', source: 'case-stories', batchSize: 3, enableLoadMore: true },
+          { blockType: 'content', enabled: false, title: '案例分享' },
+          {
+            blockType: 'articleCards',
+            enabled: false,
+            source: 'case-stories',
+            batchSize: 3,
+            enableLoadMore: true,
+          },
           // Sheet care 08 CTA（Figma 97:559 照片帶＋置中 pill 按鈕）
           {
             blockType: 'taCta',
+            enabled: false,
             variant: 'photoBand',
             cards: [
               {
@@ -1417,6 +1448,7 @@ export const seed = async ({
           },
           {
             blockType: 'iconFeatures',
+            enabled: false,
             variant: 'cards',
             items: [
               { title: 'Needs assessment', text: 'Untangling care challenges' },
@@ -1429,51 +1461,17 @@ export const seed = async ({
             blockType: 'taCta',
             variant: 'photoCards',
             intro:
-              'There are two ways in.\nCompanies can support employees systematically through our EAP program;\nindividuals can book a consultation directly for quick care-planning help.',
+              'Whatever care situation you are facing, you can book a consultation directly\nand let us help you find a fitting care plan.',
             cards: [
               {
                 title: 'I am an HR manager or supervisor',
                 image: photos[6].id,
-                url: '#Corporate-EAP-Program',
+                url: '/en/contact/#sheet',
               },
               {
-                title: 'I am a caregiver or family member',
+                title: 'I am a family member',
                 image: photos[3].id,
-                url: '#Personal-AIO-Services',
-              },
-            ],
-          },
-          {
-            blockType: 'twoColumn',
-            direction: 'imageLeft',
-            lead: 'Caught between work and caregiving,\ncompanies can be a source of support',
-            eyebrow: 'Enterprise EAP Program',
-            image: photos[6].id,
-            title: 'Corporate EAP Program',
-            richText: rtNodes(
-              p(
-                'Taiwan is now a super-aged society. Every day, employees quietly lose focus, take leave, or even resign to care for family. Growing care needs affect attendance and well-being, and bring new challenges to managers and teams.',
-              ),
-              p(
-                'Through the corporate EAP program — from care-risk surveys and employee consultations to referral services — we help companies build care-friendly support, help employees find the right resources and solutions, and protect team stability while caring for staff.',
-              ),
-            ),
-          },
-          {
-            blockType: 'stepsBlock',
-            variant: 'cardRow',
-            items: [
-              {
-                title: 'Step 1 Family-caregiving stress survey',
-                text: 'Assess employees’ caregiving stress, work impact, and well-being',
-              },
-              {
-                title: 'Step 2 Relief sessions for high-risk employees',
-                text: 'Clarify challenges and needs, with timely support',
-              },
-              {
-                title: 'Step 3 AIO assessment and case referral',
-                text: 'Connect government LTC and cross-disciplinary resources for a sustainable care plan',
+                url: '/en/contact/#sheet',
               },
             ],
           },
@@ -1493,7 +1491,6 @@ export const seed = async ({
             blockType: 'twoColumn',
             variant: 'quotes',
             direction: 'imageRight',
-            background: 'surface',
             eyebrow: 'Personal AIO Service',
             lead: 'When care needs arise,\nno one has to face them alone',
             image: photos[3].id,
@@ -1540,10 +1537,53 @@ export const seed = async ({
               { title: 'Ongoing follow-up', text: 'Accompanying families through care challenges' },
             ],
           },
-          { blockType: 'content', title: 'Case Stories' },
-          { blockType: 'articleCards', source: 'case-stories', batchSize: 3, enableLoadMore: true },
+          {
+            blockType: 'twoColumn',
+            enabled: false,
+            direction: 'imageLeft',
+            lead: 'Caught between work and caregiving,\ncompanies can be a source of support',
+            eyebrow: 'Enterprise EAP Program',
+            image: photos[6].id,
+            title: 'Corporate EAP Program',
+            richText: rtNodes(
+              p(
+                'Taiwan is now a super-aged society. Every day, employees quietly lose focus, take leave, or even resign to care for family. Growing care needs affect attendance and well-being, and bring new challenges to managers and teams.',
+              ),
+              p(
+                'Through the corporate EAP program — from care-risk surveys and employee consultations to referral services — we help companies build care-friendly support, help employees find the right resources and solutions, and protect team stability while caring for staff.',
+              ),
+            ),
+          },
+          {
+            blockType: 'stepsBlock',
+            enabled: false,
+            variant: 'cardRow',
+            items: [
+              {
+                title: 'Step 1 Family-caregiving stress survey',
+                text: 'Assess employees’ caregiving stress, work impact, and well-being',
+              },
+              {
+                title: 'Step 2 Relief sessions for high-risk employees',
+                text: 'Clarify challenges and needs, with timely support',
+              },
+              {
+                title: 'Step 3 AIO assessment and case referral',
+                text: 'Connect government LTC and cross-disciplinary resources for a sustainable care plan',
+              },
+            ],
+          },
+          { blockType: 'content', enabled: false, title: 'Case Stories' },
+          {
+            blockType: 'articleCards',
+            enabled: false,
+            source: 'case-stories',
+            batchSize: 3,
+            enableLoadMore: true,
+          },
           {
             blockType: 'taCta',
+            enabled: false,
             variant: 'photoBand',
             cards: [
               {
@@ -1568,8 +1608,8 @@ export const seed = async ({
           // Sheet training 01 Banner
           {
             blockType: 'pageHeader',
-            title: 'AIO解決方案－組織培力',
-            eyebrow: 'AIO Solutions-Organization Support',
+            title: 'AIO組織培力',
+            eyebrow: 'AIO Solution-Organization Support',
             image: photos[4].id,
           },
           // Sheet training 02 Hero 引言
@@ -1578,7 +1618,7 @@ export const seed = async ({
             variant: 'hero',
             direction: 'imageLeft',
             image: photos[2].id,
-            richText: rt('從人才培育到在地共創，陪伴組織打造具影響力的照顧行動。'),
+            richText: rt('深化人才培力，共創在地影響力。'),
           },
           // Sheet training 03 什麼是AIO？（同 care 03 全文）
           aioZh,
@@ -1586,26 +1626,27 @@ export const seed = async ({
           {
             blockType: 'infographic',
             variant: 'radial',
-            title: '想投入社會影響力，卻不知道從哪裡開始',
-            body: '台灣已進入超高齡社會，照顧人力不足、偏鄉資源落差與高齡化挑戰，也正在影響越來越多社區與家庭。許多企業、基金會與地方組織，希望回應這些社會議題，為地方帶來改變，但光是找到合適的合作模式、培育在地人才，並建立長期影響力，就不知道如何踏出第一步。\n\n創照服務設計結合多年照顧實務、人才培育與地方陪伴經驗，協助組織從理念出發，發展符合自身目標的培力方案，將想法轉化為具體行動，逐步累積在地改變的力量。',
+            title: '想為組織/地方帶來更多照顧突破嗎？',
+            body: '台灣邁入超高齡社會，照顧人力不足與偏鄉資源落差，深深影響著無數家庭。許多地方組織渴望回應挑戰，期盼培力具備人本思維的照服員、社工與主管；然而，如何起步、摸索合適的合作路徑，往往在第一步就讓人卡關。\n\n創照服務設計憑藉多年人才培育與地方陪伴經驗，協助組織從理念出發，發展出符合自身特性的照顧模式。我們陪您將改變的心願化為具體行動，穩紮穩打，累積翻轉在地的溫暖。',
             nodes: [
-              { title: '高齡化需求增加', text: '台灣超高齡化社會來臨' },
-              { title: '照顧人才不足', text: '在地自主照顧能量缺乏' },
-              { title: '偏鄉資源落差', text: '服務取得與支持有限' },
-              { title: '在地培力不易', text: '人才培育與留任困難' },
+              { title: '專業培力不易', text: '缺乏系統化技術訓練' },
+              { title: '找人留人不易', text: '升遷路徑單一 薪資無法突破' },
+              { title: '服務模式受限', text: '現有思維 難以因應複雜需求' },
+              { title: '外部支持有限', text: '因地域限制 難引進跨界資源' },
             ],
           },
           // Sheet training 04 核心價值（Figma impact 280:444：外框卡＋↓）
           {
             blockType: 'stepsBlock',
             variant: 'outline',
+            title: '將專業帶回崗位，內化為單位的即戰力',
             items: [
-              { title: '培養願意留在地方的人才', text: '累積自主照顧能量' },
-              { title: '乘數效應', text: '讓被培育的人繼續培育下一個人' },
-              { title: '影響力循環', text: '同時創造地方改變與組織價值' },
+              { title: '對第一線夥伴', text: '在面對個案的多元需求時，能更從容、更有彈性地應對。' },
+              { title: '對領導/管理者', text: '掌握良好的溝通要領，搭起團隊與員工之間的橋樑。' },
             ],
           },
           // Sheet training 05 合作模式（Figma support 288:390 米色帶 左文右圖）
+          // D3：底部流程併入同一米色帶（itemsStyle steps），移除原獨立白底 stepsBlock
           {
             blockType: 'twoColumn',
             direction: 'imageRight',
@@ -1614,7 +1655,7 @@ export const seed = async ({
             image: photos[7].id,
             title: '打造適合組織的照顧發展路徑',
             richText: rtNodes(
-              h3('結合企業、基金會與地方組織，共同推動台灣照顧創新'),
+              h3('結合地方組織、社區、企業，共同推動台灣照顧創新'),
               p(
                 '有些希望培育人才，有些希望深入社區，有些則正在思考服務轉型與永續發展。 創照透過彈性的培力模組，依據組織現況與目標，共同設計最適合的合作方式。',
               ),
@@ -1625,11 +1666,7 @@ export const seed = async ({
                 '對地方組織而言，一位受過完整訓練的照顧者，可能陪伴一個社區十年，甚至更久。人才的成長與留存，往往比一次性的資源投入更能帶來長遠的影響。',
               ),
             ),
-          },
-          // Figma support 底部流程：組織需求 → 客製培力方案 → 社會影響力
-          {
-            blockType: 'stepsBlock',
-            variant: 'inline',
+            itemsStyle: 'steps',
             items: [{ title: '組織需求' }, { title: '客製培力方案' }, { title: '社會影響力' }],
           },
           // Sheet training 06 六大培力模組（Figma six model 288:393：置中標題＋3×2 圖卡格）
@@ -1642,16 +1679,17 @@ export const seed = async ({
             itemsStyle: 'grid',
             items: [
               { image: photos[2].id, title: 'AIO演講', text: '建立照顧觀念與共同語言' },
-              { image: photos[4].id, title: '參訪交流', text: '走進伯拉罕與真實場域看見可能' },
+              { image: photos[4].id, title: '參訪交流', text: '走進真實場域看見可能' },
               { image: photos[6].id, title: 'AIO之路討論', text: '對標組織面對的挑戰與願景' },
               { image: photos[3].id, title: '長照人才培育', text: '培訓/實習/研修，累積照顧真功夫' },
-              { image: photos[0].id, title: 'AIO服務梯隊', text: '深入社區與偏鄉實踐服務' },
+              { image: photos[0].id, title: 'AIO服務梯隊', text: '深入組織場域或社區實踐服務' },
               { image: photos[5].id, title: '組織轉型', text: '發展長期照顧策略與模式' },
             ],
           },
           // Sheet training 07 社會影響力（Figma Frame 174 288:658：\ 與我們一起行動 / 三實心圓）
           {
             blockType: 'missionCircles',
+            enabled: false,
             variant: 'plain',
             title: '\\ 與我們一起行動 /',
             circles: [
@@ -1661,8 +1699,14 @@ export const seed = async ({
             ],
           },
           // Sheet training 08 真實案例（Figma：● Care Stories 眉標、置中）
-          { blockType: 'content', eyebrow: 'Care Stories', title: '案例分享', align: 'center' },
-          { blockType: 'articleCards', source: 'case-stories', batchSize: 3, enableLoadMore: true },
+          { blockType: 'content', enabled: false, eyebrow: 'Care Stories', title: '案例分享', align: 'center' },
+          {
+            blockType: 'articleCards',
+            enabled: false,
+            source: 'case-stories',
+            batchSize: 3,
+            enableLoadMore: true,
+          },
           // Sheet training 09 CTA（指向 /contact 表單錨點 #sheet）
           {
             blockType: 'taCta',
@@ -1748,10 +1792,7 @@ export const seed = async ({
                 'For local organizations, one fully trained caregiver may accompany a community for ten years or more. Talent growth and retention often bring further-reaching impact than one-off resources.',
               ),
             ),
-          },
-          {
-            blockType: 'stepsBlock',
-            variant: 'inline',
+            itemsStyle: 'steps',
             items: [
               { title: 'Organizational needs' },
               { title: 'Tailored training program' },
@@ -1800,6 +1841,7 @@ export const seed = async ({
           },
           {
             blockType: 'missionCircles',
+            enabled: false,
             variant: 'plain',
             title: '\\ Act with us /',
             circles: [
@@ -1814,8 +1856,14 @@ export const seed = async ({
               },
             ],
           },
-          { blockType: 'content', title: 'Case Stories' },
-          { blockType: 'articleCards', source: 'case-stories', batchSize: 3, enableLoadMore: true },
+          { blockType: 'content', enabled: false, title: 'Case Stories' },
+          {
+            blockType: 'articleCards',
+            enabled: false,
+            source: 'case-stories',
+            batchSize: 3,
+            enableLoadMore: true,
+          },
           {
             blockType: 'taCta',
             variant: 'photoBand',
@@ -1866,34 +1914,33 @@ export const seed = async ({
             image: photos[2].id,
             imagePosition: 'left',
           },
-          // Sheet school 03 為何成立 (Why)：滿版米色帶＋環形圖（Figma problem-bg 55:249）
+          // Sheet school 03 我們看見的問題（C4：原環形圖改為單張照片，照片待提供）
           {
             blockType: 'infographic',
             variant: 'ring',
             eyebrow: 'Problematic',
             title: '我們看見的問題',
             body: '社會中的照顧需求日益攀升，我們也在照顧現場看見：\n1.職涯單一路徑：照顧工作常缺乏清晰的成長路徑與發展機會，難以吸引人才長期投入。\n2.薪資與價值落差：照顧工作的重要性逐年提升，但專業價值仍未被充分看見。\n3.專業分散：醫療、照顧、社區與家庭之間缺乏整合，跨領域合作不容易建立與串連。\n因此，我們希望透過人才培育，建立以人為本的觀點思維，以及與時俱進的溝通能力。',
-            photos: [
-              { image: photos[0].id },
-              { image: photos[2].id },
-              { image: photos[4].id },
-              { image: photos[6].id },
+            photos: [{ image: photos[2].id }],
+          },
+          // Sheet school 04 學員角色（Figma school TA 619:640：「學員樣貌」標題 + 4 portrait 置中卡）
+          {
+            blockType: 'iconFeatures',
+            variant: 'roles',
+            heading: '學員樣貌',
+            items: [
+              { title: '探索方向的長照新鮮人', text: '想了解照顧產業、尋找有意義的工作方向' },
+              { title: '想突破現況的照顧工作者', text: '希望提升專業能力、擴展職涯可能性' },
+              { title: '正照顧家人的家庭照顧者', text: '想獲得更好的照顧知識與支持系統' },
+              { title: '關心高齡與照顧議題的你', text: '不論背景，都能從課程中理解以人為本的照顧精神' },
             ],
           },
-          /*
-           * Sheet school 04 TA（適合對象）——Figma 定稿無此獨立區塊（Sheet 備註「可與痛點合併」），
-           * 文字先留存於此，待客戶確認版面後再上：
-           * －探索方向的長照新鮮人：想了解照顧產業、尋找有意義的工作方向。
-           * －想突破現況的照顧工作者：希望提升專業能力、擴展職涯可能性。
-           * －正照顧家人的家庭照顧者：想獲得更好的照顧知識與支持系統。
-           * －關心高齡與照顧議題的你：不論背景，都能從課程中理解以人為本的照顧精神。
-           */
           // Sheet school 05 培育系統 (How)：四柱高低卡（Figma class 304:605）
           {
             blockType: 'pillarCards',
             eyebrow: 'Learning Pathway',
             title: '人才培育系統',
-            subtitle: '以AIO為核心的：四大學習地圖',
+            subtitle: '以AIO整合照顧模式為核心：四大學習地圖',
             intro:
               '照顧不只是學習一項技能，需要設身理解人的需求、累積現場經驗，並逐步發展成能獨立思考與整合資源的專業能力。因此，照顧學校以 AIO（All In One）以人為本照顧模式為核心，結合課程學習、實務參與、能力認證與職涯發展，建立一套循序漸進的人才培育系統。',
             cards: [
@@ -2000,14 +2047,15 @@ export const seed = async ({
             ],
           },
           // Sheet school 07 學習成果 (Proof)：課程回顧（CMS 自動抓取最新三篇；專屬資料源待接，先以案例故事佔位）
-          { blockType: 'content', eyebrow: 'Stories', title: '課程回顧' },
+          { blockType: 'content', enabled: false, eyebrow: 'Stories', title: '課程回顧' },
           {
             blockType: 'articleCards',
+            enabled: false,
             source: 'case-stories',
             batchSize: 3,
             enableLoadMore: false,
           },
-          // photowall（Figma 85:287）：課程回顧與羅布森空間之間的滿版 5 格照片橫帶
+          // photowall（Figma 85:287）：羅布森空間之前的滿版 5 格照片橫帶
           {
             blockType: 'photoStrip',
             images: [
@@ -2080,11 +2128,17 @@ export const seed = async ({
             eyebrow: 'Problematic',
             title: 'The problems we see',
             body: 'As care needs keep rising, on the care front lines we see:\n1. A single career path: care work often lacks clear growth paths and development opportunities, making long-term commitment hard to attract.\n2. A pay-and-value gap: care work matters more every year, but its professional value is still not fully seen.\n3. Scattered professions: medical, care, community, and family lack integration; cross-disciplinary collaboration is hard to build and connect.\nThat is why we cultivate talent — to build person-centered thinking and communication skills that keep pace with the times.',
-            photos: [
-              { image: photos[0].id },
-              { image: photos[2].id },
-              { image: photos[4].id },
-              { image: photos[6].id },
+            photos: [{ image: photos[2].id }],
+          },
+          {
+            blockType: 'iconFeatures',
+            variant: 'roles',
+            heading: 'Student profiles',
+            items: [
+              { title: 'Newcomers exploring long-term care', text: 'Wanting to understand the care field and find meaningful work' },
+              { title: 'Care workers seeking a breakthrough', text: 'Hoping to grow professionally and expand career possibilities' },
+              { title: 'Family caregivers', text: 'Wanting better care knowledge and a support system' },
+              { title: 'Anyone who cares about aging and care', text: 'Whatever your background, learn person-centered care in our courses' },
             ],
           },
           {
@@ -2216,9 +2270,10 @@ export const seed = async ({
               },
             ],
           },
-          { blockType: 'content', eyebrow: 'Stories', title: 'Course Stories' },
+          { blockType: 'content', enabled: false, eyebrow: 'Stories', title: 'Course Stories' },
           {
             blockType: 'articleCards',
+            enabled: false,
             source: 'case-stories',
             batchSize: 3,
             enableLoadMore: false,
@@ -2339,14 +2394,15 @@ export const seed = async ({
       items: [
         { label: '認識創照', type: 'internal', url: '/about' },
         {
-          label: 'AIO解決方案',
+          label: '我們的服務',
           type: 'internal',
           url: '#',
           subItems: [
-            { label: '家庭照顧服務', type: 'internal', url: '/care' },
-            { label: '組織培力', type: 'internal', url: '/training' },
+            { label: 'AIO整合照顧服務', type: 'internal', url: '/care' },
+            { label: 'AIO組織培力', type: 'internal', url: '/training' },
           ],
         },
+        { label: '聯絡我們', type: 'internal', url: '/contact' },
         {
           label: 'CFT照顧學校',
           type: 'internal',
@@ -2354,10 +2410,9 @@ export const seed = async ({
           highlight: true,
           subItems: [
             { label: '關於照顧學校', type: 'internal', url: '/school' },
-            { label: '課程學習', type: 'external', url: 'https://school.carefortaiwan.com.tw' },
+            { label: '學習平台', type: 'external', url: 'https://school.carefortaiwan.com.tw' },
           ],
         },
-        { label: '聯絡我們', type: 'internal', url: '/contact' },
       ],
     },
   })
@@ -2366,13 +2421,13 @@ export const seed = async ({
   const navZh = await payload.findGlobal({ slug: 'navigation', locale: 'zh-TW', depth: 0 })
   const navLabelEn: Record<string, string> = {
     認識創照: 'About Us',
-    AIO解決方案: 'AIO Solutions',
-    家庭照顧服務: 'Home Care Services',
-    組織培力: 'Organizational Training',
+    我們的服務: 'Our Services',
+    AIO整合照顧服務: 'AIO Integrated Care',
+    AIO組織培力: 'AIO Organizational Training',
     聯絡我們: 'Contact Us',
     CFT照顧學校: 'CFT Care School',
     關於照顧學校: 'About the Care School',
-    課程學習: 'Online Courses',
+    學習平台: 'Learning Platform',
   }
 
   await payload.updateGlobal({
@@ -2403,11 +2458,11 @@ export const seed = async ({
     data: {
       columns: [
         {
-          title: '網站導覽',
+          title: '關於我們',
           links: [
             { label: '認識創照', url: '/about' },
-            { label: '家庭照顧服務', url: '/care' },
-            { label: '組織培力', url: '/training' },
+            { label: 'AIO整合照顧模式', url: '/care' },
+            { label: 'AIO組織培力', url: '/training' },
             { label: '關於照顧學校', url: '/school' },
             { label: '聯絡我們', url: '/contact' },
           ],
@@ -2423,13 +2478,8 @@ export const seed = async ({
           ],
         },
       ],
-      familyVentures: [
-        { name: '創照服務設計', url: 'https://carefortaiwan.com.tw' },
-        { name: 'CFT 照顧學校', url: 'https://school.carefortaiwan.com.tw' },
-        { name: '伯拉罕共生照顧勞動合作社' },
-        { name: '鄰里123' },
-        { name: 'Connect 10' },
-      ],
+      // 家族事業欄位刪除（Sheet「反紅部分刪除」+ Figma footer 僅兩欄）；保留欄位於 global config 供未來 CMS 再開
+      familyVentures: [],
       socialLinks: [],
       copyright: `© ${new Date().getFullYear()} 創照服務設計股份有限公司 All rights reserved.`,
     },
@@ -2437,11 +2487,11 @@ export const seed = async ({
 
   const footerZh = await payload.findGlobal({ slug: 'site-footer', locale: 'zh-TW', depth: 0 })
   const footerLabelEn: Record<string, string> = {
-    網站導覽: 'Site Map',
+    關於我們: 'About Us',
     聯絡資訊: 'Contact',
     認識創照: 'About Us',
-    家庭照顧服務: 'Home Care Services',
-    組織培力: 'Organizational Training',
+    AIO整合照顧模式: 'AIO Integrated Care Model',
+    AIO組織培力: 'AIO Organizational Training',
     關於照顧學校: 'About the Care School',
     聯絡我們: 'Contact Us',
     '臺中市烏日區溪岸路8-3號': 'No. 8-3, Xi’an Rd., Wuri Dist., Taichung City, Taiwan',
