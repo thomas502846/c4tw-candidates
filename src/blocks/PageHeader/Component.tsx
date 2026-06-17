@@ -13,8 +13,11 @@ export type PageHeaderBlockProps = {
 
 /**
  * 內頁頁首 Banner（Figma master 30:136，1440×400）
- * 底圖照片 object-bottom 滿版 + 左實右透漸層（#8BA98B 52% → 透明 72%），文字壓左側
+ * 左側實綠面板 +「斜切造型」漸層切入右側照片；文字壓左側白字。
+ * Tracy RWD 註記：淺色底路徑造型「方向與桌機不同」→ 桌機/手機用不同漸層角度＋綠面板比例
+ * （桌機 100deg、綠覆蓋 ~40%；手機 82deg、綠覆蓋 ~52%，方向相反、覆蓋更大）。
  */
+const GREEN = '#8BA98B'
 export const PageHeaderBlock: React.FC<PageHeaderBlockProps> = ({ title, eyebrow, image }) => {
   const hasImage = image && typeof image === 'object'
 
@@ -27,11 +30,20 @@ export const PageHeaderBlock: React.FC<PageHeaderBlockProps> = ({ title, eyebrow
             imgClassName="absolute inset-0 h-full w-full object-cover object-bottom"
             className="absolute inset-0"
           />
+          {/* 手機：較大綠覆蓋、斜邊偏一方向 */}
           <div
             aria-hidden
-            className="absolute inset-0"
+            className="absolute inset-0 md:hidden"
             style={{
-              background: 'linear-gradient(to right, #8BA98B 51.9%, rgba(139,169,139,0.35) 71.6%, rgba(255,255,255,0.15) 100%)',
+              background: `linear-gradient(82deg, ${GREEN} 0%, ${GREEN} 52%, rgba(139,169,139,0.45) 72%, rgba(139,169,139,0) 92%)`,
+            }}
+          />
+          {/* 桌機：較小綠覆蓋、斜邊偏另一方向 */}
+          <div
+            aria-hidden
+            className="absolute inset-0 hidden md:block"
+            style={{
+              background: `linear-gradient(100deg, ${GREEN} 0%, ${GREEN} 40%, rgba(139,169,139,0.4) 62%, rgba(139,169,139,0) 82%)`,
             }}
           />
         </>

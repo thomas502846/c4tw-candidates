@@ -38,13 +38,14 @@ export type InfographicBlockProps = {
 /** 是否含 CJK：ZH 內容才用 Figma baked 圖（圖內文字為中文）；EN 退回 code 向量版以保 i18n */
 const hasCjk = (s?: string | null): boolean => Boolean(s && /[㐀-鿿豈-﫿]/.test(s))
 
-/** 把長 label 折行成 tspan（衛星圓內小字）：zh 依字數切、含空白的 latin 文字依單字累積 */
-function wrapLabel(label: string, maxChars = 6): string[] {
+/** 把長 label 折行成 tspan（衛星圓內小字）：zh 依字數切、含空白的 latin 文字依單字累積。
+ * Figma 86:363 衛星圓內 label 至多 2 行；超過則保留前 2 行（資料目前最長 9 字、2 行內可容）。*/
+function wrapLabel(label: string, maxChars = 7): string[] {
   const lines: string[] = []
   if (/\s/.test(label.trim())) {
     let line = ''
     for (const word of label.split(/\s+/)) {
-      if (line && (line + ' ' + word).length > 12) {
+      if (line && (line + ' ' + word).length > 13) {
         lines.push(line)
         line = word
       } else {
@@ -55,7 +56,7 @@ function wrapLabel(label: string, maxChars = 6): string[] {
   } else {
     for (let i = 0; i < label.length; i += maxChars) lines.push(label.slice(i, i + maxChars))
   }
-  return lines.slice(0, 3)
+  return lines.slice(0, 2)
 }
 
 /** 大圓標題：「個人生活影響」→ 主標「個人生活」＋字距拉開的「影響」副行（care 306:606） */
@@ -66,11 +67,12 @@ function splitImpactLabel(label: string): { main: string; sub?: string } {
   return { main: label }
 }
 
-/** 衛星圓數值拆 runs：數字段大字、中文單位小字（如 13.3萬／前6個月／8+年） */
+/** 衛星圓數值拆 runs：數字段大字、中文單位小字（如 13.3萬／前6個月／45-49歲）。
+ * 連字號／波浪號視為數字段的一部分（區間如 45-49 整段大字，對齊 Figma 86:363）。*/
 function valueRuns(value: string): { text: string; big: boolean }[] {
   const runs: { text: string; big: boolean }[] = []
   for (const ch of value) {
-    const big = /[0-9.+%]/.test(ch)
+    const big = /[0-9.+%~-]/.test(ch)
     const last = runs[runs.length - 1]
     if (last && last.big === big) last.text += ch
     else runs.push({ text: ch, big })
@@ -78,29 +80,35 @@ function valueRuns(value: string): { text: string; big: boolean }[] {
   return runs
 }
 
-/** 衛星圓：數值（大小字混排）置中＋下方 label 折行 */
+/** 衛星圓（Figma 86:363）：上方深色 label（≤2 行）＋下方大字數值（sage 綠，數字大／中文單位小）。
+ * 字級依大圓尺寸縮放，確保整塊文字落在圓內、不壓字。bigSize/labelSize 由呼叫端按桌機/行動帶入。*/
 const SatelliteText: React.FC<{
   cx: number
   cy: number
   value: string
   label: string
   color: string
-}> = ({ cx, cy, value, label, color }) => {
+  bigSize?: number
+  labelSize?: number
+}> = ({ cx, cy, value, label, color, bigSize = 26, labelSize = 12 }) => {
   const lines = wrapLabel(label)
-  const lineH = 15
-  const valueY = cy - (lines.length * lineH) / 2 + 8
+  const labelLineH = labelSize + 3
+  // 區塊高度＝label 多行 + 間距 + 數值高，整體垂直置中於圓心
+  const blockH = lines.length * labelLineH + 8 + bigSize
+  const labelTop = cy - blockH / 2 + labelSize
+  const valueBaseline = labelTop + (lines.length - 1) * labelLineH + 8 + bigSize
   return (
     <>
-      <text fill={color} fontSize="28" fontWeight="700" textAnchor="middle" x={cx} y={valueY}>
-        {/* 數字片段滑入視窗後 Count Up（care 痛點數據）；中文單位原樣保留 */}
-        <CountUpRuns bigSize={28} runs={valueRuns(value)} smallSize={14} />
-      </text>
-      <text fill={color} fontSize="12" textAnchor="middle" x={cx} y={valueY + 22}>
+      <text fill="#212121" fontSize={labelSize} fontWeight="500" textAnchor="middle" x={cx} y={labelTop}>
         {lines.map((line, li) => (
-          <tspan dy={li === 0 ? 0 : lineH} key={li} x={cx}>
+          <tspan dy={li === 0 ? 0 : labelLineH} key={li} x={cx}>
             {line}
           </tspan>
         ))}
+      </text>
+      <text fill={color} fontSize={bigSize} fontWeight="700" textAnchor="middle" x={cx} y={valueBaseline}>
+        {/* 數字片段滑入視窗後 Count Up；中文單位（萬／年／成／歲／倍／個月）原樣小字保留 */}
+        <CountUpRuns bigSize={bigSize} runs={valueRuns(value)} smallSize={Math.round(bigSize * 0.5)} />
       </text>
     </>
   )
@@ -184,8 +192,8 @@ const VennMobile: React.FC<{
     role="img"
     viewBox="0 0 460 820"
   >
-    {/* 下大圓（職場角色，淡青 無邊框） */}
-    <circle cx={M_BOT.cx} cy={M_BOT.cy} fill="#ECF7F9" r={M_BIG_R} />
+    {/* 下大圓（職場角色，淡青底＋亮綠細邊，與上圓對稱；Figma 86:363） */}
+    <circle cx={M_BOT.cx} cy={M_BOT.cy} fill="#ECF7F9" r={M_BIG_R} stroke="#ADCB59" strokeWidth="2" />
     {/* 上大圓（個人生活，米底＋亮綠細邊） */}
     <circle cx={M_TOP.cx} cy={M_TOP.cy} fill="#F7F7EB" r={M_BIG_R} stroke="#ADCB59" strokeWidth="2" />
     {/* 上圓 icon：房屋線稿 */}
@@ -204,8 +212,8 @@ const VennMobile: React.FC<{
       const pos = M_SAT_TOP[i]
       return (
         <g key={stat.id ?? `ml${i}`}>
-          <circle cx={pos.cx} cy={pos.cy} fill="#FFFFFF" r={M_SAT_R} stroke="#ADCB59" strokeWidth="2" />
-          <SatelliteText color="#9C9F33" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
+          <circle cx={pos.cx} cy={pos.cy} fill="#F7F7EB" r={M_SAT_R} stroke="#ADCB59" strokeWidth="2" />
+          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
         </g>
       )
     })}
@@ -214,8 +222,8 @@ const VennMobile: React.FC<{
       const pos = M_SAT_BOT[i]
       return (
         <g key={stat.id ?? `mr${i}`}>
-          <circle cx={pos.cx} cy={pos.cy} fill="#ECF7F9" r={M_SAT_R} />
-          <SatelliteText color="#5E8C8C" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
+          <circle cx={pos.cx} cy={pos.cy} fill="#ECF7F9" r={M_SAT_R} stroke="#ADCB59" strokeWidth="2" />
+          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
         </g>
       )
     })}
@@ -234,8 +242,8 @@ const Venn: React.FC<{
     role="img"
     viewBox="0 0 900 460"
   >
-    {/* 右大圓（職場角色，淡青 無邊框） */}
-    <circle cx="555" cy="230" fill="#ECF7F9" r="170" />
+    {/* 右大圓（職場角色，淡青底＋亮綠細邊，與左圓對稱；Figma 86:363 量到 stroke #ACCB59） */}
+    <circle cx="555" cy="230" fill="#ECF7F9" r="170" stroke="#ADCB59" strokeWidth="2" />
     {/* 左大圓（個人生活，米底＋亮綠細邊） */}
     <circle cx="345" cy="230" fill="#F7F7EB" r="170" stroke="#ADCB59" strokeWidth="2" />
     {/* 左圓 icon：房屋線稿 */}
@@ -254,8 +262,8 @@ const Venn: React.FC<{
       const pos = SAT_LEFT[i]
       return (
         <g key={stat.id ?? `l${i}`}>
-          <circle cx={pos.cx} cy={pos.cy} fill="#FFFFFF" r={SAT_R} stroke="#ADCB59" strokeWidth="2" />
-          <SatelliteText color="#9C9F33" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
+          <circle cx={pos.cx} cy={pos.cy} fill="#F7F7EB" r={SAT_R} stroke="#ADCB59" strokeWidth="2" />
+          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
         </g>
       )
     })}
@@ -263,8 +271,8 @@ const Venn: React.FC<{
       const pos = SAT_RIGHT[i]
       return (
         <g key={stat.id ?? `r${i}`}>
-          <circle cx={pos.cx} cy={pos.cy} fill="#ECF7F9" r={SAT_R} />
-          <SatelliteText color="#5E8C8C" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
+          <circle cx={pos.cx} cy={pos.cy} fill="#ECF7F9" r={SAT_R} stroke="#ADCB59" strokeWidth="2" />
+          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
         </g>
       )
     })}
@@ -272,47 +280,23 @@ const Venn: React.FC<{
 )
 
 /* ---------------------------------------------------------------- */
-/* Ring：#8BA98B 粗 donut＋4 照片圓（45° 對角，school 341:652）       */
+/* Ring（school 我們看見的問題 341:652 / pic 566:1016）：              */
+/* 2026-06-16 Tracy 改版——原環形 donut＋4 照片圓改為「單張圓角照片」  */
+/* （Figma pic 590×400、radius 30）。照片待提供→灰 #D9D9D9 placeholder， */
+/* 有 photos[0]（Media）則顯示其圖。其餘變體不受影響（ring 僅 school 用）。*/
 /* ---------------------------------------------------------------- */
 
-// Figma 量測（problem-pic 67:166，donut 466、照片圓 129）：照片圓徑 = 129/466 ≈ 27.7% donut，
-// 圓心貼四角（55:284~287 中心換算 ≈ 14%／86%），坐落在環帶上、不蓋中央米色洞口。
-const RING_DIAM = '27.7%'
-const RING_POS = [
-  { left: '86.2%', top: '14.9%' }, // 右上（55:287）
-  { left: '86.2%', top: '86.2%' }, // 右下（55:286）
-  { left: '13.8%', top: '86.2%' }, // 左下（55:285）
-  { left: '13.8%', top: '14.9%' }, // 左上（55:284）
-]
-
-const Ring: React.FC<{ photos?: InfographicPhoto[] | null }> = ({ photos }) => (
-  <div className="relative mx-auto aspect-square w-full max-w-[470px]">
-    {/* donut：Figma 真圖向量（school-ring-donut.svg / 55:257），even-odd 外466內226 #8BA98B */}
-    <svg
-      aria-hidden
-      className="absolute inset-0 h-full w-full"
-      fill="none"
-      viewBox="0 0 466 466"
-    >
-      <path
-        d="M233 0C361.682 0 466 104.318 466 233C466 361.682 361.682 466 233 466C104.318 466 0 361.682 0 233C0 104.318 104.318 0 233 0ZM232.539 119.724C170.233 119.724 119.724 170.233 119.724 232.539C119.724 294.846 170.233 345.355 232.539 345.355C294.846 345.355 345.355 294.846 345.355 232.539C345.355 170.233 294.846 119.724 232.539 119.724Z"
-        fill="#8BA98B"
-        fillRule="evenodd"
-      />
-    </svg>
-    {(photos ?? []).slice(0, 4).map((photo, i) => (
-      <div
-        className="absolute -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-[#D9D9D9]"
-        key={photo.id ?? i}
-        style={{ ...RING_POS[i], width: RING_DIAM, height: RING_DIAM }}
-      >
-        {photo.image && typeof photo.image === 'object' && (
-          <Media resource={photo.image} imgClassName="h-full w-full object-cover" />
-        )}
-      </div>
-    ))}
-  </div>
-)
+const Ring: React.FC<{ photos?: InfographicPhoto[] | null }> = ({ photos }) => {
+  const photo = (photos ?? [])[0]
+  const img = photo?.image
+  return (
+    <div className="mx-auto aspect-[590/400] w-full max-w-[590px] overflow-hidden rounded-[30px] bg-[#D9D9D9]">
+      {img && typeof img === 'object' && (
+        <Media resource={img} imgClassName="h-full w-full object-cover" />
+      )}
+    </div>
+  )
+}
 
 /* ---------------------------------------------------------------- */
 /* Radial：4 顆米色大圓菱形排列（training 306:609，無中心圓）          */

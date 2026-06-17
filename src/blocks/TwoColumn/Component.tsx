@@ -129,23 +129,64 @@ const ItemsIconCards: React.FC<{ items: TwoColumnItem[] }> = ({ items }) => (
   </div>
 )
 
+/** 發展路徑線稿 icon（Figma training 合作模式 97:564）：橄欖綠線描、無底無框
+ *  組織需求＝人＋簡報架／客製培力方案＝大樓窗格／社會影響力＝手捧新芽 */
+const StepLineIcons: React.FC<{ className?: string }>[] = [
+  ({ className }) => (
+    <svg aria-hidden className={className} viewBox="0 0 48 48" fill="none" stroke="#9c9f33" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="7" y="8" width="34" height="22" rx="2" />
+      <path d="M24 30v6M16 41l8-5 8 5" />
+      <circle cx="18" cy="17" r="3.2" />
+      <path d="M13 25c0-3.3 2.2-5.5 5-5.5s5 2.2 5 5.5" />
+      <path d="M28 16h8M28 21h6" />
+    </svg>
+  ),
+  ({ className }) => (
+    <svg aria-hidden className={className} viewBox="0 0 48 48" fill="none" stroke="#9c9f33" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="9" y="6" width="20" height="36" rx="1.5" />
+      <rect x="29" y="18" width="11" height="24" rx="1.5" />
+      <path d="M14 13h3M22 13h3M14 20h3M22 20h3M14 27h3M22 27h3" />
+      <path d="M33 25h3M33 32h3" />
+      <path d="M6 42h36" />
+    </svg>
+  ),
+  ({ className }) => (
+    <svg aria-hidden className={className} viewBox="0 0 48 48" fill="none" stroke="#9c9f33" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M24 38V22" />
+      <path d="M24 25c0-5 3.5-9 9-9 0 5-4 9-9 9Z" />
+      <path d="M24 30c0-4.5-3.2-8-8-8 0 4.5 3.5 8 8 8Z" />
+      <path d="M11 38c3-3 8-4 13-4s10 1 13 4" />
+    </svg>
+  ),
+]
+
+/** 發展路徑（Figma training 97:564）：3 步無框線稿 icon + 橄欖綠箭頭，與上方米色帶同一層 */
 const ItemsSteps: React.FC<{ items: TwoColumnItem[] }> = ({ items }) => (
-  <div className="mt-14 flex flex-col items-stretch gap-4 md:flex-row md:items-center md:justify-center">
-    {items.map((item, i) => (
-      <React.Fragment key={item.id ?? i}>
-        {i > 0 && (
-          <span aria-hidden className="self-center text-2xl font-bold text-brand-primary md:px-2">
-            <span className="hidden md:inline">→</span>
-            <span className="md:hidden">↓</span>
-          </span>
-        )}
-        <div className="flex flex-1 flex-col items-center gap-3 rounded-[20px] border border-brand-primary/30 bg-white px-6 py-6 text-center">
-          <ItemIcon item={item} index={i} size="h-14 w-14" />
-          <h3 className="text-base font-medium tracking-[0.1em] text-brand-ink">{item.title}</h3>
-          {item.text && <p className="text-sm leading-[1.7] text-brand-muted">{item.text}</p>}
-        </div>
-      </React.Fragment>
-    ))}
+  <div className="mt-12 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center sm:gap-2 md:mt-14 md:gap-6">
+    {items.map((item, i) => {
+      const LineIcon = StepLineIcons[i % StepLineIcons.length]
+      return (
+        <React.Fragment key={item.id ?? i}>
+          {i > 0 && (
+            <span aria-hidden className="self-center text-2xl leading-none text-brand-primary sm:mt-7 sm:px-1 md:px-3">
+              <span className="hidden sm:inline">→</span>
+              <span className="sm:hidden">↓</span>
+            </span>
+          )}
+          <div className="flex flex-col items-center gap-3 text-center sm:w-32 md:w-40">
+            {item.image && typeof item.image === 'object' ? (
+              <span className="block h-16 w-16 shrink-0 overflow-hidden rounded-full">
+                <Media resource={item.image} imgClassName="h-full w-full object-cover" />
+              </span>
+            ) : (
+              <LineIcon className="h-14 w-14 md:h-16 md:w-16" />
+            )}
+            <h3 className="text-base font-medium tracking-[0.1em] text-brand-ink md:text-[17px]">{item.title}</h3>
+            {item.text && <p className="text-sm leading-[1.7] text-brand-muted">{item.text}</p>}
+          </div>
+        </React.Fragment>
+      )
+    })}
   </div>
 )
 

@@ -40,12 +40,16 @@ const ArrowRight: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 )
 
-// Home CTA 三磚 TA 線稿插圖（Figma 236:378 / 239:510 / 239:719，白色線稿，無底）
-// 依卡片順序套用；CMS 後續若上傳 image 則優先用 image。
+// Home CTA 三磚 TA 線稿插圖（Figma CTA frame 181:396）。
+// seed 卡片序已改為 [school, training, care]，故 icon 依此配對：
+//   tile1 school（認識照顧學校）＝學習插圖 icon-1-cft
+//   tile2 training/組織培力（洽詢組織培力合作模式）＝多人協作插圖 icon-3-org
+//   tile3 care（我需要整合照顧）＝個人求助照顧插圖 icon-2-service
+// CMS 後續若上傳 image 則優先用 image。
 const taTileIcons = [
   '/figma/home-ta-icon-1-cft.svg',
-  '/figma/home-ta-icon-2-service.svg',
   '/figma/home-ta-icon-3-org.svg',
+  '/figma/home-ta-icon-2-service.svg',
 ]
 
 const CardIllustration: React.FC<{

@@ -15,7 +15,8 @@ export type IconFeatureItem = {
 
 export type IconFeaturesBlockProps = {
   blockType: 'iconFeatures'
-  variant?: 'cards' | 'pillars' | null
+  variant?: 'cards' | 'pillars' | 'roles' | null
+  heading?: string | null
   items?: IconFeatureItem[] | null
 }
 
@@ -125,13 +126,66 @@ const Pillars: React.FC<{ items: IconFeatureItem[] }> = ({ items }) => (
   </div>
 )
 
-export const IconFeaturesBlock: React.FC<IconFeaturesBlockProps> = ({ variant, items }) => {
+// School 學員角色 4 portrait 線稿（school TA 618:730 拆件，落地 public/figma）
+const ROLE_ICONS = [
+  '/figma/school-role-1.png',
+  '/figma/school-role-2.png',
+  '/figma/school-role-3.png',
+  '/figma/school-role-4.png',
+]
+
+/**
+ * variant roles：學員角色（Figma school TA 619:640）——置中 4 欄，icon 在上、
+ * 標題（olive）、說明（灰）；上方一條「標題＋滿版細線」眉標。
+ */
+const Roles: React.FC<{ heading?: string | null; items: IconFeatureItem[] }> = ({
+  heading,
+  items,
+}) => (
+  <div>
+    {heading && (
+      <div className="mb-10 flex items-center gap-5 md:mb-12">
+        <h2 className="shrink-0 text-[20px] font-medium tracking-[0.1em] text-brand-primary md:text-[24px]">
+          {heading}
+        </h2>
+        <span className="h-px flex-1 bg-brand-primary/40" />
+      </div>
+    )}
+    <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4 lg:gap-x-8">
+      {items.map((item, i) => (
+        <div className="flex flex-col items-center text-center" key={item.id ?? i}>
+          <ItemIcon
+            className="h-[92px] w-[92px] md:h-[108px] md:w-[108px]"
+            fallbackSrc={ROLE_ICONS[i]}
+            item={item}
+          />
+          <h3 className="mt-4 text-[16px] font-medium leading-[1.5] tracking-[0.05em] text-brand-primary md:text-[18px]">
+            {item.title}
+          </h3>
+          {item.text && (
+            <p className="mt-2 text-[13px] leading-[1.7] tracking-[0.03em] text-brand-muted md:text-sm">
+              {item.text}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+)
+
+export const IconFeaturesBlock: React.FC<IconFeaturesBlockProps> = ({ variant, heading, items }) => {
   if (!items || items.length === 0) return null
   return (
     <section className="container max-w-[1240px]" data-block="iconFeatures">
       {/* 卡片進場 Fade UP（Tracy node 86:363：滑到觸發、0→100%、0.6s） */}
       <ScrollReveal variant="up">
-        {variant === 'pillars' ? <Pillars items={items} /> : <Cards items={items} />}
+        {variant === 'pillars' ? (
+          <Pillars items={items} />
+        ) : variant === 'roles' ? (
+          <Roles heading={heading} items={items} />
+        ) : (
+          <Cards items={items} />
+        )}
       </ScrollReveal>
     </section>
   )
