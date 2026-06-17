@@ -171,7 +171,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
   const desktopLinkClass =
     'inline-flex items-center text-[17px] xl:text-[19px] font-medium tracking-[0.1em] text-brand-green transition-colors hover:text-brand-primary'
   const desktopPillClass =
-    'inline-flex items-center rounded-full bg-brand-lime pl-6 pr-5 py-3 text-[17px] xl:text-[19px] font-medium tracking-[0.1em] text-white transition-opacity hover:opacity-90'
+    'inline-flex h-[38px] items-center rounded-full bg-brand-green px-6 text-[17px] xl:text-[19px] font-medium leading-none tracking-[0.1em] text-white transition-opacity hover:opacity-90'
 
   return (
     <header
@@ -179,7 +179,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
         scrolled ? 'shadow-md' : ''
       }`}
     >
-      <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 lg:h-[104px] lg:px-[50px]">
+      <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 lg:h-[80px] lg:px-[50px]">
         <Link aria-label="Care For Taiwan 創照服務設計" href={isEn ? '/en' : '/'}>
           <Logo loading="eager" priority="high" />
         </Link>
@@ -220,7 +220,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
                   pathname={pathname}
                   withChevron
                 />
-                <div className="invisible absolute left-0 top-full z-30 min-w-[200px] translate-y-1 rounded-[20px] border border-border bg-white py-3 opacity-0 shadow-lg transition-all group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                {/* Tracy node 0:1：下拉選單「無動態效果」→ 直接顯示/隱藏，不做 fade/slide */}
+                <div className="invisible absolute left-0 top-full z-30 min-w-[200px] rounded-[20px] border border-border bg-white py-3 shadow-lg group-focus-within:visible group-hover:visible">
                   {(item.subItems ?? []).map((sub) => (
                     <NavLink
                       activeClassName="text-brand-lime font-semibold"
@@ -229,6 +230,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
                       item={sub}
                       key={sub.id}
                       pathname={pathname}
+                      withExternalArrow={sub.type === 'external' || sub.url.startsWith('http')}
                     />
                   ))}
                 </div>

@@ -129,42 +129,14 @@ const ItemsIconCards: React.FC<{ items: TwoColumnItem[] }> = ({ items }) => (
   </div>
 )
 
-/** 發展路徑線稿 icon（Figma training 合作模式 97:564）：橄欖綠線描、無底無框
- *  組織需求＝人＋簡報架／客製培力方案＝大樓窗格／社會影響力＝手捧新芽 */
-const StepLineIcons: React.FC<{ className?: string }>[] = [
-  ({ className }) => (
-    <svg aria-hidden className={className} viewBox="0 0 48 48" fill="none" stroke="#9c9f33" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="7" y="8" width="34" height="22" rx="2" />
-      <path d="M24 30v6M16 41l8-5 8 5" />
-      <circle cx="18" cy="17" r="3.2" />
-      <path d="M13 25c0-3.3 2.2-5.5 5-5.5s5 2.2 5 5.5" />
-      <path d="M28 16h8M28 21h6" />
-    </svg>
-  ),
-  ({ className }) => (
-    <svg aria-hidden className={className} viewBox="0 0 48 48" fill="none" stroke="#9c9f33" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="9" y="6" width="20" height="36" rx="1.5" />
-      <rect x="29" y="18" width="11" height="24" rx="1.5" />
-      <path d="M14 13h3M22 13h3M14 20h3M22 20h3M14 27h3M22 27h3" />
-      <path d="M33 25h3M33 32h3" />
-      <path d="M6 42h36" />
-    </svg>
-  ),
-  ({ className }) => (
-    <svg aria-hidden className={className} viewBox="0 0 48 48" fill="none" stroke="#9c9f33" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M24 38V22" />
-      <path d="M24 25c0-5 3.5-9 9-9 0 5-4 9-9 9Z" />
-      <path d="M24 30c0-4.5-3.2-8-8-8 0 4.5 3.5 8 8 8Z" />
-      <path d="M11 38c3-3 8-4 13-4s10 1 13 4" />
-    </svg>
-  ),
-]
+/** 發展路徑 icon（Figma training 285:419/466/487 抽出）：組織需求＝兩人＋對話框／
+ *  客製培力方案＝簡報＋定位／社會影響力＝手捧地球（多色，與 Figma 一致） */
+const DEV_STEP_ICONS = ['/figma/dev-step-1.svg', '/figma/dev-step-2.svg', '/figma/dev-step-3.svg']
 
 /** 發展路徑（Figma training 97:564）：3 步無框線稿 icon + 橄欖綠箭頭，與上方米色帶同一層 */
 const ItemsSteps: React.FC<{ items: TwoColumnItem[] }> = ({ items }) => (
   <div className="mt-12 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center sm:gap-2 md:mt-14 md:gap-6">
     {items.map((item, i) => {
-      const LineIcon = StepLineIcons[i % StepLineIcons.length]
       return (
         <React.Fragment key={item.id ?? i}>
           {i > 0 && (
@@ -179,7 +151,8 @@ const ItemsSteps: React.FC<{ items: TwoColumnItem[] }> = ({ items }) => (
                 <Media resource={item.image} imgClassName="h-full w-full object-cover" />
               </span>
             ) : (
-              <LineIcon className="h-14 w-14 md:h-16 md:w-16" />
+              // eslint-disable-next-line @next/next/no-img-element
+              <img alt="" className="h-14 w-14 md:h-16 md:w-16" src={DEV_STEP_ICONS[i % DEV_STEP_ICONS.length]} />
             )}
             <h3 className="text-base font-medium tracking-[0.1em] text-brand-ink md:text-[17px]">{item.title}</h3>
             {item.text && <p className="text-sm leading-[1.7] text-brand-muted">{item.text}</p>}

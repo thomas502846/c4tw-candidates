@@ -207,7 +207,12 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
                 <div key={column.id}>
                   <h3 className={columnTitleClass}>{column.title}</h3>
                   <ul
-                    className={`flex flex-col ${isContact ? 'gap-4' : 'gap-2'} items-center sm:items-start`}
+                    className={
+                      isContact
+                        ? 'flex flex-col items-center gap-4 sm:items-start'
+                        : // Figma 手機版 footer：關於我們連結 2 欄格（桌機回單欄）
+                          'grid grid-cols-2 justify-items-center gap-x-8 gap-y-2 sm:flex sm:flex-col sm:items-start sm:gap-2'
+                    }
                   >
                     {(column.links ?? []).map((link) => (
                       <li key={link.id}>
