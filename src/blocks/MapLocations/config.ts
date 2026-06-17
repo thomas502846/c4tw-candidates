@@ -44,6 +44,14 @@ export const MapLocations: Block = {
       },
     },
     {
+      name: 'storyUrl',
+      type: 'text',
+      label: '「空間故事」按鈕連結（可選）',
+      admin: {
+        description: '填了就會在內文下方顯示一顆「羅布森空間故事」按鈕，點擊開新分頁前往該連結；不填則不顯示。',
+      },
+    },
+    {
       name: 'image',
       type: 'upload',
       relationTo: 'media',

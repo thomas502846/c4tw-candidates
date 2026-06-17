@@ -17,6 +17,7 @@ export type MapLocationsBlockProps = {
   title?: string | null
   subtitle?: string | null
   body?: string | null
+  storyUrl?: string | null
   image?: MediaDoc | string | number | null
   locations?: MapLocation[] | null
 }
@@ -68,6 +69,7 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
   title,
   subtitle,
   body,
+  storyUrl,
   image,
   locations,
 }) => {
@@ -100,6 +102,16 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
             <p className="mt-5 whitespace-pre-line text-justify text-base leading-[1.85] tracking-[0.1em] text-brand-ink">
               {body}
             </p>
+          )}
+          {storyUrl && (
+            <a
+              className="mt-6 inline-flex items-center rounded-full bg-brand-green px-6 py-2.5 text-[15px] font-medium tracking-[0.1em] text-white transition-opacity hover:opacity-90"
+              href={storyUrl}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              羅布森空間故事 →
+            </a>
           )}
         </div>
 

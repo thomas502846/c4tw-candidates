@@ -1498,6 +1498,10 @@ export interface MapLocationsBlock {
    */
   body?: string | null;
   /**
+   * 填了就會在內文下方顯示一顆「羅布森空間故事」按鈕，點擊開新分頁前往該連結；不填則不顯示。
+   */
+  storyUrl?: string | null;
+  /**
    * 上傳一張地圖插畫放在右側。建議上傳寬度 600px 以上、橫式的圖。如果留空，系統會自動顯示內建的水彩地形圖。
    */
   image?: (number | null) | Media;
@@ -2558,6 +2562,7 @@ export interface MapLocationsBlockSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   body?: T;
+  storyUrl?: T;
   image?: T;
   locations?:
     | T
