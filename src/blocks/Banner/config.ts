@@ -12,6 +12,10 @@ export const Banner: Block = {
     {
       name: 'style',
       type: 'select',
+      admin: {
+        description:
+          '選一個提示樣式來決定底色與外框。Info 是一般說明（藍灰），Warning 是提醒注意（黃），Error 是錯誤或重要警告（紅），Success 是成功或好消息（綠）。',
+      },
       defaultValue: 'info',
       options: [
         { label: 'Info', value: 'info' },
@@ -29,6 +33,10 @@ export const Banner: Block = {
           return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
         },
       }),
+      admin: {
+        description:
+          '填入要強調顯示的提示文字，建議一兩句話就好，太長會讓提示框變得擁擠。',
+      },
       label: false,
       required: true,
     },

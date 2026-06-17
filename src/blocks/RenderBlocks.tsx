@@ -97,6 +97,12 @@ export const RenderBlocks: React.FC<{
         {blocks.map((block, index) => {
           const { blockType } = block
 
+          // 區塊顯示開關：客戶在 CMS 取消勾選「在網站上顯示此區塊」即隱藏（內容仍保留）。
+          // 用 === false 判斷，舊資料（無此欄位）預設仍顯示。
+          if ((block as { enabled?: boolean }).enabled === false) {
+            return null
+          }
+
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType]
 

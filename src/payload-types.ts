@@ -456,15 +456,37 @@ export interface User {
  */
 export interface HeroBlock {
   /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
    * 每張圖可設定各自的標題/副標/按鈕——想全部一樣就填一樣，想每張不同就分別填。圖與文字會一起滑動切換。
    */
   images?:
     | {
+        /**
+         * 放這張輪播的滿版背景大圖。建議上傳寬度 1920px 以上的橫式照片，畫面主體盡量置中，因為文字會壓在照片中央。
+         */
         image: number | Media;
+        /**
+         * 填這張圖最主要的一句話，顯示在照片中央最大的字。建議 16 個字以內，太長手機會換很多行。
+         */
         title?: string | null;
+        /**
+         * 填主標題下面的補充說明，會接在主標題下一行。建議 30 個字以內。
+         */
         subtitle?: string | null;
+        /**
+         * 想在照片上放一顆可以點的按鈕就填這裡；按鈕文字和連結都填了才會出現。
+         */
         cta?: {
+          /**
+           * 填按鈕上顯示的字，例如「了解更多」。建議 6 個字以內。
+           */
           label?: string | null;
+          /**
+           * 填點按鈕後要前往的網址。站內可以填以斜線開頭的路徑，例如 /about；站外請填完整網址。
+           */
           url?: string | null;
         };
         id?: string | null;
@@ -479,8 +501,21 @@ export interface HeroBlock {
  * via the `definition` "PageHeaderBlock".
  */
 export interface PageHeaderBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填這個頁面的大標題，會顯示在綠帶左側最大的白字。建議 12 個字以內。
+   */
   title: string;
+  /**
+   * 填標題上方的英文小字，通常用大寫，例如 ABOUT。沒有就留空。
+   */
   eyebrow?: string | null;
+  /**
+   * 放綠帶的背景照片，左側會壓上綠色、右側漸層透出照片。建議上傳寬度 1920px 以上的橫式照片，重點畫面放在右半邊比較看得到。不放的話整條會是純綠色。
+   */
   image?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
@@ -491,9 +526,22 @@ export interface PageHeaderBlock {
  * via the `definition` "NewsTickerBlock".
  */
 export interface NewsTickerBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 每一筆是一則跑馬燈消息，會輪流向上捲動顯示。可以新增、刪除、拖曳調整順序。
+   */
   items?:
     | {
+        /**
+         * 填一則消息的文字。電腦版只顯示一行、過長會被切掉，建議 25 個字以內。
+         */
         text: string;
+        /**
+         * 想讓這則消息可以點進去就填網址。站內可以填以斜線開頭的路徑，例如 /news/123；站外請填完整網址。不填就只是純文字。
+         */
         url?: string | null;
         enabled?: boolean | null;
         id?: string | null;
@@ -508,11 +556,33 @@ export interface NewsTickerBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填標題前的一行小字，會顯示在綠色圓點後面，通常放英文或分類字，例如 ABOUT。沒有就留空。
+   */
   eyebrow?: string | null;
+  /**
+   * 填這個段落的主標題，會以灰綠色大字顯示。建議 16 個字以內。
+   */
   title?: string | null;
+  /**
+   * 選標題和眉標要靠左還是置中。只有在這個段落沒有放側邊配圖時才會生效。
+   */
   align?: ('left' | 'center') | null;
+  /**
+   * 想在內文下方放一顆按鈕就填按鈕文字，例如「認識創照」。建議 6 個字以內。按鈕文字和連結都填了才會出現。
+   */
   ctaLabel?: string | null;
+  /**
+   * 填點按鈕後要前往的網址。站內可以填以斜線開頭的路徑，例如 /about；站外請填完整網址。
+   */
   ctaUrl?: string | null;
+  /**
+   * 填這個段落的主要內容文字。可以分段、設定粗體、加上 H2／H3／H4 小標和連結。
+   */
   richText?: {
     root: {
       type: string;
@@ -529,18 +599,24 @@ export interface ContentBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * 若要多張錯位拼貼（如首頁品牌簡介 3 張情境照），請改用下方「配圖（多張錯位拼貼）」。兩者擇一即可，多張優先。
+   * 放這個段落旁邊的一張配圖。建議上傳寬度 768px 以上、接近直式或方形的照片。若要多張錯位拼貼（如首頁品牌簡介 3 張情境照），請改用下方「配圖（多張錯位拼貼）」。兩者擇一即可，多張優先。
    */
   image?: (number | null) | Media;
   /**
-   * 依 Figma 首頁品牌簡介排列：第 1 張上方主圖、第 2 張右下小圖、第 3 張左下寬圖。可加／刪／拖曳排序，建議 3 張。
+   * 依 Figma 首頁品牌簡介排列：第 1 張上方主圖、第 2 張右下小圖、第 3 張左下寬圖。可加／刪／拖曳排序，建議 3 張。每張建議上傳寬度 768px 以上的橫式照片。
    */
   images?:
     | {
+        /**
+         * 放一張情境照。建議上傳寬度 768px 以上、接近 4:3 的橫式照片。
+         */
         image: number | Media;
         id?: string | null;
       }[]
     | null;
+  /**
+   * 選配圖要放在文字的哪一邊，或放在文字下方一整排。選「不顯示」就不會出現配圖。
+   */
   imagePosition?: ('left' | 'right' | 'belowCenter' | 'none') | null;
   id?: string | null;
   blockName?: string | null;
@@ -551,16 +627,41 @@ export interface ContentBlock {
  * via the `definition` "TimelineBlock".
  */
 export interface TimelineBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 選大事紀要怎麼來。選「手動輸入」就在下方一筆筆自己打；選「引用大事紀資料」就從共用的大事紀資料庫挑要顯示的項目。
+   */
   mode: 'manual' | 'reference';
+  /**
+   * 每一筆是時間軸上的一個事件，會由上到下依序排列。可以新增、刪除、拖曳調整順序。
+   */
   items?:
     | {
+        /**
+         * 填這個事件的年份或日期，例如 2020 或 2020/03。
+         */
         date: string;
+        /**
+         * 填這個事件的標題，會顯示在綠色的圓角標籤裡。建議 14 個字以內。
+         */
         title: string;
+        /**
+         * 填這個事件的補充說明，只有在下方打開「顯示每筆說明文字」時才會出現。建議 25 個字以內。
+         */
         description?: string | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * 從共用的大事紀資料庫挑出要顯示的項目，可以挑多筆。系統會自動依年份排序。
+   */
   events?: (number | TimelineEvent)[] | null;
+  /**
+   * 打開後，每個事件的標籤下面會多顯示一句話描述。關閉時只顯示乾淨的單行標籤。
+   */
   showDescription?: boolean | null;
   id?: string | null;
   blockName?: string | null;
@@ -590,10 +691,26 @@ export interface TimelineEvent {
  * via the `definition` "StatsCardsBlock".
  */
 export interface StatsCardsBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 一張卡片是一個數據，例如「服務 120 個家庭」。可以新增多張並排顯示，建議放 3 到 4 張最整齊。
+   */
   cards?:
     | {
+        /**
+         * 填想強調的數字，例如 120、98。會以大字顯示，請只填數字本身，單位放在後綴欄。
+         */
         number: string;
+        /**
+         * 填數字下方的一行說明，例如「服務家庭數」「合作鄉鎮」。簡短一句最好看。
+         */
         label: string;
+        /**
+         * 填數字後面的單位，例如「人」「%」「個」。沒有單位可以留空。
+         */
         suffix?: string | null;
         id?: string | null;
       }[]
@@ -607,14 +724,42 @@ export interface StatsCardsBlock {
  * via the `definition` "AwardsBlock".
  */
 export interface AwardsBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 選「手動輸入」就在這個區塊直接打獎項；選「引用獎項資料」則改從獎項資料庫挑選，適合多個頁面共用同一份清單。
+   */
   source: 'manual' | 'collection';
+  /**
+   * 從獎項資料庫挑選要顯示的獎項，可以選多筆。畫面會自動依年份由新到舊排序。
+   */
   awards?: (number | Award)[] | null;
+  /**
+   * 一筆一個獎項，會以條列清單顯示在左欄。可以新增多筆，建議由新到舊排列。
+   */
   items?:
     | {
+        /**
+         * 填西元年份，例如 2025。
+         */
         year: string;
+        /**
+         * 填月份數字，例如 6。不確定月份可以留空。
+         */
         month?: string | null;
+        /**
+         * 填完整的獎項名稱，例如「第 12 屆台灣社會企業獎」。
+         */
         name: string;
+        /**
+         * 填補充說明或得獎單位，例如「金獎」「年度團隊」。會顯示在獎項名稱後面，可以留空。
+         */
         recipient?: string | null;
+        /**
+         * 放這組獎項要搭配的照片，會顯示在右側大圖位置。建議上傳寬度 1920px 以上的橫式照片。多筆獎項只會取其中一張當代表圖。
+         */
         photo?: (number | null) | Media;
         id?: string | null;
       }[]
@@ -654,17 +799,54 @@ export interface Award {
  * via the `definition` "ArticleCardsBlock".
  */
 export interface ArticleCardsBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 選資料來源：「案例故事」「媒體報導」會自動抓對應資料庫的內容；選「手動卡片」則在這個區塊自己一張一張填。
+   */
   source: 'case-stories' | 'media-coverage' | 'manual';
+  /**
+   * 填標題上方的英文小字，例如 Media。只在媒體報導版型顯示，可以留空。
+   */
   eyebrow?: string | null;
+  /**
+   * 填媒體報導區塊右側的大標題，例如「媒體報導」。只在媒體報導版型顯示。
+   */
   heading?: string | null;
+  /**
+   * 放媒體報導區塊左側的代表圖。建議上傳寬度 1920px 以上的橫式照片，顯示時會裁成接近 3:2 的比例。
+   */
   leadImage?: (number | null) | Media;
+  /**
+   * 設定一開始顯示幾張卡片，例如填 3 就先顯示 3 張，其餘按「載入更多」才出現。
+   */
   batchSize?: number | null;
+  /**
+   * 勾選後，卡片數量超過上面設定時會出現「載入更多」按鈕。取消勾選則只顯示前面那批。
+   */
   enableLoadMore?: boolean | null;
+  /**
+   * 一張卡片是一則內容，例如一篇報導或一個故事。只有資料來源選「手動卡片」時才需要填。
+   */
   cards?:
     | {
+        /**
+         * 放這張卡片的圖片。建議上傳寬度 768px 以上、接近 4:3 的橫式圖，顯示時會自動裁切置中。
+         */
         image?: (number | null) | Media;
+        /**
+         * 填卡片標題，也就是這則內容的名稱，例如報導或故事的篇名。
+         */
         title: string;
+        /**
+         * 填標題下方的一兩句簡介，讓讀者快速知道內容在講什麼。可以留空。
+         */
         excerpt?: string | null;
+        /**
+         * 填點擊卡片後要前往的網址，例如原始報導連結。記得連 https:// 一起填。沒有連結可以留空。
+         */
         url?: string | null;
         id?: string | null;
       }[]
@@ -678,15 +860,34 @@ export interface ArticleCardsBlock {
  * via the `definition` "LogoWallBlock".
  */
 export interface LogoWallBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 選「手動輸入」就在這個區塊直接上傳每個 Logo；選「夥伴資料」則自動抓夥伴資料庫的 Logo。
+   */
   source: 'partners' | 'manual';
   /**
-   * 對應 partners collection 的 type 值；留空表示全部
+   * 只想顯示某一類夥伴時填類別名稱，留空就顯示全部夥伴。
    */
   partnerType?: string | null;
+  /**
+   * 一筆一個 Logo，會並排顯示成一面 Logo 牆。可以新增多個。
+   */
   logos?:
     | {
+        /**
+         * 上傳這個夥伴的 Logo。建議用 SVG 或去背的 PNG，背景透明在白底卡片上最好看。
+         */
         logo: number | Media;
+        /**
+         * 填這個 Logo 代表的單位名稱。畫面上不會直接顯示，是給點擊連結與無障礙朗讀用的，建議照樣填寫。
+         */
         name?: string | null;
+        /**
+         * 填點擊 Logo 後要前往的網址，例如對方官網。記得連 https:// 一起填。沒有連結可以留空。
+         */
         url?: string | null;
         id?: string | null;
       }[]
@@ -700,8 +901,21 @@ export interface LogoWallBlock {
  * via the `definition` "QuoteBlock".
  */
 export interface QuoteBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填想凸顯的一段話或推薦語，會以置中大字顯示。系統會自動加上「」引號，不用自己打。
+   */
   text: string;
+  /**
+   * 填說這句話的人或單位，例如「林依瑩 執行長」。會顯示在引言下方，可以留空。
+   */
   attribution?: string | null;
+  /**
+   * 放說這句話的人的大頭照，會顯示成引言上方的圓形頭像。建議上傳正方形、600px 以上的照片。
+   */
   photo?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
@@ -712,19 +926,44 @@ export interface QuoteBlock {
  * via the `definition` "TwoColumnBlock".
  */
 export interface TwoColumnBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
   direction: 'imageLeft' | 'imageRight';
   variant?: ('standard' | 'hero' | 'quotes' | 'centered') | null;
+  /**
+   * 填一句最上面的粗體前導標題，可以不填。想要分行的地方輸入 \n。建議在 30 個字以內，超過會擠到版面。
+   */
   lead?: string | null;
   background?: ('none' | 'surface') | null;
+  /**
+   * 填標題上方的一行英文小標，例如 Service，可以不填。建議在 12 個字母以內，只放一行短字。
+   */
   eyebrow?: string | null;
+  /**
+   * 上傳這個區塊的主圖。建議上傳寬度 768px 以上、接近 4:3 的橫式照片；如果是大圖引言版型，建議上傳寬度 1920px 以上的橫式大圖。
+   */
   image: number | Media;
+  /**
+   * 想要做斜疊雙圖時，放滿兩張照片即可。只放一張或不放，就會使用上面的單張主圖。建議兩張都上傳寬度 768px 以上的橫式照片。
+   */
   images?:
     | {
+        /**
+         * 上傳一張橫式照片，建議寬度 768px 以上。
+         */
         image: number | Media;
         id?: string | null;
       }[]
     | null;
+  /**
+   * 填這個區塊的主標題。建議在 20 個字以內，太長會換很多行。
+   */
   title?: string | null;
+  /**
+   * 填這個區塊的內文段落，可以分段、加上小標或粗體。
+   */
   richText?: {
     root: {
       type: string;
@@ -740,14 +979,32 @@ export interface TwoColumnBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * 想在內文下方放一顆按鈕時，填按鈕文字和連結；兩個都填才會顯示。
+   */
   cta?: {
+    /**
+     * 填按鈕上的文字，例如 了解更多。建議在 6 個字以內。
+     */
     label?: string | null;
+    /**
+     * 填按鈕點下去要前往的網址。站內頁面用斜線開頭，例如 /about；站外網址請填完整的 https 連結。
+     */
     url?: string | null;
   };
   items?:
     | {
+        /**
+         * 上傳這張卡的圖示或照片，可以不填，不填會用預設的圓形色塊。圖示建議用 SVG 或去背 PNG；照片建議正方形、寬度 600px 以上。
+         */
         image?: (number | null) | Media;
+        /**
+         * 填這張卡的標題。建議在 10 個字以內。
+         */
         title: string;
+        /**
+         * 填這張卡的一兩句說明，可以不填。建議在 40 個字以內。
+         */
         text?: string | null;
         id?: string | null;
       }[]
@@ -762,12 +1019,31 @@ export interface TwoColumnBlock {
  * via the `definition` "NumberedFeaturesBlock".
  */
 export interface NumberedFeaturesBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填整區最上方的一行英文小標，例如 Service，可以不填。只會顯示在第一個項目上方，建議在 12 個字母以內。
+   */
   eyebrow?: string | null;
   items?:
     | {
+        /**
+         * 填這個項目的序號，例如 01、02、03。只放兩位數字就好。
+         */
         number: string;
+        /**
+         * 填這個項目的標題。建議在 14 個字以內，太長會擠到旁邊的序號。
+         */
         title: string;
+        /**
+         * 填這個項目的說明段落，可以多行，按 Enter 換行就會分行顯示。
+         */
         text: string;
+        /**
+         * 上傳這個項目右側（或左側）的照片。建議上傳寬度 768px 以上、接近 3:2 的橫式照片。
+         */
         image?: (number | null) | Media;
         id?: string | null;
       }[]
@@ -781,13 +1057,32 @@ export interface NumberedFeaturesBlock {
  * via the `definition` "TaCtaBlock".
  */
 export interface TaCtaBlock {
-  variant: 'tiles' | 'photoCards' | 'photoBand';
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  variant: 'tiles' | 'photoCards' | 'photoBand' | 'darkBand';
+  /**
+   * 填照片連結卡上方的一段置中導言，可以多行，按 Enter 換行。建議在 40 個字以內。只有照片連結雙卡版型會用到。
+   */
   intro?: string | null;
   cards?:
     | {
+        /**
+         * 三磚版型上傳白色去背的線稿插圖，建議用 SVG 或去背 PNG，不填會用預設插圖；照片卡與全幅照片帶請上傳橫式照片，照片卡建議寬度 768px 以上、全幅照片帶建議寬度 1920px 以上。
+         */
         image?: (number | null) | Media;
+        /**
+         * 填這張卡的標語，例如 我想成為照顧專業人才。建議在 14 個字以內，太長會換行。
+         */
         title: string;
+        /**
+         * 填按鈕上的文字，例如 立即了解。建議在 8 個字以內。照片連結卡不放按鈕，可以留空。
+         */
         buttonLabel?: string | null;
+        /**
+         * 填這張卡點下去要前往的網址。站內頁面用斜線開頭，例如 /school；頁內錨點用井號開頭，例如 #sheet；站外網址請填完整的 https 連結。
+         */
         url?: string | null;
         id?: string | null;
       }[]
@@ -801,7 +1096,17 @@ export interface TaCtaBlock {
  * via the `definition` "VideoBlockBlock".
  */
 export interface VideoBlockBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 貼上 YouTube 影片連結（watch、youtu.be、shorts、embed 都可以），或填一個 mp4 影片檔的網址。影片還沒準備好可以先留空，點播放鈕會顯示即將上線的提示。
+   */
   videoUrl?: string | null;
+  /**
+   * 上傳影片未播放時顯示的封面圖。建議上傳寬度 1920px 以上的橫式大圖，比例接近 16:9。不填會顯示灰底佔位。
+   */
   poster?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
@@ -812,13 +1117,32 @@ export interface VideoBlockBlock {
  * via the `definition` "MissionCirclesBlock".
  */
 export interface MissionCirclesBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
   variant: 'band' | 'plain';
+  /**
+   * 填白底版型最上方的置中標題，例如 \ 與我們一起行動 /。建議在 14 個字以內。只有白底行動三圓版型會用到。
+   */
   title?: string | null;
+  /**
+   * 填宣言帶上方的標語，可以多行，按 Enter 換行就會分行顯示。建議在 30 個字以內。只有宣言帶版型會用到。
+   */
   slogan?: string | null;
+  /**
+   * 上傳宣言帶的背景照片。建議上傳寬度 1920px 以上的橫式大圖。只有宣言帶版型會用到。
+   */
   backgroundImage?: (number | null) | Media;
   circles?:
     | {
+        /**
+         * 填顯示在圓圈裡的白色短句，例如 培育照顧的人。建議在 8 個字以內。
+         */
         label: string;
+        /**
+         * 填圓圈下方的一兩句說明，可以不填。建議在 30 個字以內。只有白底行動三圓版型會顯示。
+         */
         description?: string | null;
         id?: string | null;
       }[]
@@ -832,11 +1156,34 @@ export interface MissionCirclesBlock {
  * via the `definition` "IconFeaturesBlock".
  */
 export interface IconFeaturesBlock {
-  variant: 'cards' | 'pillars';
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 選擇卡片排列方式。米色橫卡列適合放一排功能或步驟說明，建議放 4 個項目；直立綠卡是站立式色卡，建議放 5 個項目；學員角色是 icon 在上、標題說明置中的 4 欄版型。
+   */
+  variant: 'cards' | 'pillars' | 'roles';
+  /**
+   * 只有「學員角色」版型會用到，顯示在卡片上方（例如「學員樣貌」）；其他版型可留空。
+   */
+  heading?: string | null;
+  /**
+   * 逐一新增每一張卡片的內容。米色橫卡列建議放 4 個，直立綠卡建議放 5 個。
+   */
   items?:
     | {
+        /**
+         * 上傳這張卡片的小圖示。建議上傳 SVG 或去背 PNG。不上傳時會自動帶入系統內建的線稿圖示。
+         */
         icon?: (number | null) | Media;
+        /**
+         * 填這張卡片的標題，請簡短，建議 16 個字以內，太長會擠壓版面。
+         */
         title: string;
+        /**
+         * 填標題底下的補充說明，一兩句話即可，建議 60 個字以內。
+         */
         text?: string | null;
         id?: string | null;
       }[]
@@ -850,12 +1197,34 @@ export interface IconFeaturesBlock {
  * via the `definition` "StepsBlockBlock".
  */
 export interface StepsBlockBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 選擇步驟的呈現方式。整寬米色卡適合放服務流程，步驟間有箭頭相連；橫列版適合放發展路徑；外框卡適合放並列的成果或影響力。建議放 3 個步驟。
+   */
   variant: 'cardRow' | 'inline' | 'outline';
+  /**
+   * 填整個步驟區上方的標題，可以不填。建議 30 個字以內。
+   */
   title?: string | null;
+  /**
+   * 逐一新增每一個步驟，建議放 3 個，並依照流程先後順序排列。
+   */
   items?:
     | {
+        /**
+         * 上傳這個步驟的小圖示，建議上傳 SVG 或去背 PNG。不上傳時會自動帶入系統內建的線稿圖示。外框卡版型不會顯示圖示，可以不填。
+         */
         icon?: (number | null) | Media;
+        /**
+         * 填這個步驟的標題，請簡短，建議 16 個字以內。外框卡版型可以留空。
+         */
         title?: string | null;
+        /**
+         * 填步驟的補充說明，一兩句話即可，建議 50 個字以內。
+         */
         text?: string | null;
         id?: string | null;
       }[]
@@ -869,36 +1238,94 @@ export interface StepsBlockBlock {
  * via the `definition` "InfographicBlock".
  */
 export interface InfographicBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 選擇資訊圖的樣式。兩圓圖適合用兩個面向＋數字呈現現況痛點；環形圖適合在環上放四張照片帶出問題；菱形四圓適合並列四個面向。選好圖型後，下方會出現對應要填的欄位。
+   */
   variant: 'venn' | 'ring' | 'radial';
+  /**
+   * 填標題上方的英文小標，例如一個英文短語，可以不填。填了標題或內文後，圖會移到右邊、文字在左邊。建議 30 個字以內。
+   */
   eyebrow?: string | null;
+  /**
+   * 填左邊欄位的大標題，可以不填。標題和內文都不填時，資訊圖會置中放大滿版。建議 30 個字以內。
+   */
   title?: string | null;
+  /**
+   * 填左邊欄位的說明文字。按 Enter 換行就會分段；在開頭加「・」可以做成項目符號。
+   */
   body?: string | null;
+  /**
+   * 填左邊大圓中央的標題，例如「個人生活」。請簡短，建議 8 個字以內。
+   */
   leftLabel?: string | null;
+  /**
+   * 填右邊大圓中央的標題，例如「職場角色」。請簡短，建議 8 個字以內。
+   */
   rightLabel?: string | null;
+  /**
+   * 左邊大圓周圍的小數據圓，最多放 3 顆，每顆放一組數字加說明。
+   */
   leftStats?:
     | {
+        /**
+         * 填要強調的數字，例如「8+」或「6成」。請簡短，建議 8 個字以內。
+         */
         value: string;
+        /**
+         * 填數字底下的說明，例如「平均照顧年數」。請簡短，建議 12 個字以內。
+         */
         label: string;
         id?: string | null;
       }[]
     | null;
+  /**
+   * 右邊大圓周圍的小數據圓，最多放 3 顆，每顆放一組數字加說明。
+   */
   rightStats?:
     | {
+        /**
+         * 填要強調的數字，例如「13.3萬」。請簡短，建議 8 個字以內。
+         */
         value: string;
+        /**
+         * 填數字底下的說明文字。請簡短，建議 12 個字以內。
+         */
         label: string;
         id?: string | null;
       }[]
     | null;
+  /**
+   * 放在環形圖四角的照片，請放 4 張，順序為右上、右下、左下、左上。
+   */
   photos?:
     | {
+        /**
+         * 上傳一張照片，顯示時會裁成圓形。建議上傳正方形、寬度 600px 以上的照片，主體放中間比較不會被裁掉。
+         */
         image?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
+  /**
+   * 菱形排列的四個圓，請放 4 個，順序為上、左、右、下，每個圓放一個面向。
+   */
   nodes?:
     | {
+        /**
+         * 上傳圓內的小圖示，建議上傳 SVG 或去背 PNG，可以不填。不上傳時會自動帶入系統內建的線稿圖示。
+         */
         icon?: (number | null) | Media;
+        /**
+         * 填這個圓的標題，請簡短，建議 16 個字以內。
+         */
         title: string;
+        /**
+         * 填標題底下的補充說明，一兩句話即可，建議 40 個字以內。
+         */
         text?: string | null;
         id?: string | null;
       }[]
@@ -912,25 +1339,71 @@ export interface InfographicBlock {
  * via the `definition` "TabsBlockBlock".
  */
 export interface TabsBlockBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填整個區塊最上方的置中大標題，可以不填。建議 40 個字以內。
+   */
   title?: string | null;
+  /**
+   * 填標題底下的置中導言，按 Enter 換行就會分行。建議 80 個字以內。
+   */
   intro?: string | null;
+  /**
+   * 逐一新增每一個分頁。訪客點上方的分頁按鈕，下方面板就會切換成對應內容。版型最適合 4 個分頁。
+   */
   tabs?:
     | {
+        /**
+         * 填分頁按鈕上的文字，例如「課程地圖」。請很簡短，建議 10 個字以內。
+         */
         label: string;
+        /**
+         * 上傳這個分頁面板最上方的大圖，例如地圖或圖表。建議上傳寬度 1075px 以上、接近 16:9 的橫式圖。
+         */
         image?: (number | null) | Media;
+        /**
+         * 大圖底下一整排的小圓角標籤，逐一新增，每個標籤填一個關鍵詞。
+         */
         pills?:
           | {
+              /**
+               * 填一個標籤的文字，請簡短，建議 12 個字以內。
+               */
               text: string;
               id?: string | null;
             }[]
           | null;
+        /**
+         * 填面板內的大標題，例如「課程地圖」。請簡短，建議 16 個字以內。
+         */
         heading?: string | null;
+        /**
+         * 填標題底下的橄欖綠色小標一句話，建議 30 個字以內。
+         */
         subheading?: string | null;
+        /**
+         * 填面板的主要說明文字，按 Enter 換行就會分段。
+         */
         body?: string | null;
+        /**
+         * 填特色清單上方的小標題，例如「學習特色」。建議 16 個字以內。
+         */
         featuresLabel?: string | null;
+        /**
+         * 逐一新增這個分頁要列出的特色，每一項一個標題加一段說明。
+         */
         features?:
           | {
+              /**
+               * 填這一項特色的標題，請簡短，建議 20 個字以內。
+               */
               title: string;
+              /**
+               * 填這一項特色的說明文字，建議 80 個字以內。
+               */
               text?: string | null;
               id?: string | null;
             }[]
@@ -947,16 +1420,50 @@ export interface TabsBlockBlock {
  * via the `definition` "PillarCardsBlock".
  */
 export interface PillarCardsBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填標題上方的英文小標，可以不填。建議 30 個字以內。
+   */
   eyebrow?: string | null;
+  /**
+   * 填這個區塊的主標題，例如「人才培育系統」。建議 20 個字以內。
+   */
   title?: string | null;
+  /**
+   * 填標題底下的副標一句話，建議 30 個字以內。
+   */
   subtitle?: string | null;
+  /**
+   * 填右邊欄位的導言段落，按 Enter 換行就會分段。
+   */
   intro?: string | null;
+  /**
+   * 逐一新增直立色卡，建議放 4 張。卡片底色會依新增順序自動套用，並一高一低交錯排列，不需要自己設定。
+   */
   cards?:
     | {
+        /**
+         * 填卡片頂端的小標籤，例如「學習的內容」。請很簡短，建議 10 個字以內。
+         */
         tag?: string | null;
+        /**
+         * 上傳卡片白色圓圈內的小圖示，建議上傳 SVG 或去背 PNG，可以不填。不上傳時會自動帶入系統內建的線稿圖示。
+         */
         icon?: (number | null) | Media;
+        /**
+         * 填卡片的主標大字，例如「課程」。請很簡短，建議 6 個字以內。
+         */
         titleMain: string;
+        /**
+         * 填主標旁邊接著的小字，例如「地圖」，可以不填。建議 6 個字以內。
+         */
         titleSub?: string | null;
+        /**
+         * 填卡片底部的說明文字，約兩行，建議 40 個字以內。
+         */
         text?: string | null;
         id?: string | null;
       }[]
@@ -970,14 +1477,42 @@ export interface PillarCardsBlock {
  * via the `definition` "MapLocationsBlock".
  */
 export interface MapLocationsBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填一行小標，放在主標題上方，可以放英文或服務名稱，例如 CFT Space。
+   */
   eyebrow?: string | null;
+  /**
+   * 填這個區塊的大標題，建議在 12 個字以內，例如：羅布森空間。
+   */
   title?: string | null;
+  /**
+   * 填一句副標，放在標題下方，用來補充說明，例如：照顧學校的培訓場域。
+   */
   subtitle?: string | null;
+  /**
+   * 填這個區塊的說明文字，按一次換行就會分成一個新段落。
+   */
   body?: string | null;
+  /**
+   * 上傳一張地圖插畫放在右側。建議上傳寬度 600px 以上、橫式的圖。如果留空，系統會自動顯示內建的水彩地形圖。
+   */
   image?: (number | null) | Media;
+  /**
+   * 一個一個加上要標記在地圖上的據點，每個據點會在地圖上顯示一個定位圖釘和名稱。
+   */
   locations?:
     | {
+        /**
+         * 填這個據點的中文名稱，例如：臺中溪尾。
+         */
         name: string;
+        /**
+         * 填這個據點的英文名稱（可以不填），會顯示在中文名稱下方。
+         */
         nameEn?: string | null;
         id?: string | null;
       }[]
@@ -991,9 +1526,22 @@ export interface MapLocationsBlock {
  * via the `definition` "PhotoStripBlock".
  */
 export interface PhotoStripBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 勾選後，在電腦上捲動頁面時整條照片帶會緩慢橫向移動，做出動態效果。不確定可以不勾。
+   */
   parallax?: boolean | null;
+  /**
+   * 一張一張加上要排成橫帶的照片，建議放 5 張、方向一致（都用橫式或都用直式），畫面才會整齊。
+   */
   images?:
     | {
+        /**
+         * 上傳一張照片。建議每張寬度 1200px 以上、方向和其他照片一致，會以接近 4:3 置中裁切顯示。
+         */
         image: number | Media;
         id?: string | null;
       }[]
@@ -1007,12 +1555,34 @@ export interface PhotoStripBlock {
  * via the `definition` "CtaBannerBlock".
  */
 export interface CtaBannerBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填這個橫幅最大的一句話，用來吸引讀者，建議在 15 個字以內。
+   */
   title: string;
+  /**
+   * 填一句補充說明，放在主標題下方（可以不填），建議在 30 個字以內。
+   */
   subtitle?: string | null;
+  /**
+   * 設定橫幅下方的按鈕；按鈕文字和連結網址兩格都要填，按鈕才會出現。
+   */
   cta?: {
+    /**
+     * 填按鈕上顯示的文字，建議在 6 個字以內，例如：立即聯絡、了解更多。
+     */
     label?: string | null;
+    /**
+     * 填按下按鈕後要前往的網址，可以放本站頁面（例如 /contact）或完整外部網址。
+     */
     url?: string | null;
   };
+  /**
+   * 選這個橫幅的底色，從主色、輔色、淺色底、深色底四種品牌色裡挑一個。
+   */
   background: 'primary' | 'secondary' | 'muted' | 'dark';
   id?: string | null;
   blockName?: string | null;
@@ -1023,6 +1593,13 @@ export interface CtaBannerBlock {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填這個區塊左側要顯示的文字，可以設定標題與段落；右側的按鈕請在下方「連結」設定。
+   */
   richText?: {
     root: {
       type: string;
@@ -1071,6 +1648,9 @@ export interface CallToActionBlock {
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
+  /**
+   * 放在內文中間的圖片。建議上傳寬度 1200px 以上的清晰圖片。如果想加圖說，請到媒體庫的這張圖片裡填寫「caption」說明文字。
+   */
   media: number | Media;
   id?: string | null;
   blockName?: string | null;
@@ -1081,6 +1661,13 @@ export interface MediaBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 這個區塊會自動把最新消息或文章列出來。這裡填寫列表上方的開頭文字，例如一個標題或一段簡短說明，可以留空。
+   */
   introContent?: {
     root: {
       type: string;
@@ -1096,10 +1683,25 @@ export interface ArchiveBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * 選擇要怎麼挑文章。選「Collection」會依分類自動帶出最新文章，選「Individual Selection」則由你逐一手動指定要顯示哪幾篇。
+   */
   populateBy?: ('collection' | 'selection') | null;
+  /**
+   * 選擇要從哪一種內容自動列出，目前可以選文章（Posts）。
+   */
   relationTo?: 'posts' | null;
+  /**
+   * 選擇要顯示哪些分類的文章，可以複選。留空的話會列出所有分類的最新文章。
+   */
   categories?: (number | Category)[] | null;
+  /**
+   * 填入最多要顯示幾篇文章，例如填 6 就是最多列出 6 篇。
+   */
   limit?: number | null;
+  /**
+   * 逐一挑選想要顯示的文章，顯示順序就是你加入的先後順序。
+   */
   selectedDocs?:
     | {
         relationTo: 'posts';
@@ -1516,6 +2118,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "HeroBlock_select".
  */
 export interface HeroBlockSelect<T extends boolean = true> {
+  enabled?: T;
   images?:
     | T
     | {
@@ -1538,6 +2141,7 @@ export interface HeroBlockSelect<T extends boolean = true> {
  * via the `definition` "PageHeaderBlock_select".
  */
 export interface PageHeaderBlockSelect<T extends boolean = true> {
+  enabled?: T;
   title?: T;
   eyebrow?: T;
   image?: T;
@@ -1549,6 +2153,7 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
  * via the `definition` "NewsTickerBlock_select".
  */
 export interface NewsTickerBlockSelect<T extends boolean = true> {
+  enabled?: T;
   items?:
     | T
     | {
@@ -1565,6 +2170,7 @@ export interface NewsTickerBlockSelect<T extends boolean = true> {
  * via the `definition` "ContentBlock_select".
  */
 export interface ContentBlockSelect<T extends boolean = true> {
+  enabled?: T;
   eyebrow?: T;
   title?: T;
   align?: T;
@@ -1587,6 +2193,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
  * via the `definition` "TimelineBlock_select".
  */
 export interface TimelineBlockSelect<T extends boolean = true> {
+  enabled?: T;
   mode?: T;
   items?:
     | T
@@ -1606,6 +2213,7 @@ export interface TimelineBlockSelect<T extends boolean = true> {
  * via the `definition` "StatsCardsBlock_select".
  */
 export interface StatsCardsBlockSelect<T extends boolean = true> {
+  enabled?: T;
   cards?:
     | T
     | {
@@ -1622,6 +2230,7 @@ export interface StatsCardsBlockSelect<T extends boolean = true> {
  * via the `definition` "AwardsBlock_select".
  */
 export interface AwardsBlockSelect<T extends boolean = true> {
+  enabled?: T;
   source?: T;
   awards?: T;
   items?:
@@ -1642,6 +2251,7 @@ export interface AwardsBlockSelect<T extends boolean = true> {
  * via the `definition` "ArticleCardsBlock_select".
  */
 export interface ArticleCardsBlockSelect<T extends boolean = true> {
+  enabled?: T;
   source?: T;
   eyebrow?: T;
   heading?: T;
@@ -1665,6 +2275,7 @@ export interface ArticleCardsBlockSelect<T extends boolean = true> {
  * via the `definition` "LogoWallBlock_select".
  */
 export interface LogoWallBlockSelect<T extends boolean = true> {
+  enabled?: T;
   source?: T;
   partnerType?: T;
   logos?:
@@ -1683,6 +2294,7 @@ export interface LogoWallBlockSelect<T extends boolean = true> {
  * via the `definition` "QuoteBlock_select".
  */
 export interface QuoteBlockSelect<T extends boolean = true> {
+  enabled?: T;
   text?: T;
   attribution?: T;
   photo?: T;
@@ -1694,6 +2306,7 @@ export interface QuoteBlockSelect<T extends boolean = true> {
  * via the `definition` "TwoColumnBlock_select".
  */
 export interface TwoColumnBlockSelect<T extends boolean = true> {
+  enabled?: T;
   direction?: T;
   variant?: T;
   lead?: T;
@@ -1731,6 +2344,7 @@ export interface TwoColumnBlockSelect<T extends boolean = true> {
  * via the `definition` "NumberedFeaturesBlock_select".
  */
 export interface NumberedFeaturesBlockSelect<T extends boolean = true> {
+  enabled?: T;
   eyebrow?: T;
   items?:
     | T
@@ -1749,6 +2363,7 @@ export interface NumberedFeaturesBlockSelect<T extends boolean = true> {
  * via the `definition` "TaCtaBlock_select".
  */
 export interface TaCtaBlockSelect<T extends boolean = true> {
+  enabled?: T;
   variant?: T;
   intro?: T;
   cards?:
@@ -1768,6 +2383,7 @@ export interface TaCtaBlockSelect<T extends boolean = true> {
  * via the `definition` "VideoBlockBlock_select".
  */
 export interface VideoBlockBlockSelect<T extends boolean = true> {
+  enabled?: T;
   videoUrl?: T;
   poster?: T;
   id?: T;
@@ -1778,6 +2394,7 @@ export interface VideoBlockBlockSelect<T extends boolean = true> {
  * via the `definition` "MissionCirclesBlock_select".
  */
 export interface MissionCirclesBlockSelect<T extends boolean = true> {
+  enabled?: T;
   variant?: T;
   title?: T;
   slogan?: T;
@@ -1797,7 +2414,9 @@ export interface MissionCirclesBlockSelect<T extends boolean = true> {
  * via the `definition` "IconFeaturesBlock_select".
  */
 export interface IconFeaturesBlockSelect<T extends boolean = true> {
+  enabled?: T;
   variant?: T;
+  heading?: T;
   items?:
     | T
     | {
@@ -1814,6 +2433,7 @@ export interface IconFeaturesBlockSelect<T extends boolean = true> {
  * via the `definition` "StepsBlockBlock_select".
  */
 export interface StepsBlockBlockSelect<T extends boolean = true> {
+  enabled?: T;
   variant?: T;
   title?: T;
   items?:
@@ -1832,6 +2452,7 @@ export interface StepsBlockBlockSelect<T extends boolean = true> {
  * via the `definition` "InfographicBlock_select".
  */
 export interface InfographicBlockSelect<T extends boolean = true> {
+  enabled?: T;
   variant?: T;
   eyebrow?: T;
   title?: T;
@@ -1874,6 +2495,7 @@ export interface InfographicBlockSelect<T extends boolean = true> {
  * via the `definition` "TabsBlockBlock_select".
  */
 export interface TabsBlockBlockSelect<T extends boolean = true> {
+  enabled?: T;
   title?: T;
   intro?: T;
   tabs?:
@@ -1908,6 +2530,7 @@ export interface TabsBlockBlockSelect<T extends boolean = true> {
  * via the `definition` "PillarCardsBlock_select".
  */
 export interface PillarCardsBlockSelect<T extends boolean = true> {
+  enabled?: T;
   eyebrow?: T;
   title?: T;
   subtitle?: T;
@@ -1930,6 +2553,7 @@ export interface PillarCardsBlockSelect<T extends boolean = true> {
  * via the `definition` "MapLocationsBlock_select".
  */
 export interface MapLocationsBlockSelect<T extends boolean = true> {
+  enabled?: T;
   eyebrow?: T;
   title?: T;
   subtitle?: T;
@@ -1950,6 +2574,7 @@ export interface MapLocationsBlockSelect<T extends boolean = true> {
  * via the `definition` "PhotoStripBlock_select".
  */
 export interface PhotoStripBlockSelect<T extends boolean = true> {
+  enabled?: T;
   parallax?: T;
   images?:
     | T
@@ -1965,6 +2590,7 @@ export interface PhotoStripBlockSelect<T extends boolean = true> {
  * via the `definition` "CtaBannerBlock_select".
  */
 export interface CtaBannerBlockSelect<T extends boolean = true> {
+  enabled?: T;
   title?: T;
   subtitle?: T;
   cta?:
@@ -1982,6 +2608,7 @@ export interface CtaBannerBlockSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
+  enabled?: T;
   richText?: T;
   links?:
     | T
@@ -2006,6 +2633,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
  * via the `definition` "MediaBlock_select".
  */
 export interface MediaBlockSelect<T extends boolean = true> {
+  enabled?: T;
   media?: T;
   id?: T;
   blockName?: T;
@@ -2015,6 +2643,7 @@ export interface MediaBlockSelect<T extends boolean = true> {
  * via the `definition` "ArchiveBlock_select".
  */
 export interface ArchiveBlockSelect<T extends boolean = true> {
+  enabled?: T;
   introContent?: T;
   populateBy?: T;
   relationTo?: T;
@@ -2665,7 +3294,13 @@ export interface TaskSchedulePublish {
  * via the `definition` "BannerBlock".
  */
 export interface BannerBlock {
+  /**
+   * 選一個提示樣式來決定底色與外框。Info 是一般說明（藍灰），Warning 是提醒注意（黃），Error 是錯誤或重要警告（紅），Success 是成功或好消息（綠）。
+   */
   style: 'info' | 'warning' | 'error' | 'success';
+  /**
+   * 填入要強調顯示的提示文字，建議一兩句話就好，太長會讓提示框變得擁擠。
+   */
   content: {
     root: {
       type: string;
@@ -2690,7 +3325,13 @@ export interface BannerBlock {
  * via the `definition` "CodeBlock".
  */
 export interface CodeBlock {
+  /**
+   * 這個區塊是給開發人員放程式碼或嵌入碼用的，一般內容編輯不需要用到。這裡選擇程式碼的語言，決定顏色標示的方式。
+   */
   language?: ('typescript' | 'javascript' | 'css') | null;
+  /**
+   * 貼上程式碼或嵌入用的代碼。這是技術性欄位，多數客戶不會用到，如果不確定可以略過這個區塊。
+   */
   code: string;
   id?: string | null;
   blockName?: string | null;

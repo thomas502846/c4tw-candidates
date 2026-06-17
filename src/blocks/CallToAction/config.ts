@@ -27,6 +27,9 @@ export const CallToAction: Block = {
         },
       }),
       label: false,
+      admin: {
+        description: '填這個區塊左側要顯示的文字，可以設定標題與段落；右側的按鈕請在下方「連結」設定。',
+      },
     },
     linkGroup({
       appearances: ['default', 'outline'],

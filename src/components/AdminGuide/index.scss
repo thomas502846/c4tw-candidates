@@ -1,0 +1,109 @@
+.cms-guide {
+  padding-top: var(--base);
+  padding-bottom: calc(var(--base) * 4);
+  max-width: 60rem;
+
+  &__back {
+    display: inline-block;
+    margin-bottom: var(--base);
+    color: var(--theme-elevation-500);
+    text-decoration: none;
+    font-size: 0.85rem;
+
+    &:hover {
+      color: var(--theme-text);
+    }
+  }
+
+  &__h1 {
+    margin: 0 0 calc(var(--base) / 2);
+  }
+
+  &__lead {
+    color: var(--theme-elevation-700);
+    margin-bottom: calc(var(--base) * 1.5);
+    max-width: 46rem;
+  }
+
+  &__section {
+    margin-bottom: calc(var(--base) * 1.75);
+  }
+
+  &__h2 {
+    margin: 0 0 calc(var(--base) / 1.5);
+    padding-bottom: calc(var(--base) / 3);
+    border-bottom: 1px solid var(--theme-elevation-150);
+  }
+
+  &__steps,
+  &__note {
+    color: var(--theme-elevation-800);
+  }
+
+  &__steps {
+    padding-left: 1.2em;
+
+    li {
+      margin-bottom: calc(var(--base) / 3);
+    }
+  }
+
+  &__note {
+    font-size: 0.9rem;
+    color: var(--theme-elevation-600);
+    margin-bottom: calc(var(--base) / 2);
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      text-align: left;
+      padding: calc(var(--base) / 2.5) calc(var(--base) / 2);
+      border: 1px solid var(--theme-elevation-150);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--theme-elevation-50);
+      font-weight: 600;
+    }
+  }
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: var(--base);
+  }
+
+  &__card {
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: 6px;
+    padding: var(--base);
+    background: var(--theme-elevation-50);
+  }
+
+  &__card-title {
+    margin: 0 0 calc(var(--base) / 2);
+    font-size: 1rem;
+  }
+
+  &__row {
+    display: flex;
+    gap: calc(var(--base) / 2);
+    margin: 0 0 calc(var(--base) / 3);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--theme-elevation-800);
+  }
+
+  &__tag {
+    flex: 0 0 auto;
+    width: 4.5em;
+    color: var(--theme-elevation-500);
+    font-size: 0.78rem;
+    padding-top: 0.15em;
+  }
+}

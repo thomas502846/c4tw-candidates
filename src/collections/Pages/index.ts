@@ -28,6 +28,7 @@ import { TabsBlock } from '../../blocks/TabsBlock/config'
 import { PillarCards } from '../../blocks/PillarCards/config'
 import { MapLocations } from '../../blocks/MapLocations/config'
 import { PhotoStrip } from '../../blocks/PhotoStrip/config'
+import { withBlockVisibility } from '../../blocks/withBlockVisibility'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -121,7 +122,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 CallToAction,
                 MediaBlock,
                 Archive,
-              ],
+              ].map(withBlockVisibility),
               required: true,
               localized: true,
               admin: {
