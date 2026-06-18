@@ -52,7 +52,7 @@ export const PageHeader: Block = {
       name: 'focal',
       type: 'select',
       label: '照片裁切位置',
-      defaultValue: 'bottom',
+      defaultValue: 'top',
       options: [
         { label: '對齊上方（人物臉部在上半部時用）', value: 'top' },
         { label: '置中', value: 'center' },

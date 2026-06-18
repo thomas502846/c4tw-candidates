@@ -35,15 +35,18 @@ export const PageHeaderBlock: React.FC<PageHeaderBlockProps> = ({
 }) => {
   const hasImage = image && typeof image === 'object'
   const g = GRAD[gradient ?? 'sage'] ?? GRAD.sage
-  const focalClass = FOCAL[focal ?? 'bottom'] ?? 'object-bottom'
+  // 預設 top：banner 人物多在照片上半部，置底會切到腿/助行器（全站 banner 一致偏上裁切）
+  const focalClass = FOCAL[focal ?? 'top'] ?? 'object-top'
 
   return (
     <section className="relative -mt-16 h-[216px] overflow-hidden md:h-[400px]" data-block="pageHeader">
       {hasImage ? (
         <>
+          {/* 桌機把照片收進右側 ~60%（對齊 Figma 86:380 右半置圖），讓人物照露出更多、
+              不被裁成窄橫帶；左側交給綠面板。行動版維持滿版（綠遮罩蓋左半）。 */}
           <Media
             resource={image}
-            imgClassName={`absolute inset-0 h-full w-full object-cover ${focalClass}`}
+            imgClassName={`absolute inset-0 h-full w-full object-cover ${focalClass} md:left-auto md:w-[60%]`}
             className="absolute inset-0"
           />
           {/* 手機（Figma 376:791）：綠面板覆蓋左 ~50%，右半照片清楚可見、近垂直柔邊 */}

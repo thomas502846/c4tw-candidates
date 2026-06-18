@@ -414,7 +414,9 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
       <div className="relative">
         <HoverZoomImage
           resource={image}
-          imgClassName="aspect-[16/9] w-full object-cover"
+          // care-hero 等為直式人物照（960×1704）：object-top 偏上裁切，露出人物頭部到膝（對齊 Figma 245:1626），
+          // 預設 object-center 會只切到下半身/助行器。
+          imgClassName="aspect-[16/9] w-full object-cover object-[50%_30%]"
           wrapperClassName={cn('overflow-hidden rounded-[30px] md:w-[74%]', {
             'md:ml-auto': direction === 'imageRight',
           })}
