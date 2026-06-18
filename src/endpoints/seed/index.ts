@@ -1089,6 +1089,8 @@ export const seed = async ({
             title: '認識創照',
             eyebrow: 'About',
             image: fig('about-banner.jpg').id,
+            // 滿版裁切：about-banner 人物在照片中段，置中才不會切掉人（Figma 30:136 滿版照）
+            focal: 'center',
           },
           // Sheet about 02 品牌故事(Why)：緣起
           {
@@ -1178,6 +1180,8 @@ export const seed = async ({
             title: 'About Us',
             eyebrow: 'About',
             image: fig('about-banner.jpg').id,
+            // 滿版裁切：about-banner 人物在照片中段，置中才不會切掉人（Figma 30:136 滿版照）
+            focal: 'center',
           },
           {
             blockType: 'content',
@@ -1975,6 +1979,8 @@ export const seed = async ({
             title: '關於照顧學校',
             eyebrow: 'ABOUT Care For Taiwan（CFT）',
             image: fig('school-banner.jpg').id,
+            // 滿版裁切：school-banner 招牌在照片下方，對齊下方才看得到「照顧學校」牌
+            focal: 'bottom',
           },
           // Sheet school 02 關於學校 (What)：左圖右文
           {
@@ -2205,6 +2211,8 @@ export const seed = async ({
             title: 'About the Care School',
             eyebrow: 'ABOUT Care For Taiwan (CFT)',
             image: fig('school-banner.jpg').id,
+            // 滿版裁切：school-banner 招牌在照片下方，對齊下方才看得到「照顧學校」牌
+            focal: 'bottom',
           },
           {
             blockType: 'content',
@@ -2456,6 +2464,7 @@ export const seed = async ({
             eyebrow: 'CONTACT',
             // Figma 聯絡我們頁首 banner（contact/banner.png＝羅布森建物外觀），非通用情境照 photos[6]
             image: fig('contact-banner.jpg').id,
+            focal: 'center',
           },
         ],
       },
@@ -2468,6 +2477,7 @@ export const seed = async ({
             eyebrow: 'CONTACT',
             // Figma 聯絡我們頁首 banner（contact/banner.png＝羅布森建物外觀），非通用情境照 photos[6]
             image: fig('contact-banner.jpg').id,
+            focal: 'center',
           },
         ],
       },

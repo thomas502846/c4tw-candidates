@@ -17,13 +17,14 @@ export type PageHeaderBlockProps = {
 
 /**
  * 內頁頁首 Banner（Figma master 30:136，1440×400）
- * 左側實綠面板 +「斜切造型」漸層切入右側照片；文字壓左側白字。
- * Tracy RWD 註記：淺色底路徑造型「方向與桌機不同」→ 桌機/手機用不同漸層角度＋綠面板比例
- * （桌機 100deg、綠覆蓋 ~40%；手機 82deg、綠覆蓋 ~52%，方向相反、覆蓋更大）。
+ * 滿版照片 + 左→右綠面板漸層融入照片；文字壓左側白字。
+ * Figma 漸層（to right）：實綠 0→51.9% → rgba(255,255,255,0.5) 71.6%（右側照片帶淡白霧、非透明）。
+ * 照片維持滿版 object-cover（不收窄成右側窄欄，避免人物被擠壓變形）。
+ * 手機綠面板覆蓋更大（窄螢幕照片偏右）；桌機覆蓋約一半。
  */
 const GRAD = {
-  sage: { solid: '#8BA98B', rgb: '139,169,139' },
-  lime: { solid: '#ADCB59', rgb: '173,203,89' },
+  sage: '#8BA98B',
+  lime: '#ADCB59',
 }
 const FOCAL = { top: 'object-top', center: 'object-center', bottom: 'object-bottom' }
 export const PageHeaderBlock: React.FC<PageHeaderBlockProps> = ({
@@ -34,40 +35,44 @@ export const PageHeaderBlock: React.FC<PageHeaderBlockProps> = ({
   focal,
 }) => {
   const hasImage = image && typeof image === 'object'
-  const g = GRAD[gradient ?? 'sage'] ?? GRAD.sage
-  // 預設 top：banner 人物多在照片上半部，置底會切到腿/助行器（全站 banner 一致偏上裁切）
-  const focalClass = FOCAL[focal ?? 'top'] ?? 'object-top'
+  const solid = GRAD[gradient ?? 'sage'] ?? GRAD.sage
+  // 滿版照片下預設 center（人物多在照片中段）；臉部偏上的照片才在 CMS 改「對齊上方」。
+  const focalClass = FOCAL[focal ?? 'center'] ?? 'object-center'
 
   return (
-    <section className="relative -mt-16 h-[216px] overflow-hidden md:h-[400px]" data-block="pageHeader">
+    // 桌機把 banner 上緣收進 header 後（-mt-16）；手機 banner 較矮、標題靠上，
+    // 故手機不上推，避免標題被 sticky header 蓋住裁切。
+    <section
+      className="relative h-[216px] overflow-hidden md:-mt-16 md:h-[400px]"
+      data-block="pageHeader"
+    >
       {hasImage ? (
         <>
-          {/* 桌機把照片收進右側 ~60%（對齊 Figma 86:380 右半置圖），讓人物照露出更多、
-              不被裁成窄橫帶；左側交給綠面板。行動版維持滿版（綠遮罩蓋左半）。 */}
+          {/* 滿版照片（Figma 30:136：size-full object-bottom），不收窄、不變形 */}
           <Media
             resource={image}
-            imgClassName={`absolute inset-0 h-full w-full object-cover ${focalClass} md:left-auto md:w-[60%]`}
+            imgClassName={`absolute inset-0 h-full w-full max-w-none object-cover ${focalClass}`}
             className="absolute inset-0"
           />
-          {/* 手機（Figma 376:791）：綠面板覆蓋左 ~50%，右半照片清楚可見、近垂直柔邊 */}
+          {/* 手機：綠面板覆蓋更大（左 ~50%），右側照片仍清楚可見 */}
           <div
             aria-hidden
             className="absolute inset-0 md:hidden"
             style={{
-              background: `linear-gradient(85deg, ${g.solid} 0%, ${g.solid} 46%, rgba(${g.rgb},0.5) 62%, rgba(${g.rgb},0) 78%)`,
+              background: `linear-gradient(to right, ${solid} 0%, ${solid} 50%, rgba(255,255,255,0.5) 78%)`,
             }}
           />
-          {/* 桌機：較小綠覆蓋、斜邊偏另一方向 */}
+          {/* 桌機：對齊 Figma 30:136 漸層停點 */}
           <div
             aria-hidden
             className="absolute inset-0 hidden md:block"
             style={{
-              background: `linear-gradient(100deg, ${g.solid} 0%, ${g.solid} 40%, rgba(${g.rgb},0.4) 62%, rgba(${g.rgb},0) 82%)`,
+              background: `linear-gradient(to right, ${solid} 0%, ${solid} 51.9%, rgba(255,255,255,0.5) 71.6%)`,
             }}
           />
         </>
       ) : (
-        <div aria-hidden className="absolute inset-0 bg-brand-green" />
+        <div aria-hidden className="absolute inset-0" style={{ backgroundColor: solid }} />
       )}
       {/* 文字垂直略偏上（Figma 約 38% 高度處）→ 以 pb 把置中點上推 */}
       <div className="container relative flex h-full max-w-[1240px] flex-col justify-center gap-3.5 pb-8 md:pb-20">
