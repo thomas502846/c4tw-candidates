@@ -30,16 +30,6 @@
     ]
   },
   {
-    "file": "school-wall-1.jpg",
-    "alt": "照顧學校生活樣貌 1",
-    "src": "school/photowall-1.png",
-    "kb": 341,
-    "wh": [
-      1920,
-      1441
-    ]
-  },
-  {
     "file": "school-wall-2.jpg",
     "alt": "照顧學校生活樣貌 2",
     "src": "school/photowall-2.png",
@@ -262,40 +252,12 @@
     "alt": "認識創照 banner"
   },
   {
-    "file": "training-banner.jpg",
-    "alt": "AIO組織培力 banner"
-  },
-  {
-    "file": "care-aio-1.jpg",
-    "alt": "什麼是 AIO 整合照顧模式情境照 1"
-  },
-  {
-    "file": "care-aio-2.jpg",
-    "alt": "什麼是 AIO 整合照顧模式情境照 2"
-  },
-  {
-    "file": "care-aio-3.jpg",
-    "alt": "什麼是 AIO 整合照顧模式情境照 3"
-  },
-  {
     "file": "care-hero.jpg",
     "alt": "家庭照顧服務頁主視覺照"
   },
   {
-    "file": "care-model-1.jpg",
-    "alt": "AIO 整合照顧服務模式情境照 1"
-  },
-  {
     "file": "care-model-2.jpg",
     "alt": "AIO 整合照顧服務模式情境照 2"
-  },
-  {
-    "file": "care-wall-1.jpg",
-    "alt": "家庭照顧服務照片牆 1"
-  },
-  {
-    "file": "care-wall-2.jpg",
-    "alt": "家庭照顧服務照片牆 2"
   },
   {
     "file": "care-wall-3.jpg",
@@ -336,5 +298,9 @@
       1536,
       1024
     ]
+  },
+  {
+    "file": "training-hero.jpg",
+    "alt": "組織培力 Hero 引言：講師與學員互動情境"
   }
 ]
