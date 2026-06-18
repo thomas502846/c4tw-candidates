@@ -36,29 +36,63 @@ export const MapLocations: Block = {
       },
     },
     {
+      // 已棄用：保留欄位避免 drop column 觸發 drizzle rename 互動提示（改用 intro/sections/closing）。
       name: 'body',
       type: 'textarea',
-      label: '內文（換行＝分段）',
+      label: '（已棄用，請改用下方導語＋小標子段落）',
+      admin: { hidden: true },
+    },
+    {
+      name: 'intro',
+      type: 'textarea',
+      label: '導語（換行＝分段，放在小標子段落之前）',
       admin: {
-        description: '填這個區塊的說明文字，按一次換行就會分成一個新段落。',
+        description: '填這個區塊開頭的導言文字，按一次換行就會分成一個新段落。',
       },
+    },
+    {
+      name: 'sections',
+      type: 'array',
+      label: '小標子段落（綠色小標＋內文）',
+      labels: { singular: '子段落', plural: '子段落' },
+      admin: {
+        description: '一段一段加上「綠色小標題＋說明文字」，例如「非典型課堂，開啟靈活思維」＋一段說明。',
+      },
+      fields: [
+        { name: 'heading', type: 'text', label: '綠色小標', required: true, maxLength: 200 },
+        { name: 'text', type: 'textarea', label: '說明文字', required: true },
+      ],
+    },
+    {
+      name: 'closing',
+      type: 'textarea',
+      label: '結語（子段落之後的收尾句，可選）',
     },
     {
       name: 'storyUrl',
       type: 'text',
       label: '「空間故事」按鈕連結（可選）',
       admin: {
-        description: '填了就會在內文下方顯示一顆「羅布森空間故事」按鈕，點擊開新分頁前往該連結；不填則不顯示。',
+        description: '填了就會在場域照下方顯示一顆「羅布森空間故事」按鈕，點擊開新分頁前往該連結；不填則不顯示。',
       },
     },
     {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      label: '地圖插畫（不填則以內建水彩地形 SVG 呈現）',
+      label: '滿版水彩地形底圖（不填則以內建 SVG 呈現）',
       admin: {
         description:
-          '上傳一張地圖插畫放在右側。建議上傳寬度 600px 以上、橫式的圖。如果留空，系統會自動顯示內建的水彩地形圖。',
+          '上傳整區的滿版水彩地形底圖（含據點 pin）。建議寬度 1600px 以上、橫式。留空則顯示內建水彩地形圖。',
+      },
+    },
+    {
+      name: 'spaceImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: '場域照（文字下方的建物照，可選）',
+      admin: {
+        description: '上傳場域建物照，顯示在內文下方、按鈕上方。建議橫式、寬度 1000px 以上。',
       },
     },
     {

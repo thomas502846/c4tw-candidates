@@ -11,14 +11,23 @@ export type MapLocation = {
   id?: string | null
 }
 
+export type MapSection = {
+  heading: string
+  text: string
+  id?: string | null
+}
+
 export type MapLocationsBlockProps = {
   blockType: 'mapLocations'
   eyebrow?: string | null
   title?: string | null
   subtitle?: string | null
-  body?: string | null
+  intro?: string | null
+  sections?: MapSection[] | null
+  closing?: string | null
   storyUrl?: string | null
   image?: MediaDoc | string | number | null
+  spaceImage?: MediaDoc | string | number | null
   locations?: MapLocation[] | null
 }
 
@@ -61,30 +70,67 @@ const PinIcon: React.FC = () => (
 )
 
 /**
- * School 羅布森空間（Frame 179 341:639）：柔和水彩漸層底（白底＋淡綠/淡黃暈染）＋
- * 左欄文字＋右側在地地形插畫＋地圖 pin＋據點 label
+ * School 羅布森空間（Figma school-cft space 341:650）：
+ * - 滿版水彩地形底圖（image，含據點 pin baked）＋白色 30% 遮罩，背景隨視差緩動（Tracy cmt 62）。
+ * - 左側 590px 文字欄：eyebrow → 標題(#8ba98b 40) → 副標(22) → 導語 → 帶 #9c9f33 小標的子段落 → 結語。
+ * - 文字下方：場域照（590×400 radius30）→ 羅布森空間故事按鈕（#adcb59）。
+ * - image 留空時 fallback 內建 TerrainSvg；locations 仍可選（底圖已 baked pin 時通常不需）。
  */
 export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
   eyebrow,
   title,
   subtitle,
-  body,
+  intro,
+  sections,
+  closing,
   storyUrl,
   image,
+  spaceImage,
   locations,
 }) => {
+  const hasBgImage = image && typeof image === 'object'
   return (
     <section
-      className="relative overflow-hidden py-16 md:py-20"
+      className="relative overflow-hidden py-16 md:py-24"
       data-block="mapLocations"
-      style={{
-        background:
-          'radial-gradient(ellipse 60% 50% at 12% 20%, rgba(202,243,217,0.55), transparent), radial-gradient(ellipse 55% 45% at 88% 75%, rgba(251,252,242,0.9), transparent), radial-gradient(ellipse 45% 40% at 70% 15%, rgba(226,242,236,0.6), transparent), #FFFFFF',
-      }}
+      style={
+        hasBgImage
+          ? { backgroundColor: '#FFFFFF' }
+          : {
+              background:
+                'radial-gradient(ellipse 60% 50% at 12% 20%, rgba(202,243,217,0.55), transparent), radial-gradient(ellipse 55% 45% at 88% 75%, rgba(251,252,242,0.9), transparent), radial-gradient(ellipse 45% 40% at 70% 15%, rgba(226,242,236,0.6), transparent), #FFFFFF',
+            }
+      }
     >
-      <div className="container flex max-w-[1240px] flex-col gap-12 md:flex-row md:items-center md:gap-16">
-        {/* 左欄文字 */}
-        <div className="md:w-[48%]">
+      {/* 水彩地形「上方橫帶」（Figma school-cft space 341:640：bg 只覆蓋上半，文字下方為白底）。
+          帶高固定＝「區塊高度不變」；Parallax 緩動＝「背景固定/緩動、內容正常往上滑」（Tracy cmt 62）。
+          object-center 讓左側淡青水域落在文字後（淺藍底）、右側臺中地形＋臺中溪尾 pin 落在文字欄右側。 */}
+      {hasBgImage ? (
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 -z-0 h-[360px] overflow-hidden sm:h-[460px] md:h-[680px]"
+        >
+          {/* 視差層比帶高多撐 14%（上下各 ~80px > maxOffset 60），位移時不露白邊 */}
+          <Parallax className="absolute inset-x-0 -inset-y-[14%]" speed={0.16}>
+            <Media
+              className="absolute inset-0 h-full w-full"
+              imgClassName="h-full w-full object-cover object-center"
+              resource={image as MediaDoc}
+            />
+          </Parallax>
+          <div className="absolute inset-0 bg-white/30" />
+          {/* 帶底以白色羽化收邊，柔順接到下方白底內容區 */}
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-white md:h-40" />
+        </div>
+      ) : (
+        <div aria-hidden className="absolute right-0 top-10 -z-0 hidden w-[52%] md:block">
+          <TerrainSvg />
+        </div>
+      )}
+
+      <div className="container relative z-10 max-w-[1240px]">
+        {/* 左側文字欄（590px） */}
+        <div className="md:w-[590px]">
           {eyebrow && <Eyebrow text={eyebrow} />}
           {title && (
             // .fig 羅布森空間：Noto Sans TC Bold 40 / lh60 / ls10%
@@ -93,49 +139,65 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
             </h2>
           )}
           {subtitle && (
-            // .fig 照顧學校的培訓場域：Noto Sans TC Medium 22 / lh35 / ls10%（非 Bold）
+            // .fig 照顧學校的培訓場域：Noto Sans TC Medium 22 / lh35 / ls10%
             <p className="mt-4 text-lg font-medium leading-[35px] tracking-[0.1em] text-brand-ink md:text-[22px]">
               {subtitle}
             </p>
           )}
-          {body && (
-            <p className="mt-5 whitespace-pre-line text-justify text-base leading-[1.85] tracking-[0.1em] text-brand-ink">
-              {body}
+          {intro && (
+            <p className="mt-5 whitespace-pre-line text-justify text-base leading-[29px] tracking-[0.1em] text-brand-ink">
+              {intro}
             </p>
           )}
+          {(sections ?? []).map((s, i) => (
+            <div className="mt-5" key={s.id ?? i}>
+              {/* .fig 子段小標：wasabi #9c9f33 Medium 19 */}
+              <p className="text-[17px] font-medium leading-[29px] tracking-[0.1em] text-brand-primary md:text-[19px]">
+                {s.heading}
+              </p>
+              <p className="mt-2 whitespace-pre-line text-justify text-base leading-[29px] tracking-[0.1em] text-brand-ink">
+                {s.text}
+              </p>
+            </div>
+          ))}
+          {closing && (
+            <p className="mt-5 text-justify text-base leading-[29px] tracking-[0.1em] text-brand-ink">
+              {closing}
+            </p>
+          )}
+
+          {/* 場域照（建物外觀） */}
+          {spaceImage && typeof spaceImage === 'object' && (
+            <div className="mt-12 overflow-hidden rounded-[30px]">
+              <Media
+                imgClassName="h-[260px] w-full object-cover md:h-[400px]"
+                resource={spaceImage}
+              />
+            </div>
+          )}
+
+          {/* 羅布森空間故事按鈕（#adcb59，右對齊比照 Figma items-end） */}
           {storyUrl && (
-            <a
-              className="mt-6 inline-flex items-center rounded-full bg-brand-green px-6 py-2.5 text-[15px] font-medium tracking-[0.1em] text-white transition-opacity hover:opacity-90"
-              href={storyUrl}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              羅布森空間故事 →
-            </a>
+            <div className="mt-8 flex md:mt-14 md:justify-end">
+              <a
+                className="inline-flex items-center gap-1.5 rounded-full bg-brand-lime px-6 py-2 text-[18px] font-medium tracking-[0.15em] text-white transition-opacity hover:opacity-90"
+                href={storyUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                羅布森空間故事 →
+              </a>
+            </div>
           )}
         </div>
 
-        {/* 右側地圖 + pin（Tracy node 341:650 PARALLAX）：
-          * 背景地圖層隨視差緩動、區塊高度不變、內容文字正常往上滑。
-          * - 背景層（Media/TerrainSvg）包進 <Parallax>，由 JS 依捲動位移 transform。
-          * - 外層 overflow-hidden 確保位移不露邊、且區塊高度不被撐開。
-          * - pin/label 為 Parallax 的「兄弟」絕對定位層，維持正常文檔流，不隨視差移動。
-          * - prefers-reduced-motion / 無 JS：背景靜態可見（Parallax 內部保證）。 */}
-        <div className="relative md:w-[52%]">
-          <div className="overflow-hidden" data-parallax-target="school-map-bg">
-            <Parallax speed={0.18}>
-              {image && typeof image === 'object' ? (
-                <Media resource={image} imgClassName="h-auto w-full object-contain" />
-              ) : (
-                <TerrainSvg />
-              )}
-            </Parallax>
-          </div>
-          {(locations ?? []).map((location, i) => (
+        {/* baked pin 的底圖通常不需 code pin；無底圖且有 locations 時才畫 */}
+        {!hasBgImage &&
+          (locations ?? []).map((location, i) => (
             <div
-              className="absolute flex items-start gap-3"
+              className="absolute hidden items-start gap-3 md:flex"
               key={location.id ?? i}
-              style={{ left: `${42 + i * 16}%`, top: `${38 + i * 12}%` }}
+              style={{ right: `${8 + i * 16}%`, top: `${28 + i * 12}%` }}
             >
               <PinIcon />
               <div className="pt-1">
@@ -146,7 +208,6 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
               </div>
             </div>
           ))}
-        </div>
       </div>
     </section>
   )
