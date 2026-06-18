@@ -90,29 +90,73 @@ const SatelliteText: React.FC<{
   color: string
   bigSize?: number
   labelSize?: number
-}> = ({ cx, cy, value, label, color, bigSize = 26, labelSize = 12 }) => {
+  valueTop?: boolean
+}> = ({ cx, cy, value, label, color, bigSize = 26, labelSize = 12, valueTop = false }) => {
   const lines = wrapLabel(label)
   const labelLineH = labelSize + 3
+  const labelH = (lines.length - 1) * labelLineH + labelSize
   // 區塊高度＝label 多行 + 間距 + 數值高，整體垂直置中於圓心
-  const blockH = lines.length * labelLineH + 8 + bigSize
-  const labelTop = cy - blockH / 2 + labelSize
-  const valueBaseline = labelTop + (lines.length - 1) * labelLineH + 8 + bigSize
-  return (
+  const blockH = labelH + 8 + bigSize
+  const top = cy - blockH / 2
+  // valueTop：數值在上、label 在下（care venn 左側中／下兩顆）；否則 label 在上、數值在下
+  const valueBaseline = valueTop ? top + bigSize : top + labelH + 8 + bigSize
+  const labelTop = valueTop ? top + bigSize + 8 + labelSize : top + labelSize
+  const labelEl = (
+    <text fill="#212121" fontSize={labelSize} fontWeight="500" textAnchor="middle" x={cx} y={labelTop}>
+      {lines.map((line, li) => (
+        <tspan dy={li === 0 ? 0 : labelLineH} key={li} x={cx}>
+          {line}
+        </tspan>
+      ))}
+    </text>
+  )
+  const valueEl = (
+    <text fill={color} fontSize={bigSize} fontWeight="700" textAnchor="middle" x={cx} y={valueBaseline}>
+      {/* 數字片段滑入視窗後 Count Up；中文單位（萬／年／成／歲／倍／個月）原樣小字保留 */}
+      <CountUpRuns bigSize={bigSize} runs={valueRuns(value)} smallSize={Math.round(bigSize * 0.5)} />
+    </text>
+  )
+  return valueTop ? (
     <>
-      <text fill="#212121" fontSize={labelSize} fontWeight="500" textAnchor="middle" x={cx} y={labelTop}>
-        {lines.map((line, li) => (
-          <tspan dy={li === 0 ? 0 : labelLineH} key={li} x={cx}>
-            {line}
-          </tspan>
-        ))}
-      </text>
-      <text fill={color} fontSize={bigSize} fontWeight="700" textAnchor="middle" x={cx} y={valueBaseline}>
-        {/* 數字片段滑入視窗後 Count Up；中文單位（萬／年／成／歲／倍／個月）原樣小字保留 */}
-        <CountUpRuns bigSize={bigSize} runs={valueRuns(value)} smallSize={Math.round(bigSize * 0.5)} />
-      </text>
+      {valueEl}
+      {labelEl}
+    </>
+  ) : (
+    <>
+      {labelEl}
+      {valueEl}
     </>
   )
 }
+
+/* 痛點 venn 填色 icon（重繪自 612:636 baked 圖，供 EN 桌機向量版＋行動版用；
+   ZH 桌機直接用 baked PNG）：綠填＋深色描邊＋橘色點綴，與 Figma 一致。 */
+const ICON_GREEN = '#ADCB59'
+const ICON_INK = '#333333'
+const ICON_ORANGE = '#EA6A20'
+
+/** 房屋：綠填牆＋屋頂、右上煙囪、左下門洞、右中橘色窗 */
+const HouseIcon: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => (
+  <g stroke={ICON_INK} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <rect fill={ICON_GREEN} height="38" width="50" x={cx - 25} y={cy - 4} />
+    <path d={`M${cx - 33} ${cy - 2} L${cx} ${cy - 34} L${cx + 33} ${cy - 2} Z`} fill={ICON_GREEN} />
+    <rect fill={ICON_GREEN} height="14" width="7" x={cx + 15} y={cy - 30} />
+    <path d={`M${cx - 16} ${cy + 34} V${cy + 15} a6 6 0 0 1 12 0 V${cy + 34}`} fill="#F7F7EB" />
+    <rect fill={ICON_ORANGE} height="13" width="13" x={cx + 3} y={cy + 8} />
+  </g>
+)
+
+/** 公事包：綠上帶＋橘色雙鎖扣＋提把＋右下折角 */
+const BagIcon: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => (
+  <g stroke={ICON_INK} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <path d={`M${cx - 9} ${cy - 19} v-5 a9 9 0 0 1 18 0 v5`} fill="none" />
+    <rect fill="#F7F7EB" height="40" rx="4" width="62" x={cx - 31} y={cy - 19} />
+    <path d={`M${cx - 31} ${cy - 3} V${cy - 15} a4 4 0 0 1 4-4 h54 a4 4 0 0 1 4 4 V${cy - 3} Z`} fill={ICON_GREEN} />
+    <rect fill={ICON_ORANGE} height="12" width="7" x={cx - 17} y={cy - 9} />
+    <rect fill={ICON_ORANGE} height="12" width="7" x={cx + 10} y={cy - 9} />
+    <path d={`M${cx + 13} ${cy + 15} h8 v-8`} fill="none" />
+  </g>
+)
 
 /** 大圓標題＋「影響」副行 */
 const BigCircleLabel: React.FC<{ x: number; label: string }> = ({ x, label }) => {
@@ -196,24 +240,19 @@ const VennMobile: React.FC<{
     <circle cx={M_BOT.cx} cy={M_BOT.cy} fill="#ECF7F9" r={M_BIG_R} stroke="#ADCB59" strokeWidth="2" />
     {/* 上大圓（個人生活，米底＋亮綠細邊） */}
     <circle cx={M_TOP.cx} cy={M_TOP.cy} fill="#F7F7EB" r={M_BIG_R} stroke="#ADCB59" strokeWidth="2" />
-    {/* 上圓 icon：房屋線稿 */}
-    <g fill="none" stroke="#ADCB59" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
-      <path d={`M${M_TOP.cx - 30} ${M_TOP.cy - 72}l30-26 30 26M${M_TOP.cx - 24} ${M_TOP.cy - 75}v34h48v-34`} />
-    </g>
+    {/* 上圓 icon：填色房屋 */}
+    <HouseIcon cx={M_TOP.cx} cy={M_TOP.cy - 58} />
     {leftLabel && <MBigCircleLabel cx={M_TOP.cx} cy={M_TOP.cy} label={leftLabel} />}
-    {/* 下圓 icon：手提包線稿 */}
-    <g fill="none" stroke="#5E8C8C" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
-      <rect height="34" rx="6" width="56" x={M_BOT.cx - 28} y={M_BOT.cy - 75} />
-      <path d={`M${M_BOT.cx - 10} ${M_BOT.cy - 75}v-8a10 10 0 0 1 20 0v8`} />
-    </g>
+    {/* 下圓 icon：填色公事包 */}
+    <BagIcon cx={M_BOT.cx} cy={M_BOT.cy - 58} />
     {rightLabel && <MBigCircleLabel cx={M_BOT.cx} cy={M_BOT.cy} label={rightLabel} />}
-    {/* 上圓衛星數據圓 */}
+    {/* 上圓衛星數據圓（中／下兩顆數值在上、label 在下，對齊 612:636） */}
     {(leftStats ?? []).slice(0, 3).map((stat, i) => {
       const pos = M_SAT_TOP[i]
       return (
         <g key={stat.id ?? `ml${i}`}>
           <circle cx={pos.cx} cy={pos.cy} fill="#F7F7EB" r={M_SAT_R} stroke="#ADCB59" strokeWidth="2" />
-          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
+          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} valueTop={i > 0} />
         </g>
       )
     })}
@@ -246,24 +285,19 @@ const Venn: React.FC<{
     <circle cx="555" cy="230" fill="#ECF7F9" r="170" stroke="#ADCB59" strokeWidth="2" />
     {/* 左大圓（個人生活，米底＋亮綠細邊） */}
     <circle cx="345" cy="230" fill="#F7F7EB" r="170" stroke="#ADCB59" strokeWidth="2" />
-    {/* 左圓 icon：房屋線稿 */}
-    <g fill="none" stroke="#ADCB59" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
-      <path d="M315 168l30-26 30 26M321 165v34h48v-34" />
-    </g>
+    {/* 左圓 icon：填色房屋 */}
+    <HouseIcon cx={345} cy={185} />
     {leftLabel && <BigCircleLabel label={leftLabel} x={345} />}
-    {/* 右圓 icon：手提包線稿 */}
-    <g fill="none" stroke="#5E8C8C" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
-      <rect height="34" rx="6" width="56" x="527" y="165" />
-      <path d="M545 165v-8a10 10 0 0 1 20 0v8" />
-    </g>
+    {/* 右圓 icon：填色公事包 */}
+    <BagIcon cx={555} cy={185} />
     {rightLabel && <BigCircleLabel label={rightLabel} x={555} />}
-    {/* 衛星數據圓 */}
+    {/* 衛星數據圓（左側中／下兩顆數值在上、label 在下，對齊 612:636） */}
     {(leftStats ?? []).slice(0, 3).map((stat, i) => {
       const pos = SAT_LEFT[i]
       return (
         <g key={stat.id ?? `l${i}`}>
           <circle cx={pos.cx} cy={pos.cy} fill="#F7F7EB" r={SAT_R} stroke="#ADCB59" strokeWidth="2" />
-          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
+          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} valueTop={i > 0} />
         </g>
       )
     })}
@@ -490,8 +524,8 @@ export const InfographicBlock: React.FC<InfographicBlockProps> = (props) => {
       <Radial nodes={props.nodes} />
     )
   ) : (
-    // ZH/EN 一律走向量 Venn（文字由 stats 即時繪製）：較 baked PNG 更貼 Figma 比例且 i18n 通用
-    // 桌機橫式雙圓、行動版直式堆疊（M-care 218:856）
+    // 桌機 ZH：直接落地 Figma baked venn（612:636，含中文文字＋填色 icon＋精準比例）保證 1:1；
+    // 行動版一律向量直式堆疊（M-care 218:856）；EN 桌機退回向量（baked 圖內為中文，不適用）。
     <>
       <VennMobile
         leftLabel={props.leftLabel}
@@ -499,12 +533,21 @@ export const InfographicBlock: React.FC<InfographicBlockProps> = (props) => {
         rightLabel={props.rightLabel}
         rightStats={props.rightStats}
       />
-      <Venn
-        leftLabel={props.leftLabel}
-        leftStats={props.leftStats}
-        rightLabel={props.rightLabel}
-        rightStats={props.rightStats}
-      />
+      {hasCjk(props.leftLabel) ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          alt={`${props.leftLabel ?? ''}／${props.rightLabel ?? ''} 痛點數據圖`}
+          className="mx-auto hidden h-auto w-full max-w-[900px] md:block"
+          src="/figma/care-venn.png"
+        />
+      ) : (
+        <Venn
+          leftLabel={props.leftLabel}
+          leftStats={props.leftStats}
+          rightLabel={props.rightLabel}
+          rightStats={props.rightStats}
+        />
+      )}
     </>
   )
 

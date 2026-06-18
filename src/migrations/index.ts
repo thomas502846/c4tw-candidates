@@ -4,6 +4,7 @@ import * as migration_20260612_094116_two_column_quotes_centered from './2026061
 import * as migration_20260613_150252_round5_photostrip_eyebrows from './20260613_150252_round5_photostrip_eyebrows';
 import * as migration_20260614_014135_hero_slide_text from './20260614_014135_hero_slide_text';
 import * as migration_20260614_081821_content_images_collage from './20260614_081821_content_images_collage';
+import * as migration_20260618_042153_pageheader_focal from './20260618_042153_pageheader_focal';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260614_081821_content_images_collage.up,
     down: migration_20260614_081821_content_images_collage.down,
-    name: '20260614_081821_content_images_collage'
+    name: '20260614_081821_content_images_collage',
+  },
+  {
+    up: migration_20260618_042153_pageheader_focal.up,
+    down: migration_20260618_042153_pageheader_focal.down,
+    name: '20260618_042153_pageheader_focal'
   },
 ];

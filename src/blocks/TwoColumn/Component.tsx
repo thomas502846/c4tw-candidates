@@ -408,18 +408,25 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
 
   const inner =
     isQuoteHero ? (
-      /* 全寬大圖＋引言置中大標（Figma care/training hero）：引言為視覺主角的大標
-         （Bold 36 / lh60 / ls15%），疊在近全寬大圖上、加暗角 scrim 保可讀性。 */
-      <div className="relative overflow-hidden rounded-[30px]">
+      /* 引言卡 hero（Figma care/training 02：hero-pic 1037×589 大圖＋白色引言卡 843×160
+         疊在右下、超出圖右緣；引言為 sage 綠粗體，是視覺主角）。
+         direction=imageLeft → 圖靠左、卡片偏右；imageRight 則相反。 */
+      <div className="relative">
         <HoverZoomImage
           resource={image}
-          imgClassName="aspect-[16/9] w-full object-cover md:aspect-[1240/420]"
-          wrapperClassName="h-full w-full"
+          imgClassName="aspect-[16/9] w-full object-cover"
+          wrapperClassName={cn('overflow-hidden rounded-[30px] md:w-[74%]', {
+            'md:ml-auto': direction === 'imageRight',
+          })}
         />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/15 to-black/10" />
         {richText && (
-          <div className="absolute inset-0 flex items-center justify-center px-6 md:px-16">
-            <div className="text-center text-[24px] font-bold leading-[1.5] tracking-[0.15em] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.45)] [&_p]:m-0 md:text-[36px] md:leading-[60px]">
+          <div
+            className={cn(
+              'relative -mt-10 mx-4 rounded-[30px] bg-white px-7 py-7 shadow-[0_8px_30px_rgba(33,33,33,0.10)] md:absolute md:bottom-12 md:mx-0 md:max-w-[62%] md:px-12 md:py-9',
+              direction === 'imageRight' ? 'md:left-0' : 'md:right-0',
+            )}
+          >
+            <div className="text-[19px] font-bold leading-[1.9] tracking-[0.12em] text-[color:var(--page-accent,#8BA98B)] [&_p]:m-0 md:text-[24px] md:leading-[44px]">
               <RichText data={richText} enableGutter={false} enableProse={false} />
             </div>
           </div>

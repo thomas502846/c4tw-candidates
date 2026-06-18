@@ -37,5 +37,31 @@ export const PageHeader: Block = {
           '放綠帶的背景照片，左側會壓上綠色、右側漸層透出照片。建議上傳寬度 1920px 以上的橫式照片，重點畫面放在右半邊比較看得到。不放的話整條會是純綠色。',
       },
     },
+    {
+      name: 'gradient',
+      type: 'select',
+      label: '綠帶顏色',
+      defaultValue: 'sage',
+      options: [
+        { label: '灰綠（認識創照）', value: 'sage' },
+        { label: '亮綠（服務／培力）', value: 'lime' },
+      ],
+      admin: { description: '左側綠帶的顏色。認識創照用灰綠；AIO 服務／組織培力用亮綠。' },
+    },
+    {
+      name: 'focal',
+      type: 'select',
+      label: '照片裁切位置',
+      defaultValue: 'bottom',
+      options: [
+        { label: '對齊上方（人物臉部在上半部時用）', value: 'top' },
+        { label: '置中', value: 'center' },
+        { label: '對齊下方', value: 'bottom' },
+      ],
+      admin: {
+        description:
+          '綠帶高度固定，照片會被裁切。若照片重點（例如人物臉部）在上半部，選「對齊上方」；在中間選「置中」。',
+      },
+    },
   ],
 }

@@ -9,6 +9,10 @@ export type PageHeaderBlockProps = {
   title: string
   eyebrow?: string | null
   image?: MediaDoc | string | number | null
+  // Figma：About 用灰綠 #8BA98B；Care／Training 用亮綠 #ADCB59
+  gradient?: 'sage' | 'lime' | null
+  // 照片裁切位置：重點（臉部）在上半部時用 top（如 care-banner 人物在上方）
+  focal?: 'top' | 'center' | 'bottom' | null
 }
 
 /**
@@ -17,25 +21,37 @@ export type PageHeaderBlockProps = {
  * Tracy RWD 註記：淺色底路徑造型「方向與桌機不同」→ 桌機/手機用不同漸層角度＋綠面板比例
  * （桌機 100deg、綠覆蓋 ~40%；手機 82deg、綠覆蓋 ~52%，方向相反、覆蓋更大）。
  */
-const GREEN = '#8BA98B'
-export const PageHeaderBlock: React.FC<PageHeaderBlockProps> = ({ title, eyebrow, image }) => {
+const GRAD = {
+  sage: { solid: '#8BA98B', rgb: '139,169,139' },
+  lime: { solid: '#ADCB59', rgb: '173,203,89' },
+}
+const FOCAL = { top: 'object-top', center: 'object-center', bottom: 'object-bottom' }
+export const PageHeaderBlock: React.FC<PageHeaderBlockProps> = ({
+  title,
+  eyebrow,
+  image,
+  gradient,
+  focal,
+}) => {
   const hasImage = image && typeof image === 'object'
+  const g = GRAD[gradient ?? 'sage'] ?? GRAD.sage
+  const focalClass = FOCAL[focal ?? 'bottom'] ?? 'object-bottom'
 
   return (
-    <section className="relative -mt-16 h-[260px] overflow-hidden md:h-[400px]" data-block="pageHeader">
+    <section className="relative -mt-16 h-[216px] overflow-hidden md:h-[400px]" data-block="pageHeader">
       {hasImage ? (
         <>
           <Media
             resource={image}
-            imgClassName="absolute inset-0 h-full w-full object-cover object-bottom"
+            imgClassName={`absolute inset-0 h-full w-full object-cover ${focalClass}`}
             className="absolute inset-0"
           />
-          {/* 手機：較大綠覆蓋、斜邊偏一方向 */}
+          {/* 手機（Figma 376:791）：綠面板覆蓋左 ~50%，右半照片清楚可見、近垂直柔邊 */}
           <div
             aria-hidden
             className="absolute inset-0 md:hidden"
             style={{
-              background: `linear-gradient(82deg, ${GREEN} 0%, ${GREEN} 52%, rgba(139,169,139,0.45) 72%, rgba(139,169,139,0) 92%)`,
+              background: `linear-gradient(85deg, ${g.solid} 0%, ${g.solid} 46%, rgba(${g.rgb},0.5) 62%, rgba(${g.rgb},0) 78%)`,
             }}
           />
           {/* 桌機：較小綠覆蓋、斜邊偏另一方向 */}
@@ -43,7 +59,7 @@ export const PageHeaderBlock: React.FC<PageHeaderBlockProps> = ({ title, eyebrow
             aria-hidden
             className="absolute inset-0 hidden md:block"
             style={{
-              background: `linear-gradient(100deg, ${GREEN} 0%, ${GREEN} 40%, rgba(139,169,139,0.4) 62%, rgba(139,169,139,0) 82%)`,
+              background: `linear-gradient(100deg, ${g.solid} 0%, ${g.solid} 40%, rgba(${g.rgb},0.4) 62%, rgba(${g.rgb},0) 82%)`,
             }}
           />
         </>
