@@ -83,16 +83,23 @@ const CardIllustration: React.FC<{
 /**
  * 白底 pill 按鈕（Tracy LINE 定稿：白底 #FFFFFF + 深字 #212121 + 深色箭頭）
  * mobile（Figma M-home）：滿版寬、文字靠左、箭頭靠右；md+ 維持原 inline 居中尺寸。
+ * Hover/Press（Tracy node 0:1）：底色變色、文字轉白、0.3s ease；每磚 hover 色不同，由 hoverClass 帶入。
  */
-const WhitePill: React.FC<{ label: string; url?: string | null }> = ({ label, url }) => {
+const WhitePill: React.FC<{ label: string; url?: string | null; hoverClass?: string }> = ({
+  label,
+  url,
+  hoverClass,
+}) => {
   const inner = (
     <>
       <span>{label}</span>
       <ArrowRight className="h-4 w-4" />
     </>
   )
-  const cls =
-    'flex w-full items-center justify-between gap-2 rounded-[30px] bg-white px-6 py-2.5 text-[15px] font-medium tracking-[0.1em] text-brand-ink transition-opacity hover:opacity-85 md:inline-flex md:w-auto md:justify-center md:px-7 md:py-2 md:text-[19px]'
+  const cls = cn(
+    'group/pill flex w-full items-center justify-between gap-2 rounded-[30px] bg-white px-6 py-2.5 text-[15px] font-medium tracking-[0.1em] text-brand-ink transition-colors duration-300 ease-in-out hover:text-white focus-visible:text-white active:text-white md:inline-flex md:w-auto md:justify-center md:px-7 md:py-2 md:text-[19px]',
+    hoverClass,
+  )
   return url ? (
     <a className={cls} href={url}>
       {inner}
@@ -101,6 +108,13 @@ const WhitePill: React.FC<{ label: string; url?: string | null }> = ({ label, ur
     <span className={cls}>{inner}</span>
   )
 }
+
+// Home CTA 三磚白 pill 的 hover/press 底色（Tracy node 0:1）：左上 #adcb59／左下 #9c9f33／右 #8ba98b。
+const pillHoverByIndex = [
+  'hover:bg-[#adcb59] focus-visible:bg-[#adcb59] active:bg-[#adcb59]',
+  'hover:bg-[#9c9f33] focus-visible:bg-[#9c9f33] active:bg-[#9c9f33]',
+  'hover:bg-[#8ba98b] focus-visible:bg-[#8ba98b] active:bg-[#8ba98b]',
+]
 
 const tileBgs = ['bg-brand-primary', 'bg-brand-green', 'bg-brand-lime']
 
@@ -135,7 +149,11 @@ const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
           {/* md+ 才在右半放 pill；mobile 的 pill 移到卡片底部滿版 */}
           {card.buttonLabel && (
             <span className="hidden md:block">
-              <WhitePill label={card.buttonLabel} url={card.url} />
+              <WhitePill
+                hoverClass={pillHoverByIndex[i % pillHoverByIndex.length]}
+                label={card.buttonLabel}
+                url={card.url}
+              />
             </span>
           )}
         </div>
@@ -143,7 +161,11 @@ const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
       {/* mobile 滿版 pill（md+ 隱藏，已在右半顯示） */}
       {card.buttonLabel && (
         <div className="md:hidden">
-          <WhitePill label={card.buttonLabel} url={card.url} />
+          <WhitePill
+            hoverClass={pillHoverByIndex[i % pillHoverByIndex.length]}
+            label={card.buttonLabel}
+            url={card.url}
+          />
         </div>
       )}
     </div>
@@ -181,13 +203,13 @@ const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
               </h3>
               {c3.buttonLabel && (
                 <span className="hidden md:block">
-                  <WhitePill label={c3.buttonLabel} url={c3.url} />
+                  <WhitePill hoverClass={pillHoverByIndex[2]} label={c3.buttonLabel} url={c3.url} />
                 </span>
               )}
             </div>
             {c3.buttonLabel && (
               <div className="md:hidden">
-                <WhitePill label={c3.buttonLabel} url={c3.url} />
+                <WhitePill hoverClass={pillHoverByIndex[2]} label={c3.buttonLabel} url={c3.url} />
               </div>
             )}
           </div>
@@ -279,6 +301,8 @@ const PhotoBand: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
       ) : (
         <div aria-hidden className="absolute inset-0 bg-brand-green" />
       )}
+      {/* Figma CTA 54:234：照片上疊 rgba(51,51,51,0.65) 深色遮罩，使整體呈現深綠（與設計稿一致，非淺綠） */}
+      <div aria-hidden className="absolute inset-0 bg-[rgba(51,51,51,0.65)]" />
       {/* 區塊進場 Fade In（Tracy node 45:240：滑到觸發、0→100%、0.6s） */}
       <ScrollReveal className="relative flex h-full flex-wrap items-center justify-center gap-4 md:gap-6">
         {cards.map((card, i) =>
@@ -311,9 +335,23 @@ const DarkBand: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
       <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
     </span>
   )
+  const bg = cards[0]
   return (
-    <section className="w-full bg-[#4C4C4C] py-14 md:py-20" data-block="taCta">
-      <ScrollReveal className="container flex max-w-[1240px] flex-col items-center justify-center gap-4 sm:flex-row md:gap-7">
+    <section className="relative w-full overflow-hidden py-14 md:py-20" data-block="taCta">
+      {/* Figma 85:357：滿版投影機房間照 + rgba(51,51,51,0.65) 深遮罩；無圖則 fallback 純深灰 */}
+      {bg?.image && typeof bg.image === 'object' ? (
+        <>
+          <Media
+            className="absolute inset-0 h-full w-full"
+            imgClassName="absolute inset-0 h-full w-full object-cover"
+            resource={bg.image}
+          />
+          <div aria-hidden className="absolute inset-0 bg-[rgba(51,51,51,0.65)]" />
+        </>
+      ) : (
+        <div aria-hidden className="absolute inset-0 bg-[#4C4C4C]" />
+      )}
+      <ScrollReveal className="container relative z-10 flex max-w-[1240px] flex-col items-center justify-center gap-4 sm:flex-row md:gap-7">
         {cards.map((card, i) =>
           card.url ? (
             <a aria-label={card.buttonLabel ?? card.title} href={card.url} key={i}>

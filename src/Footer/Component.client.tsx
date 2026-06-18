@@ -163,11 +163,13 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
   const copyright = data?.copyright
 
   return (
-    <footer className="mt-auto">
-      {/* 弧形上緣（Figma footer symbol 30:81，path 取自 footer-arc-vector.svg） */}
+    <footer className="relative z-10 mt-auto">
+      {/* 弧形上緣（Figma footer symbol 30:81）：絕對定位浮貼於上一區塊底部，
+          弧線上方的透明轉角會露出上一區塊（深綠 CTA 帶），達成設計稿「footer 與底部區塊融合」的效果。
+          只有裝飾弧形覆蓋上一區塊，footer 內容本體仍從區塊底緣開始，故對所有頁面（不論最後一塊為何）皆安全。 */}
       <svg
         aria-hidden="true"
-        className="-mb-px block h-[36px] w-full md:h-[87px]"
+        className="absolute bottom-[calc(100%-1px)] left-0 block h-[36px] w-full md:h-[87px]"
         fill="none"
         preserveAspectRatio="none"
         viewBox="0 0 1444 88"
