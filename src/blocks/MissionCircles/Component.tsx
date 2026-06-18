@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Media } from '@/components/Media'
 import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
@@ -24,44 +25,60 @@ export type MissionCirclesBlockProps = {
 const circleColors = ['#DCD020', '#8BA98B', '#ADCB59']
 
 /**
- * variant band：About Vision 使命帶（Figma 34:88 Vision-bg）——淺灰底（非深色照片）＋
- * 深色標語兩行＋三圓（外圈半透明 halo + 內實心圓 220/260 比例 + 白字 label）。
- * Figma 底為 #D9D9D9 淺灰；標語改深墨色以確保可讀（淺灰底白字對比不足）。
+ * variant band：About Vision 使命帶（Figma 34:88 Vision-bg + 34:113）——
+ * 滿版照片底（深色調）＋黑色 45% 遮罩＋白色標語兩行＋三圓
+ * （Figma about-vision：外圈 40% 半透明同色 halo 260/200 ＋ 內圈實心同色 ~188/150、白字 Black label）。
  */
 const Band: React.FC<{
   slogan?: string | null
   circles: MissionCircle[]
-}> = ({ slogan, circles }) => (
-  <section className="bg-[#D9D9D9] py-16 md:py-24" data-block="missionCircles">
-    <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
+  backgroundImage?: MediaDoc | string | number | null
+}> = ({ slogan, circles, backgroundImage }) => (
+  <section className="relative overflow-hidden py-16 md:py-24" data-block="missionCircles">
+    {/* 滿版照片底 + 深色遮罩（無圖則 fallback 深灰） */}
+    {backgroundImage && typeof backgroundImage === 'object' ? (
+      <>
+        <Media
+          className="absolute inset-0 h-full w-full"
+          imgClassName="absolute inset-0 h-full w-full object-cover"
+          resource={backgroundImage}
+        />
+        <div aria-hidden className="absolute inset-0 bg-black/45" />
+      </>
+    ) : (
+      <div aria-hidden className="absolute inset-0 bg-[#4C4C4C]" />
+    )}
+    <ScrollReveal as="div" variant="in" className="container relative z-10 max-w-[1240px]">
       {slogan && (
-        // .fig H2：Bold 36 / lh60 固定 / ls15%。tablet(768) 36px 會把第二句擠出孤字「展。」，
-        // 故 md(641–1024) 降到 30px、lg(≥1024) 才回 36px；text-balance-cjk 再保險防孤行。
-        <h2 className="text-balance-cjk whitespace-pre-line text-center text-xl font-bold leading-[1.9] tracking-[0.15em] text-brand-ink md:text-[30px] md:leading-[48px] lg:text-4xl lg:leading-[60px]">
+        // .fig H2：Bold 36 / lh60 固定 / ls15%，白字置中。tablet 降 30px 防孤字。
+        <h2 className="text-balance-cjk whitespace-pre-line text-center text-xl font-bold leading-[1.9] tracking-[0.15em] text-white md:text-[30px] md:leading-[48px] lg:text-4xl lg:leading-[60px]">
           {slogan}
         </h2>
       )}
-      {/* mobile：直排（M-about.png 三圓直排）→ flex-wrap 置中堆疊。
-          tablet(md 768)：縮圓 200 + gap-10，三圓同列剛好容納（3×200+2×40=680<704），避免 2+1 折行。
-          desktop(lg ≥1024)：回設計 260 圓 + 103px gap 一排三圓。 */}
+      {/* mobile 直排堆疊；tablet 縮 200 同列；desktop 260 圓 + 103px gap 一排三圓。 */}
       <div className="mt-12 flex flex-wrap items-center justify-center gap-8 md:flex-nowrap md:gap-10 lg:gap-[103px]">
         {circles.map((circle, i) => {
           const color = circleColors[i % circleColors.length]
           return (
             <div
               key={circle.id ?? i}
-              className="relative flex h-[200px] w-[200px] shrink-0 items-center justify-center rounded-full lg:h-[260px] lg:w-[260px]"
-              style={{ backgroundColor: `${color}59` }} // 外圈半透明 halo（35%）
+              className="relative flex h-[200px] w-[200px] shrink-0 items-center justify-center lg:h-[260px] lg:w-[260px]"
             >
-              {/* Figma：260 frame 內 220 實心圓 → 85% */}
-              <div
-                className="flex h-[85%] w-[85%] items-center justify-center rounded-full px-4 text-center"
+              {/* 外圈：同色 40% 半透明 halo（填滿容器） */}
+              <span
+                aria-hidden
+                className="absolute inset-0 rounded-full"
+                style={{ backgroundColor: `${color}66` }}
+              />
+              {/* 內圈：同色實心 disc（~75% 直徑），白字置中 */}
+              <span
+                className="relative flex h-[150px] w-[150px] items-center justify-center rounded-full px-4 text-center lg:h-[188px] lg:w-[188px]"
                 style={{ backgroundColor: color }}
               >
-                <span className="text-base font-bold tracking-[0.15em] text-white md:text-[19px]">
+                <span className="text-[18px] font-black tracking-[0.1em] text-white lg:text-[22px]">
                   {circle.label}
                 </span>
-              </div>
+              </span>
             </div>
           )
         })}
@@ -131,8 +148,9 @@ export const MissionCirclesBlock: React.FC<MissionCirclesBlockProps> = ({
   title,
   slogan,
   circles,
+  backgroundImage,
 }) => {
   if (!circles || circles.length === 0) return null
   if (variant === 'plain') return <Plain circles={circles} title={title} />
-  return <Band circles={circles} slogan={slogan} />
+  return <Band backgroundImage={backgroundImage} circles={circles} slogan={slogan} />
 }

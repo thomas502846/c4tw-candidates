@@ -67,13 +67,17 @@ export const NumberedFeaturesBlock: React.FC<NumberedFeaturesBlockProps> = ({ ey
         const imageCol = (
           <div className="md:w-[52%]">
             <div
-              className={cn('overflow-hidden rounded-[30px] bg-[#D9D9D9]', {
+              className={cn('group overflow-hidden rounded-[30px] bg-[#D9D9D9]', {
                 // 米色帶區的圖卡上緣突出帶外（Figma service1/3 交疊效果）
                 'md:-mt-24': surface,
               })}
             >
               {item.image && typeof item.image === 'object' ? (
-                <Media resource={item.image} imgClassName="aspect-[59/40] w-full object-cover" />
+                // Tracy 4:4 留言：照片 Hover 放大 110%，0.3–0.5s Ease Out
+                <Media
+                  resource={item.image}
+                  imgClassName="aspect-[59/40] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                />
               ) : (
                 <div className="aspect-[59/40] w-full" />
               )}
@@ -83,7 +87,9 @@ export const NumberedFeaturesBlock: React.FC<NumberedFeaturesBlockProps> = ({ ey
 
         const inner = (
           <div
-            className={cn('container flex max-w-[1240px] flex-col gap-10 md:items-center md:gap-16', {
+            // Mobile（Figma 206:325 service1-3）：照片在上、文字在下 → flex-col-reverse
+            // （DOM 順序為 textCol→imageCol，reverse 後行動版圖在上；md 改回 row 由 imageRight 決定左右）
+            className={cn('container flex max-w-[1240px] flex-col-reverse gap-10 md:items-center md:gap-16', {
               'md:flex-row': imageRight,
               'md:flex-row-reverse': !imageRight,
             })}

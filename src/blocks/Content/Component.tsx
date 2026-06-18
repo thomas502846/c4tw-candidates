@@ -45,11 +45,12 @@ const PhotoCollage: React.FC<{
   const items = images.filter((it) => Boolean(it?.image))
   if (items.length === 0) return null
 
-  // 單張：退回一般大圖（與舊單 image 行為一致）
+  // 單張：用於 Figma 已合成好的拼貼圖（489×576，含圓角＋透明縫隙）——
+  // 用原圖比例 object-contain 完整呈現，不裁切。
   if (items.length === 1) {
     return (
       <Media
-        imgClassName="aspect-[506/550] w-full rounded-[30px] object-cover"
+        imgClassName="aspect-[489/576] w-full object-contain"
         resource={items[0].image}
       />
     )
@@ -176,7 +177,11 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
     // 標題、內文/圖文區塊進場 Fade In（Tracy node 0:1/45:240：滑到觸發、0→100%、0.6s）
     <ScrollReveal as="section" className="container" data-block="content">
       <div
-        className={cn('flex flex-col gap-10', {
+        className={cn('flex gap-10', {
+          // 單張側欄配圖（about 緣起、school 關於照顧學校）：行動版照片在文字上方（Figma 218:856 / 376:781）。
+          // 拼貼圖（images[]，如首頁 About）維持文字在上、圖在下。
+          'flex-col-reverse': showImage && collageItems.length === 0,
+          'flex-col': !(showImage && collageItems.length === 0),
           'md:flex-row-reverse md:items-center md:gap-16': showImage && imagePosition === 'left',
           'md:flex-row md:items-center md:gap-16': showImage && imagePosition === 'right',
         })}

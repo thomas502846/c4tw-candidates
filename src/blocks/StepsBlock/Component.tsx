@@ -16,7 +16,11 @@ export type StepItem = {
 export type StepsBlockProps = {
   blockType: 'stepsBlock'
   variant?: 'cardRow' | 'inline' | 'outline' | null
+  eyebrow?: string | null
+  heading?: string | null
   title?: string | null
+  body?: string | null
+  footnote?: string | null
   items?: StepItem[] | null
 }
 
@@ -139,49 +143,104 @@ const Inline: React.FC<{ items: StepItem[] }> = ({ items }) => (
  * rounded-30、頂部 ↓ icon、文字 #9C9F33 置中兩行
  */
 const Outline: React.FC<{ items: StepItem[] }> = ({ items }) => (
-  <div className="grid gap-6 md:grid-cols-3 md:gap-[46px]">
+  // Figma impact 280:444：2 卡並排（各 562、gap 16，容器 1140），#9C9F33 細框 rounded。
+  // 卡內置中、由上而下：標題 → ↓ 箭頭 → 內文（皆 olive #9C9F33）。
+  <div className="mx-auto grid max-w-[1140px] gap-6 md:grid-cols-2 md:gap-4">
     {items.map((item, i) => (
       <div
         key={item.id ?? i}
-        className="flex min-h-[141px] flex-col items-center justify-center gap-3 rounded-[30px] border-[1.5px] border-brand-primary px-8 py-7 text-center"
+        className="flex min-h-[174px] flex-col items-center justify-center gap-3 rounded-[20px] border-[1.5px] border-brand-primary px-8 py-8 text-center"
       >
+        {item.title && (
+          <p className="text-[17px] font-medium tracking-[0.1em] text-brand-primary md:text-[18px]">
+            {item.title}
+          </p>
+        )}
         <svg
           aria-hidden
-          className="h-9 w-9"
+          className="h-7 w-7"
           fill="none"
           stroke="#9C9F33"
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth="2.5"
+          strokeWidth="2"
           viewBox="0 0 40 40"
         >
           <path d="M20 6v26M10 23l10 10 10-10" />
         </svg>
-        <p className="text-base leading-[1.7] tracking-[0.05em] text-brand-primary">
-          {item.title}
-          {item.title && item.text ? '，' : ''}
-          {item.text}
-        </p>
+        {item.text && (
+          <p className="whitespace-pre-line text-[15px] leading-[1.7] tracking-[0.05em] text-brand-primary md:text-base">
+            {item.text}
+          </p>
+        )}
       </div>
     ))}
   </div>
 )
 
-export const StepsBlockBlock: React.FC<StepsBlockProps> = ({ variant, title, items }) => {
+export const StepsBlockBlock: React.FC<StepsBlockProps> = ({
+  variant,
+  eyebrow,
+  heading,
+  title,
+  body,
+  footnote,
+  items,
+}) => {
   if (!items || items.length === 0) return null
   const variants = { cardRow: CardRow, inline: Inline, outline: Outline } as const
   const Variant = variants[variant ?? 'cardRow'] ?? CardRow
+  const hasHeader = eyebrow || heading || title || body
+  // outline（training 培力價值 Frame 189）標題群組靠左；其餘變體維持置中。
+  const leftAlign = variant === 'outline'
 
   return (
     <section className="container max-w-[1240px]" data-block="stepsBlock">
-      {/* 區塊進場 Fade In（標題）＋ Fade UP（步驟卡）（Tracy node 86:363/97:564） */}
+      {/* 區塊進場 Fade In（標題）＋ Fade UP／DOWN（步驟卡）（Tracy node 86:363/97:564） */}
       <ScrollReveal variant="in">
-        {title && (
-          <h2 className="mb-10 text-center text-[24px] font-bold leading-[1.7] tracking-[0.1em] text-brand-ink md:text-[30px]">
-            {title}
-          </h2>
+        {hasHeader && (
+          <div className={cn('mb-10', leftAlign ? 'text-left' : 'text-center')}>
+            {eyebrow && (
+              // .fig 眉標：● dot + #757575
+              <p
+                className={cn(
+                  'mb-3 flex items-center gap-2.5 text-base tracking-[0.1em] text-brand-muted',
+                  leftAlign ? 'justify-start' : 'justify-center',
+                )}
+              >
+                <span aria-hidden className="inline-block h-[15px] w-[15px] shrink-0 rounded-full bg-brand-highlight" />
+                {eyebrow}
+              </p>
+            )}
+            {heading && (
+              // .fig 培力價值：Bold 40 / #8ba98b
+              <h2 className="text-[26px] font-bold leading-[1.5] tracking-[0.1em] text-brand-green md:text-[40px] md:leading-[60px]">
+                {heading}
+              </h2>
+            )}
+            {title && (
+              <p className="mt-3 text-lg font-medium leading-[1.6] tracking-[0.1em] text-brand-ink md:text-[22px]">
+                {title}
+              </p>
+            )}
+            {body && (
+              <p
+                className={cn(
+                  'mt-4 max-w-3xl whitespace-pre-line text-base leading-[1.85] tracking-[0.1em] text-brand-ink',
+                  leftAlign ? '' : 'mx-auto',
+                )}
+              >
+                {body}
+              </p>
+            )}
+          </div>
         )}
         <Variant items={items} />
+        {footnote && (
+          <p className="mx-auto mt-8 max-w-3xl whitespace-pre-line text-center text-base leading-[1.85] tracking-[0.1em] text-brand-ink">
+            {footnote}
+          </p>
+        )}
       </ScrollReveal>
     </section>
   )

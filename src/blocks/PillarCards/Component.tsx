@@ -5,7 +5,7 @@ import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
-import { MAP_ICONS } from './icons'
+import { MapIcon } from './icons'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
 export type PillarCard = {
@@ -119,8 +119,9 @@ export const PillarCardsBlock: React.FC<PillarCardsBlockProps> = ({
               className={cn(
                 'flex w-[78%] flex-col items-center gap-5 self-start rounded-[30px] px-5 py-9 text-center md:w-full md:min-h-[444px]',
                 pillarBgs[i % pillarBgs.length],
-                // Mobile 階梯交錯：偶數卡靠左、奇數卡靠右；桌機改回滿欄＋下移
-                i % 2 === 1 ? 'self-end md:self-start md:mt-[214px]' : 'self-start',
+                // Mobile 階梯交錯：偶數卡靠左、奇數卡靠右。單欄 grid 內須用 justify-self（行內軸）
+                // 才會左右錯位；self-*（區塊軸）在單欄 grid 不產生水平位移。桌機改回滿欄＋下移。
+                i % 2 === 1 ? 'justify-self-end md:mt-[214px]' : 'justify-self-start',
               )}
               delay={i * 0.12}
               key={card.id ?? i}
@@ -131,16 +132,14 @@ export const PillarCardsBlock: React.FC<PillarCardsBlockProps> = ({
                   {card.tag}
                 </span>
               )}
-              <span className="flex h-20 w-20 items-center justify-center rounded-full bg-white md:h-24 md:w-24">
+              {/* 白圓 → Figma 為 #F7F7EB 暖米圓（class 304:605 Frame 44，133px），非純白 */}
+              <span className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-surface md:h-24 md:w-24">
                 {card.icon && typeof card.icon === 'object' ? (
                   <span className="block h-12 w-12 md:h-14 md:w-14">
                     <Media resource={card.icon} imgClassName="h-full w-full object-contain" />
                   </span>
                 ) : (
-                  (() => {
-                    const FallbackIcon = MAP_ICONS[i % MAP_ICONS.length]
-                    return <FallbackIcon className="h-12 w-12 md:h-14 md:w-14" />
-                  })()
+                  <MapIcon className="h-12 w-12 md:h-14 md:w-14" index={i} />
                 )}
               </span>
               <p className="text-white">

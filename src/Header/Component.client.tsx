@@ -225,7 +225,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ zh, en }) => {
                   {(item.subItems ?? []).map((sub) => (
                     <NavLink
                       activeClassName="text-brand-lime font-semibold"
-                      className="block whitespace-nowrap px-6 py-3 text-base tracking-[0.1em] text-brand-ink transition-colors hover:bg-brand-surface hover:text-brand-primary"
+                      className="flex items-center whitespace-nowrap px-6 py-3 text-base tracking-[0.1em] text-brand-ink transition-colors duration-300 hover:bg-brand-green hover:text-white"
                       isEn={isEn}
                       item={sub}
                       key={sub.id}

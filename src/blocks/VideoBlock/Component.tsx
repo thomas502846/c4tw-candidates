@@ -25,30 +25,8 @@ function youtubeId(url: string): string | null {
  * （125px circle stroke #ADCB59 透明底 + 同色 outline 三角）
  */
 export const VideoBlockBlock: React.FC<VideoBlockProps> = ({ videoUrl, poster }) => {
-  const [playing, setPlaying] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const ytId = videoUrl ? youtubeId(videoUrl) : null
-
-  if (playing && videoUrl) {
-    return (
-      <section
-        className="relative aspect-video w-full bg-black md:aspect-[24/11]"
-        data-block="videoBlock"
-      >
-        {ytId ? (
-          <iframe
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="absolute inset-0 h-full w-full"
-            src={`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0`}
-            title="影片"
-          />
-        ) : (
-          <video autoPlay className="absolute inset-0 h-full w-full" controls src={videoUrl} />
-        )}
-      </section>
-    )
-  }
 
   return (
     <section
@@ -74,11 +52,12 @@ export const VideoBlockBlock: React.FC<VideoBlockProps> = ({ videoUrl, poster })
         </>
       )}
       {/* Figma 82:233（1440×660＝aspect 24/11，淺灰 #D9D9D9 底）：中央播放鈕恆在。
-          影片網址待客戶提供 → 點擊開啟置中 modal lightbox 殼；有 videoUrl 才真的內嵌播放。 */}
+          Tracy 0:1 規格：點擊封面 → 開啟頁面中央 Modal Lightbox（半透明遮罩、非全螢幕、右上 X 關閉）。
+          有 videoUrl → modal 內嵌播放；無 videoUrl → modal 顯示「即將上線」佔位文案。 */}
       <button
         aria-label="播放影片"
         className="absolute inset-0 flex items-center justify-center"
-        onClick={() => (videoUrl ? setPlaying(true) : setModalOpen(true))}
+        onClick={() => setModalOpen(true)}
         type="button"
       >
         <svg
@@ -97,8 +76,9 @@ export const VideoBlockBlock: React.FC<VideoBlockProps> = ({ videoUrl, poster })
         </svg>
       </button>
 
-      {/* Modal 殼：影片尚未提供時的佔位 lightbox（client-only） */}
-      {modalOpen && !videoUrl && (
+      {/* Modal Lightbox（client-only）：頁面中央浮層、半透明遮罩、右上 X、點背景關閉。
+          有 videoUrl → 內嵌 16:9 播放器；無 → 佔位文案。 */}
+      {modalOpen && (
         <div
           aria-modal
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6"
@@ -106,23 +86,41 @@ export const VideoBlockBlock: React.FC<VideoBlockProps> = ({ videoUrl, poster })
           role="dialog"
         >
           <div
-            className="relative w-full max-w-3xl rounded-[20px] bg-white p-10 text-center"
+            className={`relative w-full ${videoUrl ? 'max-w-4xl' : 'max-w-3xl'}`}
             onClick={(e) => e.stopPropagation()}
           >
             <button
               aria-label="關閉"
-              className="absolute right-5 top-4 text-2xl leading-none text-brand-muted hover:text-brand-ink"
+              className="absolute -top-9 right-0 text-3xl leading-none text-white/90 transition-opacity hover:opacity-70 md:-right-2"
               onClick={() => setModalOpen(false)}
               type="button"
             >
               ×
             </button>
-            <p className="text-[18px] font-medium tracking-[0.08em] text-brand-ink">
-              品牌形象影片即將上線
-            </p>
-            <p className="mt-3 text-[14px] leading-[1.8] tracking-[0.05em] text-brand-muted">
-              影片內容整備中，敬請期待。
-            </p>
+            {videoUrl ? (
+              <div className="aspect-video w-full overflow-hidden rounded-[12px] bg-black shadow-2xl">
+                {ytId ? (
+                  <iframe
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="h-full w-full"
+                    src={`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0`}
+                    title="影片"
+                  />
+                ) : (
+                  <video autoPlay className="h-full w-full" controls src={videoUrl} />
+                )}
+              </div>
+            ) : (
+              <div className="rounded-[20px] bg-white p-10 text-center">
+                <p className="text-[18px] font-medium tracking-[0.08em] text-brand-ink">
+                  品牌形象影片即將上線
+                </p>
+                <p className="mt-3 text-[14px] leading-[1.8] tracking-[0.05em] text-brand-muted">
+                  影片內容整備中，敬請期待。
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}

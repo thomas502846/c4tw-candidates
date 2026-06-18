@@ -517,6 +517,14 @@ export interface PageHeaderBlock {
    * 放綠帶的背景照片，左側會壓上綠色、右側漸層透出照片。建議上傳寬度 1920px 以上的橫式照片，重點畫面放在右半邊比較看得到。不放的話整條會是純綠色。
    */
   image?: (number | null) | Media;
+  /**
+   * 左側綠帶的顏色。認識創照用灰綠；AIO 服務／組織培力用亮綠。
+   */
+  gradient?: ('sage' | 'lime') | null;
+  /**
+   * 綠帶高度固定，照片會被裁切。若照片重點（例如人物臉部）在上半部，選「對齊上方」；在中間選「置中」。
+   */
+  focal?: ('top' | 'center' | 'bottom') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'pageHeader';
@@ -599,7 +607,7 @@ export interface ContentBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * 放這個段落旁邊的一張配圖。建議上傳寬度 768px 以上、接近直式或方形的照片。若要多張錯位拼貼（如首頁品牌簡介 3 張情境照），請改用下方「配圖（多張錯位拼貼）」。兩者擇一即可，多張優先。
+   * 放這個段落旁邊的一張配圖。建議上傳寬度 768px 以上、接近直式或方形的照片。若要多張錯位拼貼（如首頁品牌簡介 3 張情境照），請改用下方「配圖（多張錯位拼貼）」。兩者擇一即可，多張優先。顯示時會置中裁切，重要主體請置中、邊緣留空。
    */
   image?: (number | null) | Media;
   /**
@@ -608,7 +616,7 @@ export interface ContentBlock {
   images?:
     | {
         /**
-         * 放一張情境照。建議上傳寬度 768px 以上、接近 4:3 的橫式照片。
+         * 放一張情境照。建議上傳寬度 768px 以上、接近 4:3 的橫式照片。顯示時會置中裁切，重要主體請置中、邊緣留空。
          */
         image: number | Media;
         id?: string | null;
@@ -942,7 +950,7 @@ export interface TwoColumnBlock {
    */
   eyebrow?: string | null;
   /**
-   * 上傳這個區塊的主圖。建議上傳寬度 768px 以上、接近 4:3 的橫式照片；如果是大圖引言版型，建議上傳寬度 1920px 以上的橫式大圖。
+   * 上傳這個區塊的主圖。建議上傳寬度 768px 以上、接近 4:3 的橫式照片；如果是大圖引言版型，建議上傳寬度 1920px 以上的橫式大圖。顯示時會置中裁切，重要主體請置中、邊緣留空。
    */
   image: number | Media;
   /**
@@ -1069,7 +1077,7 @@ export interface TaCtaBlock {
   cards?:
     | {
         /**
-         * 三磚版型上傳白色去背的線稿插圖，建議用 SVG 或去背 PNG，不填會用預設插圖；照片卡與全幅照片帶請上傳橫式照片，照片卡建議寬度 768px 以上、全幅照片帶建議寬度 1920px 以上。
+         * 三磚版型上傳白色去背的線稿插圖，建議用 SVG 或去背 PNG，不填會用預設插圖；照片卡與全幅照片帶請上傳橫式照片，照片卡建議寬度 768px 以上、全幅照片帶建議寬度 1920px 以上。照片版型顯示時會置中裁切，重要主體請置中、邊緣留空。
          */
         image?: (number | null) | Media;
         /**
@@ -1131,7 +1139,7 @@ export interface MissionCirclesBlock {
    */
   slogan?: string | null;
   /**
-   * 上傳宣言帶的背景照片。建議上傳寬度 1920px 以上的橫式大圖。只有宣言帶版型會用到。
+   * 上傳宣言帶的背景照片。建議上傳寬度 1920px 以上的橫式大圖。只有宣言帶版型會用到。圖會滿版置中裁切、上面壓白字，重要主體請置中、邊緣留空，手機上左右會裁得更多。
    */
   backgroundImage?: (number | null) | Media;
   circles?:
@@ -1206,9 +1214,25 @@ export interface StepsBlockBlock {
    */
   variant: 'cardRow' | 'inline' | 'outline';
   /**
-   * 填整個步驟區上方的標題，可以不填。建議 30 個字以內。
+   * 填一行小標，放在大標題上方，可放英文。可不填。
+   */
+  eyebrow?: string | null;
+  /**
+   * 填這個區塊的綠色大標題（顯示在前導標題之上）。可不填。
+   */
+  heading?: string | null;
+  /**
+   * 填整個步驟區上方的標題或副標，可以不填。建議 30 個字以內。
    */
   title?: string | null;
+  /**
+   * 填一段說明文字，顯示在卡片上方。可不填。
+   */
+  body?: string | null;
+  /**
+   * 填一段收尾文字，顯示在卡片下方並置中。可不填。
+   */
+  footnote?: string | null;
   /**
    * 逐一新增每一個步驟，建議放 3 個，並依照流程先後順序排列。
    */
@@ -1361,7 +1385,7 @@ export interface TabsBlockBlock {
          */
         label: string;
         /**
-         * 上傳這個分頁面板最上方的大圖，例如地圖或圖表。建議上傳寬度 1075px 以上、接近 16:9 的橫式圖。
+         * 上傳這個分頁面板最上方的大圖，例如地圖或圖表。建議上傳寬度 1075px 以上、接近 16:9 的橫式圖。顯示時會置中裁切，重要主體請置中、邊緣留空。
          */
         image?: (number | null) | Media;
         /**
@@ -1493,18 +1517,34 @@ export interface MapLocationsBlock {
    * 填一句副標，放在標題下方，用來補充說明，例如：照顧學校的培訓場域。
    */
   subtitle?: string | null;
-  /**
-   * 填這個區塊的說明文字，按一次換行就會分成一個新段落。
-   */
   body?: string | null;
   /**
-   * 填了就會在內文下方顯示一顆「羅布森空間故事」按鈕，點擊開新分頁前往該連結；不填則不顯示。
+   * 填這個區塊開頭的導言文字，按一次換行就會分成一個新段落。
+   */
+  intro?: string | null;
+  /**
+   * 一段一段加上「綠色小標題＋說明文字」，例如「非典型課堂，開啟靈活思維」＋一段說明。
+   */
+  sections?:
+    | {
+        heading: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  closing?: string | null;
+  /**
+   * 填了就會在場域照下方顯示一顆「羅布森空間故事」按鈕，點擊開新分頁前往該連結；不填則不顯示。
    */
   storyUrl?: string | null;
   /**
-   * 上傳一張地圖插畫放在右側。建議上傳寬度 600px 以上、橫式的圖。如果留空，系統會自動顯示內建的水彩地形圖。
+   * 上傳整區的滿版水彩地形底圖（含據點 pin）。建議寬度 1600px 以上、橫式。留空則顯示內建水彩地形圖。
    */
   image?: (number | null) | Media;
+  /**
+   * 上傳場域建物照，顯示在內文下方、按鈕上方。建議橫式、寬度 1000px 以上。
+   */
+  spaceImage?: (number | null) | Media;
   /**
    * 一個一個加上要標記在地圖上的據點，每個據點會在地圖上顯示一個定位圖釘和名稱。
    */
@@ -2149,6 +2189,8 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
   title?: T;
   eyebrow?: T;
   image?: T;
+  gradient?: T;
+  focal?: T;
   id?: T;
   blockName?: T;
 }
@@ -2439,7 +2481,11 @@ export interface IconFeaturesBlockSelect<T extends boolean = true> {
 export interface StepsBlockBlockSelect<T extends boolean = true> {
   enabled?: T;
   variant?: T;
+  eyebrow?: T;
+  heading?: T;
   title?: T;
+  body?: T;
+  footnote?: T;
   items?:
     | T
     | {
@@ -2562,8 +2608,18 @@ export interface MapLocationsBlockSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   body?: T;
+  intro?: T;
+  sections?:
+    | T
+    | {
+        heading?: T;
+        text?: T;
+        id?: T;
+      };
+  closing?: T;
   storyUrl?: T;
   image?: T;
+  spaceImage?: T;
   locations?:
     | T
     | {

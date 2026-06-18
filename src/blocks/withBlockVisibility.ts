@@ -9,11 +9,22 @@ import type { Block } from 'payload'
  *
  * Defaults to `true`, so existing/older content keeps showing.
  *
+ * Also sets a schematic wireframe thumbnail (public/block-thumbnails/<slug>.svg)
+ * so the "add block" picker shows what each block looks like instead of
+ * Payload's generic placeholder. Existing `admin` settings are preserved.
+ *
  * Returns a shallow clone — the original block config is left untouched, so
  * the same block used elsewhere (e.g. inside rich-text) is unaffected.
  */
 export const withBlockVisibility = (block: Block): Block => ({
   ...block,
+  admin: {
+    ...block.admin,
+    images: {
+      ...block.admin?.images,
+      thumbnail: `/block-thumbnails/${block.slug}.svg`,
+    },
+  },
   fields: [
     {
       name: 'enabled',

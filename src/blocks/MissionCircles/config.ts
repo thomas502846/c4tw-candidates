@@ -49,7 +49,7 @@ export const MissionCircles: Block = {
       admin: {
         condition: (_, siblingData) => siblingData?.variant === 'band',
         description:
-          '上傳宣言帶的背景照片。建議上傳寬度 1920px 以上的橫式大圖。只有宣言帶版型會用到。',
+          '上傳宣言帶的背景照片。建議上傳寬度 1920px 以上的橫式大圖。只有宣言帶版型會用到。圖會滿版置中裁切、上面壓白字，重要主體請置中、邊緣留空，手機上左右會裁得更多。',
       },
     },
     {

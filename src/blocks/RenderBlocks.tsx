@@ -53,6 +53,16 @@ const fullBleedBlocks = new Set([
   'photoStrip',
 ])
 
+// 部分區塊「依 variant」才是滿版米色帶（school：infographic ring 我們看見的問題 ＋ iconFeatures roles 學員樣貌
+// 在 Figma 共用同一條 problem-bg 米色帶）→ 去 my-16 讓上下兩帶相接、不留白縫。
+const isFullBleed = (block: { blockType?: string; variant?: unknown }): boolean => {
+  const { blockType, variant } = block
+  if (blockType && fullBleedBlocks.has(blockType)) return true
+  if (blockType === 'infographic' && variant === 'ring') return true
+  if (blockType === 'iconFeatures' && variant === 'roles') return true
+  return false
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const blockComponents: Record<string, React.ComponentType<any>> = {
   archive: ArchiveBlock,
@@ -112,7 +122,7 @@ export const RenderBlocks: React.FC<{
               return (
                 <div
                   className={
-                    fullBleedBlocks.has(blockType)
+                    isFullBleed(block as { blockType?: string; variant?: unknown })
                       ? anchorId
                         ? 'scroll-mt-[88px] lg:scroll-mt-[120px]'
                         : undefined

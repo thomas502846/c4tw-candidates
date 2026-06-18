@@ -8,7 +8,7 @@ import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
-import { MAP_ICONS } from '@/blocks/PillarCards/icons'
+import { MapIcon } from '@/blocks/PillarCards/icons'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
 export type TabItem = {
@@ -117,11 +117,11 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
 
         {current.heading && (
           <div className="mt-6 flex items-center gap-3.5">
-            {/* 線稿 icon：依 tab index 對應四大地圖 fallback icon（書／房+心／證書／披風人物） */}
-            {(() => {
-              const TabIcon = MAP_ICONS[Math.min(active, list.length - 1) % MAP_ICONS.length]
-              return <TabIcon className="h-10 w-10 shrink-0 md:h-11 md:w-11" />
-            })()}
+            {/* 線稿 icon：依 tab index 對應四大地圖 icon（書／房+心／證照框／披風人物） */}
+            <MapIcon
+              className="h-10 w-10 shrink-0 md:h-11 md:w-11"
+              index={Math.min(active, list.length - 1)}
+            />
             {/* .fig 課程地圖（面板標題）：Noto Sans TC Bold 36 / lh60 / ls15% */}
             <h3 className="text-2xl font-bold leading-[1.4] tracking-[0.15em] text-brand-ink md:text-[36px] md:leading-[60px]">
               {current.heading}

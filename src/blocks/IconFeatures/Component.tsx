@@ -151,19 +151,21 @@ const Roles: React.FC<{ heading?: string | null; items: IconFeatureItem[] }> = (
         <span className="h-px flex-1 bg-brand-primary/40" />
       </div>
     )}
-    <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4 lg:gap-x-8">
+    <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4 lg:gap-x-[60px]">
       {items.map((item, i) => (
         <div className="flex flex-col items-center text-center" key={item.id ?? i}>
-          <ItemIcon
-            className="h-[92px] w-[92px] md:h-[108px] md:w-[108px]"
-            fallbackSrc={ROLE_ICONS[i]}
-            item={item}
-          />
-          <h3 className="mt-4 text-[16px] font-medium leading-[1.5] tracking-[0.05em] text-brand-primary md:text-[18px]">
+          {/* 白圓底（Figma Frame 191：200×194 #FFFFFF rounded-97，落在米色帶上才看得到）；
+              內 icon 149/200 ≈ 74%，比原本 92px 放大貼齊設計 */}
+          <div className="flex aspect-square w-full max-w-[200px] items-center justify-center rounded-full bg-white">
+            <ItemIcon className="h-[74%] w-[74%]" fallbackSrc={ROLE_ICONS[i]} item={item} />
+          </div>
+          {/* H4 Noto Sans TC Medium 19 / lh28 / ls10% / #9C9F33 */}
+          <h3 className="mt-5 text-[17px] font-medium leading-[1.5] tracking-[0.1em] text-brand-primary md:text-[19px] md:leading-[28px]">
             {item.title}
           </h3>
+          {/* Body Noto Sans TC Regular 16 / lh29 / ls10% / 近黑 */}
           {item.text && (
-            <p className="mt-2 text-[13px] leading-[1.7] tracking-[0.03em] text-brand-muted md:text-sm">
+            <p className="mt-2.5 text-sm leading-[1.8] tracking-[0.1em] text-brand-ink md:text-base md:leading-[29px]">
               {item.text}
             </p>
           )}
@@ -175,17 +177,24 @@ const Roles: React.FC<{ heading?: string | null; items: IconFeatureItem[] }> = (
 
 export const IconFeaturesBlock: React.FC<IconFeaturesBlockProps> = ({ variant, heading, items }) => {
   if (!items || items.length === 0) return null
+
+  // roles（school TA 619:640）＝滿版米色帶 #F7F7EB，與上方「我們看見的問題」ring 帶相接成一條；
+  // 白圓 icon 需落在米色底上才顯現（RenderBlocks 對 roles 去掉 my-16 讓兩帶貼齊）。
+  if (variant === 'roles') {
+    return (
+      <section className="bg-brand-surface py-14 md:py-20" data-block="iconFeatures">
+        <ScrollReveal as="div" variant="up" className="container max-w-[1240px]">
+          <Roles heading={heading} items={items} />
+        </ScrollReveal>
+      </section>
+    )
+  }
+
   return (
     <section className="container max-w-[1240px]" data-block="iconFeatures">
       {/* 卡片進場 Fade UP（Tracy node 86:363：滑到觸發、0→100%、0.6s） */}
       <ScrollReveal variant="up">
-        {variant === 'pillars' ? (
-          <Pillars items={items} />
-        ) : variant === 'roles' ? (
-          <Roles heading={heading} items={items} />
-        ) : (
-          <Cards items={items} />
-        )}
+        {variant === 'pillars' ? <Pillars items={items} /> : <Cards items={items} />}
       </ScrollReveal>
     </section>
   )
