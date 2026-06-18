@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Media } from '@/components/Media'
+import FramedImage from '@/components/Media/FramedImage'
 import type { Media as MediaDoc } from '@/payload-types'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
@@ -9,17 +9,21 @@ export type QuoteBlockProps = {
   text: string
   attribution?: string | null
   photo?: MediaDoc | string | number | null
+  id?: string | null
+  framePos?: unknown
 }
 
-export const QuoteBlock: React.FC<QuoteBlockProps> = ({ text, attribution, photo }) => {
+export const QuoteBlock: React.FC<QuoteBlockProps> = ({ text, attribution, photo, id, framePos }) => {
   return (
     <section className="container" data-block="quote">
       <figure className="mx-auto max-w-2xl text-center">
         {photo && (
-          <div className="mx-auto mb-7 w-24">
-            <Media
-              imgClassName="aspect-square rounded-full object-cover ring-4 ring-brand-lime/40"
+          <div className="relative mx-auto mb-7 aspect-square w-24 overflow-hidden rounded-full ring-4 ring-brand-lime/40">
+            <FramedImage
+              className="rounded-full"
+              id={id ?? 'quote'}
               resource={photo}
+              framePos={framePos}
             />
           </div>
         )}

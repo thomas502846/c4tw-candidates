@@ -7,6 +7,8 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const Content: Block = {
   slug: 'content',
   interfaceName: 'ContentBlock',
@@ -44,6 +46,19 @@ export const Content: Block = {
       ],
       admin: {
         description: '選標題和眉標要靠左還是置中。只有在這個段落沒有放側邊配圖時才會生效。',
+      },
+    },
+    {
+      name: 'background',
+      type: 'select',
+      label: '背景樣式',
+      defaultValue: 'none',
+      options: [
+        { label: '無', value: 'none' },
+        { label: 'AIO 漸層滿版底', value: 'aio' },
+      ],
+      admin: {
+        description: '「AIO 整合照顧模式」段落專用：套用滿版的綠→米漸層背景（圖片橫排在下方）。',
       },
     },
     {
@@ -91,6 +106,9 @@ export const Content: Block = {
         description: '放這個段落旁邊的一張配圖。建議上傳寬度 768px 以上、接近直式或方形的照片。若要多張錯位拼貼（如首頁品牌簡介 3 張情境照），請改用下方「配圖（多張錯位拼貼）」。兩者擇一即可，多張優先。顯示時會置中裁切，重要主體請置中、邊緣留空。',
       },
     },
+    responsiveFramePosition({
+      frames: { mobile: '506/550', tablet: '506/550', desktop: '506/550' },
+    }),
     {
       name: 'images',
       type: 'array',
@@ -114,6 +132,11 @@ export const Content: Block = {
             description: '放一張情境照。建議上傳寬度 768px 以上、接近 4:3 的橫式照片。顯示時會置中裁切，重要主體請置中、邊緣留空。',
           },
         },
+        responsiveFramePosition({
+          name: 'framePos',
+          imageField: 'image',
+          frames: { mobile: '489/576', tablet: '489/576', desktop: '489/576' },
+        }),
       ],
     },
     {

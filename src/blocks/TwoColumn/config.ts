@@ -7,6 +7,8 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const TwoColumn: Block = {
   slug: 'twoColumn',
   interfaceName: 'TwoColumnBlock',
@@ -80,6 +82,21 @@ export const TwoColumn: Block = {
           '上傳這個區塊的主圖。建議上傳寬度 768px 以上、接近 4:3 的橫式照片；如果是大圖引言版型，建議上傳寬度 1920px 以上的橫式大圖。顯示時會置中裁切，重要主體請置中、邊緣留空。',
       },
     },
+    responsiveFramePosition({
+      frames: { mobile: '4/3', tablet: '4/3', desktop: '4/3' },
+      variantField: 'variant',
+      framesByVariant: {
+        hero: { mobile: '16/9', tablet: '16/9', desktop: '16/9' },
+        standard: { mobile: '4/3', tablet: '4/3', desktop: '4/3' },
+      },
+      description:
+        '分別針對手機、平板、電腦拖曳焦點、調整縮放；縮到 1 倍以下＝完整顯示照片（留白）。預覽框會跟著版型變化。',
+      // quotes／centered 版型不顯示主圖，故不顯示此欄位
+      condition: (_data, siblingData) => {
+        const v = (siblingData as { variant?: string })?.variant
+        return v !== 'quotes' && v !== 'centered'
+      },
+    }),
     {
       name: 'images',
       type: 'array',
@@ -101,6 +118,11 @@ export const TwoColumn: Block = {
             description: '上傳一張橫式照片，建議寬度 768px 以上。',
           },
         },
+        responsiveFramePosition({
+          name: 'framePos',
+          imageField: 'image',
+          frames: { mobile: '420/292', tablet: '420/292', desktop: '420/292' },
+        }),
       ],
     },
     {

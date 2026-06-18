@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const TaCta: Block = {
   slug: 'taCta',
   interfaceName: 'TaCtaBlock',
@@ -52,6 +54,11 @@ export const TaCta: Block = {
               '三磚版型上傳白色去背的線稿插圖，建議用 SVG 或去背 PNG，不填會用預設插圖；照片卡與全幅照片帶請上傳橫式照片，照片卡建議寬度 768px 以上、全幅照片帶建議寬度 1920px 以上。照片版型顯示時會置中裁切，重要主體請置中、邊緣留空。',
           },
         },
+        responsiveFramePosition({
+          name: 'framePos',
+          imageField: 'image',
+          frames: { mobile: '16/9', tablet: '16/9', desktop: '16/9' },
+        }),
         {
           name: 'title',
           type: 'text',

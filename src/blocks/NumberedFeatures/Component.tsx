@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
@@ -11,6 +11,7 @@ export type NumberedFeatureItem = {
   title: string
   text: string
   image?: MediaDoc | string | number | null
+  framePos?: unknown
   id?: string | null
 }
 
@@ -74,10 +75,15 @@ export const NumberedFeaturesBlock: React.FC<NumberedFeaturesBlockProps> = ({ ey
             >
               {item.image && typeof item.image === 'object' ? (
                 // Tracy 4:4 留言：照片 Hover 放大 110%，0.3–0.5s Ease Out
-                <Media
-                  resource={item.image}
-                  imgClassName="aspect-[59/40] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                />
+                <div className="relative aspect-[59/40] w-full overflow-hidden">
+                  <FramedImage
+                    id={item.id ?? i}
+                    resource={item.image}
+                    framePos={item.framePos}
+                    hoverZoom
+                    useParentGroup
+                  />
+                </div>
               ) : (
                 <div className="aspect-[59/40] w-full" />
               )}
@@ -89,7 +95,7 @@ export const NumberedFeaturesBlock: React.FC<NumberedFeaturesBlockProps> = ({ ey
           <div
             // Mobile（Figma 206:325 service1-3）：照片在上、文字在下 → flex-col-reverse
             // （DOM 順序為 textCol→imageCol，reverse 後行動版圖在上；md 改回 row 由 imageRight 決定左右）
-            className={cn('container flex max-w-[1240px] flex-col-reverse gap-10 md:items-center md:gap-16', {
+            className={cn('container flex max-w-[1140px] flex-col-reverse gap-10 md:items-center md:gap-16', {
               'md:flex-row': imageRight,
               'md:flex-row-reverse': !imageRight,
             })}

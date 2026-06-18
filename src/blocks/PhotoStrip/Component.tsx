@@ -1,6 +1,6 @@
 import React from 'react'
 
-import HoverZoomImage from '@/components/HoverZoomImage'
+import { FramedImage } from '@/components/Media/FramedImage'
 import ScrollReveal from '@/components/ScrollReveal'
 import Parallax from '@/components/Parallax'
 import type { Media as MediaDoc } from '@/payload-types'
@@ -8,7 +8,11 @@ import type { Media as MediaDoc } from '@/payload-types'
 import { StripArrows } from './StripArrows.client'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
-export type PhotoStripImage = { image?: MediaDoc | string | number | null; id?: string | null }
+export type PhotoStripImage = {
+  image?: MediaDoc | string | number | null
+  framePos?: unknown
+  id?: string | null
+}
 
 export type PhotoStripBlockProps = {
   blockType: 'photoStrip'
@@ -27,13 +31,14 @@ export const PhotoStripBlock: React.FC<PhotoStripBlockProps> = ({ images, parall
 
   const cells = list.map((photo, i) => (
     <div
-      className="aspect-[360/266] w-[70%] shrink-0 sm:w-[40%] md:w-0 md:flex-1"
+      className="relative aspect-[360/266] w-[70%] shrink-0 overflow-hidden sm:w-[40%] md:aspect-auto md:h-full md:w-0 md:flex-1"
       key={photo.id ?? i}
     >
-      <HoverZoomImage
+      <FramedImage
+        id={photo.id ?? i}
         resource={photo.image as MediaDoc}
-        imgClassName="h-full w-full object-cover"
-        wrapperClassName="h-full w-full"
+        framePos={photo.framePos}
+        hoverZoom
       />
     </div>
   ))
@@ -55,14 +60,17 @@ export const PhotoStripBlock: React.FC<PhotoStripBlockProps> = ({ images, parall
             speed={0.12}
             maxOffset={90}
             desktopOnly
-            className="flex overflow-x-auto lg:w-[112%] lg:overflow-x-visible"
+            className="flex overflow-x-auto md:h-[clamp(180px,18vw,266px)] lg:w-[112%] lg:overflow-x-visible"
             data-photostrip-scroll
           >
             {cells}
           </Parallax>
         ) : (
           // 桌機：等分多格無間隙；行動版：橫向捲動
-          <div className="flex overflow-x-auto md:overflow-hidden" data-photostrip-scroll>
+          <div
+            className="flex overflow-x-auto md:h-[clamp(180px,18vw,266px)] md:overflow-hidden"
+            data-photostrip-scroll
+          >
             {cells}
           </div>
         )}

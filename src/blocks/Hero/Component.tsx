@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import { cn } from '@/utilities/ui'
 import { normalizeCtaHref } from '@/utilities/normalizeCtaHref'
 import type { Media as MediaDoc } from '@/payload-types'
@@ -10,6 +10,7 @@ import type { Media as MediaDoc } from '@/payload-types'
 // 暫定型別：block 接線並重新生成 payload-types 後，改用 import type { HeroBlock as HeroBlockProps } from '@/payload-types'
 type HeroSlide = {
   image: MediaDoc | string | number
+  framePos?: unknown
   title?: string | null
   subtitle?: string | null
   cta?: { label?: string | null; url?: string | null } | null
@@ -102,12 +103,13 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ images }) => {
               className="relative h-full w-full shrink-0 overflow-hidden"
               key={slide.id ?? i}
             >
-              {/* 底圖 */}
-              <Media
-                fill
-                imgClassName="object-cover"
-                priority={i === 0}
+              {/* 底圖：每裝置焦點＋縮放由 CMS 拖曳控制（滿版 banner，無 hover 放大） */}
+              <FramedImage
+                id={slide.id ?? i}
                 resource={slide.image}
+                framePos={slide.framePos}
+                priority={i === 0 ? true : undefined}
+                className="absolute inset-0"
               />
               {/* 全幅遮罩（Figma rgba(50,50,50)，取較透值保照片可辨；正式照進來後可再調淡） */}
               <div aria-hidden className="absolute inset-0 bg-[rgba(50,50,50,0.45)]" />

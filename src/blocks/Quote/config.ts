@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const Quote: Block = {
   slug: 'quote',
   interfaceName: 'QuoteBlock',
@@ -36,5 +38,9 @@ export const Quote: Block = {
         description: '放說這句話的人的大頭照，會顯示成引言上方的圓形頭像。建議上傳正方形、600px 以上的照片。',
       },
     },
+    responsiveFramePosition({
+      imageField: 'photo',
+      frames: { mobile: '1/1', tablet: '1/1', desktop: '1/1' },
+    }),
   ],
 }

@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const Infographic: Block = {
   slug: 'infographic',
   interfaceName: 'InfographicBlock',
@@ -154,6 +156,11 @@ export const Infographic: Block = {
               '上傳一張照片，顯示時會裁成圓形。建議上傳正方形、寬度 600px 以上的照片，主體放中間比較不會被裁掉。',
           },
         },
+        responsiveFramePosition({
+          name: 'framePos',
+          imageField: 'image',
+          frames: { mobile: '590/400', tablet: '590/400', desktop: '590/400' },
+        }),
       ],
     },
     // ---- radial ----

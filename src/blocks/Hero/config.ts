@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const Hero: Block = {
   slug: 'hero',
   interfaceName: 'HeroBlock',
@@ -33,6 +35,11 @@ export const Hero: Block = {
               '放這張輪播的滿版背景大圖。建議上傳寬度 1920px 以上的橫式照片，畫面主體盡量置中，因為文字會壓在照片中央。',
           },
         },
+        responsiveFramePosition({
+          name: 'framePos',
+          imageField: 'image',
+          frames: { mobile: '16/9', tablet: '16/9', desktop: '16/9' },
+        }),
         {
           name: 'title',
           type: 'text',

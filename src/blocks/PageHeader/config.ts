@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const PageHeader: Block = {
   slug: 'pageHeader',
   interfaceName: 'PageHeaderBlock',
@@ -48,10 +50,13 @@ export const PageHeader: Block = {
       ],
       admin: { description: '左側綠帶的顏色。認識創照用灰綠；AIO 服務／組織培力用亮綠。' },
     },
+    responsiveFramePosition({
+      frames: { mobile: '375/216', tablet: '768/400', desktop: '1240/400' },
+    }),
     {
       name: 'focal',
       type: 'select',
-      label: '照片裁切位置',
+      label: '照片裁切位置（舊版，未設定上方拖曳時沿用）',
       defaultValue: 'center',
       options: [
         { label: '對齊上方（人物臉部在上半部時用）', value: 'top' },
@@ -60,7 +65,7 @@ export const PageHeader: Block = {
       ],
       admin: {
         description:
-          '綠帶高度固定，照片會被裁切。若照片重點（例如人物臉部）在上半部，選「對齊上方」；在中間選「置中」。',
+          '已由上方「照片裁切位置（手機／平板／電腦）」取代。只有在上方未拖曳調整時，才會沿用這裡的上／中／下。',
       },
     },
   ],

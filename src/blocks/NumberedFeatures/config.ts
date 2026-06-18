@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const NumberedFeatures: Block = {
   slug: 'numberedFeatures',
   interfaceName: 'NumberedFeaturesBlock',
@@ -67,6 +69,11 @@ export const NumberedFeatures: Block = {
               '上傳這個項目右側（或左側）的照片。建議上傳寬度 768px 以上、接近 3:2 的橫式照片。',
           },
         },
+        responsiveFramePosition({
+          name: 'framePos',
+          imageField: 'image',
+          frames: { mobile: '59/40', tablet: '59/40', desktop: '59/40' },
+        }),
       ],
     },
   ],

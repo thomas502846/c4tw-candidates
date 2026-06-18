@@ -2,7 +2,7 @@ import React from 'react'
 
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
-import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import RichText from '@/components/RichText'
 import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
@@ -11,6 +11,7 @@ import type { Media as MediaDoc } from '@/payload-types'
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated ContentBlock type
 export type ContentBlockProps = {
   blockType: 'content'
+  id?: string | null
   eyebrow?: string | null
   title?: string | null
   align?: 'left' | 'center' | null
@@ -18,8 +19,11 @@ export type ContentBlockProps = {
   ctaUrl?: string | null
   richText?: DefaultTypedEditorState | null
   image?: MediaDoc | string | number | null
-  images?: { image: MediaDoc | string | number; id?: string | null }[] | null
+  framePos?: unknown
+  images?: { image: MediaDoc | string | number; id?: string | null; framePos?: unknown }[] | null
   imagePosition?: 'left' | 'right' | 'none' | 'belowCenter' | null
+  // AIO 區（什麼是 AIO 整合照顧模式）滿版漸層底（Figma 654:498 aio-info 圖填底）
+  background?: 'none' | 'aio' | null
 }
 
 /** 「認識創照 →」綠 pill（Figma home About 230:803：bg #ADCB59、白字 19、rounded-30、右側箭頭） */
@@ -40,19 +44,31 @@ const ArrowRight: React.FC<{ className?: string }> = ({ className }) => (
 
 /** Figma home About 230:803：3 張情境照錯位拼貼（489×576，含圓角＋陰影） */
 const PhotoCollage: React.FC<{
+  id: string | number | null | undefined
   images: NonNullable<ContentBlockProps['images']>
-}> = ({ images }) => {
+}> = ({ id, images }) => {
   const items = images.filter((it) => Boolean(it?.image))
   if (items.length === 0) return null
+  const scope = id ?? 'content-collage'
+  // object-contain 等效：FramedImage 預設 cover；以 zoom 0.99 讓整張縮入框內（contain 觀感）
+  const containDefaults = {
+    mobile: { x: 50, y: 50, zoom: 0.99 },
+    tablet: { x: 50, y: 50, zoom: 0.99 },
+    desktop: { x: 50, y: 50, zoom: 0.99 },
+  }
 
   // 單張：用於 Figma 已合成好的拼貼圖（489×576，含圓角＋透明縫隙）——
   // 用原圖比例 object-contain 完整呈現，不裁切。
   if (items.length === 1) {
     return (
-      <Media
-        imgClassName="aspect-[489/576] w-full object-contain"
-        resource={items[0].image}
-      />
+      <div className="relative aspect-[489/576] w-full overflow-hidden">
+        <FramedImage
+          defaults={containDefaults}
+          framePos={items[0].framePos}
+          id={items[0].id ?? `${scope}-0`}
+          resource={items[0].image}
+        />
+      </div>
     )
   }
 
@@ -62,35 +78,39 @@ const PhotoCollage: React.FC<{
   return (
     <div className="relative grid grid-cols-12 grid-rows-[repeat(10,minmax(0,1fr))] gap-3 aspect-[489/576] w-full">
       {/* 主圖：上方偏左、佔大面積 */}
-      <div className="col-start-1 col-end-10 row-start-1 row-end-7">
-        <Media
-          imgClassName="h-full w-full rounded-[24px] object-cover shadow-[4px_4px_12px_rgba(139,169,139,0.35)]"
+      <div className="relative col-start-1 col-end-10 row-start-1 row-end-7 overflow-hidden rounded-[24px] shadow-[4px_4px_12px_rgba(139,169,139,0.35)]">
+        <FramedImage
+          framePos={first.framePos}
+          id={first.id ?? `${scope}-0`}
           resource={first.image}
         />
       </div>
       {/* 第 2 張：右下、較小，與主圖下緣交錯 */}
       {second && (
-        <div className="col-start-8 col-end-13 row-start-5 row-end-9">
-          <Media
-            imgClassName="h-full w-full rounded-[24px] object-cover shadow-[4px_4px_12px_rgba(139,169,139,0.35)]"
+        <div className="relative col-start-8 col-end-13 row-start-5 row-end-9 overflow-hidden rounded-[24px] shadow-[4px_4px_12px_rgba(139,169,139,0.35)]">
+          <FramedImage
+            framePos={second.framePos}
+            id={second.id ?? `${scope}-1`}
             resource={second.image}
           />
         </div>
       )}
       {/* 第 3 張：左下、寬幅 */}
       {third && (
-        <div className="col-start-1 col-end-9 row-start-7 row-end-11">
-          <Media
-            imgClassName="h-full w-full rounded-[24px] object-cover shadow-[4px_4px_12px_rgba(139,169,139,0.35)]"
+        <div className="relative col-start-1 col-end-9 row-start-7 row-end-11 overflow-hidden rounded-[24px] shadow-[4px_4px_12px_rgba(139,169,139,0.35)]">
+          <FramedImage
+            framePos={third.framePos}
+            id={third.id ?? `${scope}-2`}
             resource={third.image}
           />
         </div>
       )}
       {/* 第 4 張以上：堆在第 3 張右側（少見，保底不爆版） */}
       {rest.length > 0 && (
-        <div className="col-start-9 col-end-13 row-start-9 row-end-11">
-          <Media
-            imgClassName="h-full w-full rounded-[24px] object-cover shadow-[4px_4px_12px_rgba(139,169,139,0.35)]"
+        <div className="relative col-start-9 col-end-13 row-start-9 row-end-11 overflow-hidden rounded-[24px] shadow-[4px_4px_12px_rgba(139,169,139,0.35)]">
+          <FramedImage
+            framePos={rest[0].framePos}
+            id={rest[0].id ?? `${scope}-3`}
             resource={rest[0].image}
           />
         </div>
@@ -100,6 +120,7 @@ const PhotoCollage: React.FC<{
 }
 
 export const ContentBlock: React.FC<ContentBlockProps> = ({
+  id,
   eyebrow,
   title,
   align,
@@ -107,8 +128,10 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
   ctaUrl,
   richText,
   image,
+  framePos,
   images,
   imagePosition,
+  background,
 }) => {
   const collageItems = (images ?? []).filter((it) => Boolean(it?.image))
   const hasMedia = collageItems.length > 0 || Boolean(image)
@@ -120,14 +143,27 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
   const centered = align === 'center' && !showImage
 
   if (isBelowCenter) {
-    // H2 置中 40px、richText（含 H3 副標 22/lh35）置中、body 16/lh29 置中；
-    // 下方圖片橫排（≥2 張時等寬，桌機 3 欄）。文字逐字照 Sheet，不改寫。
+    // belowCenter（AIO 區）：標題＋副標＋內文 + 下方圖片橫排。
+    // 對齊由 align 決定：center（care，預設）置中；left（training 654:499）整段靠左。
+    const leftAlign = align === 'left'
+    // AIO 漸層底：脫離 container 撐滿視窗寬，內層再收回 1140 內容欄（Figma 654:498 滿版漸層帶）
+    const aioBg = background === 'aio'
     return (
-      <ScrollReveal as="section" className="container max-w-[1240px]" data-block="content">
-        <div className="mx-auto max-w-[860px] text-center">
+      <ScrollReveal
+        as="section"
+        className={cn(
+          aioBg
+            ? 'relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-cover bg-center py-16 md:py-24'
+            : 'container max-w-[1140px]',
+        )}
+        data-block="content"
+        style={aioBg ? { backgroundImage: "url('/figma/care-aio-bg.webp')" } : undefined}
+      >
+        <div className={cn(aioBg && 'container max-w-[1140px]')}>
+        <div className={cn(leftAlign ? 'max-w-[1100px]' : 'mx-auto max-w-[860px] text-center')}>
           {title && (
             <div className="mb-6">
-              <p className="flex items-center justify-center gap-2.5">
+              <p className={cn('flex items-center gap-2.5', leftAlign ? 'justify-start' : 'justify-center')}>
                 <span aria-hidden className="inline-block h-[13px] w-[13px] rounded-full bg-brand-highlight" />
                 {eyebrow && (
                   <span className="text-[14px] font-normal tracking-[0.1em] text-brand-muted md:text-[16px]">
@@ -143,9 +179,13 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
           {richText && (
             <RichText
               className={cn(
-                'prose-p:text-center prose-p:text-[15px] prose-p:leading-[1.85] prose-p:tracking-[0.1em] prose-p:text-brand-ink md:prose-p:text-[16px] md:prose-p:leading-[29px]',
-                // H3 副標：Medium 22 / lh35 / ls10% 置中（! 蓋掉 prose :where(h3) 預設）
-                'prose-h3:text-center prose-h3:!text-[20px] prose-h3:!font-medium prose-h3:!tracking-[0.1em] prose-h3:text-brand-ink md:prose-h3:!text-[22px] md:prose-h3:!leading-[35px]',
+                leftAlign
+                  ? 'prose-p:text-justify prose-p:text-[15px] prose-p:leading-[1.85] prose-p:tracking-[0.1em] prose-p:text-brand-ink md:prose-p:text-[16px] md:prose-p:leading-[29px]'
+                  : 'prose-p:text-center prose-p:text-[15px] prose-p:leading-[1.85] prose-p:tracking-[0.1em] prose-p:text-brand-ink md:prose-p:text-[16px] md:prose-p:leading-[29px]',
+                // H3 副標：Medium 22 / lh35 / ls10%（! 蓋掉 prose :where(h3) 預設）
+                leftAlign
+                  ? 'prose-h3:text-left prose-h3:!text-[20px] prose-h3:!font-medium prose-h3:!tracking-[0.1em] prose-h3:text-brand-ink md:prose-h3:!text-[22px] md:prose-h3:!leading-[35px]'
+                  : 'prose-h3:text-center prose-h3:!text-[20px] prose-h3:!font-medium prose-h3:!tracking-[0.1em] prose-h3:text-brand-ink md:prose-h3:!text-[22px] md:prose-h3:!leading-[35px]',
                 'prose-strong:font-medium prose-strong:text-brand-primary',
               )}
               data={richText}
@@ -161,14 +201,20 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
             })}
           >
             {collageItems.map((it, i) => (
-              <Media
-                imgClassName="aspect-[362/220] w-full rounded-[30px] bg-[#D9D9D9] object-cover"
+              <div
+                className="relative aspect-[362/220] w-full overflow-hidden rounded-[30px] bg-[#D9D9D9]"
                 key={it.id ?? i}
-                resource={it.image}
-              />
+              >
+                <FramedImage
+                  framePos={it.framePos}
+                  id={it.id ?? `${id ?? 'content'}-below-${i}`}
+                  resource={it.image}
+                />
+              </div>
             ))}
           </div>
         )}
+        </div>
       </ScrollReveal>
     )
   }
@@ -239,12 +285,11 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
         {showImage && (
           <div className="md:w-[45%]">
             {collageItems.length > 0 ? (
-              <PhotoCollage images={collageItems} />
+              <PhotoCollage id={id} images={collageItems} />
             ) : (
-              <Media
-                imgClassName="aspect-[506/550] w-full rounded-[30px] object-cover"
-                resource={image}
-              />
+              <div className="relative aspect-[506/550] w-full overflow-hidden rounded-[30px]">
+                <FramedImage id={id ?? 'content'} resource={image} framePos={framePos} />
+              </div>
             )}
           </div>
         )}

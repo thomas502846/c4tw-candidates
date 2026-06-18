@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const TabsBlock: Block = {
   slug: 'tabsBlock',
   interfaceName: 'TabsBlockBlock',
@@ -56,6 +58,11 @@ export const TabsBlock: Block = {
               '上傳這個分頁面板最上方的大圖，例如地圖或圖表。建議上傳寬度 1075px 以上、接近 16:9 的橫式圖。顯示時會置中裁切，重要主體請置中、邊緣留空。',
           },
         },
+        responsiveFramePosition({
+          name: 'framePos',
+          imageField: 'image',
+          frames: { mobile: '1075/590', tablet: '1075/590', desktop: '1075/590' },
+        }),
         {
           name: 'pills',
           type: 'array',

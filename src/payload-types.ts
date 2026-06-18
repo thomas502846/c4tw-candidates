@@ -469,6 +469,18 @@ export interface HeroBlock {
          */
         image: number | Media;
         /**
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         */
+        framePos?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        /**
          * 填這張圖最主要的一句話，顯示在照片中央最大的字。建議 16 個字以內，太長手機會換很多行。
          */
         title?: string | null;
@@ -522,7 +534,19 @@ export interface PageHeaderBlock {
    */
   gradient?: ('sage' | 'lime') | null;
   /**
-   * 綠帶高度固定，照片會被裁切。若照片重點（例如人物臉部）在上半部，選「對齊上方」；在中間選「置中」。
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   */
+  framePos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * 已由上方「照片裁切位置（手機／平板／電腦）」取代。只有在上方未拖曳調整時，才會沿用這裡的上／中／下。
    */
   focal?: ('top' | 'center' | 'bottom') | null;
   id?: string | null;
@@ -581,6 +605,10 @@ export interface ContentBlock {
    */
   align?: ('left' | 'center') | null;
   /**
+   * 「AIO 整合照顧模式」段落專用：套用滿版的綠→米漸層背景（圖片橫排在下方）。
+   */
+  background?: ('none' | 'aio') | null;
+  /**
    * 想在內文下方放一顆按鈕就填按鈕文字，例如「認識創照」。建議 6 個字以內。按鈕文字和連結都填了才會出現。
    */
   ctaLabel?: string | null;
@@ -611,6 +639,18 @@ export interface ContentBlock {
    */
   image?: (number | null) | Media;
   /**
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   */
+  framePos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
    * 依 Figma 首頁品牌簡介排列：第 1 張上方主圖、第 2 張右下小圖、第 3 張左下寬圖。可加／刪／拖曳排序，建議 3 張。每張建議上傳寬度 768px 以上的橫式照片。
    */
   images?:
@@ -619,6 +659,18 @@ export interface ContentBlock {
          * 放一張情境照。建議上傳寬度 768px 以上、接近 4:3 的橫式照片。顯示時會置中裁切，重要主體請置中、邊緣留空。
          */
         image: number | Media;
+        /**
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         */
+        framePos?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -769,6 +821,18 @@ export interface AwardsBlock {
          * 放這組獎項要搭配的照片，會顯示在右側大圖位置。建議上傳寬度 1920px 以上的橫式照片。多筆獎項只會取其中一張當代表圖。
          */
         photo?: (number | null) | Media;
+        /**
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         */
+        framePos?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -925,6 +989,18 @@ export interface QuoteBlock {
    * 放說這句話的人的大頭照，會顯示成引言上方的圓形頭像。建議上傳正方形、600px 以上的照片。
    */
   photo?: (number | null) | Media;
+  /**
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   */
+  framePos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'quote';
@@ -954,6 +1030,18 @@ export interface TwoColumnBlock {
    */
   image: number | Media;
   /**
+   * 分別針對手機、平板、電腦拖曳焦點、調整縮放；縮到 1 倍以下＝完整顯示照片（留白）。預覽框會跟著版型變化。
+   */
+  framePos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
    * 想要做斜疊雙圖時，放滿兩張照片即可。只放一張或不放，就會使用上面的單張主圖。建議兩張都上傳寬度 768px 以上的橫式照片。
    */
   images?:
@@ -962,6 +1050,18 @@ export interface TwoColumnBlock {
          * 上傳一張橫式照片，建議寬度 768px 以上。
          */
         image: number | Media;
+        /**
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         */
+        framePos?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1053,6 +1153,18 @@ export interface NumberedFeaturesBlock {
          * 上傳這個項目右側（或左側）的照片。建議上傳寬度 768px 以上、接近 3:2 的橫式照片。
          */
         image?: (number | null) | Media;
+        /**
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         */
+        framePos?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1080,6 +1192,18 @@ export interface TaCtaBlock {
          * 三磚版型上傳白色去背的線稿插圖，建議用 SVG 或去背 PNG，不填會用預設插圖；照片卡與全幅照片帶請上傳橫式照片，照片卡建議寬度 768px 以上、全幅照片帶建議寬度 1920px 以上。照片版型顯示時會置中裁切，重要主體請置中、邊緣留空。
          */
         image?: (number | null) | Media;
+        /**
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         */
+        framePos?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         /**
          * 填這張卡的標語，例如 我想成為照顧專業人才。建議在 14 個字以內，太長會換行。
          */
@@ -1116,6 +1240,18 @@ export interface VideoBlockBlock {
    * 上傳影片未播放時顯示的封面圖。建議上傳寬度 1920px 以上的橫式大圖，比例接近 16:9。不填會顯示灰底佔位。
    */
   poster?: (number | null) | Media;
+  /**
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   */
+  posterFramePos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'videoBlock';
@@ -1142,6 +1278,18 @@ export interface MissionCirclesBlock {
    * 上傳宣言帶的背景照片。建議上傳寬度 1920px 以上的橫式大圖。只有宣言帶版型會用到。圖會滿版置中裁切、上面壓白字，重要主體請置中、邊緣留空，手機上左右會裁得更多。
    */
   backgroundImage?: (number | null) | Media;
+  /**
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   */
+  backgroundImageFramePos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   circles?:
     | {
         /**
@@ -1331,6 +1479,18 @@ export interface InfographicBlock {
          * 上傳一張照片，顯示時會裁成圓形。建議上傳正方形、寬度 600px 以上的照片，主體放中間比較不會被裁掉。
          */
         image?: (number | null) | Media;
+        /**
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         */
+        framePos?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1388,6 +1548,18 @@ export interface TabsBlockBlock {
          * 上傳這個分頁面板最上方的大圖，例如地圖或圖表。建議上傳寬度 1075px 以上、接近 16:9 的橫式圖。顯示時會置中裁切，重要主體請置中、邊緣留空。
          */
         image?: (number | null) | Media;
+        /**
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         */
+        framePos?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         /**
          * 大圖底下一整排的小圓角標籤，逐一新增，每個標籤填一個關鍵詞。
          */
@@ -1542,9 +1714,33 @@ export interface MapLocationsBlock {
    */
   image?: (number | null) | Media;
   /**
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   */
+  imageFramePos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
    * 上傳場域建物照，顯示在內文下方、按鈕上方。建議橫式、寬度 1000px 以上。
    */
   spaceImage?: (number | null) | Media;
+  /**
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   */
+  spaceImageFramePos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   /**
    * 一個一個加上要標記在地圖上的據點，每個據點會在地圖上顯示一個定位圖釘和名稱。
    */
@@ -1587,6 +1783,18 @@ export interface PhotoStripBlock {
          * 上傳一張照片。建議每張寬度 1200px 以上、方向和其他照片一致，會以接近 4:3 置中裁切顯示。
          */
         image: number | Media;
+        /**
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         */
+        framePos?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -2167,6 +2375,7 @@ export interface HeroBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        framePos?: T;
         title?: T;
         subtitle?: T;
         cta?:
@@ -2190,6 +2399,7 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   image?: T;
   gradient?: T;
+  framePos?: T;
   focal?: T;
   id?: T;
   blockName?: T;
@@ -2220,14 +2430,17 @@ export interface ContentBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   align?: T;
+  background?: T;
   ctaLabel?: T;
   ctaUrl?: T;
   richText?: T;
   image?: T;
+  framePos?: T;
   images?:
     | T
     | {
         image?: T;
+        framePos?: T;
         id?: T;
       };
   imagePosition?: T;
@@ -2287,6 +2500,7 @@ export interface AwardsBlockSelect<T extends boolean = true> {
         name?: T;
         recipient?: T;
         photo?: T;
+        framePos?: T;
         id?: T;
       };
   id?: T;
@@ -2344,6 +2558,7 @@ export interface QuoteBlockSelect<T extends boolean = true> {
   text?: T;
   attribution?: T;
   photo?: T;
+  framePos?: T;
   id?: T;
   blockName?: T;
 }
@@ -2359,10 +2574,12 @@ export interface TwoColumnBlockSelect<T extends boolean = true> {
   background?: T;
   eyebrow?: T;
   image?: T;
+  framePos?: T;
   images?:
     | T
     | {
         image?: T;
+        framePos?: T;
         id?: T;
       };
   title?: T;
@@ -2399,6 +2616,7 @@ export interface NumberedFeaturesBlockSelect<T extends boolean = true> {
         title?: T;
         text?: T;
         image?: T;
+        framePos?: T;
         id?: T;
       };
   id?: T;
@@ -2416,6 +2634,7 @@ export interface TaCtaBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        framePos?: T;
         title?: T;
         buttonLabel?: T;
         url?: T;
@@ -2432,6 +2651,7 @@ export interface VideoBlockBlockSelect<T extends boolean = true> {
   enabled?: T;
   videoUrl?: T;
   poster?: T;
+  posterFramePos?: T;
   id?: T;
   blockName?: T;
 }
@@ -2445,6 +2665,7 @@ export interface MissionCirclesBlockSelect<T extends boolean = true> {
   title?: T;
   slogan?: T;
   backgroundImage?: T;
+  backgroundImageFramePos?: T;
   circles?:
     | T
     | {
@@ -2527,6 +2748,7 @@ export interface InfographicBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        framePos?: T;
         id?: T;
       };
   nodes?:
@@ -2553,6 +2775,7 @@ export interface TabsBlockBlockSelect<T extends boolean = true> {
     | {
         label?: T;
         image?: T;
+        framePos?: T;
         pills?:
           | T
           | {
@@ -2619,7 +2842,9 @@ export interface MapLocationsBlockSelect<T extends boolean = true> {
   closing?: T;
   storyUrl?: T;
   image?: T;
+  imageFramePos?: T;
   spaceImage?: T;
+  spaceImageFramePos?: T;
   locations?:
     | T
     | {
@@ -2641,6 +2866,7 @@ export interface PhotoStripBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        framePos?: T;
         id?: T;
       };
   id?: T;

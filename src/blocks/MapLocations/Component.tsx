@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import type { Media as MediaDoc } from '@/payload-types'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
@@ -28,6 +28,9 @@ export type MapLocationsBlockProps = {
   image?: MediaDoc | string | number | null
   spaceImage?: MediaDoc | string | number | null
   locations?: MapLocation[] | null
+  id?: string | null
+  imageFramePos?: unknown
+  spaceImageFramePos?: unknown
 }
 
 const Eyebrow: React.FC<{ text: string }> = ({ text }) => (
@@ -86,6 +89,9 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
   image,
   spaceImage,
   locations,
+  id,
+  imageFramePos,
+  spaceImageFramePos,
 }) => {
   const hasBgImage = image && typeof image === 'object'
   return (
@@ -112,10 +118,10 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
           aria-hidden
           className="pointer-events-none sticky top-0 -z-0 -mb-[100vh] h-[100vh] w-full overflow-hidden"
         >
-          <Media
-            className="absolute inset-0 h-full w-full"
-            imgClassName="h-full w-full object-cover object-center"
+          <FramedImage
+            id={id ?? 'maploc-bg'}
             resource={image as MediaDoc}
+            framePos={imageFramePos}
           />
           <div className="absolute inset-0 bg-white/30" />
         </div>
@@ -126,7 +132,7 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
       )}
 
       <div className="relative z-10 py-16 md:py-24">
-        <div className="container max-w-[1240px]">
+        <div className="container max-w-[1140px]">
           {/* 左側文字欄（590px） */}
           <div className="md:w-[590px]">
           {eyebrow && <Eyebrow text={eyebrow} />}
@@ -166,10 +172,11 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
 
           {/* 場域照（建物外觀） */}
           {spaceImage && typeof spaceImage === 'object' && (
-            <div className="mt-12 overflow-hidden rounded-[30px]">
-              <Media
-                imgClassName="h-[260px] w-full object-cover md:h-[400px]"
+            <div className="relative mt-12 h-[260px] w-full overflow-hidden rounded-[30px] md:h-[400px]">
+              <FramedImage
+                id={id ?? 'maploc-space'}
                 resource={spaceImage}
+                framePos={spaceImageFramePos}
               />
             </div>
           )}

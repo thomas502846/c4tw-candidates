@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import FramedImage from '@/components/Media/FramedImage'
 import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
@@ -9,7 +10,11 @@ import { CountUpRuns } from './CountUpRuns'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
 export type InfographicStat = { value: string; label: string; id?: string | null }
-export type InfographicPhoto = { image?: MediaDoc | string | number | null; id?: string | null }
+export type InfographicPhoto = {
+  image?: MediaDoc | string | number | null
+  framePos?: unknown
+  id?: string | null
+}
 export type InfographicNode = {
   icon?: MediaDoc | string | number | null
   title: string
@@ -234,7 +239,7 @@ const VennMobile: React.FC<{
     aria-label={`${leftLabel ?? ''}／${rightLabel ?? ''} 痛點數據圖`}
     className="mx-auto h-auto w-full max-w-[440px] md:hidden"
     role="img"
-    viewBox="0 0 460 820"
+    viewBox="-10 0 490 820"
   >
     {/* 下大圓（職場角色，淡青底＋亮綠細邊，與上圓對稱；Figma 86:363） */}
     <circle cx={M_BOT.cx} cy={M_BOT.cy} fill="#ECF7F9" r={M_BIG_R} stroke="#ADCB59" strokeWidth="2" />
@@ -324,9 +329,9 @@ const Ring: React.FC<{ photos?: InfographicPhoto[] | null }> = ({ photos }) => {
   const photo = (photos ?? [])[0]
   const img = photo?.image
   return (
-    <div className="mx-auto aspect-[590/400] w-full max-w-[590px] overflow-hidden rounded-[30px] bg-[#D9D9D9]">
+    <div className="relative mx-auto aspect-[590/400] w-full max-w-[590px] overflow-hidden rounded-[30px] bg-[#D9D9D9]">
       {img && typeof img === 'object' && (
-        <Media resource={img} imgClassName="h-full w-full object-cover" />
+        <FramedImage id={photo?.id ?? 0} resource={img} framePos={photo?.framePos} />
       )}
     </div>
   )
@@ -582,7 +587,7 @@ export const InfographicBlock: React.FC<InfographicBlockProps> = (props) => {
     // 底色帶不加效果，僅內容進場 Fade In（Tracy：底色不加效果）
     return (
       <section className="bg-brand-surface py-14 md:py-24" data-block="infographic">
-        <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
+        <ScrollReveal as="div" variant="in" className="container max-w-[1140px]">
           {inner}
         </ScrollReveal>
       </section>
@@ -590,7 +595,7 @@ export const InfographicBlock: React.FC<InfographicBlockProps> = (props) => {
   }
 
   return (
-    <ScrollReveal as="section" variant="in" className="container max-w-[1240px]" data-block="infographic">
+    <ScrollReveal as="section" variant="in" className="container max-w-[1140px]" data-block="infographic">
       {inner}
     </ScrollReveal>
   )

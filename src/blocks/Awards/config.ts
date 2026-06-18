@@ -1,5 +1,6 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
 import { futureCollectionSlug } from '../futureSlug'
 
 export const Awards: Block = {
@@ -97,6 +98,11 @@ export const Awards: Block = {
             description: '放這組獎項要搭配的照片，會顯示在右側大圖位置。建議上傳寬度 1920px 以上的橫式照片。多筆獎項只會取其中一張當代表圖。',
           },
         },
+        responsiveFramePosition({
+          name: 'framePos',
+          imageField: 'photo',
+          frames: { mobile: '59/40', tablet: '59/40', desktop: '59/40' },
+        }),
       ],
     },
   ],

@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const MapLocations: Block = {
   slug: 'mapLocations',
   interfaceName: 'MapLocationsBlock',
@@ -86,6 +88,11 @@ export const MapLocations: Block = {
           '上傳整區的滿版水彩地形底圖（含據點 pin）。建議寬度 1600px 以上、橫式。留空則顯示內建水彩地形圖。',
       },
     },
+    responsiveFramePosition({
+      name: 'imageFramePos',
+      imageField: 'image',
+      frames: { mobile: '16/9', tablet: '16/9', desktop: '16/9' },
+    }),
     {
       name: 'spaceImage',
       type: 'upload',
@@ -95,6 +102,11 @@ export const MapLocations: Block = {
         description: '上傳場域建物照，顯示在內文下方、按鈕上方。建議橫式、寬度 1000px 以上。',
       },
     },
+    responsiveFramePosition({
+      name: 'spaceImageFramePos',
+      imageField: 'spaceImage',
+      frames: { mobile: '16/9', tablet: '16/9', desktop: '16/9' },
+    }),
     {
       name: 'locations',
       type: 'array',

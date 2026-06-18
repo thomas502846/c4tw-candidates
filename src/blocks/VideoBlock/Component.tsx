@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 
-import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import type { Media as MediaDoc } from '@/payload-types'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
@@ -10,6 +10,8 @@ export type VideoBlockProps = {
   blockType: 'videoBlock'
   videoUrl?: string | null
   poster?: MediaDoc | string | number | null
+  id?: string | null
+  posterFramePos?: unknown
 }
 
 /** 從 YouTube 連結取出 video id（watch?v= / youtu.be / shorts / embed） */
@@ -24,7 +26,12 @@ function youtubeId(url: string): string | null {
  * Home 影片區（82:233，1440×660）：滿版 16:9 + 中央圓形播放鈕
  * （125px circle stroke #ADCB59 透明底 + 同色 outline 三角）
  */
-export const VideoBlockBlock: React.FC<VideoBlockProps> = ({ videoUrl, poster }) => {
+export const VideoBlockBlock: React.FC<VideoBlockProps> = ({
+  videoUrl,
+  poster,
+  id,
+  posterFramePos,
+}) => {
   const [modalOpen, setModalOpen] = useState(false)
   const ytId = videoUrl ? youtubeId(videoUrl) : null
 
@@ -35,11 +42,7 @@ export const VideoBlockBlock: React.FC<VideoBlockProps> = ({ videoUrl, poster })
     >
       {poster && typeof poster === 'object' && (
         <>
-          <Media
-            resource={poster}
-            imgClassName="absolute inset-0 h-full w-full object-cover"
-            className="absolute inset-0"
-          />
+          <FramedImage id={id ?? 'video-poster'} resource={poster} framePos={posterFramePos} />
           {/* 有封面圖時加極淡白色 radial scrim，確保 #ADCB59 播放鈕在任何深色封面上都讀得到 */}
           <div
             aria-hidden

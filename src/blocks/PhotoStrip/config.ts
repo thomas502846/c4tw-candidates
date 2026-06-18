@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 // photowall（Figma 85:287）：課程回顧與羅布森空間之間的滿版 5 格照片橫帶
 export const PhotoStrip: Block = {
   slug: 'photoStrip',
@@ -40,6 +42,11 @@ export const PhotoStrip: Block = {
             description: '上傳一張照片。建議每張寬度 1200px 以上、方向和其他照片一致，會以接近 4:3 置中裁切顯示。',
           },
         },
+        responsiveFramePosition({
+          name: 'framePos',
+          imageField: 'image',
+          frames: { mobile: '360/266', tablet: '360/266', desktop: '360/266' },
+        }),
       ],
     },
   ],

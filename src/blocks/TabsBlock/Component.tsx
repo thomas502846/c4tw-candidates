@@ -1,9 +1,8 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
-import HoverZoomImage from '@/components/HoverZoomImage'
-import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
@@ -14,6 +13,7 @@ import { MapIcon } from '@/blocks/PillarCards/icons'
 export type TabItem = {
   label: string
   image?: MediaDoc | string | number | null
+  framePos?: unknown
   pills?: { text: string; id?: string | null }[] | null
   heading?: string | null
   subheading?: string | null
@@ -38,12 +38,23 @@ export type TabsBlockProps = {
  */
 export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs }) => {
   const [active, setActive] = useState(0)
+  const panelRef = useRef<HTMLDivElement>(null)
   const list = tabs ?? []
   if (list.length === 0) return null
-  const current = list[Math.min(active, list.length - 1)]
+  const currentIndex = Math.min(active, list.length - 1)
+  const current = list[currentIndex]
+
+  // 行動版 tab 在面板下方：切換後把面板捲回視窗頂端，否則新圖／新標題會留在使用者看不到的上方
+  // （客戶回報「點課程地圖/實作地圖跳不到標題、圖也沒顯示」即此因）。
+  const selectFromMobile = (i: number) => {
+    setActive(i)
+    requestAnimationFrame(() => {
+      panelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
 
   return (
-    <section className="container max-w-[1240px]" data-block="tabsBlock">
+    <section className="container max-w-[1140px]" data-block="tabsBlock">
       {title && (
         // .fig 從學習到實踐…：Noto Sans TC Bold 40 / lh60 / ls10%
         <h2 className="text-center text-[24px] font-bold leading-[1.5] tracking-[0.1em] text-brand-green md:text-[40px] md:leading-[60px]">
@@ -88,14 +99,20 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
 
       {/* 面板 */}
       <div
-        className="rounded-t-[30px] rounded-b-[30px] bg-brand-surface px-6 py-8 md:rounded-t-none md:px-8 md:py-8"
+        className="scroll-mt-24 rounded-t-[30px] rounded-b-[30px] bg-brand-surface px-6 py-8 md:rounded-t-none md:px-8 md:py-8"
+        ref={panelRef}
         role="tabpanel"
       >
         {/* 圖文卡照片 Hover 放大 110%（Tracy：圖文卡照片，自帶 group） */}
         {current.image && typeof current.image === 'object' ? (
-          <HoverZoomImage wrapperClassName="rounded-[20px] bg-[#D9D9D9]">
-            <Media resource={current.image} imgClassName="w-full object-cover" />
-          </HoverZoomImage>
+          <div className="relative aspect-[1075/590] w-full overflow-hidden rounded-[20px] bg-[#D9D9D9]">
+            <FramedImage
+              id={current.id ?? currentIndex}
+              resource={current.image}
+              framePos={current.framePos}
+              hoverZoom
+            />
+          </div>
         ) : (
           <div className="overflow-hidden rounded-[20px] bg-[#D9D9D9]">
             <div className="aspect-[1075/590] w-full" />
@@ -177,7 +194,7 @@ export const TabsBlockBlock: React.FC<TabsBlockProps> = ({ title, intro, tabs })
                 <button
                   className="block w-full rounded-b-[20px] bg-brand-green px-4 py-4 text-center text-[17px] font-medium tracking-[0.1em] text-white transition-colors hover:bg-brand-green/90"
                   key={tab.id ?? i}
-                  onClick={() => setActive(i)}
+                  onClick={() => selectFromMobile(i)}
                   type="button"
                 >
                   {tab.label}

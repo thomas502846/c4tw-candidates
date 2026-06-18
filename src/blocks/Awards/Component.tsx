@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { Media } from '@/components/Media'
-import HoverZoomImage from '@/components/HoverZoomImage'
+import FramedImage from '@/components/Media/FramedImage'
 import ScrollReveal from '@/components/ScrollReveal'
 import type { Award, Media as MediaDoc } from '@/payload-types'
 
@@ -11,6 +10,7 @@ type AwardItem = {
   name: string
   recipient?: string | null
   photo?: MediaDoc | string | number | null
+  framePos?: unknown
   id?: string | null
 }
 
@@ -28,6 +28,7 @@ type Entry = {
   name: string
   recipient?: string | null
   photo?: MediaDoc | string | number | null
+  framePos?: unknown
   key: string
 }
 
@@ -36,7 +37,8 @@ const AwardsLayout: React.FC<{ entries: Entry[]; locale: 'zh-TW' | 'en' }> = ({
   entries,
   locale,
 }) => {
-  const photo = entries.find((entry) => entry.photo && typeof entry.photo === 'object')?.photo
+  const photoEntry = entries.find((entry) => entry.photo && typeof entry.photo === 'object')
+  const photo = photoEntry?.photo
 
   return (
     // 區塊進場 Fade In（Tracy node 45:240：滑到觸發、0→100%、0.6s）
@@ -79,11 +81,14 @@ const AwardsLayout: React.FC<{ entries: Entry[]; locale: 'zh-TW' | 'en' }> = ({
         <div className="md:w-1/2">
           {photo ? (
             // 照片懸浮放大 110%（Tracy node 45:240：同首頁照片 hover）
-            <HoverZoomImage
-              imgClassName="aspect-[59/40] w-full object-cover"
-              resource={photo}
-              wrapperClassName="rounded-[30px]"
-            />
+            <div className="relative aspect-[59/40] w-full overflow-hidden rounded-[30px]">
+              <FramedImage
+                hoverZoom
+                id={photoEntry?.key ?? 'awards'}
+                resource={photo}
+                framePos={photoEntry?.framePos}
+              />
+            </div>
           ) : (
             <div aria-hidden className="aspect-[59/40] w-full rounded-[30px] bg-brand-surface" />
           )}
@@ -112,6 +117,7 @@ export const AwardsBlock: React.FC<AwardsBlockProps> = ({
         name: award.name,
         recipient: award.alias,
         photo: award.photo,
+        framePos: (award as { framePos?: unknown }).framePos,
         key: String(award.id),
       }))
   } else {
@@ -120,6 +126,7 @@ export const AwardsBlock: React.FC<AwardsBlockProps> = ({
       name: item.name,
       recipient: item.recipient,
       photo: item.photo,
+      framePos: item.framePos,
       key: item.id ?? String(i),
     }))
   }

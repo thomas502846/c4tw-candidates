@@ -3,6 +3,7 @@ import React from 'react'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import RichText from '@/components/RichText'
 import HoverZoomImage from '@/components/HoverZoomImage'
 import ScrollReveal from '@/components/ScrollReveal'
@@ -19,14 +20,17 @@ export type TwoColumnItem = {
 
 export type TwoColumnBlockProps = {
   blockType: 'twoColumn'
+  id?: string | null
   direction?: 'imageLeft' | 'imageRight' | null
   variant?: 'standard' | 'hero' | 'quotes' | 'centered' | null
   background?: 'none' | 'surface' | null
   eyebrow?: string | null
   lead?: string | null
   image: MediaDoc | string | number
+  /** 大圖引言 hero 的每裝置焦點＋縮放 */
+  framePos?: unknown
   /** 斜疊雙圖（Figma care 257:386：pic1+pic2 對角錯位）；給定 2 張時標準二欄圖側改用斜疊 */
-  images?: { image: MediaDoc | string | number; id?: string | null }[] | null
+  images?: { image: MediaDoc | string | number; framePos?: unknown; id?: string | null }[] | null
   title?: string | null
   richText?: DefaultTypedEditorState | null
   cta?: { label?: string | null; url?: string | null } | null
@@ -90,22 +94,24 @@ const DualStackImages: React.FC<{
   images: NonNullable<TwoColumnBlockProps['images']>
 }> = ({ images }) => {
   const [a, b] = images
+  // 預設沿用原本 object-top（直式人物照露出頭部），未拖曳時三裝置都靠上
+  const topDefaults = {
+    mobile: { x: 50, y: 0, zoom: 1 },
+    tablet: { x: 50, y: 0, zoom: 1 },
+    desktop: { x: 50, y: 0, zoom: 1 },
+  }
   return (
     // 行動版（M-care 257:386）：兩張圓角照片左右錯位、負 margin 重疊；桌機維持對角斜疊
     <div className="relative mx-auto w-full max-w-[420px] md:mx-0 md:max-w-none md:aspect-[589/546]">
       {a?.image && typeof a.image === 'object' && (
-        <HoverZoomImage
-          resource={a.image}
-          imgClassName="aspect-[420/292] w-full object-cover object-top"
-          wrapperClassName="mr-8 rounded-[30px] md:mr-0 md:absolute md:left-0 md:top-0 md:w-[71%]"
-        />
+        <div className="relative mr-8 aspect-[420/292] overflow-hidden rounded-[30px] md:absolute md:left-0 md:top-0 md:mr-0 md:w-[71%]">
+          <FramedImage id={a.id ?? 'ds-a'} resource={a.image} framePos={a.framePos} defaults={topDefaults} hoverZoom />
+        </div>
       )}
       {b?.image && typeof b.image === 'object' && (
-        <HoverZoomImage
-          resource={b.image}
-          imgClassName="aspect-[420/292] w-full object-cover object-top"
-          wrapperClassName="-mt-12 ml-8 rounded-[30px] shadow-[0_10px_30px_rgba(33,33,33,0.12)] md:mt-0 md:ml-0 md:absolute md:left-[29%] md:top-[46%] md:w-[71%]"
-        />
+        <div className="relative -mt-12 ml-8 aspect-[420/292] overflow-hidden rounded-[30px] shadow-[0_10px_30px_rgba(33,33,33,0.12)] md:absolute md:left-[29%] md:top-[46%] md:ml-0 md:mt-0 md:w-[71%]">
+          <FramedImage id={b.id ?? 'ds-b'} resource={b.image} framePos={b.framePos} defaults={topDefaults} hoverZoom />
+        </div>
       )}
     </div>
   )
@@ -241,13 +247,28 @@ const ItemsPathway: React.FC<{ items: TwoColumnItem[] }> = ({ items }) => (
 /* quotes 變體：右欄綠引言卡（care 個人AIO 269:658）                    */
 /* ---------------------------------------------------------------- */
 
-/** 引言卡左側人臉線稿佔位（米底圓＋深色線稿頭像） */
-const QuoteFace: React.FC<{ item: TwoColumnItem }> = ({ item }) => {
+// 情境人物白線稿（Figma 個人AIO 269:658 引言卡：白色線稿人像直接落在橄欖綠卡上）
+const SCENARIO_ICONS = ['/figma/personal-scenario-1.svg', '/figma/personal-scenario-2.svg']
+
+/** 引言卡左側情境人物（白色線稿，直接置於綠卡上；有上傳圖才用圓形相片） */
+const QuoteFace: React.FC<{ item: TwoColumnItem; index: number }> = ({ item, index }) => {
   if (item.image && typeof item.image === 'object') {
     return (
       <span className="block h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full md:h-[90px] md:w-[90px]">
         <Media resource={item.image} imgClassName="h-full w-full object-cover" />
       </span>
+    )
+  }
+  const scenario = SCENARIO_ICONS[index]
+  if (scenario) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        alt=""
+        aria-hidden
+        className="h-[72px] w-[72px] shrink-0 md:h-[90px] md:w-[90px]"
+        src={scenario}
+      />
     )
   }
   return (
@@ -270,7 +291,7 @@ const QuoteCards: React.FC<{ items: TwoColumnItem[] }> = ({ items }) => (
         key={item.id ?? i}
         className="flex items-center gap-5 rounded-[30px] bg-brand-primary px-6 py-6 md:min-h-[150px] md:px-8"
       >
-        <QuoteFace item={item} />
+        <QuoteFace index={i} item={item} />
         <p className="text-[15px] leading-[1.8] tracking-[0.05em] text-white md:text-base">
           {item.text ?? item.title}
         </p>
@@ -292,12 +313,14 @@ const itemsComponents = {
 /* ---------------------------------------------------------------- */
 
 export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
+  id,
   direction,
   variant,
   background,
   eyebrow,
   lead,
   image,
+  framePos,
   images,
   title,
   richText,
@@ -328,7 +351,7 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
         data-block="twoColumn"
         id={anchorId(title)}
       >
-        <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
+        <ScrollReveal as="div" variant="in" className="container max-w-[1140px]">
           <div className="flex flex-col gap-12 md:flex-row md:gap-20">
             <div className="md:w-[44%]">
               {eyebrow && <Eyebrow text={eyebrow} />}
@@ -374,7 +397,7 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
         data-block="twoColumn"
         id={anchorId(title)}
       >
-        <div className="container max-w-[1240px]">
+        <div className="container max-w-[1140px]">
           <ScrollReveal variant="in">
             {title && (
               <h2 className="text-center text-[30px] font-bold leading-[1.4] tracking-[0.1em] text-brand-green md:text-[40px] md:leading-[60px]">
@@ -412,15 +435,23 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
          疊在右下、超出圖右緣；引言為 sage 綠粗體，是視覺主角）。
          direction=imageLeft → 圖靠左、卡片偏右；imageRight 則相反。 */
       <div className="relative">
-        <HoverZoomImage
-          resource={image}
-          // care-hero 等為直式人物照（960×1704）：object-top 偏上裁切，露出人物頭部到膝（對齊 Figma 245:1626），
-          // 預設 object-center 會只切到下半身/助行器。
-          imgClassName="aspect-[16/9] w-full object-cover object-[50%_30%]"
-          wrapperClassName={cn('overflow-hidden rounded-[30px] md:w-[74%]', {
+        {/* 每裝置焦點＋縮放由 CMS 拖曳控制；未設定時預設略偏上（y:15），對齊 care-hero 直式人物照露出頭部到膝。 */}
+        <div
+          className={cn('relative aspect-[16/9] w-full overflow-hidden rounded-[30px] md:w-[74%]', {
             'md:ml-auto': direction === 'imageRight',
           })}
-        />
+        >
+          <FramedImage
+            id={id ?? 'twocol-hero'}
+            resource={image}
+            framePos={framePos}
+            defaults={{
+              mobile: { x: 50, y: 15, zoom: 1 },
+              tablet: { x: 50, y: 15, zoom: 1 },
+              desktop: { x: 50, y: 15, zoom: 1 },
+            }}
+          />
+        </div>
         {richText && (
           <div
             className={cn(
@@ -483,11 +514,9 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
             })}
           >
             <div className="flex flex-col md:w-[53%]">
-              <HoverZoomImage
-                resource={image}
-                imgClassName="aspect-[590/400] w-full object-cover"
-                wrapperClassName="rounded-[30px]"
-              />
+              <div className="relative aspect-[590/400] w-full overflow-hidden rounded-[30px]">
+                <FramedImage id={id ?? 'tc-steps'} resource={image} framePos={framePos} hoverZoom />
+              </div>
               <ItemsSteps items={items as TwoColumnItem[]} />
             </div>
             <div className="md:w-[44%]">
@@ -521,11 +550,14 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
                 {hasDualStack ? (
                   <DualStackImages images={images as NonNullable<TwoColumnBlockProps['images']>} />
                 ) : (
-                  <HoverZoomImage
-                    resource={image}
-                    imgClassName="aspect-[4/3] w-full object-cover"
-                    wrapperClassName="rounded-[30px]"
-                  />
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[30px]">
+                    <FramedImage
+                      id={id ?? 'tc-standard'}
+                      resource={image}
+                      framePos={framePos}
+                      hoverZoom
+                    />
+                  </div>
                 )}
               </div>
               <div className="md:w-1/2">
@@ -559,11 +591,11 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
       data-block="twoColumn"
       id={variant !== 'hero' ? anchorId(title) : undefined}
     >
-      <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
+      <ScrollReveal as="div" variant="in" className="container max-w-[1140px]">
         {inner}
       </ScrollReveal>
       {variant === 'hero' && hasItems && (
-        <ScrollReveal as="div" variant="up" className="container max-w-[1240px]">
+        <ScrollReveal as="div" variant="up" className="container max-w-[1140px]">
           <ItemsComponent items={items as TwoColumnItem[]} />
         </ScrollReveal>
       )}

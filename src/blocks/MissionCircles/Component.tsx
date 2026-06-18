@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
@@ -19,10 +19,28 @@ export type MissionCirclesBlockProps = {
   slogan?: string | null
   backgroundImage?: MediaDoc | string | number | null
   circles?: MissionCircle[] | null
+  id?: string | null
+  backgroundImageFramePos?: unknown
 }
 
 // 三圓底色輪替（About Vision 取色：#DCD020 / #8BA98B / #ADCB59）
 const circleColors = ['#DCD020', '#8BA98B', '#ADCB59']
+
+/**
+ * Tracy：信念與價值的三圈，label 在第一個「-」之後要換行（如「培育-照顧的人」→
+ * 培育 / 照顧的人）。拆首個 dash、捨去 dash 分兩行；無 dash 則整段單行輸出。
+ */
+const CircleLabel: React.FC<{ label: string }> = ({ label }) => {
+  const i = label.indexOf('-')
+  if (i === -1) return <>{label}</>
+  return (
+    <>
+      {label.slice(0, i)}
+      <br />
+      {label.slice(i + 1)}
+    </>
+  )
+}
 
 /**
  * variant band：About Vision 使命帶（Figma 34:88 Vision-bg + 34:113）——
@@ -33,22 +51,24 @@ const Band: React.FC<{
   slogan?: string | null
   circles: MissionCircle[]
   backgroundImage?: MediaDoc | string | number | null
-}> = ({ slogan, circles, backgroundImage }) => (
+  id?: string | null
+  backgroundImageFramePos?: unknown
+}> = ({ slogan, circles, backgroundImage, id, backgroundImageFramePos }) => (
   <section className="relative overflow-hidden py-16 md:py-24" data-block="missionCircles">
     {/* 滿版照片底 + 深色遮罩（無圖則 fallback 深灰） */}
     {backgroundImage && typeof backgroundImage === 'object' ? (
       <>
-        <Media
-          className="absolute inset-0 h-full w-full"
-          imgClassName="absolute inset-0 h-full w-full object-cover"
+        <FramedImage
+          id={id ?? 'mission-bg'}
           resource={backgroundImage}
+          framePos={backgroundImageFramePos}
         />
         <div aria-hidden className="absolute inset-0 bg-black/45" />
       </>
     ) : (
       <div aria-hidden className="absolute inset-0 bg-[#4C4C4C]" />
     )}
-    <ScrollReveal as="div" variant="in" className="container relative z-10 max-w-[1240px]">
+    <ScrollReveal as="div" variant="in" className="container relative z-10 max-w-[1140px]">
       {slogan && (
         // .fig H2：Bold 36 / lh60 固定 / ls15%，白字置中。tablet 降 30px 防孤字。
         <h2 className="text-balance-cjk whitespace-pre-line text-center text-xl font-bold leading-[1.9] tracking-[0.15em] text-white md:text-[30px] md:leading-[48px] lg:text-4xl lg:leading-[60px]">
@@ -76,7 +96,7 @@ const Band: React.FC<{
                 style={{ backgroundColor: color }}
               >
                 <span className="text-[18px] font-black tracking-[0.1em] text-white lg:text-[22px]">
-                  {circle.label}
+                  <CircleLabel label={circle.label} />
                 </span>
               </span>
             </div>
@@ -93,7 +113,7 @@ const Band: React.FC<{
  */
 const Plain: React.FC<{ title?: string | null; circles: MissionCircle[] }> = ({ title, circles }) => (
   <section className="py-16" data-block="missionCircles">
-    <ScrollReveal as="div" variant="in" className="container max-w-[1240px]">
+    <ScrollReveal as="div" variant="in" className="container max-w-[1140px]">
       {title && (
         <h2 className="text-center text-[30px] font-bold leading-[1.4] tracking-[0.1em] text-brand-green md:text-[40px] md:leading-[60px]">
           {title}
@@ -111,7 +131,7 @@ const Plain: React.FC<{ title?: string | null; circles: MissionCircle[] }> = ({ 
                 style={{ backgroundColor: color }}
               >
                 <span className="text-[19px] font-bold leading-[1.5] tracking-[0.1em] text-white md:text-[19px]">
-                  {circle.label}
+                  <CircleLabel label={circle.label} />
                 </span>
               </div>
               <svg
@@ -149,8 +169,18 @@ export const MissionCirclesBlock: React.FC<MissionCirclesBlockProps> = ({
   slogan,
   circles,
   backgroundImage,
+  id,
+  backgroundImageFramePos,
 }) => {
   if (!circles || circles.length === 0) return null
   if (variant === 'plain') return <Plain circles={circles} title={title} />
-  return <Band backgroundImage={backgroundImage} circles={circles} slogan={slogan} />
+  return (
+    <Band
+      backgroundImage={backgroundImage}
+      backgroundImageFramePos={backgroundImageFramePos}
+      circles={circles}
+      id={id}
+      slogan={slogan}
+    />
+  )
 }

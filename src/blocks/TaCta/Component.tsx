@@ -1,6 +1,6 @@
 import React from 'react'
 
-import HoverZoomImage from '@/components/HoverZoomImage'
+import { FramedImage } from '@/components/Media/FramedImage'
 import { Media } from '@/components/Media'
 import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
@@ -12,6 +12,7 @@ import { AnchorLink } from './AnchorLink'
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
 export type TaCtaCard = {
   image?: MediaDoc | string | number | null
+  framePos?: unknown
   title: string
   buttonLabel?: string | null
   url?: string | null
@@ -178,7 +179,7 @@ const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
         aria-hidden
         className="absolute -right-20 top-10 hidden h-[312px] w-[312px] rounded-full border-[10px] border-white/30 lg:block"
       />
-      <div className="container relative grid max-w-[1240px] gap-8 md:grid-cols-[590fr_506fr] md:gap-11">
+      <div className="container relative grid max-w-[1140px] gap-8 md:grid-cols-[590fr_506fr] md:gap-11">
         <div className="flex flex-col gap-8 md:gap-10">
           {c1 && horizontal(c1, 0)}
           {c2 && horizontal(c2, 1)}
@@ -225,7 +226,7 @@ const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
  */
 const PhotoCards: React.FC<{ intro?: string | null; cards: TaCtaCard[] }> = ({ intro, cards }) => (
   <section className="bg-brand-surface py-16 md:py-20" data-block="taCta">
-    <div className="container max-w-[1240px]">
+    <div className="container max-w-[1140px]">
       {intro && (
         <p className="mx-auto mb-12 whitespace-pre-line text-center text-lg font-medium leading-[1.9] tracking-[0.1em] text-brand-ink md:text-[22px]">
           {intro}
@@ -235,13 +236,14 @@ const PhotoCards: React.FC<{ intro?: string | null; cards: TaCtaCard[] }> = ({ i
         {cards.map((card, i) => {
           const inner = (
             <>
-              <div className="h-[180px] bg-[#D9D9D9] md:h-[212px]">
+              <div className="relative h-[180px] overflow-hidden bg-[#D9D9D9] md:h-[212px]">
                 {card.image && typeof card.image === 'object' && (
-                  <HoverZoomImage
+                  <FramedImage
+                    id={card.id ?? i}
                     resource={card.image}
+                    framePos={card.framePos}
+                    hoverZoom
                     useParentGroup
-                    imgClassName="h-full w-full object-cover"
-                    wrapperClassName="h-full w-full"
                   />
                 )}
               </div>
@@ -293,11 +295,7 @@ const PhotoBand: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
   return (
     <section className="relative h-[240px] w-full overflow-hidden md:h-[360px]" data-block="taCta">
       {bg.image && typeof bg.image === 'object' ? (
-        <Media
-          resource={bg.image}
-          imgClassName="absolute inset-0 h-full w-full object-cover"
-          className="absolute inset-0"
-        />
+        <FramedImage id={bg.id ?? 0} resource={bg.image} framePos={bg.framePos} />
       ) : (
         <div aria-hidden className="absolute inset-0 bg-brand-green" />
       )}
@@ -337,21 +335,18 @@ const DarkBand: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
   )
   const bg = cards[0]
   return (
-    <section className="relative w-full overflow-hidden py-14 md:py-20" data-block="taCta">
+    // pb 加大：按鈕維持上方、下方留白讓 footer 弧形可深疊而不蓋到按鈕（Tracy 6/18 school 頁）
+    <section className="relative w-full overflow-hidden pt-14 pb-28 md:pt-20 md:pb-40" data-block="taCta">
       {/* Figma 85:357：滿版投影機房間照 + rgba(51,51,51,0.65) 深遮罩；無圖則 fallback 純深灰 */}
       {bg?.image && typeof bg.image === 'object' ? (
         <>
-          <Media
-            className="absolute inset-0 h-full w-full"
-            imgClassName="absolute inset-0 h-full w-full object-cover"
-            resource={bg.image}
-          />
+          <FramedImage id={bg.id ?? 0} resource={bg.image} framePos={bg.framePos} />
           <div aria-hidden className="absolute inset-0 bg-[rgba(51,51,51,0.65)]" />
         </>
       ) : (
         <div aria-hidden className="absolute inset-0 bg-[#4C4C4C]" />
       )}
-      <ScrollReveal className="container relative z-10 flex max-w-[1240px] flex-col items-center justify-center gap-4 sm:flex-row md:gap-7">
+      <ScrollReveal className="container relative z-10 flex max-w-[1140px] flex-col items-center justify-center gap-4 sm:flex-row md:gap-7">
         {cards.map((card, i) =>
           card.url ? (
             <a aria-label={card.buttonLabel ?? card.title} href={card.url} key={i}>

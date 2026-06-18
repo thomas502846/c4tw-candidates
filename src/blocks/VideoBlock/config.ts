@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { responsiveFramePosition } from '@/fields/responsiveFramePosition'
+
 export const VideoBlock: Block = {
   slug: 'videoBlock',
   interfaceName: 'VideoBlockBlock',
@@ -27,5 +29,10 @@ export const VideoBlock: Block = {
           '上傳影片未播放時顯示的封面圖。建議上傳寬度 1920px 以上的橫式大圖，比例接近 16:9。不填會顯示灰底佔位。',
       },
     },
+    responsiveFramePosition({
+      name: 'posterFramePos',
+      imageField: 'poster',
+      frames: { mobile: '16/9', tablet: '24/11', desktop: '24/11' },
+    }),
   ],
 }
