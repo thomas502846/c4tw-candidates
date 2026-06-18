@@ -1344,18 +1344,6 @@ export const seed = async ({
               { title: '我是家屬', image: fig('care-ta-family.jpg').id, url: '/contact/#sheet' },
             ],
           },
-          // Figma photowall 263:431：全寬 5 圖橫向視差帶（導流與個人 AIO 之間）
-          {
-            blockType: 'photoStrip',
-            parallax: true,
-            images: [
-              { image: fig('care-wall-1.jpg').id },
-              { image: fig('care-wall-2.jpg').id },
-              { image: fig('care-wall-3.jpg').id },
-              { image: fig('care-wall-4.jpg').id },
-              { image: fig('care-wall-5.jpg').id },
-            ],
-          },
           // Sheet care 07 個人AIO服務（Figma 263:442 米色帶：左文＋右 slogan＋綠引言卡）
           {
             blockType: 'twoColumn',
@@ -1388,6 +1376,18 @@ export const seed = async ({
               { title: '醫療與照顧資源整合', text: '串連醫療、長照與社區支持系統' },
               { title: '跨專業團隊協作', text: '整合不同專業角色，共同回應照顧需求' },
               { title: '持續追蹤陪伴', text: '陪伴照顧者與被照顧者，給予支持' },
+            ],
+          },
+          // Figma photowall 263:431：全寬 5 圖橫向視差帶（個人 AIO 服務之後）
+          {
+            blockType: 'photoStrip',
+            parallax: true,
+            images: [
+              { image: fig('care-wall-1.jpg').id },
+              { image: fig('care-wall-2.jpg').id },
+              { image: fig('care-wall-3.jpg').id },
+              { image: fig('care-wall-4.jpg').id },
+              { image: fig('care-wall-5.jpg').id },
             ],
           },
           // Sheet care 06 企業EAP方案（Figma 269:655：跨欄 slogan＋左圖右文）
@@ -1541,17 +1541,6 @@ export const seed = async ({
           },
           // Figma photowall 263:431：full-width 5-image horizontal parallax band
           {
-            blockType: 'photoStrip',
-            parallax: true,
-            images: [
-              { image: fig('care-wall-1.jpg').id },
-              { image: fig('care-wall-2.jpg').id },
-              { image: fig('care-wall-3.jpg').id },
-              { image: fig('care-wall-4.jpg').id },
-              { image: fig('care-wall-5.jpg').id },
-            ],
-          },
-          {
             blockType: 'twoColumn',
             variant: 'quotes',
             direction: 'imageRight',
@@ -1599,6 +1588,17 @@ export const seed = async ({
                 text: 'Integrating professional roles to respond to care needs',
               },
               { title: 'Ongoing follow-up', text: 'Accompanying families through care challenges' },
+            ],
+          },
+          {
+            blockType: 'photoStrip',
+            parallax: true,
+            images: [
+              { image: fig('care-wall-1.jpg').id },
+              { image: fig('care-wall-2.jpg').id },
+              { image: fig('care-wall-3.jpg').id },
+              { image: fig('care-wall-4.jpg').id },
+              { image: fig('care-wall-5.jpg').id },
             ],
           },
           {
@@ -1688,7 +1688,8 @@ export const seed = async ({
             richText: rt('從人才培育到在地共創，陪伴組織打造具影響力的照顧行動。'),
           },
           // Sheet training 03 什麼是AIO？（同 care 03 全文）
-          aioZh,
+          // Sheet training 03：Figma 654:499 改為與 care 同內容（眉標＋整合照顧模式）但「靠左」對齊
+          { ...aioZhCare, align: 'left' },
           // Sheet training 04 痛點介紹（Figma 306:609 放射 4 圓：左文右圖）
           {
             blockType: 'infographic',
@@ -1723,7 +1724,7 @@ export const seed = async ({
             direction: 'imageRight',
             background: 'surface',
             eyebrow: 'Organization Support',
-            image: photos[7].id,
+            image: fig('training-support.jpg').id,
             title: '打造適合組織的照顧發展路徑',
             richText: rtNodes(
               h3('結合地方組織、社區、企業，共同推動台灣照顧創新'),
@@ -1784,7 +1785,7 @@ export const seed = async ({
                 title: '諮詢組織培力',
                 buttonLabel: '諮詢組織培力',
                 url: '/contact/#sheet',
-                image: fig('about-cta.jpg').id,
+                image: fig('training-cta.jpg').id,
               },
             ],
           },
@@ -1809,7 +1810,7 @@ export const seed = async ({
               'From talent cultivation to local co-creation, we help organizations build impactful care initiatives.',
             ),
           },
-          aioEn,
+          { ...aioEnCare, align: 'left' },
           {
             blockType: 'infographic',
             variant: 'radial',
@@ -1859,7 +1860,7 @@ export const seed = async ({
             direction: 'imageRight',
             background: 'surface',
             eyebrow: 'Organization Support',
-            image: photos[7].id,
+            image: fig('training-support.jpg').id,
             title: 'A care development path that fits your organization',
             richText: rtNodes(
               h3('Companies, foundations, and local organizations driving care innovation together'),
@@ -1953,7 +1954,7 @@ export const seed = async ({
                 title: 'Ask about organizational training',
                 buttonLabel: 'Ask about organizational training',
                 url: '/en/contact/#sheet',
-                image: fig('about-cta.jpg').id,
+                image: fig('training-cta.jpg').id,
               },
             ],
           },
