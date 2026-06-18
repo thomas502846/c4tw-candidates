@@ -156,6 +156,18 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
   const pathname = usePathname()
   const isEn = pathname === '/en' || pathname.startsWith('/en/')
   const data = isEn ? en : zh
+  // 每頁 footer 上拉量可獨立設定（弧形深疊量）。預設 -mt-16 只收掉 my-16 下外距、消除留白；
+  // 結尾為滿版照片/影片帶、按鈕置中且下方留白足夠的頁面（已驗 +43px 不蓋按鈕）可深疊出設計感。
+  // 要調某頁就改這張表；表外頁面（含 /contact 表單頁、文章頁）走安全的 -mt-16。（Tracy 6/18）
+  const FOOTER_MT: Record<string, string> = {
+    '/': '-mt-[122px]',
+    '/about': '-mt-[122px]',
+    '/care': '-mt-[122px]',
+    '/training': '-mt-[122px]',
+    '/school': '-mt-[122px]',
+    '/contact': '-mt-16',
+  }
+  const footerMt = FOOTER_MT[pathname.replace(/^\/en/, '') || '/'] ?? '-mt-16'
 
   const columns = data?.columns ?? []
   const familyVentures = data?.familyVentures ?? []
@@ -163,7 +175,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
   const copyright = data?.copyright
 
   return (
-    <footer className="relative z-10 mt-auto">
+    <footer className={`relative z-10 ${footerMt}`}>
       {/* 弧形上緣（Figma footer symbol 30:81）：絕對定位浮貼於上一區塊底部，
           弧線上方的透明轉角會露出上一區塊（深綠 CTA 帶），達成設計稿「footer 與底部區塊融合」的效果。
           只有裝飾弧形覆蓋上一區塊，footer 內容本體仍從區塊底緣開始，故對所有頁面（不論最後一塊為何）皆安全。 */}
@@ -174,10 +186,9 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
         preserveAspectRatio="none"
         viewBox="0 0 1444 88"
       >
-        <path
-          d="M0 88V87.1653C0 87.1653 367.254 0 724.502 0C1081.75 0 1444 87.1653 1444 87.1653V88H0Z"
-          fill="var(--brand-surface)"
-        />
+        {/* 單一連續弧線（拋物線）：兩端從角落即起弧、中央平滑收頂，無平直肩部
+            （取代原 Figma bezier 的水平切線造成的「平-弧-平」視覺） */}
+        <path d="M0 88Q722 -88 1444 88Z" fill="var(--brand-surface)" />
       </svg>
 
       <div className="bg-brand-surface">

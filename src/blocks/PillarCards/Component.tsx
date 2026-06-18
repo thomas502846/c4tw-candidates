@@ -50,7 +50,7 @@ export const PillarCardsBlock: React.FC<PillarCardsBlockProps> = ({
   if (!cards || cards.length === 0) return null
 
   return (
-    <section className="container max-w-[1240px]" data-block="pillarCards">
+    <section className="container max-w-[1140px]" data-block="pillarCards">
       {/* 頭部兩欄 */}
       {(title || intro) && (
         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-16">

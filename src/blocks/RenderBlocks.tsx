@@ -119,17 +119,15 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               // anchorId：頁內導流（TaCta 雙按鈕等）以 #title 捲動到對應區塊；scroll-mt 補 sticky header 高
               const anchorId = anchorIdFromTitle((block as { title?: unknown }).title)
+              // 區塊間上下節奏 128px（≈舊 my-16 的 2 倍，Tracy 6/18）。用 inline style 而非 Tailwind 間距
+              // utility：本專案 Tailwind v4 主題未生成 my-32／新間距 class（會變 0），inline 最穩。滿版帶不加。
+              const fullBleed = isFullBleed(block as { blockType?: string; variant?: unknown })
               return (
                 <div
-                  className={
-                    isFullBleed(block as { blockType?: string; variant?: unknown })
-                      ? anchorId
-                        ? 'scroll-mt-[88px] lg:scroll-mt-[120px]'
-                        : undefined
-                      : `my-16${anchorId ? ' scroll-mt-[88px] lg:scroll-mt-[120px]' : ''}`
-                  }
+                  className={anchorId ? 'scroll-mt-[88px] lg:scroll-mt-[120px]' : undefined}
                   id={anchorId}
                   key={index}
+                  style={fullBleed ? undefined : { marginBlock: '128px' }}
                 >
                   <Block {...block} locale={locale} disableInnerContainer />
                 </div>

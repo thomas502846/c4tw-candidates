@@ -195,7 +195,7 @@ export const StepsBlockBlock: React.FC<StepsBlockProps> = ({
   const leftAlign = variant === 'outline'
 
   return (
-    <section className="container max-w-[1240px]" data-block="stepsBlock">
+    <section className="container max-w-[1140px]" data-block="stepsBlock">
       {/* 區塊進場 Fade In（標題）＋ Fade UP／DOWN（步驟卡）（Tracy node 86:363/97:564） */}
       <ScrollReveal variant="in">
         {hasHeader && (

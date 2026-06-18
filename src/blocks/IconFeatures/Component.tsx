@@ -112,8 +112,8 @@ const Pillars: React.FC<{ items: IconFeatureItem[] }> = ({ items }) => (
           pillarBgs[i % pillarBgs.length],
         )}
       >
-        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white">
-          <ItemIcon className="h-9 w-9" fallbackSrc={PERSONAL_ICONS[i]} item={item} />
+        <span className="flex h-20 w-20 items-center justify-center rounded-full bg-white">
+          <ItemIcon className="h-12 w-12" fallbackSrc={PERSONAL_ICONS[i]} item={item} />
         </span>
         <h3 className="text-[17px] font-bold leading-[1.5] tracking-[0.05em] text-white md:text-[19px]">
           {item.title}
@@ -183,7 +183,7 @@ export const IconFeaturesBlock: React.FC<IconFeaturesBlockProps> = ({ variant, h
   if (variant === 'roles') {
     return (
       <section className="bg-brand-surface py-14 md:py-20" data-block="iconFeatures">
-        <ScrollReveal as="div" variant="up" className="container max-w-[1240px]">
+        <ScrollReveal as="div" variant="up" className="container max-w-[1140px]">
           <Roles heading={heading} items={items} />
         </ScrollReveal>
       </section>
@@ -191,7 +191,7 @@ export const IconFeaturesBlock: React.FC<IconFeaturesBlockProps> = ({ variant, h
   }
 
   return (
-    <section className="container max-w-[1240px]" data-block="iconFeatures">
+    <section className="container max-w-[1140px]" data-block="iconFeatures">
       {/* 卡片進場 Fade UP（Tracy node 86:363：滑到觸發、0→100%、0.6s） */}
       <ScrollReveal variant="up">
         {variant === 'pillars' ? <Pillars items={items} /> : <Cards items={items} />}
