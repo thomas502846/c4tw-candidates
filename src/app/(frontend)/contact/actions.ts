@@ -6,6 +6,10 @@ import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 
 import { CONTACT_CATEGORIES } from './categories'
+import { buildConfirmationEmail } from './confirmationEmail'
+
+// 寄給填表人的確認信，reply-to 設為創照公開信箱，讓對方可直接回覆
+const CONTACT_PUBLIC_EMAIL = 'carefortaiwan2022@gmail.com'
 
 export type ContactFormState = {
   status: 'idle' | 'success' | 'error'
@@ -104,6 +108,41 @@ function buildEmailBody(data: {
   ].join('\n')
 }
 
+// 寄「已收到、3–5 個工作天回覆」的確認信給填表人本人（創照服務設計品牌）。
+// ses 傳 null＝dry-run，只印 log 不真寄。
+async function sendConfirmationEmail(opts: {
+  ses: SESv2Client | null
+  sender: string
+  toEmail: string
+  locale: 'zh-TW' | 'en'
+  name: string
+  categories: string[]
+  message: string
+}): Promise<void> {
+  const { subject, html } = buildConfirmationEmail(opts.locale, {
+    name: opts.name,
+    categories: opts.categories,
+    message: opts.message,
+  })
+  if (!opts.ses) {
+    console.log('[contact] SES_DRY_RUN=true，略過確認信。payload：', { to: opts.toEmail, subject })
+    return
+  }
+  await opts.ses.send(
+    new SendEmailCommand({
+      FromEmailAddress: `創照服務設計 Care For Taiwan <${opts.sender}>`,
+      Destination: { ToAddresses: [opts.toEmail] },
+      ReplyToAddresses: [CONTACT_PUBLIC_EMAIL],
+      Content: {
+        Simple: {
+          Subject: { Data: subject, Charset: 'UTF-8' },
+          Body: { Html: { Data: html, Charset: 'UTF-8' } },
+        },
+      },
+    }),
+  )
+}
+
 export async function submitContactForm(
   _prevState: ContactFormState,
   formData: FormData,
@@ -112,8 +151,8 @@ export async function submitContactForm(
 
   const MSG = {
     success: isEn
-      ? 'We have received your message and will get back to you within 3 business days.'
-      : '我們已收到您的訊息，會在 3 個工作天內回覆您。',
+      ? 'We have received your message and will get back to you within 3 to 5 business days.'
+      : '我們已收到您的訊息，會在 3–5 個工作天內回覆您。',
     invalid: isEn
       ? 'Please fill in your name, email, and message, then submit again.'
       : '請填寫姓名、Email 和訊息內容後再送出。',
@@ -164,6 +203,8 @@ export async function submitContactForm(
   const body = buildEmailBody({ name, organization, email, phone, categories, message, ip })
   const subject = `【官網聯絡表單】${categoryLabels}－${name}`
 
+  const locale: 'zh-TW' | 'en' = isEn ? 'en' : 'zh-TW'
+
   // 4. Dry run（E2E 測試用）：不真寄信，把 payload 印到 server log
   if (process.env.SES_DRY_RUN === 'true') {
     const recipients = await resolveRecipients()
@@ -172,6 +213,7 @@ export async function submitContactForm(
       subject,
       body,
     })
+    await sendConfirmationEmail({ ses: null, sender: '', toEmail: email, locale, name, categories, message })
     return { status: 'success', message: MSG.success }
   }
 
@@ -199,6 +241,13 @@ export async function submitContactForm(
         },
       }),
     )
+
+    // 自動確認信寄給填表人：失敗不影響表單送出結果（內部通知已寄達），只記 log
+    try {
+      await sendConfirmationEmail({ ses, sender, toEmail: email, locale, name, categories, message })
+    } catch (confirmError) {
+      console.error('[contact] 確認信寄送失敗（不影響表單送出）：', confirmError)
+    }
 
     return { status: 'success', message: MSG.success }
   } catch (error) {
