@@ -800,19 +800,14 @@ export const seed = async ({
         '源自創辦人林依瑩的初衷，我們認為好的照顧，是從需要中變化出靈活且人性化的服務。透過串連碎片化的醫療、長照、社區與生活資源，讓家屬不再四處奔波找幫手；並藉由「賦能」陪伴個案重新長出面對生活的觸角，打造真正以人為本且尊嚴的照顧體系。',
       ),
     ),
-    images: [
-      { image: fig('care-aio-1.jpg').id },
-      { image: fig('care-aio-2.jpg').id },
-      { image: fig('care-aio-3.jpg').id },
-    ],
+    // care-aio-1/2/3 情境照因肖像授權問題下架（2026-06-18 依瑩姐／Tracy 要求），待補授權照
+    images: [],
     imagePosition: 'belowCenter',
+    background: 'aio',
   }
-  const aioCareImages = [
-    { image: fig('care-aio-1.jpg').id },
-    { image: fig('care-aio-2.jpg').id },
-    { image: fig('care-aio-3.jpg').id },
-  ]
-  const aioEnCare = { ...aioEn, eyebrow: 'AIO Solutions', images: aioCareImages }
+  // 同上：care-aio 情境照下架，英文版亦無圖
+  const aioCareImages: { image: number }[] = []
+  const aioEnCare = { ...aioEn, eyebrow: 'AIO Solutions', images: aioCareImages, background: 'aio' }
 
   /*
    * Sheet 首頁 03 品牌簡介【替代版】（CMS content block 無備用欄位，先留存於此，
@@ -1308,9 +1303,9 @@ export const seed = async ({
             blockType: 'twoColumn',
             direction: 'imageRight',
             eyebrow: 'Family Care Services',
-            image: fig('care-model-1.jpg').id,
-            // Figma care 257:386：右側 pic1+pic2 對角錯位斜疊
-            images: [{ image: fig('care-model-1.jpg').id }, { image: fig('care-model-2.jpg').id }],
+            image: fig('care-model-2.jpg').id,
+            // care-model-1（室內合照）因肖像授權下架（2026-06-18）；保留 care-model-2 單圖
+            images: [{ image: fig('care-model-2.jpg').id }],
             title: 'AIO整合照顧服務模式',
             richText: rtNodes(
               h3('從理解需求開始，陪伴每一段照顧歷程'),
@@ -1386,9 +1381,8 @@ export const seed = async ({
           {
             blockType: 'photoStrip',
             parallax: true,
+            // care-wall-1/2 因肖像授權下架（2026-06-18）
             images: [
-              { image: fig('care-wall-1.jpg').id },
-              { image: fig('care-wall-2.jpg').id },
               { image: fig('care-wall-3.jpg').id },
               { image: fig('care-wall-4.jpg').id },
               { image: fig('care-wall-5.jpg').id },
@@ -1497,8 +1491,8 @@ export const seed = async ({
             blockType: 'twoColumn',
             direction: 'imageRight',
             eyebrow: 'Family Care Services',
-            image: fig('care-model-1.jpg').id,
-            images: [{ image: fig('care-model-1.jpg').id }, { image: fig('care-model-2.jpg').id }],
+            image: fig('care-model-2.jpg').id,
+            images: [{ image: fig('care-model-2.jpg').id }],
             title: 'How family care services work',
             richText: rtNodes(
               h3('Starting from understanding, accompanying every care journey'),
@@ -1597,9 +1591,8 @@ export const seed = async ({
           {
             blockType: 'photoStrip',
             parallax: true,
+            // care-wall-1/2 因肖像授權下架（2026-06-18）
             images: [
-              { image: fig('care-wall-1.jpg').id },
-              { image: fig('care-wall-2.jpg').id },
               { image: fig('care-wall-3.jpg').id },
               { image: fig('care-wall-4.jpg').id },
               { image: fig('care-wall-5.jpg').id },
@@ -1678,17 +1671,17 @@ export const seed = async ({
             blockType: 'pageHeader',
             title: 'AIO組織培力',
             eyebrow: 'AIO Solution-Organization Support',
-            image: fig('training-banner.jpg').id,
+            // training banner 照（會議室）因肖像授權下架（2026-06-18）→ PageHeader 改純綠底
             gradient: 'lime',
             // 課程實況照：人物在中段、前景為空椅 → center 對焦避免只露椅子
             focal: 'center',
           },
-          // Sheet training 02 Hero 引言
+          // Sheet training 02 Hero 引言（Figma hero-pic 276:671 換新照片）
           {
             blockType: 'twoColumn',
             variant: 'hero',
             direction: 'imageLeft',
-            image: photos[2].id,
+            image: fig('training-hero.jpg').id,
             richText: rt('從人才培育到在地共創，陪伴組織打造具影響力的照顧行動。'),
           },
           // Sheet training 03 什麼是AIO？（同 care 03 全文）
@@ -1801,7 +1794,7 @@ export const seed = async ({
           {
             blockType: 'pageHeader',
             title: 'AIO Solutions — Organizational Training',
-            image: fig('training-banner.jpg').id,
+            // training banner 照（會議室）因肖像授權下架（2026-06-18）→ PageHeader 改純綠底
             gradient: 'lime',
             focal: 'center',
           },
@@ -1809,7 +1802,7 @@ export const seed = async ({
             blockType: 'twoColumn',
             variant: 'hero',
             direction: 'imageLeft',
-            image: photos[2].id,
+            image: fig('training-hero.jpg').id,
             richText: rt(
               'From talent cultivation to local co-creation, we help organizations build impactful care initiatives.',
             ),
@@ -2148,7 +2141,6 @@ export const seed = async ({
           {
             blockType: 'photoStrip',
             images: [
-              { image: fig('school-wall-1.jpg').id },
               { image: fig('school-wall-2.jpg').id },
               { image: fig('school-wall-3.jpg').id },
               { image: fig('school-wall-4.jpg').id },
@@ -2393,7 +2385,6 @@ export const seed = async ({
           {
             blockType: 'photoStrip',
             images: [
-              { image: fig('school-wall-1.jpg').id },
               { image: fig('school-wall-2.jpg').id },
               { image: fig('school-wall-3.jpg').id },
               { image: fig('school-wall-4.jpg').id },
@@ -2464,7 +2455,7 @@ export const seed = async ({
             eyebrow: 'CONTACT',
             // Figma 聯絡我們頁首 banner（contact/banner.png＝羅布森建物外觀），非通用情境照 photos[6]
             image: fig('contact-banner.jpg').id,
-            focal: 'center',
+            focal: 'top',
           },
         ],
       },
@@ -2477,7 +2468,7 @@ export const seed = async ({
             eyebrow: 'CONTACT',
             // Figma 聯絡我們頁首 banner（contact/banner.png＝羅布森建物外觀），非通用情境照 photos[6]
             image: fig('contact-banner.jpg').id,
-            focal: 'center',
+            focal: 'top',
           },
         ],
       },
