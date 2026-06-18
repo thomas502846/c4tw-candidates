@@ -96,14 +96,14 @@ const DualStackImages: React.FC<{
       {a?.image && typeof a.image === 'object' && (
         <HoverZoomImage
           resource={a.image}
-          imgClassName="aspect-[420/292] w-full object-cover"
+          imgClassName="aspect-[420/292] w-full object-cover object-top"
           wrapperClassName="mr-8 rounded-[30px] md:mr-0 md:absolute md:left-0 md:top-0 md:w-[71%]"
         />
       )}
       {b?.image && typeof b.image === 'object' && (
         <HoverZoomImage
           resource={b.image}
-          imgClassName="aspect-[420/292] w-full object-cover"
+          imgClassName="aspect-[420/292] w-full object-cover object-top"
           wrapperClassName="-mt-12 ml-8 rounded-[30px] shadow-[0_10px_30px_rgba(33,33,33,0.12)] md:mt-0 md:ml-0 md:absolute md:left-[29%] md:top-[46%] md:w-[71%]"
         />
       )}
@@ -473,43 +473,83 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
       /* 標準圖文二欄 */
       <>
         {leadHeading}
-        <div
-          className={cn('flex flex-col gap-10 md:gap-16 lg:gap-20 md:items-center', {
-            'md:flex-row': direction !== 'imageRight',
-            'md:flex-row-reverse': direction === 'imageRight',
-          })}
-        >
-          <div className="md:w-1/2">
-            {hasDualStack ? (
-              <DualStackImages images={images as NonNullable<TwoColumnBlockProps['images']>} />
-            ) : (
+        {itemsStyle === 'steps' && hasItems ? (
+          /* Figma support 288:390：左文（466）+ 右欄（590 圖 + 其下 3 步驟流程）。
+             步驟貼齊圖寬、置於圖下方（非整塊置中）。direction=imageRight → 右欄在右。 */
+          <div
+            className={cn('flex flex-col gap-10 md:gap-12 lg:gap-16', {
+              'md:flex-row': direction !== 'imageRight',
+              'md:flex-row-reverse': direction === 'imageRight',
+            })}
+          >
+            <div className="flex flex-col md:w-[53%]">
               <HoverZoomImage
                 resource={image}
-                imgClassName="aspect-[4/3] w-full object-cover"
+                imgClassName="aspect-[590/400] w-full object-cover"
                 wrapperClassName="rounded-[30px]"
               />
-            )}
+              <ItemsSteps items={items as TwoColumnItem[]} />
+            </div>
+            <div className="md:w-[44%]">
+              {eyebrow && <Eyebrow text={eyebrow} />}
+              {title && (
+                <h2 className="mb-5 text-[28px] font-bold leading-[1.5] tracking-[0.1em] text-[color:var(--page-accent,#8BA98B)] md:text-[40px] md:leading-[60px]">
+                  {title}
+                </h2>
+              )}
+              {richText && (
+                <div className="text-base leading-[1.85] tracking-[0.1em] text-brand-ink [&_p+p]:mt-4">
+                  <RichText data={richText} enableGutter={false} enableProse={false} />
+                </div>
+              )}
+              {cta?.label && cta?.url && (
+                <div className="mt-8">
+                  <PillCta label={cta.label} url={cta.url} />
+                </div>
+              )}
+            </div>
           </div>
-          <div className="md:w-1/2">
-            {eyebrow && <Eyebrow text={eyebrow} />}
-            {title && (
-              <h2 className="mb-5 text-[28px] font-bold leading-[1.5] tracking-[0.1em] text-[color:var(--page-accent,#8BA98B)] md:text-[40px] md:leading-[60px]">
-                {title}
-              </h2>
-            )}
-            {richText && (
-              <div className="text-base leading-[1.85] tracking-[0.1em] text-brand-ink [&_p+p]:mt-4">
-                <RichText data={richText} enableGutter={false} enableProse={false} />
+        ) : (
+          <>
+            <div
+              className={cn('flex flex-col gap-10 md:gap-16 lg:gap-20 md:items-center', {
+                'md:flex-row': direction !== 'imageRight',
+                'md:flex-row-reverse': direction === 'imageRight',
+              })}
+            >
+              <div className="md:w-1/2">
+                {hasDualStack ? (
+                  <DualStackImages images={images as NonNullable<TwoColumnBlockProps['images']>} />
+                ) : (
+                  <HoverZoomImage
+                    resource={image}
+                    imgClassName="aspect-[4/3] w-full object-cover"
+                    wrapperClassName="rounded-[30px]"
+                  />
+                )}
               </div>
-            )}
-            {cta?.label && cta?.url && (
-              <div className="mt-8">
-                <PillCta label={cta.label} url={cta.url} />
+              <div className="md:w-1/2">
+                {eyebrow && <Eyebrow text={eyebrow} />}
+                {title && (
+                  <h2 className="mb-5 text-[28px] font-bold leading-[1.5] tracking-[0.1em] text-[color:var(--page-accent,#8BA98B)] md:text-[40px] md:leading-[60px]">
+                    {title}
+                  </h2>
+                )}
+                {richText && (
+                  <div className="text-base leading-[1.85] tracking-[0.1em] text-brand-ink [&_p+p]:mt-4">
+                    <RichText data={richText} enableGutter={false} enableProse={false} />
+                  </div>
+                )}
+                {cta?.label && cta?.url && (
+                  <div className="mt-8">
+                    <PillCta label={cta.label} url={cta.url} />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-        {hasItems && <ItemsComponent items={items as TwoColumnItem[]} />}
+            </div>
+            {hasItems && <ItemsComponent items={items as TwoColumnItem[]} />}
+          </>
+        )}
       </>
     )
 

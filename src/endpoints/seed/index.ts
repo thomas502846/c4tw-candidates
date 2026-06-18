@@ -1340,8 +1340,8 @@ export const seed = async ({
             variant: 'photoCards',
             intro: '我們提供兩種切入方式。\n企業可以透過系統性支持員工；一般個人也可以直接預約諮詢，快速得到照顧規劃的協助。',
             cards: [
-              { title: '我是企業 HR 或主管', image: photos[6].id, url: '/contact/#sheet' },
-              { title: '我是家屬', image: photos[3].id, url: '/contact/#sheet' },
+              { title: '我是企業 HR 或主管', image: fig('care-ta-hr.jpg').id, url: '/contact/#sheet' },
+              { title: '我是家屬', image: fig('care-ta-family.jpg').id, url: '/contact/#sheet' },
             ],
           },
           // Figma photowall 263:431：全寬 5 圖橫向視差帶（導流與個人 AIO 之間）
@@ -1529,12 +1529,12 @@ export const seed = async ({
             cards: [
               {
                 title: 'I am an HR manager or supervisor',
-                image: photos[6].id,
+                image: fig('care-ta-hr.jpg').id,
                 url: '/en/contact/#sheet',
               },
               {
                 title: 'I am a family member',
-                image: photos[3].id,
+                image: fig('care-ta-family.jpg').id,
                 url: '/en/contact/#sheet',
               },
             ],
@@ -1676,6 +1676,8 @@ export const seed = async ({
             eyebrow: 'AIO Solution-Organization Support',
             image: fig('training-banner.jpg').id,
             gradient: 'lime',
+            // 課程實況照：人物在中段、前景為空椅 → center 對焦避免只露椅子
+            focal: 'center',
           },
           // Sheet training 02 Hero 引言
           {
@@ -1796,6 +1798,7 @@ export const seed = async ({
             title: 'AIO Solutions — Organizational Training',
             image: fig('training-banner.jpg').id,
             gradient: 'lime',
+            focal: 'center',
           },
           {
             blockType: 'twoColumn',

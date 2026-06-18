@@ -1,312 +1,340 @@
 [
- {
-  "file": "school-banner.jpg",
-  "alt": "照顧學校 banner：羅布森空間外觀與 CFT 照顧學校立牌",
-  "src": "school/banner-school.png",
-  "kb": 567,
-  "wh": [
-   1109,
-   1479
-  ]
- },
- {
-  "file": "school-about.jpg",
-  "alt": "學員圍坐上課情境",
-  "src": "school/about-pic-classroom.png",
-  "kb": 288,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "school-problem.jpg",
-  "alt": "照顧現場學習情境",
-  "src": "school/problem-photo.png",
-  "kb": 116,
-  "wh": [
-   1920,
-   1280
-  ]
- },
- {
-  "file": "school-wall-1.jpg",
-  "alt": "照顧學校生活樣貌 1",
-  "src": "school/photowall-1.png",
-  "kb": 341,
-  "wh": [
-   1920,
-   1441
-  ]
- },
- {
-  "file": "school-wall-2.jpg",
-  "alt": "照顧學校生活樣貌 2",
-  "src": "school/photowall-2.png",
-  "kb": 394,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "school-wall-3.jpg",
-  "alt": "照顧學校生活樣貌 3",
-  "src": "school/photowall-3.png",
-  "kb": 387,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "school-wall-4.jpg",
-  "alt": "照顧學校生活樣貌 4",
-  "src": "school/photowall-4.png",
-  "kb": 473,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "school-wall-5.jpg",
-  "alt": "照顧學校生活樣貌 5",
-  "src": "school/photowall-5.png",
-  "kb": 394,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "school-cta.jpg",
-  "alt": "CFT 照顧學校投影教室",
-  "src": "school/cta-projection-room.png",
-  "kb": 458,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "school-courses-hero.jpg",
-  "alt": "照顧學校課程情境",
-  "src": "school/tab1-courses-hero.png",
-  "kb": 360,
-  "wh": [
-   1477,
-   1108
-  ]
- },
- {
-  "file": "school-location-bg.png",
-  "alt": "羅布森空間在地地形底圖",
-  "src": "school/location-taiwan-map-bg.png",
-  "kb": 511,
-  "wh": [
-   1920,
-   1089
-  ]
- },
- {
-  "file": "home-kv.jpg",
-  "alt": "首頁主視覺",
-  "src": "home/kv-banner.png",
-  "kb": 923,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "home-about-collage.jpg",
-  "alt": "關於創照三圖拼貼",
-  "src": "home/about-3pics.png",
-  "kb": 917,
-  "wh": [
-   1920,
-   2261
-  ]
- },
- {
-  "file": "home-service1.jpg",
-  "alt": "整合服務情境",
-  "src": "home/service1-pic.png",
-  "kb": 125,
-  "wh": [
-   1920,
-   864
-  ]
- },
- {
-  "file": "about-begin.jpg",
-  "alt": "創照緣起情境照",
-  "src": "about/begin-pic.png",
-  "kb": 129,
-  "wh": [
-   900,
-   600
-  ]
- },
- {
-  "file": "about-award.jpg",
-  "alt": "創照獲獎記錄",
-  "src": "about/award-pic.png",
-  "kb": 277,
-  "wh": [
-   1180,
-   800
-  ]
- },
- {
-  "file": "training-six-1.jpg",
-  "alt": "六大模組 1",
-  "src": "training/six_01_aio_talk.png",
-  "kb": 414,
-  "wh": [
-   1568,
-   1046
-  ]
- },
- {
-  "file": "training-six-2.jpg",
-  "alt": "六大模組 2",
-  "src": "training/six_02_visit.png",
-  "kb": 256,
-  "wh": [
-   1920,
-   1080
-  ]
- },
- {
-  "file": "training-six-3.jpg",
-  "alt": "六大模組 3",
-  "src": "training/six_03_roadmap.png",
-  "kb": 1067,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "training-six-4.jpg",
-  "alt": "六大模組 4",
-  "src": "training/six_04_ltc.png",
-  "kb": 470,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "training-six-5.jpg",
-  "alt": "六大模組 5",
-  "src": "training/six_05_team.png",
-  "kb": 595,
-  "wh": [
-   1920,
-   1280
-  ]
- },
- {
-  "file": "training-six-6.jpg",
-  "alt": "六大模組 6",
-  "src": "training/six_06_transform.png",
-  "kb": 507,
-  "wh": [
-   1920,
-   1440
-  ]
- },
- {
-  "file": "contact-banner.jpg",
-  "alt": "聯絡我們 banner",
-  "src": "contact/banner.png",
-  "kb": 1028,
-  "wh": [
-   1920,
-   1441
-  ]
- },
- {
-  "file": "school-robson-building.jpg",
-  "alt": "羅布森空間建物外觀"
- },
- {
-  "file": "home-3pics.png",
-  "alt": "關於創照三圖拼貼"
- },
- {
-  "file": "home-service2.jpg",
-  "alt": "人才培育創新：照顧學校培訓"
- },
- {
-  "file": "home-service3.jpg",
-  "alt": "照顧科技創新：Connect 10"
- },
- {
-  "file": "about-vision-bg.jpg",
-  "alt": "創照願景使命帶背景"
- },
- {
-  "file": "about-cta.jpg",
-  "alt": "聯絡我們 CTA 背景"
- },
- {
-  "file": "care-banner.jpg",
-  "alt": "家庭照顧服務 banner"
- },
- {
-  "file": "about-banner.jpg",
-  "alt": "認識創照 banner"
- },
- {
-  "file": "training-banner.jpg",
-  "alt": "AIO組織培力 banner"
- },
- {
-  "file": "care-aio-1.jpg",
-  "alt": "什麼是 AIO 整合照顧模式情境照 1"
- },
- {
-  "file": "care-aio-2.jpg",
-  "alt": "什麼是 AIO 整合照顧模式情境照 2"
- },
- {
-  "file": "care-aio-3.jpg",
-  "alt": "什麼是 AIO 整合照顧模式情境照 3"
- },
- {
-  "file": "care-hero.jpg",
-  "alt": "家庭照顧服務頁主視覺照"
- },
- {
-  "file": "care-model-1.jpg",
-  "alt": "AIO 整合照顧服務模式情境照 1"
- },
- {
-  "file": "care-model-2.jpg",
-  "alt": "AIO 整合照顧服務模式情境照 2"
- },
- {
-  "file": "care-wall-1.jpg",
-  "alt": "家庭照顧服務照片牆 1"
- },
- {
-  "file": "care-wall-2.jpg",
-  "alt": "家庭照顧服務照片牆 2"
- },
- {
-  "file": "care-wall-3.jpg",
-  "alt": "家庭照顧服務照片牆 3"
- },
- {
-  "file": "care-wall-4.jpg",
-  "alt": "家庭照顧服務照片牆 4"
- },
- {
-  "file": "care-wall-5.jpg",
-  "alt": "家庭照顧服務照片牆 5"
- }
+  {
+    "file": "school-banner.jpg",
+    "alt": "照顧學校 banner：羅布森空間外觀與 CFT 照顧學校立牌",
+    "src": "school/banner-school.png",
+    "kb": 567,
+    "wh": [
+      1109,
+      1479
+    ]
+  },
+  {
+    "file": "school-about.jpg",
+    "alt": "學員圍坐上課情境",
+    "src": "school/about-pic-classroom.png",
+    "kb": 288,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "school-problem.jpg",
+    "alt": "照顧現場學習情境",
+    "src": "school/problem-photo.png",
+    "kb": 116,
+    "wh": [
+      1920,
+      1280
+    ]
+  },
+  {
+    "file": "school-wall-1.jpg",
+    "alt": "照顧學校生活樣貌 1",
+    "src": "school/photowall-1.png",
+    "kb": 341,
+    "wh": [
+      1920,
+      1441
+    ]
+  },
+  {
+    "file": "school-wall-2.jpg",
+    "alt": "照顧學校生活樣貌 2",
+    "src": "school/photowall-2.png",
+    "kb": 394,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "school-wall-3.jpg",
+    "alt": "照顧學校生活樣貌 3",
+    "src": "school/photowall-3.png",
+    "kb": 387,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "school-wall-4.jpg",
+    "alt": "照顧學校生活樣貌 4",
+    "src": "school/photowall-4.png",
+    "kb": 473,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "school-wall-5.jpg",
+    "alt": "照顧學校生活樣貌 5",
+    "src": "school/photowall-5.png",
+    "kb": 394,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "school-cta.jpg",
+    "alt": "CFT 照顧學校投影教室",
+    "src": "school/cta-projection-room.png",
+    "kb": 458,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "school-courses-hero.jpg",
+    "alt": "照顧學校課程情境",
+    "src": "school/tab1-courses-hero.png",
+    "kb": 360,
+    "wh": [
+      1477,
+      1108
+    ]
+  },
+  {
+    "file": "school-location-bg.png",
+    "alt": "羅布森空間在地地形底圖",
+    "src": "school/location-taiwan-map-bg.png",
+    "kb": 511,
+    "wh": [
+      1920,
+      1089
+    ]
+  },
+  {
+    "file": "home-kv.jpg",
+    "alt": "首頁主視覺",
+    "src": "home/kv-banner.png",
+    "kb": 923,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "home-about-collage.jpg",
+    "alt": "關於創照三圖拼貼",
+    "src": "home/about-3pics.png",
+    "kb": 917,
+    "wh": [
+      1920,
+      2261
+    ]
+  },
+  {
+    "file": "home-service1.jpg",
+    "alt": "整合服務情境",
+    "src": "home/service1-pic.png",
+    "kb": 125,
+    "wh": [
+      1920,
+      864
+    ]
+  },
+  {
+    "file": "about-begin.jpg",
+    "alt": "創照緣起情境照",
+    "src": "about/begin-pic.png",
+    "kb": 129,
+    "wh": [
+      900,
+      600
+    ]
+  },
+  {
+    "file": "about-award.jpg",
+    "alt": "創照獲獎記錄",
+    "src": "about/award-pic.png",
+    "kb": 277,
+    "wh": [
+      1180,
+      800
+    ]
+  },
+  {
+    "file": "training-six-1.jpg",
+    "alt": "六大模組 1",
+    "src": "training/six_01_aio_talk.png",
+    "kb": 414,
+    "wh": [
+      1568,
+      1046
+    ]
+  },
+  {
+    "file": "training-six-2.jpg",
+    "alt": "六大模組 2",
+    "src": "training/six_02_visit.png",
+    "kb": 256,
+    "wh": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "file": "training-six-3.jpg",
+    "alt": "六大模組 3",
+    "src": "training/six_03_roadmap.png",
+    "kb": 1067,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "training-six-4.jpg",
+    "alt": "六大模組 4",
+    "src": "training/six_04_ltc.png",
+    "kb": 470,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "training-six-5.jpg",
+    "alt": "六大模組 5",
+    "src": "training/six_05_team.png",
+    "kb": 595,
+    "wh": [
+      1920,
+      1280
+    ]
+  },
+  {
+    "file": "training-six-6.jpg",
+    "alt": "六大模組 6",
+    "src": "training/six_06_transform.png",
+    "kb": 507,
+    "wh": [
+      1920,
+      1440
+    ]
+  },
+  {
+    "file": "contact-banner.jpg",
+    "alt": "聯絡我們 banner",
+    "src": "contact/banner.png",
+    "kb": 1028,
+    "wh": [
+      1920,
+      1441
+    ]
+  },
+  {
+    "file": "school-robson-building.jpg",
+    "alt": "羅布森空間建物外觀"
+  },
+  {
+    "file": "home-3pics.png",
+    "alt": "關於創照三圖拼貼"
+  },
+  {
+    "file": "home-service2.jpg",
+    "alt": "人才培育創新：照顧學校培訓"
+  },
+  {
+    "file": "home-service3.jpg",
+    "alt": "照顧科技創新：Connect 10"
+  },
+  {
+    "file": "about-vision-bg.jpg",
+    "alt": "創照願景使命帶背景"
+  },
+  {
+    "file": "about-cta.jpg",
+    "alt": "聯絡我們 CTA 背景"
+  },
+  {
+    "file": "care-banner.jpg",
+    "alt": "家庭照顧服務 banner"
+  },
+  {
+    "file": "about-banner.jpg",
+    "alt": "認識創照 banner"
+  },
+  {
+    "file": "training-banner.jpg",
+    "alt": "AIO組織培力 banner"
+  },
+  {
+    "file": "care-aio-1.jpg",
+    "alt": "什麼是 AIO 整合照顧模式情境照 1"
+  },
+  {
+    "file": "care-aio-2.jpg",
+    "alt": "什麼是 AIO 整合照顧模式情境照 2"
+  },
+  {
+    "file": "care-aio-3.jpg",
+    "alt": "什麼是 AIO 整合照顧模式情境照 3"
+  },
+  {
+    "file": "care-hero.jpg",
+    "alt": "家庭照顧服務頁主視覺照"
+  },
+  {
+    "file": "care-model-1.jpg",
+    "alt": "AIO 整合照顧服務模式情境照 1"
+  },
+  {
+    "file": "care-model-2.jpg",
+    "alt": "AIO 整合照顧服務模式情境照 2"
+  },
+  {
+    "file": "care-wall-1.jpg",
+    "alt": "家庭照顧服務照片牆 1"
+  },
+  {
+    "file": "care-wall-2.jpg",
+    "alt": "家庭照顧服務照片牆 2"
+  },
+  {
+    "file": "care-wall-3.jpg",
+    "alt": "家庭照顧服務照片牆 3"
+  },
+  {
+    "file": "care-wall-4.jpg",
+    "alt": "家庭照顧服務照片牆 4"
+  },
+  {
+    "file": "care-wall-5.jpg",
+    "alt": "家庭照顧服務照片牆 5"
+  },
+  {
+    "file": "training-support.jpg",
+    "alt": "組織培力課程實況：講師授課、學員圍坐"
+  },
+  {
+    "file": "training-cta.jpg",
+    "alt": "森林綠意 CTA 背景"
+  },
+  {
+    "file": "care-ta-hr.jpg",
+    "alt": "企業 HR 與主管討論員工照顧支持方案",
+    "src": "care-ta-hr.jpg",
+    "kb": 560,
+    "wh": [
+      800,
+      533
+    ]
+  },
+  {
+    "file": "care-ta-family.jpg",
+    "alt": "照顧者握住臥床長輩的手",
+    "src": "care-ta-family.jpg",
+    "kb": 1405,
+    "wh": [
+      1536,
+      1024
+    ]
+  }
 ]
