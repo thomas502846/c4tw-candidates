@@ -47,7 +47,7 @@ export default async function ContactPageEn() {
       ) : (
         /* Fallback green banner when no CMS doc exists (mirrors pageHeader no-image state) */
         <section className="relative -mt-16 flex h-[260px] flex-col justify-center bg-brand-green md:h-[400px]">
-          <div className="container flex max-w-[1240px] flex-col gap-3.5 pt-2">
+          <div className="container flex max-w-[1140px] flex-col gap-3.5 pt-2">
             <h1 className="text-[32px] font-bold tracking-[0.1em] text-white md:text-[40px]">
               Contact Us
             </h1>

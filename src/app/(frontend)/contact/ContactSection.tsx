@@ -37,11 +37,15 @@ const INFO = {
 
 const MAP_QUERY = '臺中市烏日區溪岸路8-3號'
 // 官方 Google Maps Embed API（免費、不計次）：設定 NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY 後啟用；
-// 未設 key 時退回免金鑰 output=embed（仍可顯示，但官方版較穩、可設網域限制）。
+// 未設 key 時退回免金鑰 output=embed —— 注意 Google 已封鎖此 iframe（ERR_BLOCKED_BY_RESPONSE），
+// 正式環境務必在 build 階段注入 key（見 Dockerfile / docker-compose app build args）。
 const MAP_EMBED_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY
-const MAP_EMBED_SRC = MAP_EMBED_KEY
-  ? `https://www.google.com/maps/embed/v1/place?key=${MAP_EMBED_KEY}&q=${encodeURIComponent(MAP_QUERY)}&language=zh-TW`
-  : `https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&output=embed&hl=zh-TW`
+const mapEmbedSrc = (locale: Locale): string => {
+  const lang = locale === 'en' ? 'en' : 'zh-TW'
+  return MAP_EMBED_KEY
+    ? `https://www.google.com/maps/embed/v1/place?key=${MAP_EMBED_KEY}&q=${encodeURIComponent(MAP_QUERY)}&language=${lang}`
+    : `https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&output=embed&hl=${lang}`
+}
 const MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAP_QUERY)}`
 
 const COPY = {
@@ -108,11 +112,11 @@ export const ContactSection: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW'
 
   return (
     /* id=sheet：about/care/training CTA 以 /contact/#sheet 捲到表單；scroll-mt 補 sticky header 高
-       寬度：不用 .container（其 2xl 變體 max-width 1376px 會蓋過 max-w-[1240px]，把表單攤到 1376）。
-       改用固定 mx-auto + 自管 padding，硬鎖 max-w-[1240px]＝Figma 1140 內容 + 左右 50 padding。 */
+       寬度：不用 .container（其 2xl 變體 max-width 1376px 會蓋過 max-w-[1140px]，把表單攤到 1376）。
+       改用固定 mx-auto + 自管 padding，硬鎖 max-w-[1140px]＝Figma 1140 內容 + 左右 50 padding。 */
     <ScrollReveal
       as="section"
-      className="mx-auto mt-16 w-full max-w-[1240px] scroll-mt-[88px] px-4 md:px-[50px] lg:scroll-mt-[120px]"
+      className="mx-auto mb-24 mt-16 w-full max-w-[1140px] scroll-mt-[88px] px-4 md:px-[50px] lg:scroll-mt-[120px]"
       id="sheet"
     >
       {/* Figma Frame 120（1140 寬）：左表單 462／右資訊 550／gap 128
@@ -180,7 +184,7 @@ export const ContactSection: React.FC<{ locale?: Locale }> = ({ locale = 'zh-TW'
             className="mt-8 h-[280px] w-full rounded-[30px] border-0 lg:h-[337px] lg:max-w-[550px]"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            src={MAP_EMBED_SRC}
+            src={mapEmbedSrc(locale)}
             title={t.mapTitle}
           />
           <a

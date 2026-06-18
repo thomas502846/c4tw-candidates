@@ -49,7 +49,9 @@ if [ ! -f .env.production ]; then
   exit 1
 fi
 docker compose --env-file .env.production build migrate
-docker compose --env-file .env.production run --rm migrate
+# 非互動：DB 曾被 dev push 過，payload migrate 會跳「data loss? (y/N)」提示。
+# 此處只會套用「尚未執行」的 migration（皆為 additive ADD COLUMN），故自動回 y；-T 關掉 TTY 以讀取管線輸入。
+echo y | docker compose --env-file .env.production run --rm -T migrate
 EOF
 
 echo "==> [3/3] docker compose build + up -d（server 端）"
