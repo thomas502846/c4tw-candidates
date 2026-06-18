@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Media } from '@/components/Media'
-import { Parallax } from '@/components/Parallax'
 import type { Media as MediaDoc } from '@/payload-types'
 
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated type
@@ -91,7 +90,7 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
   const hasBgImage = image && typeof image === 'object'
   return (
     <section
-      className="relative overflow-hidden py-16 md:py-24"
+      className="relative overflow-x-clip"
       data-block="mapLocations"
       style={
         hasBgImage
@@ -102,25 +101,23 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
             }
       }
     >
-      {/* 水彩地形「上方橫帶」（Figma school-cft space 341:640：bg 只覆蓋上半，文字下方為白底）。
-          帶高固定＝「區塊高度不變」；Parallax 緩動＝「背景固定/緩動、內容正常往上滑」（Tracy cmt 62）。
-          object-center 讓左側淡青水域落在文字後（淺藍底）、右側臺中地形＋臺中溪尾 pin 落在文字欄右側。 */}
+      {/* 背景地圖（Tracy 341:650「Parallax Background，區塊高度不變，內容文字正常往上滑動」）：
+          地圖用 sticky 固定貼著視窗，內容正常往上滑過它，看起來像「地圖不動、文字往上滑」。
+          -mb-[100vh] 抵銷 sticky 層自身高度 → 不增加捲動高度＝「區塊高度不變」；
+          section 用 overflow-x-clip（非 overflow-hidden）裁掉左右出血又不破壞 sticky 垂直貼附。
+          地圖覆蓋整塊，object-center：左側淡青水域落在文字後當淺藍底、右側臺中地形＋臺中溪尾 pin。
+          純 CSS：無 JS／prefers-reduced-motion 下仍是固定背景，不會有位移動畫。 */}
       {hasBgImage ? (
         <div
           aria-hidden
-          className="absolute inset-x-0 top-0 -z-0 h-[360px] overflow-hidden sm:h-[460px] md:h-[680px]"
+          className="pointer-events-none sticky top-0 -z-0 -mb-[100vh] h-[100vh] w-full overflow-hidden"
         >
-          {/* 視差層比帶高多撐 14%（上下各 ~80px > maxOffset 60），位移時不露白邊 */}
-          <Parallax className="absolute inset-x-0 -inset-y-[14%]" speed={0.16}>
-            <Media
-              className="absolute inset-0 h-full w-full"
-              imgClassName="h-full w-full object-cover object-center"
-              resource={image as MediaDoc}
-            />
-          </Parallax>
+          <Media
+            className="absolute inset-0 h-full w-full"
+            imgClassName="h-full w-full object-cover object-center"
+            resource={image as MediaDoc}
+          />
           <div className="absolute inset-0 bg-white/30" />
-          {/* 帶底以白色羽化收邊，柔順接到下方白底內容區 */}
-          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-white md:h-40" />
         </div>
       ) : (
         <div aria-hidden className="absolute right-0 top-10 -z-0 hidden w-[52%] md:block">
@@ -128,9 +125,10 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
         </div>
       )}
 
-      <div className="container relative z-10 max-w-[1240px]">
-        {/* 左側文字欄（590px） */}
-        <div className="md:w-[590px]">
+      <div className="relative z-10 py-16 md:py-24">
+        <div className="container max-w-[1240px]">
+          {/* 左側文字欄（590px） */}
+          <div className="md:w-[590px]">
           {eyebrow && <Eyebrow text={eyebrow} />}
           {title && (
             // .fig 羅布森空間：Noto Sans TC Bold 40 / lh60 / ls10%
@@ -208,6 +206,7 @@ export const MapLocationsBlock: React.FC<MapLocationsBlockProps> = ({
               </div>
             </div>
           ))}
+        </div>
       </div>
     </section>
   )
