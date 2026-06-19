@@ -193,39 +193,95 @@ const SAT_RIGHT = [
   { cx: 681, cy: 392 }, // 右下
 ]
 
-// 行動版（M-care 218:856）：兩大圓改垂直堆疊（個人生活在上、職場角色在下），
-// 衛星圓貼外弧、數字放大可讀。viewBox 直式 460×820。
-const M_BIG_R = 150
-const M_TOP = { cx: 230, cy: 200 } // 個人生活影響（上）
-const M_BOT = { cx: 230, cy: 580 } // 職場角色影響（下）
-const M_SAT_R = 66
-// 上圓衛星：左上、左、左下三顆貼外弧
-const M_SAT_TOP = [
-  { cx: 90, cy: 70 },
-  { cx: 60, cy: 230 },
-  { cx: 110, cy: 380 },
+/* ── 行動版 venn（HTML/CSS 重繪 Tracy 行動版設計 care-familycare(mobile)）──
+   兩大圓垂直堆疊＋左右各 3 顆衛星圓，純 DOM 文字：清晰、可縮放、zh/en 共用一套。
+   取代原 SVG 版（SVG 文字隨 viewBox 縮小在手機過小，客戶 2026-06-19 回報難讀）。
+   座標為 360×545 設計框換算的百分比；容器固定該長寬比，子層用 left/top%＋translate 置中。 */
+const M_SAT_LEFT_POS = [
+  { left: '20%', top: '10.6%' }, // 上圓 左上
+  { left: '12.2%', top: '32.3%' }, // 上圓 左
+  { left: '25%', top: '54.7%' }, // 上圓 左下（近交疊）
 ]
-// 下圓衛星：右上、右、右下三顆貼外弧
-const M_SAT_BOT = [
-  { cx: 370, cy: 410 },
-  { cx: 410, cy: 560 },
-  { cx: 360, cy: 710 },
+const M_SAT_RIGHT_POS = [
+  { left: '79.4%', top: '53.6%' }, // 下圓 右上（近交疊）
+  { left: '87.8%', top: '74.9%' }, // 下圓 右
+  { left: '79.4%', top: '91.7%' }, // 下圓 右下
 ]
 
-/** 行動版大圓標題（直式，字級加大） */
-const MBigCircleLabel: React.FC<{ cx: number; cy: number; label: string }> = ({ cx, cy, label }) => {
-  const { main, sub } = splitImpactLabel(label)
+/** 行動版填色房屋 icon（HTML 內嵌，固定尺寸） */
+const HouseIconHtml: React.FC = () => (
+  <svg aria-hidden className="h-[50px] w-[56px]" fill="none" stroke="#333333" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 56 50">
+    <rect fill="#ADCB59" height="28" width="38" x="9" y="20" />
+    <path d="M3 22 L28 1 L53 22 Z" fill="#ADCB59" />
+    <rect fill="#ADCB59" height="12" width="6" x="36" y="6" />
+    <rect fill="#EA6A20" height="11" width="11" x="24" y="30" />
+  </svg>
+)
+/** 行動版填色公事包 icon（HTML 內嵌，固定尺寸） */
+const BagIconHtml: React.FC = () => (
+  <svg aria-hidden className="h-[48px] w-[58px]" fill="none" stroke="#333333" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 58 48">
+    <path d="M20 12 v-3 a9 9 0 0 1 18 0 v3" fill="none" />
+    <rect fill="#ffffff" height="32" rx="4" width="46" x="6" y="12" />
+    <path d="M6 24 V16 a4 4 0 0 1 4-4 h38 a4 4 0 0 1 4 4 V24 Z" fill="#ADCB59" />
+    <rect fill="#EA6A20" height="11" width="6" x="18" y="18" />
+    <rect fill="#EA6A20" height="11" width="6" x="34" y="18" />
+  </svg>
+)
+
+/** 衛星圓數值：數字大、單位（萬/年/成/歲/倍/%/yrs…）小（沿用 valueRuns 切分） */
+const HtmlValue: React.FC<{ value: string }> = ({ value }) => (
+  <span className="font-bold leading-none text-[#7DAA8B]">
+    {valueRuns(value).map((r, i) => (
+      <span className={r.big ? 'text-[26px]' : 'text-[13px]'} key={i}>
+        {r.text}
+      </span>
+    ))}
+  </span>
+)
+
+/** 大圓（個人生活影響／職場角色影響）：icon＋主標＋（中文才有的）「影響」副行 */
+const MBigCircle: React.FC<{
+  tone: 'cream' | 'cyan'
+  top: string
+  label?: string | null
+  icon: React.ReactNode
+  align: 'top' | 'bottom'
+}> = ({ tone, top, label, icon, align }) => {
+  const { main, sub } = label ? splitImpactLabel(label) : { main: '', sub: undefined }
   return (
-    <>
-      <text fill="#212121" fontSize="32" fontWeight="700" letterSpacing="4" textAnchor="middle" x={cx} y={sub ? cy + 4 : cy + 12}>
-        {main}
-      </text>
-      {sub && (
-        <text fill="#212121" fontSize="20" fontWeight="500" letterSpacing="8" textAnchor="middle" x={cx + 4} y={cy + 40}>
-          {sub}
-        </text>
+    <div
+      className={cn(
+        'absolute left-1/2 flex aspect-square w-[76%] -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-full border-2 border-brand-lime',
+        align === 'top' ? 'justify-start pt-[19%]' : 'justify-end pb-[18%]',
       )}
-    </>
+      style={{ top, backgroundColor: tone === 'cream' ? '#F7F7EB' : '#ECF7F9' }}
+    >
+      {icon}
+      <div className="mt-2 text-[26px] font-bold leading-none tracking-[0.04em] text-[#212121]">{main}</div>
+      {sub && <div className="mt-1 text-[15px] font-medium tracking-[0.4em] text-[#212121]">{sub}</div>}
+    </div>
+  )
+}
+
+/** 衛星圓：標籤＋數值（valueTop 時數值在上、標籤在下，對齊 Tracy 行動版） */
+const MSat: React.FC<{
+  pos: { left: string; top: string }
+  tone: 'cream' | 'cyan'
+  stat: InfographicStat
+  valueTop?: boolean
+}> = ({ pos, tone, stat, valueTop }) => {
+  const label = (
+    <span className="text-[12px] font-medium leading-[1.25] text-[#333333]">{stat.label}</span>
+  )
+  const value = <HtmlValue value={stat.value} />
+  return (
+    <div
+      className="absolute flex aspect-square w-[30%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-1 rounded-full border-2 border-brand-lime px-1 text-center"
+      style={{ left: pos.left, top: pos.top, backgroundColor: tone === 'cream' ? '#F7F7EB' : '#ECF7F9' }}
+    >
+      {valueTop ? value : label}
+      {valueTop ? label : value}
+    </div>
   )
 }
 
@@ -235,43 +291,21 @@ const VennMobile: React.FC<{
   leftStats?: InfographicStat[] | null
   rightStats?: InfographicStat[] | null
 }> = ({ leftLabel, rightLabel, leftStats, rightStats }) => (
-  <svg
+  <div
     aria-label={`${leftLabel ?? ''}／${rightLabel ?? ''} 痛點數據圖`}
-    className="mx-auto h-auto w-full max-w-[440px] md:hidden"
+    className="relative mx-auto w-full max-w-[400px] md:hidden"
     role="img"
-    viewBox="-10 0 490 820"
+    style={{ aspectRatio: '360 / 545' }}
   >
-    {/* 下大圓（職場角色，淡青底＋亮綠細邊，與上圓對稱；Figma 86:363） */}
-    <circle cx={M_BOT.cx} cy={M_BOT.cy} fill="#ECF7F9" r={M_BIG_R} stroke="#ADCB59" strokeWidth="2" />
-    {/* 上大圓（個人生活，米底＋亮綠細邊） */}
-    <circle cx={M_TOP.cx} cy={M_TOP.cy} fill="#F7F7EB" r={M_BIG_R} stroke="#ADCB59" strokeWidth="2" />
-    {/* 上圓 icon：填色房屋 */}
-    <HouseIcon cx={M_TOP.cx} cy={M_TOP.cy - 58} />
-    {leftLabel && <MBigCircleLabel cx={M_TOP.cx} cy={M_TOP.cy} label={leftLabel} />}
-    {/* 下圓 icon：填色公事包 */}
-    <BagIcon cx={M_BOT.cx} cy={M_BOT.cy - 58} />
-    {rightLabel && <MBigCircleLabel cx={M_BOT.cx} cy={M_BOT.cy} label={rightLabel} />}
-    {/* 上圓衛星數據圓（中／下兩顆數值在上、label 在下，對齊 612:636） */}
-    {(leftStats ?? []).slice(0, 3).map((stat, i) => {
-      const pos = M_SAT_TOP[i]
-      return (
-        <g key={stat.id ?? `ml${i}`}>
-          <circle cx={pos.cx} cy={pos.cy} fill="#F7F7EB" r={M_SAT_R} stroke="#ADCB59" strokeWidth="2" />
-          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} valueTop={i > 0} />
-        </g>
-      )
-    })}
-    {/* 下圓衛星數據圓 */}
-    {(rightStats ?? []).slice(0, 3).map((stat, i) => {
-      const pos = M_SAT_BOT[i]
-      return (
-        <g key={stat.id ?? `mr${i}`}>
-          <circle cx={pos.cx} cy={pos.cy} fill="#ECF7F9" r={M_SAT_R} stroke="#ADCB59" strokeWidth="2" />
-          <SatelliteText bigSize={26} color="#7DAA8B" cx={pos.cx} cy={pos.cy} label={stat.label} value={stat.value} />
-        </g>
-      )
-    })}
-  </svg>
+    <MBigCircle align="top" icon={<HouseIconHtml />} label={leftLabel} tone="cream" top="27.5%" />
+    <MBigCircle align="bottom" icon={<BagIconHtml />} label={rightLabel} tone="cyan" top="70.6%" />
+    {(leftStats ?? []).slice(0, 3).map((stat, i) => (
+      <MSat key={stat.id ?? `ml${i}`} pos={M_SAT_LEFT_POS[i]} stat={stat} tone="cream" valueTop={i > 0} />
+    ))}
+    {(rightStats ?? []).slice(0, 3).map((stat, i) => (
+      <MSat key={stat.id ?? `mr${i}`} pos={M_SAT_RIGHT_POS[i]} stat={stat} tone="cyan" />
+    ))}
+  </div>
 )
 
 const Venn: React.FC<{
@@ -515,35 +549,51 @@ export const InfographicBlock: React.FC<InfographicBlockProps> = (props) => {
     <Ring photos={props.photos} />
   ) : variant === 'radial' ? (
     hasCjk(props.nodes?.[0]?.title) ? (
-      // ZH：桌機沿用 Figma baked 放射圖（含中文 icon＋文字）；行動版改單欄直列
-      // （cmt-07：mobile 箭頭/排版與 desktop 不同，不可把群聚 PNG 縮塞進窄屏）
+      // ZH：桌機/行動版皆用 Tracy baked 放射圖（含中文 icon＋文字）。
+      // 行動版原為向量單欄直列（RadialStack），但內文在手機過小難讀（客戶 6-19 回報），
+      // 改用 Tracy 提供的行動版圖（直式 535×1930）。EN 仍退回向量版（baked 圖內為中文，不適用 i18n）。
       <>
         <img
           alt={props.title ?? '組織培力痛點放射圖'}
           className="mx-auto hidden h-auto w-full max-w-[600px] md:block"
-          src="/figma/training-radial.png"
+          src="/figma/training-radial-desktop.webp"
         />
-        <RadialStack nodes={(props.nodes ?? []).slice(0, 4)} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt={props.title ?? '組織培力痛點放射圖'}
+          className="mx-auto h-auto w-full max-w-[320px] md:hidden"
+          src="/figma/training-radial-mobile.webp"
+        />
       </>
     ) : (
       <Radial nodes={props.nodes} />
     )
   ) : (
-    // 桌機 ZH：直接落地 Figma baked venn（612:636，含中文文字＋填色 icon＋精準比例）保證 1:1；
-    // 行動版一律向量直式堆疊（M-care 218:856）；EN 桌機退回向量（baked 圖內為中文，不適用）。
+    // 行動版：ZH 用 Tracy baked 行動版圖（pixel-perfect 她的設計）；EN 用 HTML/CSS 重繪
+    //（VennMobile，純 DOM 文字可讀；baked 圖內為中文不適用 EN）。
+    // 桌機：ZH 用 Tracy baked 圖保證 1:1；EN 退回向量版（同上 i18n 理由）。
     <>
-      <VennMobile
-        leftLabel={props.leftLabel}
-        leftStats={props.leftStats}
-        rightLabel={props.rightLabel}
-        rightStats={props.rightStats}
-      />
+      {hasCjk(props.leftLabel) ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          alt={`${props.leftLabel ?? ''}／${props.rightLabel ?? ''} 痛點數據圖`}
+          className="mx-auto h-auto w-full max-w-[400px] md:hidden"
+          src="/figma/care-venn-mobile.webp"
+        />
+      ) : (
+        <VennMobile
+          leftLabel={props.leftLabel}
+          leftStats={props.leftStats}
+          rightLabel={props.rightLabel}
+          rightStats={props.rightStats}
+        />
+      )}
       {hasCjk(props.leftLabel) ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           alt={`${props.leftLabel ?? ''}／${props.rightLabel ?? ''} 痛點數據圖`}
           className="mx-auto hidden h-auto w-full max-w-[900px] md:block"
-          src="/figma/care-venn.png"
+          src="/figma/care-venn-desktop.webp"
         />
       ) : (
         <Venn
