@@ -227,6 +227,7 @@ export interface Page {
     | TwoColumnBlock
     | NumberedFeaturesBlock
     | TaCtaBlock
+    | TeamCarouselBlock
     | VideoBlockBlock
     | MissionCirclesBlock
     | IconFeaturesBlock
@@ -294,6 +295,10 @@ export interface Post {
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
+  /**
+   * 前台每次瀏覽自動累加，用於側欄「熱門內容」取點閱最高的文章。
+   */
+  views?: number | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -469,7 +474,7 @@ export interface HeroBlock {
          */
         image: number | Media;
         /**
-         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
          */
         framePos?:
           | {
@@ -534,7 +539,7 @@ export interface PageHeaderBlock {
    */
   gradient?: ('sage' | 'lime') | null;
   /**
-   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
    */
   framePos?:
     | {
@@ -617,6 +622,36 @@ export interface ContentBlock {
    */
   ctaUrl?: string | null;
   /**
+   * 想在內文下方放一顆「點了會往下展開」的按鈕，就填按鈕文字，例如「AIO整合照顧模式」。按鈕文字和展開內容都填了才會出現。
+   */
+  accordionLabel?: string | null;
+  /**
+   * 填點按鈕後展開顯示的內容文字。可分段、設定粗體、加上 H3／H4 小標和連結。
+   */
+  accordionContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * 上傳一段語音（mp3／m4a 等）。前台會在內文下方顯示一顆播放按鈕，右方顯示剩餘時間。
+   */
+  audio?: (number | null) | Media;
+  /**
+   * 填影片連結（YouTube 或 mp4 網址）。前台會顯示一顆「看影片」按鈕，點擊以浮層播放。
+   */
+  videoUrl?: string | null;
+  /**
    * 填這個段落的主要內容文字。可以分段、設定粗體、加上 H2／H3／H4 小標和連結。
    */
   richText?: {
@@ -639,7 +674,7 @@ export interface ContentBlock {
    */
   image?: (number | null) | Media;
   /**
-   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
    */
   framePos?:
     | {
@@ -660,7 +695,7 @@ export interface ContentBlock {
          */
         image: number | Media;
         /**
-         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
          */
         framePos?:
           | {
@@ -822,7 +857,7 @@ export interface AwardsBlock {
          */
         photo?: (number | null) | Media;
         /**
-         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
          */
         framePos?:
           | {
@@ -990,7 +1025,7 @@ export interface QuoteBlock {
    */
   photo?: (number | null) | Media;
   /**
-   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
    */
   framePos?:
     | {
@@ -1051,7 +1086,7 @@ export interface TwoColumnBlock {
          */
         image: number | Media;
         /**
-         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
          */
         framePos?:
           | {
@@ -1154,7 +1189,7 @@ export interface NumberedFeaturesBlock {
          */
         image?: (number | null) | Media;
         /**
-         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
          */
         framePos?:
           | {
@@ -1193,7 +1228,7 @@ export interface TaCtaBlock {
          */
         image?: (number | null) | Media;
         /**
-         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
          */
         framePos?:
           | {
@@ -1225,6 +1260,46 @@ export interface TaCtaBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamCarouselBlock".
+ */
+export interface TeamCarouselBlock {
+  /**
+   * 取消勾選即可在網站上隱藏此區塊，內容仍會保留，隨時可再次勾選顯示。
+   */
+  enabled?: boolean | null;
+  /**
+   * 填標題前的一行小字，通常放英文，例如 Our Team。沒有就留空。
+   */
+  eyebrow?: string | null;
+  /**
+   * 填這個區塊的主標題，例如「團隊介紹」或「創辦人的話」。
+   */
+  title?: string | null;
+  /**
+   * 填標題下方的一段引言或說明文字。沒有就留空。
+   */
+  lead?: string | null;
+  /**
+   * 可加／刪／拖曳排序。前台會排成一列、可左右滑動瀏覽。
+   */
+  members?:
+    | {
+        /**
+         * 上傳成員照片，建議接近方形或直式。沒有就顯示佔位底。
+         */
+        photo?: (number | null) | Media;
+        name: string;
+        role?: string | null;
+        bio?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'teamCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "VideoBlockBlock".
  */
 export interface VideoBlockBlock {
@@ -1241,7 +1316,7 @@ export interface VideoBlockBlock {
    */
   poster?: (number | null) | Media;
   /**
-   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
    */
   posterFramePos?:
     | {
@@ -1279,7 +1354,7 @@ export interface MissionCirclesBlock {
    */
   backgroundImage?: (number | null) | Media;
   /**
-   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
    */
   backgroundImageFramePos?:
     | {
@@ -1480,7 +1555,7 @@ export interface InfographicBlock {
          */
         image?: (number | null) | Media;
         /**
-         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
          */
         framePos?:
           | {
@@ -1549,7 +1624,7 @@ export interface TabsBlockBlock {
          */
         image?: (number | null) | Media;
         /**
-         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
          */
         framePos?:
           | {
@@ -1714,7 +1789,7 @@ export interface MapLocationsBlock {
    */
   image?: (number | null) | Media;
   /**
-   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
    */
   imageFramePos?:
     | {
@@ -1730,7 +1805,7 @@ export interface MapLocationsBlock {
    */
   spaceImage?: (number | null) | Media;
   /**
-   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
    */
   spaceImageFramePos?:
     | {
@@ -1784,7 +1859,7 @@ export interface PhotoStripBlock {
          */
         image: number | Media;
         /**
-         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。
+         * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
          */
         framePos?:
           | {
@@ -2337,6 +2412,7 @@ export interface PagesSelect<T extends boolean = true> {
         twoColumn?: T | TwoColumnBlockSelect<T>;
         numberedFeatures?: T | NumberedFeaturesBlockSelect<T>;
         taCta?: T | TaCtaBlockSelect<T>;
+        teamCarousel?: T | TeamCarouselBlockSelect<T>;
         videoBlock?: T | VideoBlockBlockSelect<T>;
         missionCircles?: T | MissionCirclesBlockSelect<T>;
         iconFeatures?: T | IconFeaturesBlockSelect<T>;
@@ -2433,6 +2509,10 @@ export interface ContentBlockSelect<T extends boolean = true> {
   background?: T;
   ctaLabel?: T;
   ctaUrl?: T;
+  accordionLabel?: T;
+  accordionContent?: T;
+  audio?: T;
+  videoUrl?: T;
   richText?: T;
   image?: T;
   framePos?: T;
@@ -2638,6 +2718,27 @@ export interface TaCtaBlockSelect<T extends boolean = true> {
         title?: T;
         buttonLabel?: T;
         url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamCarouselBlock_select".
+ */
+export interface TeamCarouselBlockSelect<T extends boolean = true> {
+  enabled?: T;
+  eyebrow?: T;
+  title?: T;
+  lead?: T;
+  members?:
+    | T
+    | {
+        photo?: T;
+        name?: T;
+        role?: T;
+        bio?: T;
         id?: T;
       };
   id?: T;
@@ -2959,6 +3060,7 @@ export interface PostsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  views?: T;
   populatedAuthors?:
     | T
     | {
@@ -3623,6 +3725,76 @@ export interface CodeBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'code';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostImageBlock".
+ */
+export interface PostImageBlock {
+  image: number | Media;
+  orientation?: ('horizontal' | 'vertical') | null;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostGalleryBlock".
+ */
+export interface PostGalleryBlock {
+  /**
+   * 可加／刪／拖曳排序。前台以 3×3 縮圖呈現，超過 9 張時第 9 張顯示「+N」，點擊開啟大圖瀏覽。
+   */
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postGallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostVideoBlock".
+ */
+export interface PostVideoBlock {
+  /**
+   * 填影片連結（YouTube 或 mp4 網址）。前台顯示封面＋播放鈕，點擊以浮層播放。
+   */
+  videoUrl: string;
+  /**
+   * 影片播放前顯示的封面圖。沒填就顯示淺灰底＋播放鈕。
+   */
+  poster?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postVideo';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostDividerBlock".
+ */
+export interface PostDividerBlock {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postDivider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostButtonBlock".
+ */
+export interface PostButtonBlock {
+  label: string;
+  /**
+   * 填點按鈕後要前往的網址。站內可填以斜線開頭的路徑，例如 /contact；站外請填完整網址。留空則不連結。
+   */
+  url?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postButton';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

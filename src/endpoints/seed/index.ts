@@ -885,6 +885,14 @@ export const seed = async ({
             title: '在熟悉之處，尊嚴安老；用創新照顧，支持生活的無限可能。',
             ctaLabel: '了解更多',
             ctaUrl: '/about',
+            // Tracy 2026-07-05：了解更多下方加「AIO整合照顧模式」折疊鈕（點擊下拉）
+            accordionLabel: 'AIO整合照顧模式',
+            accordionContent: rtNodes(
+              h3('一套以人為本的 AIO 整合照顧模式'),
+              p(
+                'AIO（All In One）源自創辦人林依瑩的照顧理念：好的照顧應從個案的需求出發，整合醫療、照顧、社區與生活資源，串連不同階段所需的協助，建構人性化且完整的長照支持。',
+              ),
+            ),
             richText: rt(
               '「需求之所在，服務之所在」創照服務設計緊扣這份初衷。',
               '聚焦臺灣高齡社會的在地需求，推動 AIO（All In One）整合照顧模式，緊密串連醫療、長照與社區資源，致力陪伴更多家庭找到最適切且安心的照顧支持。',
@@ -1004,6 +1012,14 @@ export const seed = async ({
               'Ageing with dignity in familiar surroundings; supporting life’s endless possibilities through innovative care.',
             ctaLabel: 'Learn more',
             ctaUrl: '/en/about',
+            // Tracy 2026-07-05: collapsible "AIO integrated care model" button under Learn more
+            accordionLabel: 'AIO Integrated Care Model',
+            accordionContent: rtNodes(
+              h3('An integrated, person-centered AIO care model'),
+              p(
+                'AIO (All In One) comes from founder Lin Yi-ying’s care philosophy: good care starts from each person’s needs, integrating medical, care, community, and daily-life resources to connect the support needed at every stage — building humane, complete long-term care.',
+              ),
+            ),
             richText: rt(
               '“Where the need is, there the service is.” This is the conviction at the heart of Care For Taiwan’s service design.',
               'We focus on the local needs of Taiwan’s aging society and advance the AIO (All In One) integrated care model, tightly connecting medical, long-term care, and community resources — committed to helping more families find the most fitting and reassuring care support.',
@@ -1116,6 +1132,24 @@ export const seed = async ({
               { label: '創造-照顧的未來' },
             ],
           },
+          // Sheet about 06/07 團隊介紹／創辦人（Tracy 2026-07-05 新增；Figma About「可左右滑動」）。
+          // 內容蒐集中 → 先佔位並隱藏（enabled:false）；文案／照片到齊後於後台填成員並開啟顯示。
+          {
+            blockType: 'teamCarousel',
+            enabled: false,
+            eyebrow: 'Our Team',
+            title: '團隊介紹',
+            lead: '（成員內容蒐集中，待客戶提供後於後台補齊並開啟顯示）',
+            members: [
+              {
+                name: '林依瑩',
+                role: '創辦人／執行長',
+                bio: '「All In One」整合照顧模式的發起人，長年深耕長照現場與偏鄉照顧創新。',
+              },
+              { name: '團隊成員', role: '（待補）' },
+              { name: '團隊成員', role: '（待補）' },
+            ],
+          },
           // Sheet about 04 影響力：Sheet 空白——數字為佔位，待客戶補
           {
             blockType: 'statsCards',
@@ -1204,6 +1238,23 @@ export const seed = async ({
               { label: 'Cultivating the people of care' },
               { label: 'Supporting the journey of care' },
               { label: 'Creating the future of care' },
+            ],
+          },
+          // About team / founder (Tracy 2026-07-05); content pending → hidden until filled in CMS.
+          {
+            blockType: 'teamCarousel',
+            enabled: false,
+            eyebrow: 'Our Team',
+            title: 'Our Team',
+            lead: '(Member content is being collected; fill in the CMS and enable once provided.)',
+            members: [
+              {
+                name: 'Lin Yi-ying',
+                role: 'Founder / CEO',
+                bio: 'Originator of the All In One (AIO) integrated care model, with years of frontline long-term care and rural care innovation.',
+              },
+              { name: 'Team member', role: '(TBD)' },
+              { name: 'Team member', role: '(TBD)' },
             ],
           },
           {
@@ -1685,8 +1736,8 @@ export const seed = async ({
             richText: rt('從人才培育到在地共創，陪伴組織打造具影響力的照顧行動。'),
           },
           // Sheet training 03 什麼是AIO？（同 care 03 全文）
-          // Sheet training 03：Figma 654:499 改為與 care 同內容（眉標＋整合照顧模式）但「靠左」對齊
-          { ...aioZhCare, align: 'left' },
+          // Sheet training 03：與 care 03 同內容且同版型（置中）。Tracy 2026-07-05 要求改回置中，與 AIO 整合照顧服務頁一致
+          aioZhCare,
           // Sheet training 04 痛點介紹（Figma 306:609 放射 4 圓：左文右圖）
           {
             blockType: 'infographic',
@@ -1807,7 +1858,7 @@ export const seed = async ({
               'From talent cultivation to local co-creation, we help organizations build impactful care initiatives.',
             ),
           },
-          { ...aioEnCare, align: 'left' },
+          aioEnCare,
           {
             blockType: 'infographic',
             variant: 'radial',
@@ -2189,7 +2240,8 @@ export const seed = async ({
               {
                 title: '了解課程內容',
                 buttonLabel: '了解課程內容',
-                url: 'https://school.carefortaiwan.com.tw',
+                // Tracy 2026-07-05：連到學習平台課程資訊頁 /courses
+                url: 'https://school.carefortaiwan.com.tw/courses',
               },
             ],
           },
@@ -2432,7 +2484,7 @@ export const seed = async ({
               {
                 title: 'Explore the courses',
                 buttonLabel: 'Explore the courses',
-                url: 'https://school.carefortaiwan.com.tw',
+                url: 'https://school.carefortaiwan.com.tw/courses',
               },
             ],
           },

@@ -79,6 +79,52 @@ export const Content: Block = {
         description: '填點按鈕後要前往的網址。站內可以填以斜線開頭的路徑，例如 /about；站外請填完整網址。',
       },
     },
+    // 折疊區（首頁關於：「了解更多」下方「AIO整合照顧模式」點擊下拉）——Tracy 2026-07-05
+    {
+      name: 'accordionLabel',
+      type: 'text',
+      label: '折疊按鈕文字（可選）',
+      maxLength: 60,
+      admin: {
+        description:
+          '想在內文下方放一顆「點了會往下展開」的按鈕，就填按鈕文字，例如「AIO整合照顧模式」。按鈕文字和展開內容都填了才會出現。',
+      },
+    },
+    {
+      name: 'accordionContent',
+      type: 'richText',
+      label: '折疊展開內容（可選）',
+      admin: {
+        condition: (_data, siblingData) => Boolean(siblingData?.accordionLabel),
+        description: '填點按鈕後展開顯示的內容文字。可分段、設定粗體、加上 H3／H4 小標和連結。',
+      },
+      editor: lexicalEditor({
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          HeadingFeature({ enabledHeadingSizes: ['h3', 'h4'] }),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+        ],
+      }),
+    },
+    // 語音／影片按鈕（緣起：未來可能有影片&音檔，以按鈕呈現）——Tracy 2026-07-05
+    {
+      name: 'audio',
+      type: 'upload',
+      relationTo: 'media',
+      label: '語音檔（可選）',
+      admin: {
+        description: '上傳一段語音（mp3／m4a 等）。前台會在內文下方顯示一顆播放按鈕，右方顯示剩餘時間。',
+      },
+    },
+    {
+      name: 'videoUrl',
+      type: 'text',
+      label: '影片連結（可選）',
+      admin: {
+        description: '填影片連結（YouTube 或 mp4 網址）。前台會顯示一顆「看影片」按鈕，點擊以浮層播放。',
+      },
+    },
     {
       name: 'richText',
       type: 'richText',

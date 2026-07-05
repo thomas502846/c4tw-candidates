@@ -527,7 +527,9 @@ export const TwoColumnBlock: React.FC<TwoColumnBlockProps> = ({
                 </h2>
               )}
               {richText && (
-                <div className="text-base leading-[1.85] tracking-[0.1em] text-brand-ink [&_p+p]:mt-4">
+                // Tracy 2026-07-05：richText 內小標（h3）依 Figma 為粗體
+                // （TwoColumn richText 用 enableProse=false，h3 無預設字重 → 補上 bold）
+                <div className="text-base leading-[1.85] tracking-[0.1em] text-brand-ink [&_h3]:mb-3 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:leading-[1.7] [&_h3]:tracking-[0.1em] [&_h3]:text-brand-ink md:[&_h3]:text-[20px] [&_p+p]:mt-4">
                   <RichText data={richText} enableGutter={false} enableProse={false} />
                 </div>
               )}

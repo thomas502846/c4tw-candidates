@@ -117,7 +117,8 @@ export const PillarCardsBlock: React.FC<PillarCardsBlockProps> = ({
             <ScrollReveal
               as="div"
               className={cn(
-                'flex w-[78%] flex-col items-center gap-5 self-start rounded-[30px] px-5 py-9 text-center md:w-full md:min-h-[444px]',
+                // Tracy 2026-07-05：卡片寬度 264→212（固定寬、置中於原格位，維持蛇形路徑對齊與高低錯位）
+                'flex w-[78%] flex-col items-center gap-5 self-start rounded-[30px] px-5 py-9 text-center md:w-[212px] md:min-h-[444px] md:justify-self-center',
                 pillarBgs[i % pillarBgs.length],
                 // Mobile 階梯交錯：偶數卡靠左、奇數卡靠右。單欄 grid 內須用 justify-self（行內軸）
                 // 才會左右錯位；self-*（區塊軸）在單欄 grid 不產生水平位移。桌機改回滿欄＋下移。

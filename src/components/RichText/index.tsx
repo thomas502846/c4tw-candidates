@@ -17,14 +17,34 @@ import type {
   BannerBlock as BannerBlockProps,
   CallToActionBlock as CTABlockProps,
   MediaBlock as MediaBlockProps,
+  PostButtonBlock as PostButtonBlockProps,
+  PostDividerBlock as PostDividerBlockProps,
+  PostGalleryBlock as PostGalleryBlockProps,
+  PostImageBlock as PostImageBlockProps,
+  PostVideoBlock as PostVideoBlockProps,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { PostButtonBlock } from '@/blocks/PostButton/Component'
+import { PostDividerBlock } from '@/blocks/PostDivider/Component'
+import { PostGalleryBlock } from '@/blocks/PostGallery/Component'
+import { PostImageBlock } from '@/blocks/PostImage/Component'
+import { PostVideoBlock } from '@/blocks/PostVideo/Component'
 import { cn } from '@/utilities/ui'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
+  | SerializedBlockNode<
+      | CTABlockProps
+      | MediaBlockProps
+      | BannerBlockProps
+      | CodeBlockProps
+      | PostImageBlockProps
+      | PostGalleryBlockProps
+      | PostVideoBlockProps
+      | PostDividerBlockProps
+      | PostButtonBlockProps
+    >
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -52,6 +72,12 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
     ),
     code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
     cta: ({ node }) => <CallToActionBlock {...node.fields} />,
+    // 文章內頁專用區塊（Tracy 2026-07-05）
+    postImage: ({ node }) => <PostImageBlock {...node.fields} />,
+    postGallery: ({ node }) => <PostGalleryBlock {...node.fields} />,
+    postVideo: ({ node }) => <PostVideoBlock {...node.fields} />,
+    postDivider: () => <PostDividerBlock />,
+    postButton: ({ node }) => <PostButtonBlock {...node.fields} />,
   },
 })
 

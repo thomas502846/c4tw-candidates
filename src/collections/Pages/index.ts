@@ -19,6 +19,7 @@ import { CtaBanner } from '../../blocks/CtaBanner/config'
 import { PageHeader } from '../../blocks/PageHeader/config'
 import { NumberedFeatures } from '../../blocks/NumberedFeatures/config'
 import { TaCta } from '../../blocks/TaCta/config'
+import { TeamCarousel } from '../../blocks/TeamCarousel/config'
 import { VideoBlock } from '../../blocks/VideoBlock/config'
 import { MissionCircles } from '../../blocks/MissionCircles/config'
 import { IconFeatures } from '../../blocks/IconFeatures/config'
@@ -84,6 +85,17 @@ export const Pages: CollectionConfig<'pages'> = {
       localized: true,
     },
     {
+      // 即時預覽輔助：點開區塊時讓預覽自動捲到該區塊（無實際欄位、不入庫）。
+      // 元件向預覽 iframe postMessage，由前台 LivePreviewBlockReceiver 捲動＋高亮。
+      name: 'livePreviewBlockSync',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/LivePreviewBlockSync#LivePreviewBlockSync',
+        },
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {
@@ -109,6 +121,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 TwoColumn,
                 NumberedFeatures,
                 TaCta,
+                TeamCarousel,
                 VideoBlock,
                 MissionCircles,
                 IconFeatures,

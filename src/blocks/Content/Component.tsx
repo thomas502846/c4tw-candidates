@@ -8,6 +8,8 @@ import ScrollReveal from '@/components/ScrollReveal'
 import { cn } from '@/utilities/ui'
 import type { Media as MediaDoc } from '@/payload-types'
 
+import { ContentAccordion, ContentMediaButtons } from './Extras.client'
+
 // 暫定型別：block 接線並重新生成 payload-types 後改用 generated ContentBlock type
 export type ContentBlockProps = {
   blockType: 'content'
@@ -24,6 +26,11 @@ export type ContentBlockProps = {
   imagePosition?: 'left' | 'right' | 'none' | 'belowCenter' | null
   // AIO 區（什麼是 AIO 整合照顧模式）滿版漸層底（Figma 654:498 aio-info 圖填底）
   background?: 'none' | 'aio' | null
+  // 折疊區（首頁關於「AIO整合照顧模式」點擊下拉）+ 緣起語音／影片按鈕（Tracy 2026-07-05）
+  accordionLabel?: string | null
+  accordionContent?: DefaultTypedEditorState | null
+  audio?: MediaDoc | string | number | null
+  videoUrl?: string | null
 }
 
 /** 「認識創照 →」綠 pill（Figma home About 230:803：bg #ADCB59、白字 19、rounded-30、右側箭頭） */
@@ -132,7 +139,12 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
   images,
   imagePosition,
   background,
+  accordionLabel,
+  accordionContent,
+  audio,
+  videoUrl,
 }) => {
+  const audioSrc = audio && typeof audio === 'object' ? (audio.url ?? null) : null
   const collageItems = (images ?? []).filter((it) => Boolean(it?.image))
   const hasMedia = collageItems.length > 0 || Boolean(image)
   // belowCenter（training/care「什麼是 AIO 解決方案？」mid1）：置中標題＋副標＋內文，
@@ -281,6 +293,25 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
               </a>
             </div>
           )}
+          {/* 折疊區（首頁關於：「了解更多」下方「AIO整合照顧模式」點擊下拉）——Tracy 2026-07-05 */}
+          {accordionLabel && accordionContent && (
+            <ContentAccordion
+              align={ctaLabel && ctaUrl ? 'right' : centered ? 'center' : 'left'}
+              label={accordionLabel}
+            >
+              <RichText
+                className="prose-p:text-justify prose-p:text-[15px] prose-p:leading-[1.85] prose-p:tracking-[0.08em] prose-p:text-brand-ink md:prose-p:text-[16px] md:prose-p:leading-[29px] prose-h3:!text-[18px] prose-h3:!font-medium prose-h3:!tracking-[0.1em] prose-h3:text-brand-ink prose-strong:font-medium prose-strong:text-brand-primary prose-a:text-brand-primary"
+                data={accordionContent}
+                enableGutter={false}
+              />
+            </ContentAccordion>
+          )}
+          {/* 緣起語音／影片按鈕（Tracy 2026-07-05：未來有影音時以按鈕呈現） */}
+          <ContentMediaButtons
+            align={centered ? 'center' : 'left'}
+            audioSrc={audioSrc}
+            videoSrc={videoUrl}
+          />
         </div>
         {showImage && (
           <div className="md:w-[45%]">

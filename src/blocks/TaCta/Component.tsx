@@ -172,8 +172,11 @@ const Tiles: React.FC<{ cards: TaCtaCard[] }> = ({ cards }) => {
     </div>
   )
 
+  // Tracy 2026-07-05：品牌影片區塊尚未有內容（home videoBlock 目前停用），taCta 成為 footer 前最後一塊，
+  // footer 弧形（-mt-[122px] + 弧高）會上疊切到卡片。tiles 底色與 footer/弧形同為 brand-surface，
+  // 故加大底部留白讓卡片清出弧形疊區、弧形融進延長的米底。影片上線後可回收此加大量。
   return (
-    <section className="relative overflow-hidden bg-brand-surface py-16 md:py-20" data-block="taCta">
+    <section className="relative overflow-hidden bg-brand-surface pt-16 pb-[168px] md:pt-20 md:pb-[224px]" data-block="taCta">
       {/* 右緣半透明白色大型線稿裝飾圓（Home-CTA-04 239:719） */}
       <span
         aria-hidden

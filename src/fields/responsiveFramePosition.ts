@@ -37,7 +37,7 @@ export const responsiveFramePosition = (opts: Options): JSONField => ({
   admin: {
     description:
       opts.description ??
-      '分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。',
+      '分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。',
     ...(opts.condition ? { condition: opts.condition } : {}),
     components: {
       Field: {

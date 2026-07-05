@@ -348,6 +348,16 @@
 
 /* 強制 light mode：data-theme 由 layout 靜態設為 light，無 FOUC 需求 */
 
+/* ---------------------------------------------------------------
+ * 英文版字距（Tracy 2026-07-05）：中文標題／內文用的寬字距（tracking 0.1em）套在拉丁字上太鬆，
+ * /en 內容統一收斂到 ~1%（0.01em）。EN 各頁 <article> 掛 lang="en"（見 [slug]/page.tsx、
+ * en/contact/page.tsx），故此規則只作用於英文頁內容，中文版完全不受影響。
+ * 選擇器特異度 (0,1,1) 蓋過 Tailwind 的 tracking-[…] utility (0,1,0)，免用 !important。
+ * --------------------------------------------------------------- */
+[lang='en'] :is(h1, h2, h3, h4, h5, h6, p, li, a, span, button, label, input, textarea, strong, em, blockquote, figcaption, th, td) {
+  letter-spacing: 0.01em;
+}
+
 /* 最新消息垂直輪播：整體向上滾動 100%（keyframe 明確 from→to，避免 transition 同幀閃現） */
 @keyframes news-roll-up {
   from { transform: translateY(0); }

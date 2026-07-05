@@ -217,12 +217,19 @@ export const FooterClient: React.FC<FooterClientProps> = ({ zh, en }) => {
             {columns.map((column) => {
               const isContact = isContactColumnTitle(column.title)
               return (
-                <div key={column.id}>
+                <div
+                  className={
+                    // Tracy 2026-07-05：手機版聯絡資訊齊左，讓每列 icon 對齊成一直線
+                    // （fit 寬度置中成一組、內部靠左；sm+ 回正常流）
+                    isContact ? 'mx-auto w-fit text-left sm:mx-0 sm:w-auto' : undefined
+                  }
+                  key={column.id}
+                >
                   <h3 className={columnTitleClass}>{column.title}</h3>
                   <ul
                     className={
                       isContact
-                        ? 'flex flex-col items-center gap-4 sm:items-start'
+                        ? 'flex flex-col items-start gap-4'
                         : // Figma 手機版 footer：關於我們連結 2 欄格（桌機回單欄）
                           'grid grid-cols-2 justify-items-center gap-x-8 gap-y-2 sm:flex sm:flex-col sm:items-start sm:gap-2'
                     }

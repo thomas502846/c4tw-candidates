@@ -14,6 +14,11 @@ import { canCreateOrUpdateWithPublishGate, isAdminOrReviewer } from '../../acces
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { PostButton } from '../../blocks/PostButton/config'
+import { PostDivider } from '../../blocks/PostDivider/config'
+import { PostGallery } from '../../blocks/PostGallery/config'
+import { PostImage } from '../../blocks/PostImage/config'
+import { PostVideo } from '../../blocks/PostVideo/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
@@ -90,7 +95,19 @@ export const Posts: CollectionConfig<'posts'> = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    BlocksFeature({
+                      // 文章內頁可插入的內容區塊（Tracy 2026-07-05：單圖＋圖說、照片牆、影片、分隔線、按鈕）
+                      blocks: [
+                        Banner,
+                        Code,
+                        MediaBlock,
+                        PostImage,
+                        PostGallery,
+                        PostVideo,
+                        PostDivider,
+                        PostButton,
+                      ],
+                    }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
@@ -191,6 +208,18 @@ export const Posts: CollectionConfig<'posts'> = {
       },
       hasMany: true,
       relationTo: 'users',
+    },
+    // 瀏覽次數（側欄「熱門內容」排序用；前台每次瀏覽經 API +1）——Tracy 2026-07-05
+    {
+      name: 'views',
+      type: 'number',
+      label: '瀏覽次數',
+      defaultValue: 0,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: '前台每次瀏覽自動累加，用於側欄「熱門內容」取點閱最高的文章。',
+      },
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy

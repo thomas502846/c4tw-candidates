@@ -7,6 +7,7 @@ import * as migration_20260614_081821_content_images_collage from './20260614_08
 import * as migration_20260618_042153_pageheader_focal from './20260618_042153_pageheader_focal';
 import * as migration_20260618_085600_framepos_per_device from './20260618_085600_framepos_per_device';
 import * as migration_20260618_122554_framepos_all_images from './20260618_122554_framepos_all_images';
+import * as migration_20260705_141630_tracy_20260705 from './20260705_141630_tracy_20260705';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20260618_122554_framepos_all_images.up,
     down: migration_20260618_122554_framepos_all_images.down,
-    name: '20260618_122554_framepos_all_images'
+    name: '20260618_122554_framepos_all_images',
+  },
+  {
+    up: migration_20260705_141630_tracy_20260705.up,
+    down: migration_20260705_141630_tracy_20260705.down,
+    name: '20260705_141630_tracy_20260705'
   },
 ];

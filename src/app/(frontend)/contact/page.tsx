@@ -35,7 +35,7 @@ export default async function ContactPage() {
   const page = await queryContactPage('zh-TW')
 
   return (
-    <article className="pt-16 pb-24">
+    <article className="pb-24">
       {draft && <LivePreviewListener />}
 
       {/* 上方：CMS contact doc 的頁首 Banner（pageHeader block，客戶可在後台換圖） */}

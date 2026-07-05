@@ -25,6 +25,7 @@ import { StatsCardsBlock } from '@/blocks/StatsCards/Component'
 import { StepsBlockBlock } from '@/blocks/StepsBlock/Component'
 import { TabsBlockBlock } from '@/blocks/TabsBlock/Component'
 import { TaCtaBlock } from '@/blocks/TaCta/Component'
+import { TeamCarouselBlock } from '@/blocks/TeamCarousel/Component'
 import { TimelineBlock } from '@/blocks/Timeline/Component'
 import { TwoColumnBlock } from '@/blocks/TwoColumn/Component'
 import { VideoBlockBlock } from '@/blocks/VideoBlock/Component'
@@ -88,6 +89,7 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   stepsBlock: StepsBlockBlock,
   tabsBlock: TabsBlockBlock,
   taCta: TaCtaBlock,
+  teamCarousel: TeamCarouselBlock,
   timeline: TimelineBlock,
   twoColumn: TwoColumnBlock,
   videoBlock: VideoBlockBlock,
@@ -125,6 +127,7 @@ export const RenderBlocks: React.FC<{
               return (
                 <div
                   className={anchorId ? 'scroll-mt-[88px] lg:scroll-mt-[120px]' : undefined}
+                  data-lp-index={index}
                   id={anchorId}
                   key={index}
                   style={fullBleed ? undefined : { marginBlock: '128px' }}

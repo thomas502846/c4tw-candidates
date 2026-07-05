@@ -35,7 +35,7 @@ export default async function ContactPageEn() {
   const page = await queryContactPage('en')
 
   return (
-    <article className="pt-16 pb-24">
+    <article className="pb-24" lang="en">
       {draft && <LivePreviewListener />}
 
       {/* Top: CMS-managed page banner (pageHeader block) */}
