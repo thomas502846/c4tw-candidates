@@ -78,7 +78,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   ]
 
   return (
-    <article className="pb-24" lang="zh-TW">
+    <article className="pb-32 md:pb-48" lang="zh-TW">
       <PageClient />
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
@@ -95,7 +95,7 @@ export default async function Post({ params: paramsPromise }: Args) {
           <div className="min-w-0">
             {coverImg && (
               <div className="relative mb-10 aspect-video w-full overflow-hidden rounded-[16px] bg-brand-surface">
-                <Media resource={coverImg} imgClassName="h-full w-full object-cover" fill priority />
+                <Media resource={coverImg} imgClassName="h-full w-full object-contain" fill priority />
               </div>
             )}
 

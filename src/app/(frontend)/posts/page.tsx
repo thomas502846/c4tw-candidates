@@ -69,7 +69,7 @@ export default async function Page({ searchParams }: Args) {
   ]
 
   return (
-    <article className="pb-24">
+    <article className="pb-32 md:pb-48">
       <PageClient />
       <BlogBanner
         breadcrumb={breadcrumb}
@@ -87,7 +87,7 @@ export default async function Page({ searchParams }: Args) {
         ) : isCategoryView ? (
           <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_300px] lg:gap-16">
             <div>
-              <div className="flex flex-col gap-14">
+              <div className="flex flex-col gap-24">
                 {posts.docs.map((post) => (
                   <PostCard key={post.id} post={post} variant="list" />
                 ))}
@@ -98,7 +98,7 @@ export default async function Page({ searchParams }: Args) {
           </div>
         ) : (
           <>
-            <div className="mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-12 grid gap-x-16 gap-y-24 sm:grid-cols-2 lg:grid-cols-3">
               {posts.docs.map((post) => (
                 <PostCard key={post.id} post={post} variant="grid" />
               ))}

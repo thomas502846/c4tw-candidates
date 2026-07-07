@@ -45,7 +45,7 @@ export const PostCard: React.FC<{ post: PostCardData; variant?: 'grid' | 'list' 
           <Media
             resource={img}
             fill
-            imgClassName="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            imgClassName="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
           />
         )}
       </Link>

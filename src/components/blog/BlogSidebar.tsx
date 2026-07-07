@@ -20,7 +20,7 @@ export const BlogSidebar: React.FC<{
   popular: Pick<Post, 'id' | 'title' | 'slug'>[]
   activeSlug?: string
 }> = ({ categories, popular, activeSlug }) => (
-  <aside className="flex flex-col gap-10 lg:sticky lg:top-24">
+  <aside className="flex flex-col gap-10 lg:sticky lg:top-24 lg:self-start">
     <section>
       <WidgetTitle>創照分享</WidgetTitle>
       <ul className="flex flex-col gap-2.5">
