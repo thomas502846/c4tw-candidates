@@ -267,7 +267,22 @@ export interface Page {
 export interface Post {
   id: number;
   title: string;
+  /**
+   * 文章封面照。前台會自動填滿框（16:9 封面／卡片縮圖），可在下方逐裝置拖曳焦點與縮放，決定要露出照片的哪個部分。
+   */
   heroImage?: (number | null) | Media;
+  /**
+   * 分別針對手機、平板、電腦拖曳照片焦點、調整縮放，預覽框即是該裝置實際看到的範圍。未設定時沿用預設置中。英文版的照片與此裁切設定留空時，會自動沿用中文版；想讓英文版不同再各自調整即可。
+   */
+  coverFramePos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   content: {
     root: {
       type: string;
@@ -3048,6 +3063,7 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
+  coverFramePos?: T;
   content?: T;
   relatedPosts?: T;
   categories?: T;

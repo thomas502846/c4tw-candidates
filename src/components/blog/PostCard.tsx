@@ -1,22 +1,23 @@
 import Link from 'next/link'
 import React from 'react'
 
-import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import { cn } from '@/utilities/ui'
 import type { Category, Post } from '@/payload-types'
 
 // 只取卡片會用到的欄位（配合列表查詢的 select 窄化型別）
 export type PostCardData = Pick<
   Post,
-  'id' | 'title' | 'slug' | 'categories' | 'meta' | 'heroImage'
+  'id' | 'title' | 'slug' | 'categories' | 'meta' | 'heroImage' | 'coverFramePos'
 >
 
 const firstCategory = (post: PostCardData): Category | null => {
   const c = post.categories?.[0]
   return c && typeof c === 'object' ? c : null
 }
+// 封面優先用 heroImage（焦點欄位 coverFramePos 綁在 heroImage 上）
 const cardImage = (post: PostCardData) => {
-  const img = post.meta?.image ?? post.heroImage
+  const img = post.heroImage ?? post.meta?.image
   return img && typeof img === 'object' ? img : null
 }
 
@@ -42,10 +43,12 @@ export const PostCard: React.FC<{ post: PostCardData; variant?: 'grid' | 'list' 
         href={href}
       >
         {img && (
-          <Media
+          <FramedImage
+            id={`postcard-${post.id}`}
             resource={img}
-            fill
-            imgClassName="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
+            framePos={post.coverFramePos}
+            hoverZoom
+            useParentGroup
           />
         )}
       </Link>

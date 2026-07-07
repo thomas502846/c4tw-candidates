@@ -19,6 +19,7 @@ import { PostDivider } from '../../blocks/PostDivider/config'
 import { PostGallery } from '../../blocks/PostGallery/config'
 import { PostImage } from '../../blocks/PostImage/config'
 import { PostVideo } from '../../blocks/PostVideo/config'
+import { responsiveFramePosition } from '../../fields/responsiveFramePosition'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
@@ -86,7 +87,17 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+              admin: {
+                description:
+                  '文章封面照。前台會自動填滿框（16:9 封面／卡片縮圖），可在下方逐裝置拖曳焦點與縮放，決定要露出照片的哪個部分。',
+              },
             },
+            // 封面焦點（跟其他頁一樣：後台逐裝置拖曳決定裁切露出的位置）——Tracy 2026-07-07
+            responsiveFramePosition({
+              name: 'coverFramePos',
+              imageField: 'heroImage',
+              frames: { mobile: '16/9', tablet: '16/9', desktop: '16/9' },
+            }),
             {
               name: 'content',
               type: 'richText',

@@ -48,6 +48,7 @@ export default async function Page({ searchParams }: Args) {
       categories: true,
       meta: true,
       heroImage: true,
+      coverFramePos: true,
       publishedAt: true,
     },
   })

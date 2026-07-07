@@ -12,7 +12,7 @@ import type { Category, Post } from '@/payload-types'
 
 import { BlogBanner } from '@/components/blog/BlogBanner'
 import { BlogSidebar } from '@/components/blog/BlogSidebar'
-import { Media } from '@/components/Media'
+import { FramedImage } from '@/components/Media/FramedImage'
 import { ViewPing } from '@/components/blog/ViewPing'
 import { getAdjacentPosts, getCategoriesWithCounts, getPopularPosts } from '@/utilities/blogData'
 import type { Crumb } from '@/components/blog/Breadcrumb'
@@ -95,7 +95,7 @@ export default async function Post({ params: paramsPromise }: Args) {
           <div className="min-w-0">
             {coverImg && (
               <div className="relative mb-10 aspect-video w-full overflow-hidden rounded-[16px] bg-brand-surface">
-                <Media resource={coverImg} imgClassName="h-full w-full object-contain" fill priority />
+                <FramedImage id={`cover-${post.id}`} resource={coverImg} framePos={post.coverFramePos} priority />
               </div>
             )}
 
