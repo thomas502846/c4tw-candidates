@@ -2640,7 +2640,7 @@ export const seed = async ({
           title: '關於我們',
           links: [
             { label: '認識創照', url: '/about' },
-            { label: 'AIO整合照顧模式', url: '/care' },
+            { label: 'AIO整合照顧服務', url: '/care' },
             { label: 'AIO組織培力', url: '/training' },
             { label: '關於照顧學校', url: '/school' },
             { label: '聯絡我們', url: '/contact' },
@@ -2669,7 +2669,7 @@ export const seed = async ({
     關於我們: 'About Us',
     聯絡資訊: 'Contact',
     認識創照: 'About Us',
-    AIO整合照顧模式: 'AIO Integrated Care Model',
+    AIO整合照顧服務: 'AIO Integrated Care',
     AIO組織培力: 'AIO Organizational Training',
     關於照顧學校: 'About the Care School',
     聯絡我們: 'Contact Us',
