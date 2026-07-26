@@ -16,11 +16,11 @@ assets/design-systems/
 assets/references/
 
 # customer brief docs — not for public repo
-customer-briefs/
-docs/
+# customer-briefs/   # un-ignored 2026-07-26: documentation must be backed up
+# docs/   # un-ignored 2026-07-26: documentation must be backed up
 
 # personal knowledge base — internal documentation
-pkb/
+# pkb/   # un-ignored 2026-07-26: documentation must be backed up
 
 # --- Next.js / Payload app ---
 dist
@@ -46,3 +46,12 @@ public/sitemap*.xml
 /playwright/.cache/
 tsconfig.tsbuildinfo
 .gstack/
+
+
+# --- documentation policy (2026-07-26) ---
+# docs/ + documents/ = customer-supplied material
+# memory-bank/ + pkb/ = project knowledge
+# These MUST be version-controlled. Losing them is unrecoverable —
+# c4twweb's docs/ and pkb/ were destroyed in the WSL incident because
+# they were gitignored and therefore existed nowhere else.
+# documentation must be version-controlled
